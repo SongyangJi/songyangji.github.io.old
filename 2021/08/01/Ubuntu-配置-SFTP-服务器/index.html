@@ -70,7 +70,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">862</span>
+            <span class="post-count">1k</span>
         </span>
     </span>
 
@@ -79,7 +79,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">4 分钟</span>
         </span>
     </span>
 </div>
@@ -102,13 +102,13 @@
 
 
 
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>在Ubuntu系统上开通sftp文件服务，允许某些用户上传及下载文件。</p>
+<h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>在Ubuntu系统上开通sftp文件服务，允许某些用户上传及下载文件。</p>
 <p>但是这些用户只能使用sftp传输文件，不能使用SSH终端访问服务器，并且sftp不能访问系统文件。</p>
 <p>系统管理员则既能使用sftp传输文件，也能使用SSH远程管理服务器。</p>
-<h1 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h1><ul>
+<h1 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h1><h2 id="sftp用户、用户组的创建"><a href="#sftp用户、用户组的创建" class="headerlink" title="sftp用户、用户组的创建"></a>sftp用户、用户组的创建</h2><ul>
 <li>添加sftp用户，创建 sftp 用户组</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser alice</span><br><span class="line">sudo addgroup sftp-users</span><br><span class="line"><span class="comment"># 将alice从所有其他用户组中移除并加入到sftp-users组，并且关闭其Shell访问</span></span><br><span class="line">sudo usermod -G sftp-users -s /bin/<span class="literal">false</span> alice</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser alice</span><br><span class="line">sudo addgroup sftp-users</span><br><span class="line"><span class="comment"># 将alice从所有其他用户组中移除并加入到sftp-users组，并且关闭其Shell访问</span></span><br><span class="line"><span class="comment">#/bin/false也可以替换为/sbin/nologin，目的是不允许该用户登录到系统中</span></span><br><span class="line">sudo usermod -G sftp-users -s /bin/<span class="literal">false</span> alice</span><br></pre></td></tr></table></figure>
 
 
 
@@ -118,8 +118,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser admin</span><br><span class="line">sudo addgroup ssh-users</span><br><span class="line"><span class="comment"># -a 表示以追加形式将 admin 加入 ssh-users </span></span><br><span class="line">sudo usermod -a -G ssh-users admin</span><br></pre></td></tr></table></figure>
 
 
-
-<ul>
+<h2 id="创建文件服务器目录"><a href="#创建文件服务器目录" class="headerlink" title="创建文件服务器目录"></a>创建文件服务器目录</h2><ul>
 <li>创建服务器文件目录</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建监狱目录</span></span><br><span class="line">sudo mkdir /home/sftp_root</span><br><span class="line"><span class="comment"># 普通用户能够写入的共享文件目录</span></span><br><span class="line">sudo mkdir /home/sftp_root/shared</span><br><span class="line"><span class="comment"># 设置共享文件夹的拥有者为管理员、用户组为 sftp-users</span></span><br><span class="line">sudo chown admin:sftp-users /home/sftp_root/shared</span><br><span class="line"><span class="comment"># 拥有者、sftp用户组的成员具有一切权限</span></span><br><span class="line">sudo chmod 770 /home/sftp_root/shared</span><br></pre></td></tr></table></figure>
@@ -129,10 +128,7 @@
 <p>默认允许所有用户或者用户组登录，若仅允许指定用户或者用户组访问，按照以下格式配置。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以空格间隔</span></span><br><span class="line">AllowUsers user1 user2 </span><br><span class="line">AllowGroups group1 group2 </span><br></pre></td></tr></table></figure>
 
-
-
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+<h2 id="权限配置"><a href="#权限配置" class="headerlink" title="权限配置"></a>权限配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
 
 <p>在sshd_config文件的最后，添加以下内容：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">AllowGroups ssh-users sftp-users</span><br><span class="line">Match Group sftp-users</span><br><span class="line">ChrootDirectory /home/sftp_root</span><br><span class="line">AllowTcpForwarding no</span><br><span class="line">X11Forwarding no</span><br><span class="line">ForceCommand internal-sftp</span><br></pre></td></tr></table></figure>
@@ -147,13 +143,32 @@
 <li><p>禁止TCP Forwarding和X11 Forwarding</p>
 </li>
 </ul>
+<p>另外需要注意的是：<strong>ChrootDirectory的权限问题，你设定的目录必须是root用户所有</strong>，否则就会出现问题。所以请确保sftp用户根目录的所有人是root, 权限是 750 或者 755。</p>
 <p>需要注意的一点的是，现在所有需要远程连接的用户都必须加入 ssh-users 才行。</p>
 <p>如将用户 songyangji 加入 ，这样ta就可以使用ssh连接本机。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -a -G ssh-users songyangji</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li><strong>限制ssh连接的访问IP</strong></li>
+</ul>
+<p>仍然是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Authentication:</span></span><br><span class="line">AllowUsers root@10.10.10.*        <span class="comment">#限制root用户只能通过10.10.10.*网段登录访问</span></span><br><span class="line">AllowUsers charles@10.10.10.*        <span class="comment">#限制charles用户只能通过10.10.10.*网段登录访问</span></span><br><span class="line">AllowUsers john@10.10.10.*</span><br></pre></td></tr></table></figure>
 
 
 <h1 id="重启SSH"><a href="#重启SSH" class="headerlink" title="重启SSH"></a>重启SSH</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 亦可</span></span><br><span class="line"><span class="comment"># /etc/init.d/ssh restart</span></span><br><span class="line">service ssh restart</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<blockquote>
+<p>参考博客</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6b588a712513">搭建sftp服务器</a></p>
+</blockquote>
  
       <!-- reward -->
       
