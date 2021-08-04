@@ -70,7 +70,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">810</span>
+            <span class="post-count">1.1k</span>
         </span>
     </span>
 
@@ -79,7 +79,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">4 分钟</span>
         </span>
     </span>
 </div>
@@ -100,7 +100,7 @@
 <h1 id="5-Spring-面向方面编程"><a href="#5-Spring-面向方面编程" class="headerlink" title="5. Spring 面向方面编程"></a>5. Spring 面向方面编程</h1><h2 id="5-1-AOP概念"><a href="#5-1-AOP概念" class="headerlink" title="5.1 AOP概念"></a>5.1 AOP概念</h2><p>下面是一些核心 AOP 概念和术语。这些术语不是特定于 Spring 的。</p>
 <ul>
 <li><p>切面（Aspect）：跨越多个类的关注点的模块化—— <strong>AOP中的基本单位</strong>，正如OOP中的类一样。在 Spring AOP 中，方面是通过使用<strong>基于XML配置常规Bean</strong>或<strong>使用注解@Aspect注解的常规类 （@AspectJ 风格）实现的</strong>。</p>
-<p>注意：<code>@Aspect</code>是注解，@AspectJ是  AspectJ project的风格。</p>
+<p>注意：<code>@Aspect</code>是注解，@AspectJ是AspectJ project在Spring AOP中实现的风格。</p>
 </li>
 <li><p>连接点（Join point）：<strong>程序执行过程中的一个点，例如方法的执行或异常的处理</strong>。</p>
 <p>在 Spring AOP 中，一个连接点总是代表一个<strong>方法</strong>的执行，目前不能对<strong>字段</strong>进行拦截。</p>
@@ -127,13 +127,31 @@
 <li>返回后（After returning）通知：在连接点正常完成后运行的通知（例如，如果方法返回而没有抛出异常）。</li>
 <li>抛出异常后（After throwing）通知：如果方法通过抛出异常退出，则运行通知。</li>
 <li>后置（After or finally）通知：不管连接点退出的方式（正常或异常返回）都将运行的通知。</li>
-<li>环绕（Around）通知：环绕连接点的通知，例如方法调用。这是最有力的通知。环绕通知可以在方法调用之前和之后执行自定义行为。它还负责选择是继续连接点还是通过返回自己的返回值或抛出异常来缩短建议的方法执行。</li>
+<li>环绕（Around）通知：环绕连接点的通知。这是最有力的通知。<strong>环绕通知可以在方法调用之前和之后执行自定义行为</strong>。它还<strong>负责选择是继续连接点还是通过返回自己的返回值或抛出异常来缩短被代理的方法执行</strong>。</li>
 </ul>
+<h2 id="5-2-使用-AspectJ风格的AOP"><a href="#5-2-使用-AspectJ风格的AOP" class="headerlink" title="5.2 使用@AspectJ风格的AOP"></a>5.2 使用@AspectJ风格的AOP</h2><p>AOP在Spring中的使用，既可以使用注解驱动，也可以使用XML配置。</p>
+<p>这里仍然只介绍注解驱动的AOP。</p>
+<h3 id="5-2-1-启用-AspectJ支持"><a href="#5-2-1-启用-AspectJ支持" class="headerlink" title="5.2.1 启用@AspectJ支持"></a>5.2.1 启用@AspectJ支持</h3><p>对于SpringBoot项目而言，引入依赖即可。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- aop --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>下面介绍AOP中的一系列概念在@AspectJ中的具体落地实现。</p>
+<h3 id="5-2-2-声明一个切面"><a href="#5-2-2-声明一个切面" class="headerlink" title="5.2.2 声明一个切面"></a>5.2.2 声明一个切面</h3><p>使用注解 <code>@Aspect</code>标记类即可。</p>
+<p>但请注意， <code>@Aspect</code>注释不足以在类路径中进行自动检测从而被Spring容器管理，所以@Component是有必要的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NotVeryUsefulAspect</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而且，在 Spring AOP 中，切面本身不能成为其他切面通知的目标。</p>
+<h3 id="5-2-3-声明一个切入点"><a href="#5-2-3-声明一个切入点" class="headerlink" title="5.2.3 声明一个切入点"></a>5.2.3 声明一个切入点</h3><p>如下，<strong>切点是一个用<code>@Pointcut</code>标记的方法（返回值必须是void）</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Pointcut(&quot;execution(* transfer(..))&quot;)</span> <span class="comment">// the pointcut expression</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">anyOldTransfer</span><span class="params">()</span> </span>&#123;&#125; <span class="comment">// the pointcut signature</span></span><br></pre></td></tr></table></figure>
+
+<p>构成<code>@Pointcut</code>注解值的切入点表达式是一个正则 AspectJ 切入点表达式，这是切点的关键。</p>
+<p>具体可以参考附录中的AspectJ编程指南。</p>
 <blockquote>
 <p>参考资料</p>
 <p><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/current-SNAPSHOT/reference/html/core.html#spring-core">Spring官方文档</a></p>
 <p><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/">doc index</a></p>
 <p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1532547#:~:text=Spring%20AOP%20%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8JDK,%E5%8F%AF%E4%BB%A5%E5%BC%BA%E5%88%B6%E4%BD%BF%E7%94%A8CGLIB%20%E4%BB%A3%E7%90%86%E3%80%82">Spring 5 AOP 默认改用 CGLIB 了？</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.eclipse.org/aspectj/doc/released/progguide/index.html">AspectJ编程指南</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.eclipse.org/aspectj/">AspectJ网站</a></p>
 </blockquote>
  
       <!-- reward -->
