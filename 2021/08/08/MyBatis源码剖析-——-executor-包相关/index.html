@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    MyBatis文档摘要 |  JsyBlog
+    MyBatis源码剖析 ——  executor 包相关 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -40,7 +40,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-MyBatis文档摘要"
+  id="post-MyBatis源码剖析-——-executor-包相关"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -51,26 +51,22 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  MyBatis文档摘要
+  MyBatis源码剖析 ——  executor 包相关
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/08/06/MyBatis%E6%96%87%E6%A1%A3%E6%91%98%E8%A6%81/" class="article-date">
-  <time datetime="2021-08-05T16:00:00.000Z" itemprop="datePublished">2021-08-06</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/MyBatis/">MyBatis</a>
-  </div>
-  
+      <a href="/2021/08/08/MyBatis%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90-%E2%80%94%E2%80%94-executor-%E5%8C%85%E7%9B%B8%E5%85%B3/" class="article-date">
+  <time datetime="2021-08-08T11:32:18.000Z" itemprop="datePublished">2021-08-08</time>
+</a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">594</span>
+            <span class="post-count">0</span>
         </span>
     </span>
 
@@ -79,150 +75,20 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">1 分钟</span>
         </span>
     </span>
 </div>
  
     </div>
       
-    <div class="tocbot"></div>
-
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><p>MyBatis 的配置文件的层次结构：</p>
-<ul>
-<li>configuration（配置）<ul>
-<li>properties（属性）</li>
-<li>settings（设置）</li>
-<li>typeAliases（类型别名）</li>
-<li>typeHandlers（类型处理器）</li>
-<li>objectFactory（对象工厂）</li>
-<li>plugins（插件）</li>
-<li>environments（环境配置）<ul>
-<li>environment（环境变量）<ul>
-<li>transactionManager（事务管理器）</li>
-<li>dataSource（数据源）</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>databaseIdProvider（数据库厂商标识）</li>
-<li>mappers（映射器）</li>
-</ul>
-</li>
-</ul>
-<h2 id="属性（properties）"><a href="#属性（properties）" class="headerlink" title="属性（properties）"></a>属性（properties）</h2><h2 id="设置（settings）"><a href="#设置（settings）" class="headerlink" title="设置（settings）"></a>设置（settings）</h2><h3 id="对象关系映射相关"><a href="#对象关系映射相关" class="headerlink" title="对象关系映射相关"></a>对象关系映射相关</h3><table>
-<thead>
-<tr>
-<th align="left">设置名</th>
-<th align="left">描述</th>
-<th align="left">有效值</th>
-<th align="left">默认值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">autoMappingBehavior</td>
-<td align="left">指定 MyBatis 应如何自动映射列到字段或属性。 NONE 表示关闭自动映射；PARTIAL 只会自动映射没有定义嵌套结果映射的字段。 FULL 会自动映射任何复杂的结果集（无论是否嵌套）。</td>
-<td align="left">NONE, PARTIAL, FULL</td>
-<td align="left">PARTIAL</td>
-</tr>
-<tr>
-<td align="left">mapUnderscoreToCamelCase</td>
-<td align="left">是否开启驼峰命名自动映射，即从经典数据库列名 A_COLUMN 映射到经典 Java 属性名 aColumn。</td>
-<td align="left">true | false</td>
-<td align="left">False</td>
-</tr>
-<tr>
-<td align="left">autoMappingUnknownColumnBehavior</td>
-<td align="left">指定发现自动映射目标未知列（或未知属性类型）的行为。<code>NONE</code>: 不做任何反应<code>WARNING</code>: 输出警告日志（<code>&#39;org.apache.ibatis.session.AutoMappingUnknownColumnBehavior&#39;</code> 的日志等级必须设置为 <code>WARN</code>）<code>FAILING</code>: 映射失败 (抛出 <code>SqlSessionException</code>)</td>
-<td align="left">NONE, WARNING, FAILING</td>
-<td align="left"></td>
-</tr>
-</tbody></table>
-<h3 id="缓存相关"><a href="#缓存相关" class="headerlink" title="缓存相关"></a>缓存相关</h3><table>
-<thead>
-<tr>
-<th align="left">设置名</th>
-<th align="left">描述</th>
-<th align="left">有效值</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">cacheEnabled</td>
-<td align="left">全局性地开启或关闭所有映射器配置文件中已配置的任何缓存。</td>
-<td align="left">true | false</td>
-<td>true</td>
-</tr>
-<tr>
-<td align="left">localCacheScope</td>
-<td align="left">MyBatis 利用本地缓存机制（Local Cache）防止循环引用和加速重复的嵌套查询。 默认值为 SESSION，会缓存一个会话中执行的所有查询。 若设置值为 STATEMENT，本地缓存将仅用于执行语句，对相同 SqlSession 的不同查询将不会进行缓存。</td>
-<td align="left">SESSION | STATEMENT</td>
-<td>SESSION</td>
-</tr>
-<tr>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td></td>
-</tr>
-</tbody></table>
-<h3 id="数据库连接与执行器相关"><a href="#数据库连接与执行器相关" class="headerlink" title="数据库连接与执行器相关"></a>数据库连接与执行器相关</h3><table>
-<thead>
-<tr>
-<th align="left">设置名</th>
-<th align="left">描述</th>
-<th align="left">有效值</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">defaultStatementTimeout</td>
-<td align="left">设置超时时间，它决定数据库驱动等待数据库响应的秒数。</td>
-<td align="left">任意正整数</td>
-<td>未设置 (null)</td>
-</tr>
-<tr>
-<td align="left">defaultExecutorType</td>
-<td align="left">配置默认的执行器。SIMPLE 就是普通的执行器；REUSE 执行器会重用预处理语句（PreparedStatement）； BATCH 执行器不仅重用语句还会执行批量更新。</td>
-<td align="left">SIMPLE REUSE BATCH</td>
-<td>SIMPLE</td>
-</tr>
-<tr>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td></td>
-</tr>
-</tbody></table>
-<h3 id="日志相关"><a href="#日志相关" class="headerlink" title="日志相关"></a>日志相关</h3><table>
-<thead>
-<tr>
-<th align="left">设置名</th>
-<th align="left">描述</th>
-<th align="left">有效值</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">logPrefix</td>
-<td align="left">指定 MyBatis 增加到日志名称的前缀。</td>
-<td align="left">任何字符串</td>
-<td>未设置</td>
-</tr>
-<tr>
-<td align="left">logImpl</td>
-<td align="left">指定 MyBatis 所用日志的具体实现，未指定时将自动查找。</td>
-<td align="left">SLF4J | LOG4J | LOG4J2 | JDK_LOGGING | COMMONS_LOGGING | STDOUT_LOGGING | NO_LOGGING</td>
-<td>未设置</td>
-</tr>
-</tbody></table>
-<h2 id="类型别名（typeAliases）"><a href="#类型别名（typeAliases）" class="headerlink" title="类型别名（typeAliases）"></a>类型别名（typeAliases）</h2><h2 id="类型处理器（typeHandlers）"><a href="#类型处理器（typeHandlers）" class="headerlink" title="类型处理器（typeHandlers）"></a>类型处理器（typeHandlers）</h2> 
+   
       <!-- reward -->
       
     </div>
@@ -286,32 +152,21 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/08/06/MyBatis%E6%96%87%E6%A1%A3%E6%91%98%E8%A6%81/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/08/08/MyBatis%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90-%E2%80%94%E2%80%94-executor-%E5%8C%85%E7%9B%B8%E5%85%B3/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E6%A1%A3%E7%B3%BB%E5%88%97/" rel="tag">文档系列</a></li></ul>
-
     </footer>
   </div>
 
    
   <nav class="article-nav">
     
-      <a href="/2021/08/08/MyBatis%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90-%E2%80%94%E2%80%94-executor-%E5%8C%85%E7%9B%B8%E5%85%B3/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            MyBatis源码剖析 ——  executor 包相关
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/08/06/MyBatis%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%20%E2%80%94%E2%80%94%20session%20%E5%8C%85%E7%9B%B8%E5%85%B3/" class="article-nav-link">
+      <a href="/2021/08/06/MyBatis%E6%96%87%E6%A1%A3%E6%91%98%E8%A6%81/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">MyBatis源码剖析 —— session 包相关</div>
+        <div class="article-nav-title">MyBatis文档摘要</div>
       </a>
     
   </nav>
