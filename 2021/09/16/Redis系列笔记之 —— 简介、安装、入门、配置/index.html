@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Redis系列笔记之 —— 简介、安装、入门、配置 |  JsyBlog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/images/ayer.png" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Redis系列笔记之 —— 简介、安装、入门、配置"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Redis系列笔记之 —— 简介、安装、入门、配置
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/09/16/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E5%85%A5%E9%97%A8%E3%80%81%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2021-09-15T16:00:00.000Z" itemprop="datePublished">2021-09-16</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.5k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">7 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="Redis是什么"><a href="#Redis是什么" class="headerlink" title="Redis是什么"></a>Redis是什么</h2><blockquote>
+<p>Redis是一个开源的使用ANSI C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API,是一个由Salvatore Sanfilippo写的key-value存储系统。</p>
+</blockquote>
+<ul>
+<li><strong>Redis</strong> 即 <strong>Remote Dictionary Server</strong> （远程字典服务器），是一个以<strong>字典结构</strong>（<strong>key-value</strong>形式）存储数据的存储系统。</li>
+<li>Redis 由 <strong>C语言</strong>编写而成，<strong>开源</strong>，简单稳定，代码量只有几万行，<strong>单线程</strong>模式工作，但性能强劲。</li>
+</ul>
+<h2 id="特性与优势"><a href="#特性与优势" class="headerlink" title="特性与优势"></a>特性与优势</h2><ul>
+<li>Redis的数据都存储在内存中，<strong>读写速度快</strong>（相对于关系型数据库而言）。</li>
+<li>Redis支持<strong>数据的持久化</strong>，可以将内存中的数据保存在磁盘中(<strong>异步写入</strong>)，重启的时候可以再次加载进行使用。</li>
+<li>Redis 支持<strong>高级数据结构</strong>，如<strong>list，set，zset，hash</strong>（列表、集合、有序集合、散列）等数据结构的存储。</li>
+<li>Redis支持<strong>数据的备份</strong>，即master-slave模式的数据备份。</li>
+<li>Redis的所有操作都是<strong>原子性</strong>的，意思就是要么成功执行要么失败完全不执行。单个操作是原子性的。多个操作也支持<strong>事务</strong>，即原子性，通过MULTI和EXEC指令包起来。</li>
+</ul>
+<h2 id="功能角色"><a href="#功能角色" class="headerlink" title="功能角色"></a>功能角色</h2><ul>
+<li><strong>数据库</strong>,这也是它最开始的用途。</li>
+<li><strong>缓存</strong>，Redis可以为每个键设置生存时间（Time To Live）TTL，这一功能可以让Redis扮演缓存系统的功能。</li>
+<li><strong>高性能的优先队列</strong>，Redis的列表类型键可以用来实现队列，并且支持阻塞式读取。</li>
+</ul>
+<h1 id="安装与入门操作"><a href="#安装与入门操作" class="headerlink" title="安装与入门操作"></a>安装与入门操作</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>MacOS中安装Redis很简单，使用包管理工具如HomeBrew即可，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install redis</span><br></pre></td></tr></table></figure>
+
+<p>在<code>/usr/local/bin</code>下,我们可以看到这么几个可执行文件：</p>
+<ul>
+<li>redis-server <strong>Redis服务器</strong></li>
+<li>redis-cli       <strong>Redis命令行客户端</strong></li>
+<li>redis-benchmark    <strong>Redis性能测试工具</strong></li>
+<li>redis-check-aof    <strong>AOF文件修复文件</strong></li>
+<li>redis-check-rdb    <strong>RDB文件检查文件</strong></li>
+<li>redis-sentinel       <strong>Sentinel服务器</strong></li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20210118202017633.png" alt="在这里插入图片描述"></p>
+<p>最常用的是 redis-server 和 redis-cli<br>其中</p>
+<ul>
+<li>redis-server是Redis的服务器，启动Redis也就是启动redis-server;</li>
+<li>redis-cli是Redis<strong>自带的命令行客户端</strong>。</li>
+</ul>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server</span><br></pre></td></tr></table></figure>
+<p>默认是 6379端口。<br>会出现如下提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">51490:C 18 Jan 2021 20:25:26.344 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo</span><br><span class="line">51490:C 18 Jan 2021 20:25:26.345 # Redis version&#x3D;6.0.9, bits&#x3D;64, commit&#x3D;00000000, modified&#x3D;0, pid&#x3D;51490, just started</span><br><span class="line">51490:C 18 Jan 2021 20:25:26.345 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server &#x2F;path&#x2F;to&#x2F;redis.conf</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.346 * Increased maximum number of open files to 10032 (it was originally set to 256).</span><br><span class="line">                _._                                                  </span><br><span class="line">           _.-&#96;&#96;__ &#39;&#39;-._                                             </span><br><span class="line">      _.-&#96;&#96;    &#96;.  &#96;_.  &#39;&#39;-._           Redis 6.0.9 (00000000&#x2F;0) 64 bit</span><br><span class="line">  .-&#96;&#96; .-&#96;&#96;&#96;.  &#96;&#96;&#96;\&#x2F;    _.,_ &#39;&#39;-._                                   </span><br><span class="line"> (    &#39;      ,       .-&#96;  | &#96;,    )     Running in standalone mode</span><br><span class="line"> |&#96;-._&#96;-...-&#96; __...-.&#96;&#96;-._|&#39;&#96; _.-&#39;|     Port: 6379</span><br><span class="line"> |    &#96;-._   &#96;._    &#x2F;     _.-&#39;    |     PID: 51490</span><br><span class="line">  &#96;-._    &#96;-._  &#96;-.&#x2F;  _.-&#39;    _.-&#39;                                   </span><br><span class="line"> |&#96;-._&#96;-._    &#96;-.__.-&#39;    _.-&#39;_.-&#39;|                                  </span><br><span class="line"> |    &#96;-._&#96;-._        _.-&#39;_.-&#39;    |           http:&#x2F;&#x2F;redis.io        </span><br><span class="line">  &#96;-._    &#96;-._&#96;-.__.-&#39;_.-&#39;    _.-&#39;                                   </span><br><span class="line"> |&#96;-._&#96;-._    &#96;-.__.-&#39;    _.-&#39;_.-&#39;|                                  </span><br><span class="line"> |    &#96;-._&#96;-._        _.-&#39;_.-&#39;    |                                  </span><br><span class="line">  &#96;-._    &#96;-._&#96;-.__.-&#39;_.-&#39;    _.-&#39;                                   </span><br><span class="line">      &#96;-._    &#96;-.__.-&#39;    _.-&#39;                                       </span><br><span class="line">          &#96;-._        _.-&#39;                                           </span><br><span class="line">              &#96;-.__.-&#39;                                               </span><br><span class="line"></span><br><span class="line">51490:M 18 Jan 2021 20:25:26.351 # Server initialized</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.353 * Loading RDB produced by version 6.0.9</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.353 * RDB age 623843 seconds</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.353 * RDB memory usage when created 1.02 Mb</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.353 * DB loaded from disk: 0.002 seconds</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.353 * Ready to accept connections</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server- --port 8888</span><br></pre></td></tr></table></figure>
+<p>通过–port自定义端口号。</p>
+<h2 id="关闭Redis"><a href="#关闭Redis" class="headerlink" title="关闭Redis"></a>关闭Redis</h2><ol>
+<li><p>关闭服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli SHUTDOWN</span><br></pre></td></tr></table></figure>
+<p>因为Redis此时可能正在将内存中的数据同步到硬盘，所以强行终止Redis进程可能导致数据丢失，所以应该让客户端请求关闭Redis。<br>当Redis收到 <code>SHUTDOWN</code>(小写的也是可以的)之后，</p>
+</li>
+<li><p>先<strong>断开所有客户端连接</strong>。</p>
+</li>
+<li><p>根据配置执行<strong>持久化</strong>。</p>
+</li>
+<li><p>完成<strong>退出</strong>。</p>
+</li>
+</ol>
+<p>在会看到如下提示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">51578:M 18 Jan 2021 20:32:13.180 # User requested shutdown...</span><br><span class="line">51578:M 18 Jan 2021 20:32:13.180 * Saving the final RDB snapshot before exiting.</span><br><span class="line">51578:M 18 Jan 2021 20:32:13.182 * DB saved on disk</span><br><span class="line">51578:M 18 Jan 2021 20:32:13.182 # Redis is now ready to exit, bye bye...</span><br></pre></td></tr></table></figure>
+
+
+<ol start="2">
+<li>退出客户端<br>使用<code>quit</code>即可</li>
+</ol>
+<h2 id="客户端的启动"><a href="#客户端的启动" class="headerlink" title="客户端的启动"></a>客户端的启动</h2><p>通过redis-cli向Redis发送命令有两种方式</p>
+<ol>
+<li><p>将命令作为<code>redis-cli</code>的参数，比如上面的将SHUTDOWN作为参数。</p>
+</li>
+<li><p>不带参数的启动<code>redis-cli</code>，进入交互模式，自由输入命令，在输入多条命令时方便。</p>
+</li>
+</ol>
+<p>-h、-p自定义地址和端口号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h 127.0.0.1 -p 6379</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>在远程服务上执行命令</strong><br>用密码password连接主机名为host，端口号为port的<strong>Redis</strong>服务<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h host -p port -a password</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="PING检测"><a href="#PING检测" class="headerlink" title="PING检测"></a>PING检测</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; PING</span><br><span class="line">PONG</span><br></pre></td></tr></table></figure>
+<p>PING 命令，该命令用于检测 redis 服务是否启动。</p>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>Redis 的配置文件位于 Redis 安装目录下，文件名为 redis.conf。<br><img src="https://img-blog.csdnimg.cn/20210119134549587.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODQ2MzI0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="获取配置"><a href="#获取配置" class="headerlink" title="获取配置"></a>获取配置</h2><ul>
+<li><strong>获取所有配置</strong><br>在进入redis客户端的交互模式后，输入:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG GET *</span><br></pre></td></tr></table></figure>
+即可获取所有配置。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">1) &quot;rdbchecksum&quot;</span><br><span class="line">2) &quot;yes&quot;</span><br><span class="line">3) &quot;daemonize&quot;</span><br><span class="line">4) &quot;no&quot;</span><br><span class="line">5) &quot;io-threads-do-reads&quot;</span><br><span class="line">6) &quot;no&quot;</span><br><span class="line">7) &quot;lua-replicate-commands&quot;</span><br><span class="line">8) &quot;yes&quot;</span><br><span class="line">9) &quot;always-show-logo&quot;</span><br><span class="line">10) &quot;no&quot;</span><br><span class="line">11) &quot;protected-mode&quot;</span><br><span class="line">………………</span><br><span class="line">291) &quot;slaveof&quot;</span><br><span class="line">292) &quot;&quot;</span><br><span class="line">293) &quot;notify-keyspace-events&quot;</span><br><span class="line">294) &quot;&quot;</span><br><span class="line">295) &quot;bind&quot;</span><br><span class="line">296) &quot;&quot;</span><br><span class="line">297) &quot;requirepass&quot;</span><br><span class="line">298) &quot;&quot;</span><br><span class="line">299) &quot;oom-score-adj-values&quot;</span><br><span class="line">300) &quot;0 200 800&quot;</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li><strong>获取单个配置信息：</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; config get loglevel</span><br><span class="line">1) &quot;loglevel&quot;</span><br><span class="line">2) &quot;notice&quot;</span><br></pre></td></tr></table></figure>
+第一行是选项名，第二行是选项值。</li>
+</ul>
+<h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG SET config_setting_name new_config_value</span><br></pre></td></tr></table></figure>
+
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; config set loglevel warning</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; config get loglevel</span><br><span class="line">1) &quot;loglevel&quot;</span><br><span class="line">2) &quot;warning&quot;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="带配置启动"><a href="#带配置启动" class="headerlink" title="带配置启动"></a>带配置启动</h2><p>如果我们要修改的参数过多，可以直接修改配置文件（备份一开始的），然后带着配置文件启动。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/09/16/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E5%85%A5%E9%97%A8%E3%80%81%E9%85%8D%E7%BD%AE/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NoSQL/" rel="tag">NoSQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/09/16/Redis%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0%20%E2%80%94%E2%80%94%20%E4%BA%8B%E5%8A%A1%EF%BC%88Transactions%EF%BC%89/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            读Redis官方文档笔记 —— 事务（Transactions）
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/09/16/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E9%94%AE%E3%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E6%95%A3%E5%88%97%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E9%9B%86%E5%90%88%E3%80%81%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88%E3%80%81HyperLogLog%E7%9A%84%E6%80%A7%E8%B4%A8%E5%8F%8A%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Redis系列笔记之 —— 键、字符串、散列、列表、集合、有序集合、HyperLogLog的性质及操作命令</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2021
+        <i class="ri-heart-fill heart_icon"></i> SongyangJi
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+      <li>
+          <img src="/images/beian.png"></img>
+          <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=01234567890123" target="_black" rel="nofollow">备案</a>
+      </li>
+        
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>
