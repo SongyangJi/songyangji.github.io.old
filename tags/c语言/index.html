@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    HikariCP配置信息 |  JsyBlog
+    Tag: c语言 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -39,391 +39,56 @@
       
     <main class="content on">
       <section class="outer">
-  <article
-  id="post-HikariCP配置信息"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
+  
+  
+  <article class="articles">
     
-    <header class="article-header">
+    
+    <h1 class="page-type-title">#&nbspc语言</h1>
+    
+    
+  
+  
+  
+  
+  
+  
+  <div class="archives-wrap">
+    <div class="archive-year-wrap">
+      <a href="/archives/2021" class="archive-year">2021</a>
+    </div>
+    <div class="archives">
+      
+      <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2021/09/23/%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90c%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%EF%BC%9F%E2%80%94%E2%80%94-Argtable3%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" class="archive-article-date">
+  <time datetime="2021-09-22T16:00:00.000Z" itemprop="datePublished">09/23</time>
+</a>
        
-<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  HikariCP配置信息
-</h1>
+<h2 itemprop="name">
+  <a class="archive-article-title" href="/2021/09/23/%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90c%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%EF%BC%9F%E2%80%94%E2%80%94-Argtable3%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/"
+    >如何解析c语言程序的命令行参数？—— Argtable3使用教程</a> 
+</h2>
  
 
     </header>
-     
-    <div class="article-meta">
-      <a href="/2021/08/23/HikariCP%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF/" class="article-date">
-  <time datetime="2021-08-22T16:00:00.000Z" itemprop="datePublished">2021-08-23</time>
-</a>   
-<div class="word_count">
-    <span class="post-time">
-        <span class="post-meta-item-icon">
-            <i class="ri-quill-pen-line"></i>
-            <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">849</span>
-        </span>
-    </span>
-
-    <span class="post-time">
-        &nbsp; | &nbsp;
-        <span class="post-meta-item-icon">
-            <i class="ri-book-open-line"></i>
-            <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
-        </span>
-    </span>
-</div>
- 
-    </div>
+    
+    
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c%E8%AF%AD%E8%A8%80/" rel="tag">c语言</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tool/" rel="tag">tool</a></li></ul>
 
-
+    
+  </div>
+</article>
+      
+      
+    </div>
+  </div>
+  
+  
 
   
-    <div class="article-entry" itemprop="articleBody">
-       
-  <table>
-<thead>
-<tr>
-<th><strong>name</strong></th>
-<th><strong>描述</strong></th>
-<th><strong>构造器默认值</strong></th>
-<th><strong>默认配置validate之后的值</strong></th>
-<th><strong>validate重置</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>autoCommit</td>
-<td>自动提交从池中返回的连接</td>
-<td>TRUE</td>
-<td>TRUE</td>
-<td>–</td>
-</tr>
-<tr>
-<td>connectionTimeout</td>
-<td>等待来自池的连接的最大毫秒数</td>
-<td>SECONDS.toMillis(30) = 30000</td>
-<td>30000</td>
-<td>如果小于250毫秒，则被重置回30秒</td>
-</tr>
-<tr>
-<td>idleTimeout</td>
-<td>连接允许在池中闲置的最长时间</td>
-<td>MINUTES.toMillis(10) = 600000</td>
-<td>600000</td>
-<td>如果idleTimeout+1秒&gt;maxLifetime 且 maxLifetime&gt;0，则会被重置为0（代表永远不会退出）；如果idleTimeout!=0且小于10秒，则会被重置为10秒</td>
-</tr>
-<tr>
-<td>maxLifetime</td>
-<td>池中连接最长生命周期</td>
-<td>MINUTES.toMillis(30) = 1800000</td>
-<td>1800000</td>
-<td>如果不等于0且小于30秒则会被重置回30分钟</td>
-</tr>
-<tr>
-<td>connectionTestQuery</td>
-<td>如果您的驱动程序支持JDBC4，我们强烈建议您不要设置此属性</td>
-<td>null</td>
-<td>null</td>
-<td>–</td>
-</tr>
-<tr>
-<td>minimumIdle</td>
-<td>池中维护的最小空闲连接数</td>
-<td>-1</td>
-<td>10</td>
-<td>minIdle&lt;0或者minIdle&gt;maxPoolSize,则被重置为maxPoolSize</td>
-</tr>
-<tr>
-<td>maximumPoolSize</td>
-<td>池中最大连接数，包括闲置和使用中的连接</td>
-<td>-1</td>
-<td>10</td>
-<td>如果maxPoolSize小于1，则会被重置。当minIdle&lt;=0被重置为DEFAULT_POOL_SIZE则为10;如果minIdle&gt;0则重置为minIdle的值</td>
-</tr>
-<tr>
-<td>metricRegistry</td>
-<td>该属性允许您指定一个 Codahale / Dropwizard MetricRegistry 的实例，供池使用以记录各种指标</td>
-<td>null</td>
-<td>null</td>
-<td>–</td>
-</tr>
-<tr>
-<td>healthCheckRegistry</td>
-<td>该属性允许您指定池使用的Codahale / Dropwizard HealthCheckRegistry的实例来报告当前健康信息</td>
-<td>null</td>
-<td>null</td>
-<td>–</td>
-</tr>
-<tr>
-<td>poolName</td>
-<td>连接池的用户定义名称，主要出现在日志记录和JMX管理控制台中以识别池和池配置</td>
-<td>null</td>
-<td>HikariPool-1</td>
-<td>–</td>
-</tr>
-<tr>
-<td>initializationFailTimeout</td>
-<td>如果池无法成功初始化连接，则此属性控制池是否将 fail fast</td>
-<td>1</td>
-<td>1</td>
-<td>–</td>
-</tr>
-<tr>
-<td>isolateInternalQueries</td>
-<td>是否在其自己的事务中隔离内部池查询，例如连接活动测试</td>
-<td>FALSE</td>
-<td>FALSE</td>
-<td>–</td>
-</tr>
-<tr>
-<td>allowPoolSuspension</td>
-<td>控制池是否可以通过JMX暂停和恢复</td>
-<td>FALSE</td>
-<td>FALSE</td>
-<td>–</td>
-</tr>
-<tr>
-<td>readOnly</td>
-<td>从池中获取的连接是否默认处于只读模式</td>
-<td>FALSE</td>
-<td>FALSE</td>
-<td>–</td>
-</tr>
-<tr>
-<td>registerMbeans</td>
-<td>是否注册JMX管理Bean（MBeans）</td>
-<td>FALSE</td>
-<td>FALSE</td>
-<td>–</td>
-</tr>
-<tr>
-<td>catalog</td>
-<td>为支持 catalog 概念的数据库设置默认 catalog</td>
-<td>driver default</td>
-<td>null</td>
-<td>–</td>
-</tr>
-<tr>
-<td>connectionInitSql</td>
-<td>该属性设置一个SQL语句，在将每个新连接创建后，将其添加到池中之前执行该语句。</td>
-<td>null</td>
-<td>null</td>
-<td>–</td>
-</tr>
-<tr>
-<td>driverClassName</td>
-<td>HikariCP将尝试通过仅基于jdbcUrl的DriverManager解析驱动程序，但对于一些较旧的驱动程序，还必须指定driverClassName</td>
-<td>null</td>
-<td>null</td>
-<td>–</td>
-</tr>
-<tr>
-<td>transactionIsolation</td>
-<td>控制从池返回的连接的默认事务隔离级别</td>
-<td>null</td>
-<td>null</td>
-<td>–</td>
-</tr>
-<tr>
-<td>validationTimeout</td>
-<td>连接将被测试活动的最大时间量</td>
-<td>SECONDS.toMillis(5) = 5000</td>
-<td>5000</td>
-<td>如果小于250毫秒，则会被重置回5秒</td>
-</tr>
-<tr>
-<td>leakDetectionThreshold</td>
-<td>记录消息之前连接可能离开池的时间量，表示可能的连接泄漏</td>
-<td>0</td>
-<td>0</td>
-<td>如果大于0且不是单元测试，则进一步判断：(leakDetectionThreshold &lt; SECONDS.toMillis(2) or (leakDetectionThreshold &gt; maxLifetime &amp;&amp; maxLifetime &gt; 0)，会被重置为0 . 即如果要生效则必须&gt;0，而且不能小于2秒，而且当maxLifetime &gt; 0时不能大于maxLifetime</td>
-</tr>
-<tr>
-<td>dataSource</td>
-<td>这个属性允许你直接设置数据源的实例被池包装，而不是让HikariCP通过反射来构造它</td>
-<td>null</td>
-<td>null</td>
-<td>–</td>
-</tr>
-<tr>
-<td>schema</td>
-<td>该属性为支持模式概念的数据库设置默认模式</td>
-<td>driver default</td>
-<td>null</td>
-<td>–</td>
-</tr>
-<tr>
-<td>threadFactory</td>
-<td>此属性允许您设置将用于创建池使用的所有线程的java.util.concurrent.ThreadFactory的实例。</td>
-<td>null</td>
-<td>null</td>
-<td>–</td>
-</tr>
-<tr>
-<td>scheduledExecutor</td>
-<td>此属性允许您设置将用于各种内部计划任务的java.util.concurrent.ScheduledExecutorService实例</td>
-<td>null</td>
-<td>null</td>
-<td>–</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p> <a target="_blank" rel="noopener" href="https://github.com/brettwooldridge/HikariCP">HikariCP on github</a></p>
-</blockquote>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <div class="declare">
-      <ul class="post-copyright">
-        <li>
-          <i class="ri-copyright-line"></i>
-          <strong>版权声明： </strong>
-          
-          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
-          
-        </li>
-      </ul>
-    </div>
-    
-    <footer class="article-footer">
-       
-<div class="share-btn">
-      <span class="share-sns share-outer">
-        <i class="ri-share-forward-line"></i>
-        分享
-      </span>
-      <div class="share-wrap">
-        <i class="arrow"></i>
-        <div class="share-icons">
-          
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="ri-weibo-fill"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="ri-wechat-fill"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="ri-qq-fill"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="ri-douban-line"></i>
-          </a>
-          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a> -->
-          
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="ri-facebook-circle-fill"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="ri-twitter-fill"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="ri-google-fill"></i>
-          </a>
-        </div>
-      </div>
-</div>
-
-<div class="wx-share-modal">
-    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/08/23/HikariCP%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring%E4%B9%8B%E6%95%B4%E5%90%88%E4%B8%80%E5%88%87/" rel="tag">Spring之整合一切</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-  <nav class="article-nav">
-    
-      <a href="/2021/09/07/%E6%9E%B6%E6%9E%84/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            架构
-          
-        </div>
-      </a>
-    
-    
-      <a href="/2021/08/08/MyBatis%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%20%E2%80%94%E2%80%94%20executor%20%E5%8C%85%E7%9B%B8%E5%85%B3%20%E2%80%94%E2%80%94%20Executor%E3%80%81Statement/" class="article-nav-link">
-        <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">MyBatis源码剖析 —— executor 包相关之Executor、Statement</div>
-      </a>
-    
-  </nav>
-
-   
-<!-- valine评论 -->
-<div id="vcomments-box">
-  <div id="vcomments"></div>
-</div>
-<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
-<script>
-  new Valine({
-    el: "#vcomments",
-    app_id: "",
-    app_key: "",
-    path: window.location.pathname,
-    avatar: "monsterid",
-    placeholder: "给我的文章加点评论吧~",
-    recordIP: true,
-  });
-  const infoEle = document.querySelector("#vcomments .info");
-  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
-    infoEle.childNodes.forEach(function (item) {
-      item.parentNode.removeChild(item);
-    });
-  }
-</script>
-<style>
-  #vcomments-box {
-    padding: 5px 30px;
-  }
-
-  @media screen and (max-width: 800px) {
-    #vcomments-box {
-      padding: 5px 0px;
-    }
-  }
-
-  #vcomments-box #vcomments {
-    background-color: #fff;
-  }
-
-  .v .vlist .vcard .vh {
-    padding-right: 20px;
-  }
-
-  .v .vlist .vcard {
-    padding-left: 10px;
-  }
-</style>
-
- 
-   
-     
-</article>
-
 </section>
       <footer class="footer">
   <div class="outer">
@@ -558,23 +223,6 @@
 <script src="/js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
-
-
-<script src="/js/tocbot.min.js"></script>
-
-<script>
-  tocbot.init({
-    tocSelector: '.tocbot',
-    contentSelector: '.article-entry',
-    headingSelector: 'h1, h2, h3, h4, h5, h6',
-    hasInnerContainers: true,
-    scrollSmooth: true,
-    scrollContainer: 'main',
-    positionFixedSelector: '.tocbot',
-    positionFixedClass: 'is-position-fixed',
-    fixedSidebarOffset: 'auto'
-  });
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
