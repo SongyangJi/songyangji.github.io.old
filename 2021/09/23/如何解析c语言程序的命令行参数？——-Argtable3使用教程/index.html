@@ -148,6 +148,7 @@
 <h4 id="打扫干净"><a href="#打扫干净" class="headerlink" title="打扫干净"></a>打扫干净</h4><p>在我们的程序结束时，我们需要释放分配给每个arg_xxx结构的内存。我们可以通过分别调用<code>arg_freetable</code>来做到这一点，<br>但有函数可以更方便地为我们做到这一点。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arg_freetable(argtable, <span class="keyword">sizeof</span>(argtable) / <span class="keyword">sizeof</span>(argtable[<span class="number">0</span>]));</span><br></pre></td></tr></table></figure>
 <p>它将遍历一个参数表并代表我们调用它的每个元素。<br>请注意，第二个参数<code>sizeof(argtable)/sizeof(argtable[0])</code>仅表示 argtable 数组中的元素数。（使用了内存对齐？）<br>完成此功能后，所有 argtable 数组条目都将设置为NULL。</p>
+<h3 id="完整的使用Argtable3的流程图"><a href="#完整的使用Argtable3的流程图" class="headerlink" title="完整的使用Argtable3的流程图"></a>完整的使用Argtable3的流程图</h3><p><img src="/2021/09/23/%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90c%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%EF%BC%9F%E2%80%94%E2%80%94-Argtable3%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/flowchart.png" alt="流程图"></p>
 <h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><p><a target="_blank" rel="noopener" href="https://www.argtable.org/tutorial/">Argtable3教程介绍</a><br><a target="_blank" rel="noopener" href="https://github.com/argtable/argtable3/releases/">github地址</a></p>
  
       <!-- reward -->
