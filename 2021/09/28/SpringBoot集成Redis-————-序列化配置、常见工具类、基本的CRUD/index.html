@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    SpringBoot集成Redis ———— 序列化配置、常见工具类、基本的CRUD |  JsyBlog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/images/ayer.png" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-SpringBoot集成Redis-————-序列化配置、常见工具类、基本的CRUD"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  SpringBoot集成Redis ———— 序列化配置、常见工具类、基本的CRUD
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/09/28/SpringBoot%E9%9B%86%E6%88%90Redis-%E2%80%94%E2%80%94%E2%80%94%E2%80%94-%E5%BA%8F%E5%88%97%E5%8C%96%E9%85%8D%E7%BD%AE%E3%80%81%E5%B8%B8%E8%A7%81%E5%B7%A5%E5%85%B7%E7%B1%BB%E3%80%81%E5%9F%BA%E6%9C%AC%E7%9A%84CRUD/" class="article-date">
+  <time datetime="2021-09-27T16:00:00.000Z" itemprop="datePublished">2021-09-28</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.3k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">11 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="Maven依赖"><a href="#Maven依赖" class="headerlink" title="Maven依赖"></a>Maven依赖</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- lettuce连接池需要依赖下面的jar包 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-pool2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>序列化依赖，如果使用 spring-boot-starter-web, 就不需要了。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-annotations<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Java-连接-redis-的客户端"><a href="#Java-连接-redis-的客户端" class="headerlink" title="Java 连接 redis 的客户端"></a>Java 连接 redis 的客户端</h2><blockquote>
+<p>操作redis的客户端有jedis跟Lettuce。在springboot1.x系列中，其中使用的是jedis,但是到了springboot2.x其中使用的是Lettuce。 因为我们的版本是springboot2.x系列，所以今天使用的是Lettuce。<br>关于jedis跟lettuce的区别：</p>
+<ul>
+<li> Lettuce 和 Jedis 的定位都是Redis的client，所以他们当然可以直接连接redis server  </li>
+<li>Jedis在实现上是直接连接的redis server，如果在多线程环境下是非线程安全的，这个时候只有使用连接池，为每个Jedis实例增加物理连接;</li>
+<li>Lettuce的连接是基于Netty的，连接实例（StatefulRedisConnection）可以在多个线程间并发访问，应为StatefulRedisConnection是线程安全的，所以一个连接实例（StatefulRedisConnection）就可以满足多线程环境下的并发访问，当然这个也是可伸缩的设计，一个连接实例不够的情况也可以按需增加连接实例。</li>
+</ul>
+</blockquote>
+<h2 id="序列化配置"><a href="#序列化配置" class="headerlink" title="序列化配置"></a>序列化配置</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedisTemplate <span class="title">redisTemplate</span><span class="params">(RedisConnectionFactory connectionFactory)</span> </span>&#123;</span><br><span class="line">        RedisTemplate redisTemplate = <span class="keyword">new</span> RedisTemplate();</span><br><span class="line">        <span class="comment">// 设置template获得 redis-connection 的工厂</span></span><br><span class="line">        redisTemplate.setConnectionFactory(connectionFactory);</span><br><span class="line">        <span class="comment">// 设置序列化器</span></span><br><span class="line">        redisTemplate.setKeySerializer(StringRedisSerializer.UTF_8);</span><br><span class="line">        redisTemplate.setValueSerializer(RedisSerializer.json()); <span class="comment">// value 序列化器使用 Json</span></span><br><span class="line">        redisTemplate.setHashKeySerializer(StringRedisSerializer.UTF_8);</span><br><span class="line">        redisTemplate.setHashValueSerializer(StringRedisSerializer.UTF_8);</span><br><span class="line">        <span class="keyword">return</span> redisTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="yml基本配置"><a href="#yml基本配置" class="headerlink" title="yml基本配置"></a>yml基本配置</h2><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">database:</span> <span class="number">0</span> <span class="comment">#使用第几个数据库</span></span><br><span class="line">    <span class="attr">host:</span> <span class="string">localhost</span> <span class="comment">#redis服务器地址</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span> <span class="comment">#端口号</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">~</span> <span class="comment">#redis服务器连接密码</span></span><br><span class="line">    <span class="attr">timeout:</span> <span class="number">10000</span>  <span class="comment"># 连接超时时间（单位：毫秒）</span></span><br><span class="line">    <span class="attr">lettuce:</span></span><br><span class="line">      <span class="attr">pool:</span></span><br><span class="line">        <span class="comment">## 下面的值其实是lettuce连接池的默认配置，有兴趣的可以点进源码看一下</span></span><br><span class="line">        <span class="attr">max-active:</span> <span class="number">8</span> <span class="comment">#连接池最大连接数（使用负值表示没有限制）</span></span><br><span class="line">        <span class="attr">max-wait:</span> <span class="number">-1</span>  <span class="comment">#连接池最大阻塞等待时间（单位：使用负值表示没有限制）</span></span><br><span class="line">        <span class="attr">max-idle:</span> <span class="number">8</span> <span class="comment">#连接池中的最大空闲连接</span></span><br><span class="line">        <span class="attr">min-idle:</span> <span class="number">0</span> <span class="comment">#连接池中的最小空闲连接</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="工具类"><a href="#工具类" class="headerlink" title="工具类"></a>工具类</h2><h3 id="Json工具类"><a href="#Json工具类" class="headerlink" title="Json工具类"></a>Json工具类</h3><p>主要是将检查型异常改为运行时异常抛出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Json工具类, 功能为对象和字符串互相转换</span></span><br><span class="line"><span class="comment"> * 注意，jackson的属性注入是 无参构造器+getter+setter</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonUtil</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ObjectMapper mapper = <span class="keyword">new</span> ObjectMapper();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Serialize any Java value as a String.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">stringfy</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mapper.writeValueAsString(object);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (JsonProcessingException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;JsonUtil stringfy error: &quot;</span> + e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Deserialize JSON content from given JSON content String.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">parse</span><span class="params">(String content, Class&lt;T&gt; valueType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mapper.readValue(content, valueType);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (JsonProcessingException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;JsonUtil parse error: &quot;</span> + e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="简单Bean类与Map之间的转换"><a href="#简单Bean类与Map之间的转换" class="headerlink" title="简单Bean类与Map之间的转换"></a>简单Bean类与Map之间的转换</h3><p>这个工具类的转换，主要是在使用 redis 的 hash 结构去存储实体类的时候使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BeanAndMapConvertUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String, Object&gt; <span class="title">beanToMap</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;String,Object&gt;();</span><br><span class="line">        <span class="keyword">for</span> (Field field : object.getClass().getDeclaredFields())&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">boolean</span> flag = field.isAccessible();</span><br><span class="line">                field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                Object obj = field.get(object);</span><br><span class="line">                map.put(field.getName(), obj.toString());</span><br><span class="line">                field.setAccessible(flag);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">mapToBean</span><span class="params">(Map&lt;String, Object&gt; map, Class&lt;T&gt; beanClass)</span> </span>&#123;</span><br><span class="line">        T t;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            t = beanClass.newInstance();</span><br><span class="line">            <span class="keyword">for</span>(Field field : beanClass.getDeclaredFields()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (map.containsKey(field.getName())) &#123;</span><br><span class="line">                    <span class="keyword">boolean</span> flag = field.isAccessible();</span><br><span class="line">                    field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                    Object obj = map.get(field.getName());</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">null</span> != obj &amp;&amp; field.getType().isAssignableFrom(obj.getClass())) &#123;</span><br><span class="line">                        field.set(t, obj);</span><br><span class="line">                    &#125;</span><br><span class="line">                    field.setAccessible(flag);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> t;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="CRUD"><a href="#CRUD" class="headerlink" title="CRUD"></a>CRUD</h2><h3 id="简单的Entity"><a href="#简单的Entity" class="headerlink" title="简单的Entity"></a>简单的Entity</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">long</span> userId;</span><br><span class="line"></span><br><span class="line">    String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">double</span> weight;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> score;</span><br><span class="line"></span><br><span class="line">    LocalDate lastSignDay;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="测试-String"><a href="#测试-String" class="headerlink" title="测试 String"></a>测试 String</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      redisTemplate.opsForValue().set(<span class="string">&quot;str_key&quot;</span>, <span class="string">&quot;hello_world&quot;</span>);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="测试-Hash"><a href="#测试-Hash" class="headerlink" title="测试 Hash"></a>测试 Hash</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testBeanAndHash</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      User songyangJi = <span class="keyword">new</span> User(<span class="number">12345L</span>, <span class="string">&quot;SongyangJi&quot;</span>, <span class="number">18</span>, <span class="number">73.5</span>, <span class="number">0</span>, <span class="keyword">null</span>);</span><br><span class="line">      <span class="keyword">final</span> String user_hash_key = <span class="string">&quot;user_hash&quot;</span>;</span><br><span class="line"></span><br><span class="line">      System.out.println(<span class="string">&quot;------ 使用 Hash 存储对象 ------&quot;</span>);</span><br><span class="line">      <span class="comment">// 使用Hash结构，map传入</span></span><br><span class="line">      redisTemplate.opsForHash().putAll(user_hash_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId(), BeanAndMapConvertUtil.beanToMap(songyangJi));</span><br><span class="line"></span><br><span class="line">      BoundHashOperations hashOs = redisTemplate.boundHashOps(user_hash_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId());</span><br><span class="line">      System.out.println(hashOs.get(<span class="string">&quot;userId&quot;</span>));</span><br><span class="line">      System.out.println(hashOs.get(<span class="string">&quot;name&quot;</span>));</span><br><span class="line">      hashOs.put(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;gong chen bo&quot;</span>);</span><br><span class="line">      hashOs.increment(<span class="string">&quot;age&quot;</span>, <span class="number">1</span>);</span><br><span class="line">      System.out.println(hashOs.keys());</span><br><span class="line">      System.out.println(hashOs.values());</span><br><span class="line">      System.out.println(hashOs.entries());</span><br><span class="line">&#125;     </span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="测试-Json序列化"><a href="#测试-Json序列化" class="headerlink" title="测试 Json序列化"></a>测试 Json序列化</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testBeanAndHash</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     User songyangJi = <span class="keyword">new</span> User(<span class="number">12345L</span>, <span class="string">&quot;SongyangJi&quot;</span>, <span class="number">18</span>, <span class="number">73.5</span>, <span class="number">0</span>, <span class="keyword">null</span>);</span><br><span class="line">     <span class="keyword">final</span> String user_json_key = <span class="string">&quot;user_json&quot;</span>;</span><br><span class="line"></span><br><span class="line">     System.out.println(<span class="string">&quot;------- 使用 Json 存储对象 -------&quot;</span>);</span><br><span class="line">     redisTemplate.opsForValue().set(user_json_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId(), JsonUtil.stringfy(songyangJi));</span><br><span class="line">     User u = JsonUtil.parse((String) redisTemplate.opsForValue().get(user_json_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId()), User.class);</span><br><span class="line">     System.out.println(u);</span><br><span class="line">     u.setName(<span class="string">&quot;gong chen bo&quot;</span>);</span><br><span class="line">     BoundValueOperations valueOps = redisTemplate.boundValueOps(user_json_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId());</span><br><span class="line">     valueOps.set(JsonUtil.stringfy(u));</span><br><span class="line">     System.out.println(redisTemplate.opsForValue().get(user_json_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId()));</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="测试-HyperLogLog"><a href="#测试-HyperLogLog" class="headerlink" title="测试 HyperLogLog"></a>测试 HyperLogLog</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">testHyperLogLog</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用HyperLogLog统计每天登录的用户量</span></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">long</span> userId = <span class="keyword">new</span> Random().nextLong();</span><br><span class="line"><span class="comment">//        final long userId = 1L;</span></span><br><span class="line">        HyperLogLogOperations hyperLogLog = redisTemplate.opsForHyperLogLog();</span><br><span class="line">        String key = <span class="string">&quot;user:login:number:&quot;</span> + LocalDate.now();</span><br><span class="line">        hyperLogLog.add(key, userId);</span><br><span class="line">        System.out.println(hyperLogLog.size(key));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="测试-BitMap"><a href="#测试-BitMap" class="headerlink" title="测试 BitMap"></a>测试 BitMap</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testBitMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">     <span class="comment">// 示例：使用BitMap记录用户本周是否有签到</span></span><br><span class="line">     <span class="keyword">final</span> <span class="keyword">long</span> userId = <span class="keyword">new</span> Random().nextLong();</span><br><span class="line">     <span class="comment">// final long userId = 1L;</span></span><br><span class="line">     <span class="comment">// userId高48位用于将用户划分到不同的key，低16位作为位图偏移参数offset;</span></span><br><span class="line">     String keySign = <span class="string">&quot;user:sign:&quot;</span> + LocalDate.now().getDayOfWeek() + <span class="string">&quot;:&quot;</span> + (userId &gt;&gt; <span class="number">16</span>);</span><br><span class="line">     <span class="comment">// offset参数必须大于或等于0，小于2^32(bit 映射被限制在 512 MB 之内)</span></span><br><span class="line">     redisTemplate.opsForValue().setBit(keySign, userId &amp; <span class="number">0xffff</span>, <span class="keyword">true</span>);</span><br><span class="line">     System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, userId &amp; <span class="number">0xffff</span>));</span><br><span class="line">     System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, (userId + <span class="number">1</span>) &amp; <span class="number">0xffff</span>));</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="测试-Lua"><a href="#测试-Lua" class="headerlink" title="测试 Lua"></a>测试 Lua</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testLua</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    User songyangJi = <span class="keyword">new</span> User(<span class="number">12345L</span>, <span class="string">&quot;SongyangJi&quot;</span>, <span class="number">18</span>, <span class="number">73.5</span>, <span class="number">0</span>, LocalDate.now().minusDays(<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">final</span> String user_hash_key = <span class="string">&quot;user&quot;</span>;</span><br><span class="line">    <span class="comment">// 使用Hash结构，map传入</span></span><br><span class="line">    redisTemplate.opsForHash().putAll(user_hash_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId(), BeanAndMapConvertUtil.beanToMap(songyangJi));</span><br><span class="line">    System.out.println(redisTemplate.opsForHash().entries(user_hash_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId()));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造 lua脚本</span></span><br><span class="line">    DefaultRedisScript&lt;String&gt; script = <span class="keyword">new</span> DefaultRedisScript&lt;&gt;();</span><br><span class="line">    script.setLocation(<span class="keyword">new</span> ClassPathResource(<span class="string">&quot;lua-script/user-sign.lua&quot;</span>)); <span class="comment">// 设置脚本所在位置，也可以直接把脚本内容放在字符串里</span></span><br><span class="line">    script.setResultType(String.class); <span class="comment">// 必须设置返回值类型（否则 execute 返回值为 null ）</span></span><br><span class="line"></span><br><span class="line">    List&lt;String&gt; keys = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    keys.add(String.valueOf(songyangJi.getUserId()));</span><br><span class="line">    keys.add(LocalDate.now().toString());</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">&quot;签到成功与否：&quot;</span>+redisTemplate.execute(script, keys));</span><br><span class="line">    System.out.println(<span class="string">&quot;签到成功与否：&quot;</span>+redisTemplate.execute(script, keys));</span><br><span class="line">    System.out.println(redisTemplate.opsForHash().entries(user_hash_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>resources/lua-script/user-sign.lua</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> score = redis.call(<span class="string">&#x27;hget&#x27;</span>, <span class="string">&#x27;user:&#x27;</span> .. KEYS[<span class="number">1</span>], <span class="string">&#x27;score&#x27;</span>)</span><br><span class="line"><span class="keyword">local</span> day = redis.call(<span class="string">&#x27;hget&#x27;</span>, <span class="string">&#x27;user:&#x27;</span> .. KEYS[<span class="number">1</span>], <span class="string">&#x27;lastSignDay&#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> (day == KEYS[<span class="number">2</span>]) <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;0&#x27;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    redis.call(<span class="string">&#x27;hset&#x27;</span>, <span class="string">&#x27;user:&#x27;</span> .. KEYS[<span class="number">1</span>], <span class="string">&#x27;score&#x27;</span>, score + <span class="number">1</span>, <span class="string">&#x27;lastSignDay&#x27;</span>, KEYS[<span class="number">2</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;1&#x27;</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">-- 在 lua 中数组的索引从 1 开始</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<blockquote>
+<p> 附录</p>
+</blockquote>
+<p>Code:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LearnRedisSpringbootApplicationTests</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">flushDB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Objects.requireNonNull(redisTemplate.getConnectionFactory()).getConnection().flushAll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">testString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        flushDB();</span><br><span class="line">        redisTemplate.opsForValue().set(<span class="string">&quot;str_key&quot;</span>, <span class="string">&quot;hello_world&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">testBeanAndHash</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        flushDB();</span><br><span class="line"></span><br><span class="line">        User songyangJi = <span class="keyword">new</span> User(<span class="number">12345L</span>, <span class="string">&quot;SongyangJi&quot;</span>, <span class="number">18</span>, <span class="number">73.5</span>, <span class="number">0</span>, <span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">final</span> String user_hash_key = <span class="string">&quot;user_hash&quot;</span>;</span><br><span class="line">        <span class="keyword">final</span> String user_json_key = <span class="string">&quot;user_json&quot;</span>;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;------ 使用 Hash 存储对象 ------&quot;</span>);</span><br><span class="line">        <span class="comment">// 使用Hash结构，map传入</span></span><br><span class="line">        redisTemplate.opsForHash().putAll(user_hash_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId(), BeanAndMapConvertUtil.beanToMap(songyangJi));</span><br><span class="line"></span><br><span class="line">        BoundHashOperations hashOs = redisTemplate.boundHashOps(user_hash_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId());</span><br><span class="line">        System.out.println(hashOs.get(<span class="string">&quot;userId&quot;</span>));</span><br><span class="line">        System.out.println(hashOs.get(<span class="string">&quot;name&quot;</span>));</span><br><span class="line">        hashOs.put(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;gong chen bo&quot;</span>);</span><br><span class="line">        hashOs.increment(<span class="string">&quot;age&quot;</span>, <span class="number">1</span>);</span><br><span class="line">        System.out.println(hashOs.keys());</span><br><span class="line">        System.out.println(hashOs.values());</span><br><span class="line">        System.out.println(hashOs.entries());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;------- 使用 Json 存储对象 -------&quot;</span>);</span><br><span class="line">        redisTemplate.opsForValue().set(user_json_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId(), JsonUtil.stringfy(songyangJi));</span><br><span class="line">        User u = JsonUtil.parse((String) redisTemplate.opsForValue().get(user_json_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId()), User.class);</span><br><span class="line">        System.out.println(u);</span><br><span class="line">        u.setName(<span class="string">&quot;gong chen bo&quot;</span>);</span><br><span class="line">        BoundValueOperations valueOps = redisTemplate.boundValueOps(user_json_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId());</span><br><span class="line">        valueOps.set(JsonUtil.stringfy(u));</span><br><span class="line">        System.out.println(redisTemplate.opsForValue().get(user_json_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId()));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">testBitMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        flushDB();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 示例：使用BitMap记录用户本周是否有签到</span></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">long</span> userId = <span class="keyword">new</span> Random().nextLong();</span><br><span class="line">        <span class="comment">// final long userId = 1L;</span></span><br><span class="line">        <span class="comment">// userId高48位用于将用户划分到不同的key，低16位作为位图偏移参数offset;</span></span><br><span class="line">        String keySign = <span class="string">&quot;user:sign:&quot;</span> + LocalDate.now().getDayOfWeek() + <span class="string">&quot;:&quot;</span> + (userId &gt;&gt; <span class="number">16</span>);</span><br><span class="line">        <span class="comment">// offset参数必须大于或等于0，小于2^32(bit 映射被限制在 512 MB 之内)</span></span><br><span class="line">        redisTemplate.opsForValue().setBit(keySign, userId &amp; <span class="number">0xffff</span>, <span class="keyword">true</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, userId &amp; <span class="number">0xffff</span>));</span><br><span class="line">        System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, (userId + <span class="number">1</span>) &amp; <span class="number">0xffff</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">testHyperLogLog</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        flushDB();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用HyperLogLog统计每天登录的用户量</span></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">long</span> userId = <span class="keyword">new</span> Random().nextLong();</span><br><span class="line"><span class="comment">//        final long userId = 1L;</span></span><br><span class="line">        HyperLogLogOperations hyperLogLog = redisTemplate.opsForHyperLogLog();</span><br><span class="line">        String key = <span class="string">&quot;user:login:number:&quot;</span> + LocalDate.now();</span><br><span class="line">        hyperLogLog.add(key, userId);</span><br><span class="line">        System.out.println(hyperLogLog.size(key));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">testLua</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        flushDB();</span><br><span class="line"></span><br><span class="line">        User songyangJi = <span class="keyword">new</span> User(<span class="number">12345L</span>, <span class="string">&quot;SongyangJi&quot;</span>, <span class="number">18</span>, <span class="number">73.5</span>, <span class="number">0</span>, LocalDate.now().minusDays(<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">final</span> String user_hash_key = <span class="string">&quot;user&quot;</span>;</span><br><span class="line">        <span class="comment">// 使用Hash结构，map传入</span></span><br><span class="line">        redisTemplate.opsForHash().putAll(user_hash_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId(), BeanAndMapConvertUtil.beanToMap(songyangJi));</span><br><span class="line">        System.out.println(redisTemplate.opsForHash().entries(user_hash_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId()));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 构造 lua脚本</span></span><br><span class="line">        DefaultRedisScript&lt;String&gt; script = <span class="keyword">new</span> DefaultRedisScript&lt;&gt;();</span><br><span class="line">        script.setLocation(<span class="keyword">new</span> ClassPathResource(<span class="string">&quot;lua-script/user-sign.lua&quot;</span>)); <span class="comment">// 设置脚本所在位置，也可以直接把脚本内容放在字符串里</span></span><br><span class="line">        script.setResultType(String.class); <span class="comment">// 必须设置返回值类型（否则 execute 返回值为 null ）</span></span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; keys = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        keys.add(String.valueOf(songyangJi.getUserId()));</span><br><span class="line">        keys.add(LocalDate.now().toString());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;签到成功与否：&quot;</span>+redisTemplate.execute(script, keys));</span><br><span class="line">        System.out.println(<span class="string">&quot;签到成功与否：&quot;</span>+redisTemplate.execute(script, keys));</span><br><span class="line">        System.out.println(redisTemplate.opsForHash().entries(user_hash_key + <span class="string">&quot;:&quot;</span> + songyangJi.getUserId()));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/09/28/SpringBoot%E9%9B%86%E6%88%90Redis-%E2%80%94%E2%80%94%E2%80%94%E2%80%94-%E5%BA%8F%E5%88%97%E5%8C%96%E9%85%8D%E7%BD%AE%E3%80%81%E5%B8%B8%E8%A7%81%E5%B7%A5%E5%85%B7%E7%B1%BB%E3%80%81%E5%9F%BA%E6%9C%AC%E7%9A%84CRUD/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NoSQL/" rel="tag">NoSQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis-SpringBoot-%E9%9B%86%E6%88%90%E4%B8%80%E5%88%87/" rel="tag">Redis - SpringBoot 集成一切</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2021/09/25/JavaSE%E5%9F%BA%E7%A1%80%20%E2%80%94%E2%80%94%20%E5%8F%8D%E5%B0%84%E7%9A%84%E5%9F%BA%E7%A1%80%E3%80%81Class%E3%80%81Field%E3%80%81Method%E3%80%81Constructor%E7%B1%BB/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">JavaSE基础 —— 反射的基础、Class、Field、Method、Constructor类</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2021
+        <i class="ri-heart-fill heart_icon"></i> SongyangJi
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+      <li>
+          <img src="/images/beian.png"></img>
+          <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=01234567890123" target="_black" rel="nofollow">备案</a>
+      </li>
+        
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>
