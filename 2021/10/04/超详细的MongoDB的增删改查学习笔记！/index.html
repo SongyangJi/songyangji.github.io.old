@@ -221,7 +221,26 @@
 <h4 id="嵌套字段"><a href="#嵌套字段" class="headerlink" title="嵌套字段"></a>嵌套字段</h4><p>就像使用 对象一样，链式地选择某个字段。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; <span class="string">&quot;size.h&quot;</span>: &#123; <span class="variable">$lt</span>: 15 &#125; &#125; )</span><br></pre></td></tr></table></figure>
 
-<h3 id="关于数组"><a href="#关于数组" class="headerlink" title="关于数组"></a>关于数组</h3><p>数组相关运算符。<br>| 运算符 | 含义                                             |<br>| —— | ———————————————— |<br>| $all   | 匹配包含查询中指定的所有元素的数组。（忽略顺序） |<br>| $size  | 如果数组字的大小为指定大小，则选择文档。         |<br>| $elemMatch | 如果array字段中的元素符合所有指定 $elemMatch 条件，则选择文档。|</p>
+<h3 id="关于数组"><a href="#关于数组" class="headerlink" title="关于数组"></a>关于数组</h3><h4 id="数组相关运算符。"><a href="#数组相关运算符。" class="headerlink" title="数组相关运算符。"></a>数组相关运算符。</h4><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$all</td>
+<td>匹配包含查询中指定的所有元素的数组。（忽略顺序）</td>
+</tr>
+<tr>
+<td>$size</td>
+<td>如果数组字的大小为指定大小，则选择文档。</td>
+</tr>
+<tr>
+<td>$elemMatch</td>
+<td>如果array字段中的元素符合所有指定 $elemMatch 条件，则选择文档。</td>
+</tr>
+</tbody></table>
 <ol>
 <li><p><strong>匹配一个数组</strong><br>这里匹配，必须是完全匹配，元素顺序也要相同。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; tags: [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blank&quot;</span>] &#125; )</span><br></pre></td></tr></table></figure>
