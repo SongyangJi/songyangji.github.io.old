@@ -221,23 +221,15 @@
 <h4 id="嵌套字段"><a href="#嵌套字段" class="headerlink" title="嵌套字段"></a>嵌套字段</h4><p>就像使用 对象一样，链式地选择某个字段。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; <span class="string">&quot;size.h&quot;</span>: &#123; <span class="variable">$lt</span>: 15 &#125; &#125; )</span><br></pre></td></tr></table></figure>
 
-<h3 id="关于数组"><a href="#关于数组" class="headerlink" title="关于数组"></a>关于数组</h3><p>数组相关运算符。<br>| 运算符     | 含义                                                         |<br>| ———- | ———————————————————— |<br>| $all       | 匹配包含查询中指定的所有元素的数组。（忽略顺序）             |<br>| $elemMatch | 如果array字段中的元素符合所有指定$elemMatch条件，则选择文档。 |<br>| $size      | 如果数组字的大小为指定大小，则选择文档。                     |</p>
+<h3 id="关于数组"><a href="#关于数组" class="headerlink" title="关于数组"></a>关于数组</h3><p>数组相关运算符。<br>| 运算符     | 含义                                                         |<br>| ———- | ———————————————————— |<br>| $all       | 匹配包含查询中指定的所有元素的数组。（忽略顺序）             |<br>| $elemMatch | 如果array字段中的元素符合所有指定 $elemMatch 条件，则选择文档。 |<br>| $size      | 如果数组字的大小为指定大小，则选择文档。                     |</p>
 <ol>
-<li><strong>匹配一个数组</strong><br>这里匹配，必须是完全匹配，元素顺序也要相同。<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; tags: [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blank&quot;</span>] &#125; )</span><br></pre></td></tr></table></figure>
-相反，如果您希望找到一个同时包含元素”red”和的数组 “blank”，而不考虑该数组中的顺序或其他元素，请使用$all运算符：</li>
+<li><p><strong>匹配一个数组</strong><br>这里匹配，必须是完全匹配，元素顺序也要相同。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; tags: [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blank&quot;</span>] &#125; )</span><br></pre></td></tr></table></figure>
+<p>相反，如果您希望找到一个同时包含元素”red”和的数组 “blank”，而不考虑该数组中的顺序或其他元素，请使用$all运算符：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; tags: &#123; <span class="variable">$all</span>: [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blank&quot;</span>] &#125; &#125; )</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>针对一个元素去查询数组</strong><br>最简单的，数组包含这个元素：”tags”是一个数组，它有包含元素”red”</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; tags: <span class="string">&quot;red&quot;</span> &#125; )</span><br></pre></td></tr></table></figure></li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; tags: &#123; <span class="variable">$all</span>: [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blank&quot;</span>] &#125; &#125; )</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li><pre><code>**针对一个元素去查询数组**
-</code></pre>
-</li>
-</ol>
-<p>最简单的，数组包含这个元素：</p>
-<p>“tags”是一个数组，它有包含元素”red”</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; tags: <span class="string">&quot;red&quot;</span> &#125; )</span><br></pre></td></tr></table></figure>
-
-
-
 <p>你还可以使用操作符指定查询条件：</p>
 <p>dim_cm是一个数组，匹配条件是数组里面至少有一个大于25的元素。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; dim_cm: &#123; <span class="variable">$gt</span>: 25 &#125; &#125; )</span><br></pre></td></tr></table></figure>
@@ -256,9 +248,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; dim_cm: &#123; <span class="variable">$elemMatch</span>: &#123; <span class="variable">$gt</span>: 22, <span class="variable">$lt</span>: 30 &#125; &#125; &#125; )</span><br></pre></td></tr></table></figure>
 
 <ol start="4">
-<li><pre><code>**通过数组索引位置查询元素**
-</code></pre>
-</li>
+<li><strong>通过数组索引位置查询元素</strong></li>
 </ol>
 <p>使用点号引用。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; <span class="string">&quot;dim_cm.1&quot;</span>: &#123; <span class="variable">$gt</span>: 25 &#125; &#125; )</span><br></pre></td></tr></table></figure>
