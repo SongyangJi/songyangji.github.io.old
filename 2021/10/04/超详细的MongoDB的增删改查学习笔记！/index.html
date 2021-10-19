@@ -94,11 +94,15 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use data_base_name</span><br></pre></td></tr></table></figure>
+  <h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><h2 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show dbs</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use data_base_name</span><br></pre></td></tr></table></figure>
 
 <h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先切过去</span></span><br><span class="line">use to_delete_db</span><br><span class="line"><span class="comment"># 后删除</span></span><br><span class="line">db.dropDatabase()</span><br></pre></td></tr></table></figure>
 
-<h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><h2 id="创建-1"><a href="#创建-1" class="headerlink" title="创建"></a>创建</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建集合</span></span><br><span class="line">db.createCollection(collection_name,options)</span><br><span class="line"><span class="comment"># 或者直接使用集合名去插入文档，就自动创建集合</span></span><br><span class="line">db.mycol.insert(&#123;<span class="string">&quot;key&quot;</span> : <span class="string">&quot;value&quot;</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><h2 id="查看-1"><a href="#查看-1" class="headerlink" title="查看"></a>查看</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.getCollectionNames()</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建-1"><a href="#创建-1" class="headerlink" title="创建"></a>创建</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建集合</span></span><br><span class="line">db.createCollection(collection_name,options)</span><br><span class="line"><span class="comment"># 或者直接使用集合名去插入文档，就自动创建集合</span></span><br><span class="line">db.mycol.insert(&#123;<span class="string">&quot;key&quot;</span> : <span class="string">&quot;value&quot;</span>&#125;)</span><br></pre></td></tr></table></figure>
 
 <h2 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection_name.drop()</span><br></pre></td></tr></table></figure>
 
@@ -241,10 +245,11 @@
 <td>如果array字段中的元素符合所有指定 $elemMatch 条件，则选择文档。</td>
 </tr>
 </tbody></table>
+<p>下面的”tags”是一个数组</p>
 <ol>
 <li><p><strong>匹配一个数组</strong><br>这里匹配，必须是完全匹配，元素顺序也要相同。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; tags: [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blank&quot;</span>] &#125; )</span><br></pre></td></tr></table></figure>
-<p>相反，如果您希望找到一个同时包含元素”red”和的数组 “blank”，而不考虑该数组中的顺序或其他元素，请使用$all运算符：</p>
+<p>相反，如果您希望找到一个同时包含元素”red”和 “blank”的数组，而不考虑该数组中的顺序或其他元素，请使用$all运算符：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; tags: &#123; <span class="variable">$all</span>: [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blank&quot;</span>] &#125; &#125; )</span><br></pre></td></tr></table></figure></li>
 <li><p><strong>针对一个元素去查询数组</strong><br>最简单的，数组包含这个元素：”tags”是一个数组，它有包含元素”red”</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; tags: <span class="string">&quot;red&quot;</span> &#125; )</span><br></pre></td></tr></table></figure></li>
@@ -324,15 +329,11 @@
 <h4 id="存在性检查"><a href="#存在性检查" class="headerlink" title="存在性检查"></a>存在性检查</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.find( &#123; item : &#123; <span class="variable">$exists</span>: <span class="literal">false</span> &#125; &#125; )</span><br></pre></td></tr></table></figure>
 <p>只匹配不存在。</p>
 <h2 id="更新文档"><a href="#更新文档" class="headerlink" title="更新文档"></a>更新文档</h2><ol>
-<li>更新单个文档<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.updateOne(</span><br><span class="line">   &#123; item: <span class="string">&quot;paper&quot;</span> &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     <span class="variable">$set</span>: &#123; <span class="string">&quot;size.uom&quot;</span>: <span class="string">&quot;cm&quot;</span>, status: <span class="string">&quot;P&quot;</span> &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
-<li>替换整个文档</li>
+<li><p>更新单个文档</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.updateOne(</span><br><span class="line">   &#123; item: <span class="string">&quot;paper&quot;</span> &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     <span class="variable">$set</span>: &#123; <span class="string">&quot;size.uom&quot;</span>: <span class="string">&quot;cm&quot;</span>, status: <span class="string">&quot;P&quot;</span> &#125;</span><br><span class="line">   &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li><p>替换整个文档</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.replaceOne(</span><br><span class="line">   &#123; item: <span class="string">&quot;paper&quot;</span> &#125;,</span><br><span class="line">   &#123; item: <span class="string">&quot;paper&quot;</span>, instock: [ &#123; warehouse: <span class="string">&quot;A&quot;</span>, qty: 60 &#125;, &#123; warehouse: <span class="string">&quot;B&quot;</span>, qty: 40 &#125; ] &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.replaceOne(</span><br><span class="line">   &#123; item: <span class="string">&quot;paper&quot;</span> &#125;,</span><br><span class="line">   &#123; item: <span class="string">&quot;paper&quot;</span>, instock: [ &#123; warehouse: <span class="string">&quot;A&quot;</span>, qty: 60 &#125;, &#123; warehouse: <span class="string">&quot;B&quot;</span>, qty: 40 &#125; ] &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-
-
-
-
 <h3 id="更新方法"><a href="#更新方法" class="headerlink" title="更新方法"></a>更新方法</h3><p>MongoDB 提供了以下方法来更新集合中的文档：</p>
 <table>
 <thead>
@@ -358,7 +359,7 @@
 <td align="left">更新或替换与指定过滤器匹配的单个文档，或者更新与指定过滤器匹配的所有文档。默认情况下，该<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/method/db.collection.update/#mongodb-method-db.collection.update"><code>db.collection.update()</code></a>方法更新<strong>单个</strong>文档。要更新多个文档，请使用<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/method/db.collection.update/#std-label-multi-parameter">multi</a>选项。</td>
 </tr>
 </tbody></table>
-<h3 id="更新操作"><a href="#更新操作" class="headerlink" title="更新操作"></a>更新操作</h3><p>db.collection.updateOne(<filter>, <update>, <options>)<br>db.collection.updateMany(<filter>, <update>, <options>)<br>db.collection.replaceOne(<filter>, <update>, <options>)</p>
+<h3 id="更新操作"><a href="#更新操作" class="headerlink" title="更新操作"></a>更新操作</h3><p>db.collection.updateOne(filter,update, options)<br>db.collection.updateMany(filter&gt;, update, options)<br>db.collection.replaceOne(filter, update, options)</p>
 <p>第一个参数 filter 是过滤条件，也就是指定那些文档会被更新。</p>
 <p>第二个参数 update指定具体的更新操作。</p>
 <p>使用逗号分隔。</p>
@@ -626,7 +627,7 @@
       </a>
     
     
-      <a href="/2021/10/04/M1-MacOS-%E4%B8%8B%E4%BD%BF%E7%94%A8Brew%E5%AE%89%E8%A3%85MongoDB%E3%80%81%E5%85%A5%E9%97%A8%E6%A6%82%E5%BF%B5/" class="article-nav-link">
+      <a href="/2021/10/04/MongoDB%E5%85%A5%E9%97%A8/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
         <div class="article-nav-title">M1 MacOS 下使用Brew安装MongoDB、入门概念</div>
       </a>
