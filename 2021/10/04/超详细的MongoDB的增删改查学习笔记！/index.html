@@ -310,6 +310,11 @@
 
 
 <h3 id="返回文档的部分字段"><a href="#返回文档的部分字段" class="headerlink" title="返回文档的部分字段"></a>返回文档的部分字段</h3><p>和SQL一样可以指定返回的字段。<br>默认情况下返回文档的全部内容。</p>
+<p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.COLLECTION.find(过滤器, 投影文档)</span><br></pre></td></tr></table></figure>
+
+
+
 <p>投影文档，形如：<br>表明只返回item、status状态</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; item: 1, status: 1&#125;</span><br></pre></td></tr></table></figure>
 <p>或者也可以反过来，指定不返回那些字段</p>
