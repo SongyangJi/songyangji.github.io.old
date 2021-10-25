@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Hadoop入门 |  JsyBlog
+    SpringBoot整合Kafka |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-Hadoop入门"
+  id="post-Kafka初探"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,18 +54,18 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Hadoop入门
+  SpringBoot整合Kafka
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/10/19/Hadoop%E5%85%A5%E9%97%A8/" class="article-date">
-  <time datetime="2021-10-19T03:31:02.000Z" itemprop="datePublished">2021-10-19</time>
+      <a href="/2021/10/23/Kafka%E5%88%9D%E6%8E%A2/" class="article-date">
+  <time datetime="2021-10-23T01:58:57.000Z" itemprop="datePublished">2021-10-23</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Hadoop/">Hadoop</a>
+    <a class="article-category-link" href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">消息中间件</a>
   </div>
   
 <div class="word_count">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">240</span>
+            <span class="post-count">462</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">2 分钟</span>
         </span>
     </span>
 </div>
@@ -97,17 +97,74 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="背景、概念"><a href="#背景、概念" class="headerlink" title="背景、概念"></a>背景、概念</h1><blockquote>
-<p>Apache Hadoop 软件库是一个框架，允许使用简单的编程模型跨计算机集群分布式处理大型数据集。它旨在从单个服务器扩展到数千台机器，每台机器都提供本地计算和存储。该库本身不是依靠硬件来提供高可用性，而是设计用于检测和处理应用层的故障，因此在计算机集群之上提供高可用性服务，每台计算机都可能容易出现故障。</p>
-</blockquote>
-<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><p>该项目包括以下模块：</p>
+  <h1 id="安装、测试"><a href="#安装、测试" class="headerlink" title="安装、测试"></a>安装、测试</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a target="_blank" rel="noopener" href="https://www.apache.org/dyn/closer.cgi?path=/kafka/3.0.0/kafka_2.13-3.0.0.tgz">下载地址</a></p>
+<p>配置相关环境。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$KAFKA_HOME</span></span><br></pre></td></tr></table></figure>
+
 <ul>
-<li><strong>Hadoop Common</strong>：支持其他 Hadoop 模块的通用实用程序。</li>
-<li><strong>Hadoop 分布式文件系统 (HDFS™)<strong>：提供对应用程序数据的</strong>高吞吐量访问</strong>的<strong>分布式文件系统</strong>。</li>
-<li><strong>Hadoop YARN</strong>：用于<strong>作业调度</strong>和<strong>集群资源管理</strong>的框架。</li>
-<li><strong>Hadoop MapReduce</strong>：一个基于 YARN 的系统，用于<strong>并行处理大型数据集</strong>。</li>
+<li>启动服务器</li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://hadoop.apache.org/">hadoop官网</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo bin/kafka-server-start.sh -daemon config/server.properties</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>创建topic</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>列出topic</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --list --bootstrap-server localhost:9092</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>查看某个 topic</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --describe --topic <span class="built_in">test</span> --bootstrap-server localhost:9092</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>发布消息</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-producer.sh --topic <span class="built_in">test</span> --bootstrap-server localhost:9092</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>消费消息</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-consumer.sh --topic <span class="built_in">test</span> --from-beginning --bootstrap-server localhost:9092</span><br></pre></td></tr></table></figure>
+
+
+
+<p>能够呈现出来的效果就是，在<strong>发布消息的console</strong>中发布一条消息（enter分割），在<strong>消费消息的console</strong>中就会输出一条消息。</p>
+<h2 id="SpringBoot-Quick-Start"><a href="#SpringBoot-Quick-Start" class="headerlink" title="SpringBoot Quick Start"></a>SpringBoot Quick Start</h2><ul>
+<li>yml配置</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">kafka:</span></span><br><span class="line">    <span class="attr">bootstrap-servers:</span> <span class="string">localhost:9092</span></span><br><span class="line">    <span class="attr">consumer:</span></span><br><span class="line">      <span class="attr">group-id:</span> <span class="string">foo</span></span><br><span class="line">      <span class="attr">auto-offset-reset:</span> <span class="string">earliest</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> KafkaTemplate&lt;String, String&gt; template;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Demo</span><span class="params">(KafkaTemplate&lt;String, String&gt; template)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.template = template;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> String topicName = <span class="string">&quot;myTopic&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> idx = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Scheduled(fixedRate = 1000)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">publish</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (idx++ &gt; <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        template.send(topicName, String.valueOf(idx));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@KafkaListener(topics = topicName)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">listen</span><span class="params">(ConsumerRecord&lt;String, String&gt; cr)</span> </span>&#123;</span><br><span class="line">        System.out.println(cr);</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ConsumerRecord(topic &#x3D; myTopic, partition &#x3D; 0, leaderEpoch &#x3D; 0, offset &#x3D; 2, CreateTime &#x3D; 1635125751646, serialized key size &#x3D; -1, serialized value size &#x3D; 1, headers &#x3D; RecordHeaders(headers &#x3D; [], isReadOnly &#x3D; false), key &#x3D; null, value &#x3D; 1)</span><br><span class="line"></span><br><span class="line">ConsumerRecord(topic &#x3D; myTopic, partition &#x3D; 0, leaderEpoch &#x3D; 0, offset &#x3D; 3, CreateTime &#x3D; 1635125752304, serialized key size &#x3D; -1, serialized value size &#x3D; 1, headers &#x3D; RecordHeaders(headers &#x3D; [], isReadOnly &#x3D; false), key &#x3D; null, value &#x3D; 2)</span><br><span class="line"></span><br><span class="line">ConsumerRecord(topic &#x3D; myTopic, partition &#x3D; 0, leaderEpoch &#x3D; 0, offset &#x3D; 4, CreateTime &#x3D; 1635125753302, serialized key size &#x3D; -1, serialized value size &#x3D; 1, headers &#x3D; RecordHeaders(headers &#x3D; [], isReadOnly &#x3D; false), key &#x3D; null, value &#x3D; 3)</span><br><span class="line"></span><br><span class="line">ConsumerRecord(topic &#x3D; myTopic, partition &#x3D; 0, leaderEpoch &#x3D; 0, offset &#x3D; 5, CreateTime &#x3D; 1635125754303, serialized key size &#x3D; -1, serialized value size &#x3D; 1, headers &#x3D; RecordHeaders(headers &#x3D; [], isReadOnly &#x3D; false), key &#x3D; null, value &#x3D; 4)</span><br><span class="line"></span><br><span class="line">ConsumerRecord(topic &#x3D; myTopic, partition &#x3D; 0, leaderEpoch &#x3D; 0, offset &#x3D; 6, CreateTime &#x3D; 1635125755300, serialize</span><br></pre></td></tr></table></figure>
+
+
+
+<p>可以看到消息的各种属性，如主题、分区、偏移量、时间戳、键、值等等。</p>
  
       <!-- reward -->
       
@@ -172,30 +229,32 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/10/19/Hadoop%E5%85%A5%E9%97%A8/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/10/23/Kafka%E5%88%9D%E6%8E%A2/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kafka/" rel="tag">Kafka</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Message-Queue/" rel="tag">Message Queue</a></li></ul>
+
     </footer>
   </div>
 
    
   <nav class="article-nav">
     
-      <a href="/2021/10/23/Kafka%E5%88%9D%E6%8E%A2/" class="article-nav-link">
+      <a href="/2021/10/23/Elasticsearch%E5%85%A5%E9%97%A8/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            SpringBoot整合Kafka
+            Elasticsearch入门
           
         </div>
       </a>
     
     
-      <a href="/2021/10/19/ZooKeeper%E5%85%A5%E9%97%A8/" class="article-nav-link">
+      <a href="/2021/10/19/Hadoop%E5%85%A5%E9%97%A8/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">ZooKeeper入门</div>
+        <div class="article-nav-title">Hadoop入门</div>
       </a>
     
   </nav>
