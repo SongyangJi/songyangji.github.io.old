@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    MySQL系列——存储引擎 |  JsyBlog
+    MySQL系列——InnoDB Buffer Pool |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-MySQL系列——存储引擎"
+  id="post-MySQL系列——InnoDB Buffer Pool"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,22 +54,26 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  MySQL系列——存储引擎
+  MySQL系列——InnoDB Buffer Pool
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" class="article-date">
-  <time datetime="2021-10-27T07:21:44.000Z" itemprop="datePublished">2021-10-27</time>
-</a>   
+      <a href="/2021/10/29/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94InnoDB%20Buffer%20Pool/" class="article-date">
+  <time datetime="2021-10-29T02:03:19.000Z" itemprop="datePublished">2021-10-29</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a>
+  </div>
+  
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">0</span>
+            <span class="post-count">367</span>
         </span>
     </span>
 
@@ -85,13 +89,26 @@
  
     </div>
       
+    <div class="tocbot"></div>
+
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-   
+  <h2 id="InnoDB-Buffer-Pool"><a href="#InnoDB-Buffer-Pool" class="headerlink" title="InnoDB Buffer Pool"></a>InnoDB Buffer Pool</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>磁盘太慢，用内存作为缓冲区很有必要——这是缓存的基本思想，将数据存放在读写速度更快的存储介质中。</p>
+<p>不过这里的缓冲区指的不是 Redis、Memchached这些外部的内存性缓冲，还是MySQL自治的一块内存缓冲区。</p>
+<p>所谓自治，就是说完全由MySQL自己去管理这块内存区域，自己完成脏数据的刷盘，使用MySQL执行CRUD无需也无法自己做这方面的操作——不过你可以修改其中的配置以调整缓存的具体行为。</p>
+<p>InnoDB Buffer Pool 本质上是MySQL在向操作系统申请的一大块内存，默认是128MB（比较小，完全可以开大一点）。</p>
+<h3 id="内部组成"><a href="#内部组成" class="headerlink" title="内部组成"></a>内部组成</h3><p>Buffer Pool 对应的一大块内存被划分一个又一个页面，页面大小和InnoDB表空间的页面大小一致，默认是16KB，不妨称它为<strong>缓冲页。</strong></p>
+<p>由于这些缓冲业本身较大，如果已过用户的调整可能更大，不便于直接管理。于是为每个缓冲页创建一个控制块，</p>
+<p>每个控制块包含该页所属的表空间编号、页号、缓冲页在Buffer Pool 中的地址等关键信息。</p>
+<p>每个控制块的所占用的内存大小是一致的，大概只有16KB的5%左右（aka 800个字节）。</p>
+<p>![](MySQL系列——InnoDB Buffer Pool/innodb-buffer.png)</p>
+<img src="MySQL系列——InnoDB Buffer Pool/innodb-buffer.png" style="zoom:30%;" />
+
+ 
       <!-- reward -->
       
     </div>
@@ -155,12 +172,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/10/29/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94InnoDB%20Buffer%20Pool/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/InnoDB/" rel="tag">InnoDB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
 
     </footer>
   </div>
@@ -168,19 +185,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2021/10/29/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94InnoDB%20Buffer%20Pool/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            MySQL系列——InnoDB Buffer Pool
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/" class="article-nav-link">
+      <a href="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">MySQL系列——索引</div>
+        <div class="article-nav-title">MySQL系列——存储引擎</div>
       </a>
     
   </nav>
