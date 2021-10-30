@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.2k</span>
+            <span class="post-count">2.3k</span>
         </span>
     </span>
 
@@ -143,6 +143,7 @@
 <h3 id="进一步优化"><a href="#进一步优化" class="headerlink" title="进一步优化"></a>进一步优化</h3><p>是不是对于young区域数据页每访问一次就要把它加入LRU链表的头部呢？因为这些数据可能都很热，每一次每访问一次就把要移动一次控制块节点，没必要。</p>
 <p>所以，MySQL只对于那些处于young区域后3/4区域的节点才会在使用的时候加入young的头部。</p>
 <h2 id="刷新脏页到磁盘"><a href="#刷新脏页到磁盘" class="headerlink" title="刷新脏页到磁盘"></a>刷新脏页到磁盘</h2><p>后台线程会定期将脏页刷新到磁盘中。</p>
+<p>也就是说，这里的缓存使用方式实际上是<strong>Write-hehind（异步缓存写入）</strong>，适合多写的方式。</p>
 <p>脏页的刷新主要有3种做法：</p>
 <ol>
 <li><p>从LRU的尾部（也是从old区域）开始扫描一些页面，扫描页面的数量由<code>innodb_lru_scan_depth</code>（默认是1024）指定，如果扫描中发现是脏页就把它刷新到磁盘。</p>
