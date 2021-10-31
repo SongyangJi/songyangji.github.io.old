@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    关于Spring自动配置的一些注解 |  JsyBlog
+    Redis系列笔记之 —— 缓存三大问题及其解决方案 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-关于Spring自动配置的一些注解"
+  id="post-Redis系列笔记之-——-缓存三大问题及其解决方案"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,18 +54,18 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  关于Spring自动配置的一些注解
+  Redis系列笔记之 —— 缓存三大问题及其解决方案
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/09/16/%E5%85%B3%E4%BA%8ESpring%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E8%A7%A3/" class="article-date">
-  <time datetime="2021-09-15T16:00:00.000Z" itemprop="datePublished">2021-09-16</time>
+      <a href="/2021/10/31/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B-%E2%80%94%E2%80%94-%E7%BC%93%E5%AD%98%E4%B8%89%E5%A4%A7%E9%97%AE%E9%A2%98%E5%8F%8A%E5%85%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
+  <time datetime="2021-10-30T16:00:00.000Z" itemprop="datePublished">2021-10-31</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
   </div>
   
 <div class="word_count">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">265</span>
+            <span class="post-count">1.3k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">4 分钟</span>
         </span>
     </span>
 </div>
@@ -97,13 +97,50 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="ConditionalXXX注解族"><a href="#ConditionalXXX注解族" class="headerlink" title="@ConditionalXXX注解族"></a>@ConditionalXXX注解族</h2><h3 id="ConditionalOnProperty"><a href="#ConditionalOnProperty" class="headerlink" title="@ConditionalOnProperty"></a>@ConditionalOnProperty</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(&#123; ElementType.TYPE, ElementType.METHOD &#125;)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Conditional(OnPropertyCondition.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ConditionalOnProperty &#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Alias for &#123;<span class="doctag">@link</span> #name()&#125;.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the names</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   String[] value() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * A prefix that should be applied to each property. The prefix automatically ends</span></span><br><span class="line"><span class="comment">    * with a dot if not specified. A valid prefix is defined by one or more words</span></span><br><span class="line"><span class="comment">    * separated with dots (e.g. &#123;<span class="doctag">@code</span> &quot;acme.system.feature&quot;&#125;).</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the prefix</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function">String <span class="title">prefix</span><span class="params">()</span> <span class="keyword">default</span> &quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * The name of the properties to test. If a prefix has been defined, it is applied to</span></span><br><span class="line"><span class="comment">    * compute the full key of each property. For instance if the prefix is</span></span><br><span class="line"><span class="comment">    * &#123;<span class="doctag">@code</span> app.config&#125; and one value is &#123;<span class="doctag">@code</span> my-value&#125;, the full key would be</span></span><br><span class="line"><span class="comment">    * &#123;<span class="doctag">@code</span> app.config.my-value&#125;</span></span><br><span class="line"><span class="comment">    * &lt;p&gt;</span></span><br><span class="line"><span class="comment">    * Use the dashed notation to specify each property, that is all lower case with a &quot;-&quot;</span></span><br><span class="line"><span class="comment">    * to separate words (e.g. &#123;<span class="doctag">@code</span> my-long-property&#125;).</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the names</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   String[] name() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * The string representation of the expected value for the properties. If not</span></span><br><span class="line"><span class="comment">    * specified, the property must &lt;strong&gt;not&lt;/strong&gt; be equal to &#123;<span class="doctag">@code</span> false&#125;.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the expected value</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function">String <span class="title">havingValue</span><span class="params">()</span> <span class="keyword">default</span> &quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Specify if the condition should match if the property is not set. Defaults to</span></span><br><span class="line"><span class="comment">    * &#123;<span class="doctag">@code</span> false&#125;.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> if should match if the property is missing</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">boolean</span> <span class="title">matchIfMissing</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">false</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  <blockquote>
+<p>老八股文了，redis必问问题。</p>
+</blockquote>
+<h1 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>缓存穿透是指<strong>缓存和数据库中都没有的数据</strong>，而用户不断发起请求，如发起id为-1的数据或者特别大的不存在的数据。有可能是黑客利用漏洞攻击从而去压垮应用的数据库。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>对于缓存穿透问题，常见的解决方案有以下三种：</p>
+<ol>
+<li><strong>验证拦截</strong>：接口层进行校验，如鉴定用户权限，对ID之类的字段做基础的校验，如<code>id&lt;=0</code>的字段直接拦截；</li>
+<li><strong>缓存空数据</strong>：当数据库查询到的数据为空时，也将这条数据进行缓存，但缓存的有效性设置得要较短，以免影响正常数据的缓存（因为有可能一开始没有这个key，但后来有了，当然你可以主动删除缓存）；</li>
+<li>使用布隆过滤器：布隆过滤器是一种比较独特数据结构，有一定的误差。当它指定一个数据存在时，它可能存在也可能不存在，但是当它指定一个数据不存在时，那么它一定是不存在的。（<del>具体使用方法参考文章模链接</del>）</li>
+</ol>
+<h1 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h1><h2 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h2><p>缓存击穿是指当前热点数据存储到期时，<strong>多个线程同时并发访问热点数据</strong>。因为缓存刚过期，<strong>所有并发请求都会到数据库中查询数据</strong>。</p>
+<h2 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h2><ul>
+<li><p>将热点数据设置为永不过期；</p>
+</li>
+<li><p>加互斥锁：互斥锁可以控制查询数据库的线程访问，只让一个请求通过，只有一个请求去数据库拉取数据，取完数据，不管如何都需要释放锁。</p>
+</li>
+<li><p>添加超时标记：在缓存的对象上增加一个属性来标识超时时间，当获取到数据后，校验数据内部的标记时间，判定是否快超时了，如果是，异步发起一个线程（控制好并发）去主动更新该缓存。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">get</span><span class="params">(Object key, <span class="keyword">int</span> retryCount)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 重试次数太多直接 return null</span></span><br><span class="line">    <span class="keyword">if</span>(retryCount &gt; <span class="number">5</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    String value = redis.get(key);</span><br><span class="line">    <span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123; <span class="comment">// 代表缓存值过期</span></span><br><span class="line">        <span class="comment">// 设置1 min的超时，防止del操作失败的时候，下次缓存过期一直不能load db</span></span><br><span class="line">        <span class="keyword">if</span> (redis.setnx(key_mutex, <span class="number">1</span>, <span class="number">60</span>) == <span class="number">1</span>) &#123;  <span class="comment">// 代表设置成功</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                value = db.get(key);</span><br><span class="line">                redis.set(key, value, expire_secs);</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="comment">// 确保最后删除，释放锁</span></span><br><span class="line">                redis.del(key_mutex); </span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 这个时候代表同时候的其他线程已经load db并回设到缓存了，这时候重试获取缓存值即可</span></span><br><span class="line">            sleep(<span class="number">200</span>);</span><br><span class="line">            get(key, retryCount + <span class="number">1</span>);  <span class="comment">// 重试</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<p>@ConditionalOnClass<br>@ConditionalOnBean<br>@ConditionalOnMissingBean</p>
-<p>@ConditionalOnSingleCandidate</p>
-<p><a target="_blank" rel="noopener" href="https://spring.hhui.top/spring-blog/2018/10/19/181019-SpringBoot%E5%9F%BA%E7%A1%80%E7%AF%87Bean%E4%B9%8B%E6%9D%A1%E4%BB%B6%E6%B3%A8%E5%85%A5-ConditionalOnProperty/">一篇很齐全的博客</a></p>
+
+
+<h1 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h1><h2 id="问题描述-2"><a href="#问题描述-2" class="headerlink" title="问题描述"></a>问题描述</h2><p>缓存雪崩是指缓存中有大量的数据，在同一个时间点，或者较短的时间段内，全部过期了，这个时候请求过来，缓存没有数据，都会请求数据库，则数据库的压力就会突增，扛不住就会宕机。</p>
+<p>造成缓存雪崩的关键在于在同一时间大规模的key失效。为什么会出现这个问题呢，有几种可能，</p>
+<p>第一种可能是Redis宕机，</p>
+<p>第二种可能是采用了相同的过期时间。</p>
+<h2 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h2><ol>
+<li>如果是热点数据，那么可以考虑<strong>设置永远不过期</strong>。</li>
+<li>缓存的过期时间除非比较严格，要不考虑<strong>设置一个波动随机值</strong>，比如理论十分钟，那这类key的缓存时间都加上一个1-3分钟，过期时间在7-13分钟内波动，<strong>有效防止都在同一个时间点上大量过期</strong>。</li>
+<li>如果所有的热点数据在一台redis服务器上，也是极其危险的，如果网络有问题，或者redis服务器挂了，那么所有的热点数据也会雪崩（查询不到），因此<strong>将热点数据打散分不到不同的机器上</strong>，也可以有效减少这种情况。</li>
+<li>对于redis服务挂掉的问题,可以实现redis的高可用主从架构, 并且做redis的持久化, 在redis挂掉的同时时读取本地缓存数据, 同时恢复redis服务加载持久化的数据。</li>
+</ol>
+<ul>
+<li>【事前】<strong>高可用缓存</strong>：高可用缓存是防止出现整个缓存故障。即使个别节点，机器甚至机房都关闭，系统仍然可以提供服务，Redis 哨兵(Sentinel) 和 Redis 集群(Cluster) 都可以做到高可用；</li>
+<li>【事中】<strong>缓存降级</strong>（临时支持）：当访问次数急剧增加导致服务出现问题时，我们如何确保服务仍然可用。在国内使用比较多的是 Hystrix，它通过熔断、降级、限流三个手段来降低雪崩发生后的损失。只要确保数据库不死，系统总可以响应请求，每年的春节 12306 我们不都是这么过来的吗？只要还可以响应起码还有抢到票的机会；</li>
+<li>【事后】<strong>备份和快速预热</strong>：Redis数据备份和恢复、快速缓存预热。</li>
+</ul>
+<blockquote>
+<p>参考链接：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Revivedsun/article/details/94992323">Guava布隆过滤器(boomfilter)使用简介</a></p>
+</blockquote>
  
       <!-- reward -->
       
@@ -168,12 +205,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/09/16/%E5%85%B3%E4%BA%8ESpring%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E8%A7%A3/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/10/31/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B-%E2%80%94%E2%80%94-%E7%BC%93%E5%AD%98%E4%B8%89%E5%A4%A7%E9%97%AE%E9%A2%98%E5%8F%8A%E5%85%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring%E6%A0%B8%E5%BF%83/" rel="tag">Spring核心</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NoSQL/" rel="tag">NoSQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li></ul>
 
     </footer>
   </div>
@@ -181,19 +218,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2021/09/16/Redis%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0%20%E2%80%94%E2%80%94%20%E4%BA%8B%E5%8A%A1%EF%BC%88Transactions%EF%BC%89/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Redis官方文档笔记 —— 事务（Transactions）
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/09/15/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E9%94%AE%E3%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E6%95%A3%E5%88%97%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E9%9B%86%E5%90%88%E3%80%81%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88%E3%80%81HyperLogLog%E7%9A%84%E6%80%A7%E8%B4%A8%E5%8F%8A%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4/" class="article-nav-link">
+      <a href="/2021/10/30/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Redis系列笔记之 —— 键、字符串、散列、列表、集合、有序集合、HyperLogLog的性质及操作命令</div>
+        <div class="article-nav-title">Redis系列笔记之 —— 缓存与数据库一致性</div>
       </a>
     
   </nav>
