@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.3k</span>
+            <span class="post-count">1.7k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">4 分钟</span>
+            <span class="post-count">6 分钟</span>
         </span>
     </span>
 </div>
@@ -100,6 +100,19 @@
   <blockquote>
 <p>老八股文了，redis必问问题。</p>
 </blockquote>
+<h1 id="缓存的利与弊"><a href="#缓存的利与弊" class="headerlink" title="缓存的利与弊"></a>缓存的利与弊</h1><h2 id="引入缓存的优点"><a href="#引入缓存的优点" class="headerlink" title="引入缓存的优点"></a>引入缓存的优点</h2><ul>
+<li>能够缩短服务的响应时间，给用户带来更好的体验。</li>
+<li>能够增大系统的吞吐量，依然能够提升用户体验。</li>
+<li>减轻数据库的压力，防止高峰期数据库被压垮，导致整个线上服务 BOOM！</li>
+</ul>
+<h2 id="引入缓存的缺点"><a href="#引入缓存的缺点" class="headerlink" title="引入缓存的缺点"></a>引入缓存的缺点</h2><ul>
+<li>缓存有多种选型，是内存缓存，memcached 还是 redis，你是否都熟悉，如果不熟悉，无疑增加了维护的难度（本来是个纯洁的数据库系统）。</li>
+<li>缓存系统也要考虑分布式，比如 redis 的分布式缓存还会有很多坑，无疑增加了系统的复杂性。</li>
+<li>在特殊场景下，如果对缓存的准确性有非常高的要求，就必须考虑缓存和数据库的一致性问题。</li>
+</ul>
+<p>适合缓存的数据：读多写少、不常变化的数据，比如详情，评论等。</p>
+<p>不适合缓存的数据：对于那些经常变化的数据，其实并不适合缓存，一方面会增加系统的复杂性（缓存的更新，缓存脏数据），另一方面也给系统带来一定的不稳定性（缓存系统的维护）。</p>
+<p>但一些极端情况下，你需要将一些会变动的数据进行缓存，比如想要页面显示准实时的库存数，或者其他一些特殊业务场景。这时候你需要保证缓存不能（一直）有脏数据，这就需要再深入讨论一下，也就是<strong>缓存-数据库一致性的问题</strong>。</p>
 <h1 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>缓存穿透是指<strong>缓存和数据库中都没有的数据</strong>，而用户不断发起请求，如发起id为-1的数据或者特别大的不存在的数据。有可能是黑客利用漏洞攻击从而去压垮应用的数据库。</p>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>对于缓存穿透问题，常见的解决方案有以下三种：</p>
 <ol>
