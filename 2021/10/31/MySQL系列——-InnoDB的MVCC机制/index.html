@@ -157,7 +157,7 @@
 </tbody></table>
 <p>在任何隔离级别下，脏写都是不可接受的，这是一个对一致性影响极大的操作。</p>
 <p>MySQL会用锁去保证不会有两个并发事务同时修改一条记录。</p>
-<p>**MySQL默认使用的隔离级别是REPEATABLE READ **，而且MySQL的可重复读，可以在很大程度上禁止幻读现象的发生，但不能绝对禁止（后文会给出原因）。</p>
+<p><strong>MySQL默认使用的隔离级别是REPEATABLE READ</strong>，而且MySQL的可重复读，可以在很大程度上禁止幻读现象的发生，但不能绝对禁止（后文会给出原因）。</p>
 <h1 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h1><p>Multi-Version Concurrency Control（多版本并发控制），MySQL中如何实现？</p>
 <p>对于<code>READ UNCOMMITTED </code>直接读取B+树的最新记录就好了，无需任何多余操作，很简单；</p>
 <p>对于<code>SERIALIZABLE</code>是通过对select语句加共享锁的方式实现的，后面会详细将锁的实现与使用；</p>
