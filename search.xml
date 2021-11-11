@@ -1524,113 +1524,6 @@
       </tags>
   </entry>
   <entry>
-    <title>MongoDB 进阶(聚合)</title>
-    <url>/2021/10/19/MongoDB-%E8%BF%9B%E9%98%B6(%E8%81%9A%E5%90%88)/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h1><p>什么是聚合管道？</p>
-<ul>
-<li><strong>聚合管道是基于数据处理管道概念建模的数据聚合框架</strong>。</li>
-<li>文档进入<strong>多阶段管道</strong>，将文档转换为聚合结果。</li>
-<li>MongoDB 聚合管道由<strong>阶段</strong>组成。每个阶段都会在文档通过管道时对其进行转换。</li>
-<li>管道阶段可以在管道中多次出现，但<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/out/#mongodb-pipeline-pipe.-out"><code>$out</code></a>，<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/merge/#mongodb-pipeline-pipe.-merge"><code>$merge</code></a>、 和 <a href="https://docs.mongodb.com/manual/reference/operator/aggregation/geoNear/#mongodb-pipeline-pipe.-geoNear"><code>$geoNear</code></a>阶段除外。（相当于 Java 流式计算的的最后一步归约操作）。</li>
-</ul>
-<p><strong>语法</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">db.collection.aggregate( [ &#123; &lt;stage&gt; &#125;, ... ] )</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="聚合管道的阶段"><a href="#聚合管道的阶段" class="headerlink" title="聚合管道的阶段"></a>聚合管道的阶段</h2><p>这里只列出最常用的，完整请看参考文档。</p>
-<table>
-<thead>
-<tr>
-<th align="left">阶段</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#mongodb-pipeline-pipe.-addFields"><code>$addFields</code></a></td>
-<td align="left">向文档添加新字段。类似于 <a href="https://docs.mongodb.com/manual/reference/operator/aggregation/project/#mongodb-pipeline-pipe.-project"><code>$project</code></a>，<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#mongodb-pipeline-pipe.-addFields"><code>$addFields</code></a>对流中的每个文档进行整形；具体来说，通过向包含输入文档中现有字段和新添加字段的输出文档添加新字段。<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/set/#mongodb-pipeline-pipe.-set"><code>$set</code></a>是 的别名<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#mongodb-pipeline-pipe.-addFields"><code>$addFields</code></a>。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/count/#mongodb-pipeline-pipe.-count"><code>$count</code></a></td>
-<td align="left">返回聚合管道此阶段的文档数计数。与<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/count-accumulator/#mongodb-group-grp.-count"><code>$count</code></a>聚合累加器不同。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/group/#mongodb-pipeline-pipe.-group"><code>$group</code></a></td>
-<td align="left">按指定的标识符表达式对输入文档进行分组，并将累加器表达式（如果指定）应用于每个组。使用所有输入文档并为每个不同的组输出一个文档。输出文档仅包含标识符字段和累积字段（如果指定）。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/limit/#mongodb-pipeline-pipe.-limit"><code>$limit</code></a></td>
-<td align="left">将未修改的前<em>n 个</em>文档传递到管道，其中<em>n</em>是指定的限制。对于每个输入文档，输出一个文档（对于前<em>n 个</em>文档）或零个文档（在前<em>n 个</em>文档之后）。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#mongodb-pipeline-pipe.-lookup"><code>$lookup</code></a></td>
-<td align="left">对<em>同一</em>数据库中的另一个集合执行左外部 联接，以从“联接”集合中过滤文档以进行处理。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/match/#mongodb-pipeline-pipe.-match"><code>$match</code></a></td>
-<td align="left">过滤文档流以只允许匹配的文档未经修改地传递到下一个管道阶段。 <a href="https://docs.mongodb.com/manual/reference/operator/aggregation/match/#mongodb-pipeline-pipe.-match"><code>$match</code></a>使用标准的 MongoDB 查询。对于每个输入文档，输出一个文档（匹配）或零个文档（不匹配）。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/merge/#mongodb-pipeline-pipe.-merge"><code>$merge</code></a></td>
-<td align="left">将聚合管道的结果文档写入集合。该阶段可以将（插入新文档、合并文档、替换文档、保留现有文档、操作失败、使用自定义更新管道处理文档）结果合并到输出集合中。要使用该<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/merge/#mongodb-pipeline-pipe.-merge"><code>$merge</code></a>阶段，它必须是管道中的最后一个阶段。<em>4.2版中的新功能</em>。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/out/#mongodb-pipeline-pipe.-out"><code>$out</code></a></td>
-<td align="left">将聚合管道的结果文档写入集合。要使用该<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/out/#mongodb-pipeline-pipe.-out"><code>$out</code></a>阶段，它必须是管道中的最后一个阶段。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/planCacheStats/#mongodb-pipeline-pipe.-planCacheStats"><code>$planCacheStats</code></a></td>
-<td align="left">返回集合的<a href="https://docs.mongodb.com/manual/core/query-plans/">计划缓存</a>信息。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/project/#mongodb-pipeline-pipe.-project"><code>$project</code></a></td>
-<td align="left">重塑流中的每个文档，例如通过添加新字段或删除现有字段。对于每个输入文档，输出一个文档。另请参阅<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/unset/#mongodb-pipeline-pipe.-unset"><code>$unset</code></a>删除现有字段。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/replaceWith/#mongodb-pipeline-pipe.-replaceWith"><code>$replaceWith</code></a></td>
-<td align="left">用指定的嵌入文档替换文档。该操作替换输入文档中的所有现有字段，包括该<code>_id</code>字段。指定嵌入在输入文档中的文档以将嵌入的文档提升到顶级。<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/replaceWith/#mongodb-pipeline-pipe.-replaceWith"><code>$replaceWith</code></a>是<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/replaceRoot/#mongodb-pipeline-pipe.-replaceRoot"><code>$replaceRoot</code></a>stage的别名 。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/sample/#mongodb-pipeline-pipe.-sample"><code>$sample</code></a></td>
-<td align="left">从其输入中随机选择指定数量的文档。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.atlas.mongodb.com/reference/atlas-search/query-syntax/#mongodb-pipeline-pipe.-search"><code>$search</code></a></td>
-<td align="left">对<a href="https://docs.atlas.mongodb.com/reference/atlas-search/query-syntax/">Atlas</a> 集合中的一个或多个字段执行全文搜索 。笔记<code>$search</code> 仅适用于 MongoDB Atlas 集群，不适用于自管理部署。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/set/#mongodb-pipeline-pipe.-set"><code>$set</code></a></td>
-<td align="left">向文档添加新字段。类似于 <a href="https://docs.mongodb.com/manual/reference/operator/aggregation/project/#mongodb-pipeline-pipe.-project"><code>$project</code></a>，<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/set/#mongodb-pipeline-pipe.-set"><code>$set</code></a>对流中的每个文档进行整形；具体来说，通过向包含输入文档中现有字段和新添加字段的输出文档添加新字段。<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/set/#mongodb-pipeline-pipe.-set"><code>$set</code></a>是<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#mongodb-pipeline-pipe.-addFields"><code>$addFields</code></a>stage的别名。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/skip/#mongodb-pipeline-pipe.-skip"><code>$skip</code></a></td>
-<td align="left">跳过前<em>n 个</em>文档，其中<em>n</em>是指定的跳过编号，并将未修改的剩余文档传递到管道。对于每个输入文档，输出零个文档（对于前<em>n 个</em>文档）或一个文档（如果在前<em>n 个</em>文档之后）。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/sort/#mongodb-pipeline-pipe.-sort"><code>$sort</code></a></td>
-<td align="left">按指定的排序键对文档流重新排序。只是顺序变了；文件保持不变。对于每个输入文档，输出一个文档。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/unionWith/#mongodb-pipeline-pipe.-unionWith"><code>$unionWith</code></a></td>
-<td align="left">执行两个集合的并集；ie 将来自两个集合的管道结果合并为一个结果集。<em>4.4版中的新功能</em>。</td>
-</tr>
-<tr>
-<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/unset/#mongodb-pipeline-pipe.-unset"><code>$unset</code></a></td>
-<td align="left">从文档中删除/排除字段。<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/unset/#mongodb-pipeline-pipe.-unset"><code>$unset</code></a>是<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/project/#mongodb-pipeline-pipe.-project"><code>$project</code></a>删除字段的阶段的别名。</td>
-</tr>
-</tbody></table>
-<p><a href="https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline/">参考文档</a></p>
-<h2 id="聚合管道表达式"><a href="#聚合管道表达式" class="headerlink" title="聚合管道表达式"></a>聚合管道表达式</h2><p><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/">参考文档</a></p>
-]]></content>
-      <categories>
-        <category>NoSQL</category>
-      </categories>
-      <tags>
-        <tag>NoSQL</tag>
-        <tag>MongoDB</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>List实现类源码分析 —— LinkedList、ArrayList</title>
     <url>/2021/07/24/List%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%20%E2%80%94%E2%80%94%20LinkedList%E3%80%81ArrayList/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
@@ -1757,6 +1650,113 @@
         <tag>数据结构</tag>
         <tag>Java集合类</tag>
         <tag>源码系列</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MongoDB 进阶(聚合)</title>
+    <url>/2021/10/19/MongoDB-%E8%BF%9B%E9%98%B6(%E8%81%9A%E5%90%88)/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h1><p>什么是聚合管道？</p>
+<ul>
+<li><strong>聚合管道是基于数据处理管道概念建模的数据聚合框架</strong>。</li>
+<li>文档进入<strong>多阶段管道</strong>，将文档转换为聚合结果。</li>
+<li>MongoDB 聚合管道由<strong>阶段</strong>组成。每个阶段都会在文档通过管道时对其进行转换。</li>
+<li>管道阶段可以在管道中多次出现，但<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/out/#mongodb-pipeline-pipe.-out"><code>$out</code></a>，<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/merge/#mongodb-pipeline-pipe.-merge"><code>$merge</code></a>、 和 <a href="https://docs.mongodb.com/manual/reference/operator/aggregation/geoNear/#mongodb-pipeline-pipe.-geoNear"><code>$geoNear</code></a>阶段除外。（相当于 Java 流式计算的的最后一步归约操作）。</li>
+</ul>
+<p><strong>语法</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">db.collection.aggregate( [ &#123; &lt;stage&gt; &#125;, ... ] )</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="聚合管道的阶段"><a href="#聚合管道的阶段" class="headerlink" title="聚合管道的阶段"></a>聚合管道的阶段</h2><p>这里只列出最常用的，完整请看参考文档。</p>
+<table>
+<thead>
+<tr>
+<th align="left">阶段</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#mongodb-pipeline-pipe.-addFields"><code>$addFields</code></a></td>
+<td align="left">向文档添加新字段。类似于 <a href="https://docs.mongodb.com/manual/reference/operator/aggregation/project/#mongodb-pipeline-pipe.-project"><code>$project</code></a>，<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#mongodb-pipeline-pipe.-addFields"><code>$addFields</code></a>对流中的每个文档进行整形；具体来说，通过向包含输入文档中现有字段和新添加字段的输出文档添加新字段。<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/set/#mongodb-pipeline-pipe.-set"><code>$set</code></a>是 的别名<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#mongodb-pipeline-pipe.-addFields"><code>$addFields</code></a>。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/count/#mongodb-pipeline-pipe.-count"><code>$count</code></a></td>
+<td align="left">返回聚合管道此阶段的文档数计数。与<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/count-accumulator/#mongodb-group-grp.-count"><code>$count</code></a>聚合累加器不同。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/group/#mongodb-pipeline-pipe.-group"><code>$group</code></a></td>
+<td align="left">按指定的标识符表达式对输入文档进行分组，并将累加器表达式（如果指定）应用于每个组。使用所有输入文档并为每个不同的组输出一个文档。输出文档仅包含标识符字段和累积字段（如果指定）。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/limit/#mongodb-pipeline-pipe.-limit"><code>$limit</code></a></td>
+<td align="left">将未修改的前<em>n 个</em>文档传递到管道，其中<em>n</em>是指定的限制。对于每个输入文档，输出一个文档（对于前<em>n 个</em>文档）或零个文档（在前<em>n 个</em>文档之后）。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#mongodb-pipeline-pipe.-lookup"><code>$lookup</code></a></td>
+<td align="left">对<em>同一</em>数据库中的另一个集合执行左外部 联接，以从“联接”集合中过滤文档以进行处理。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/match/#mongodb-pipeline-pipe.-match"><code>$match</code></a></td>
+<td align="left">过滤文档流以只允许匹配的文档未经修改地传递到下一个管道阶段。 <a href="https://docs.mongodb.com/manual/reference/operator/aggregation/match/#mongodb-pipeline-pipe.-match"><code>$match</code></a>使用标准的 MongoDB 查询。对于每个输入文档，输出一个文档（匹配）或零个文档（不匹配）。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/merge/#mongodb-pipeline-pipe.-merge"><code>$merge</code></a></td>
+<td align="left">将聚合管道的结果文档写入集合。该阶段可以将（插入新文档、合并文档、替换文档、保留现有文档、操作失败、使用自定义更新管道处理文档）结果合并到输出集合中。要使用该<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/merge/#mongodb-pipeline-pipe.-merge"><code>$merge</code></a>阶段，它必须是管道中的最后一个阶段。<em>4.2版中的新功能</em>。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/out/#mongodb-pipeline-pipe.-out"><code>$out</code></a></td>
+<td align="left">将聚合管道的结果文档写入集合。要使用该<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/out/#mongodb-pipeline-pipe.-out"><code>$out</code></a>阶段，它必须是管道中的最后一个阶段。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/planCacheStats/#mongodb-pipeline-pipe.-planCacheStats"><code>$planCacheStats</code></a></td>
+<td align="left">返回集合的<a href="https://docs.mongodb.com/manual/core/query-plans/">计划缓存</a>信息。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/project/#mongodb-pipeline-pipe.-project"><code>$project</code></a></td>
+<td align="left">重塑流中的每个文档，例如通过添加新字段或删除现有字段。对于每个输入文档，输出一个文档。另请参阅<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/unset/#mongodb-pipeline-pipe.-unset"><code>$unset</code></a>删除现有字段。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/replaceWith/#mongodb-pipeline-pipe.-replaceWith"><code>$replaceWith</code></a></td>
+<td align="left">用指定的嵌入文档替换文档。该操作替换输入文档中的所有现有字段，包括该<code>_id</code>字段。指定嵌入在输入文档中的文档以将嵌入的文档提升到顶级。<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/replaceWith/#mongodb-pipeline-pipe.-replaceWith"><code>$replaceWith</code></a>是<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/replaceRoot/#mongodb-pipeline-pipe.-replaceRoot"><code>$replaceRoot</code></a>stage的别名 。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/sample/#mongodb-pipeline-pipe.-sample"><code>$sample</code></a></td>
+<td align="left">从其输入中随机选择指定数量的文档。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.atlas.mongodb.com/reference/atlas-search/query-syntax/#mongodb-pipeline-pipe.-search"><code>$search</code></a></td>
+<td align="left">对<a href="https://docs.atlas.mongodb.com/reference/atlas-search/query-syntax/">Atlas</a> 集合中的一个或多个字段执行全文搜索 。笔记<code>$search</code> 仅适用于 MongoDB Atlas 集群，不适用于自管理部署。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/set/#mongodb-pipeline-pipe.-set"><code>$set</code></a></td>
+<td align="left">向文档添加新字段。类似于 <a href="https://docs.mongodb.com/manual/reference/operator/aggregation/project/#mongodb-pipeline-pipe.-project"><code>$project</code></a>，<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/set/#mongodb-pipeline-pipe.-set"><code>$set</code></a>对流中的每个文档进行整形；具体来说，通过向包含输入文档中现有字段和新添加字段的输出文档添加新字段。<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/set/#mongodb-pipeline-pipe.-set"><code>$set</code></a>是<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#mongodb-pipeline-pipe.-addFields"><code>$addFields</code></a>stage的别名。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/skip/#mongodb-pipeline-pipe.-skip"><code>$skip</code></a></td>
+<td align="left">跳过前<em>n 个</em>文档，其中<em>n</em>是指定的跳过编号，并将未修改的剩余文档传递到管道。对于每个输入文档，输出零个文档（对于前<em>n 个</em>文档）或一个文档（如果在前<em>n 个</em>文档之后）。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/sort/#mongodb-pipeline-pipe.-sort"><code>$sort</code></a></td>
+<td align="left">按指定的排序键对文档流重新排序。只是顺序变了；文件保持不变。对于每个输入文档，输出一个文档。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/unionWith/#mongodb-pipeline-pipe.-unionWith"><code>$unionWith</code></a></td>
+<td align="left">执行两个集合的并集；ie 将来自两个集合的管道结果合并为一个结果集。<em>4.4版中的新功能</em>。</td>
+</tr>
+<tr>
+<td align="left"><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/unset/#mongodb-pipeline-pipe.-unset"><code>$unset</code></a></td>
+<td align="left">从文档中删除/排除字段。<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/unset/#mongodb-pipeline-pipe.-unset"><code>$unset</code></a>是<a href="https://docs.mongodb.com/manual/reference/operator/aggregation/project/#mongodb-pipeline-pipe.-project"><code>$project</code></a>删除字段的阶段的别名。</td>
+</tr>
+</tbody></table>
+<p><a href="https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline/">参考文档</a></p>
+<h2 id="聚合管道表达式"><a href="#聚合管道表达式" class="headerlink" title="聚合管道表达式"></a>聚合管道表达式</h2><p><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/">参考文档</a></p>
+]]></content>
+      <categories>
+        <category>NoSQL</category>
+      </categories>
+      <tags>
+        <tag>NoSQL</tag>
+        <tag>MongoDB</tag>
       </tags>
   </entry>
   <entry>
@@ -4784,30 +4784,78 @@
 <p>但是在多线程下，由于重排序，在read()方法的if代码块中，可能没能读到最新的 x 值。</p>
 <p>比如说，A线程先执行 write方法，修改了 flag值，但是此时还没有修改x的值（指令重拍），或者修改了x但是还没有刷回到主存，这个时候B线程执行了read方法，通过率 if的判断条件，但是读 x 的值还是 0 。</p>
 <p>这个时候，在多线程程序中，对存在控制依赖的操作重排序，可能改变程序的执行结果。</p>
-<h1 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h1><h2 id="happen-before的定义"><a href="#happen-before的定义" class="headerlink" title="happen-before的定义"></a>happen-before的定义</h2><p>JSR-133中对Java内存模型happen-before的定义如下：</p>
+<h1 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h1><h2 id="happen-before的定义"><a href="#happen-before的定义" class="headerlink" title="happen-before的定义"></a>happen-before的定义</h2><p>JSR-133中对Java内存模型<strong>happen-before</strong>的定义如下：</p>
+<p><code>happen-before</code>是 Java 模型中定义的两项操作的偏序关系。</p>
 <ol>
-<li><p>如果一个操作happen-before另一个操作，那么第一个操作的执行结果将对第二个操作可见，而且第一个操作的执行顺序排在第二个操作之前。</p>
-</li>
-<li><p>两个操作之间存在happen-before关系，并不意味着Java平台具体实现必须要按照happen-before关系指定的顺序来执行，如果重排序之后的结果，与按happen-before关系来执行的结果一致，那么这种重排序也是合理的，JMM并不禁止。</p>
-</li>
+<li>如果一个操作happen-before另一个操作，那么<strong>第一个操作的执行结果将对第二个操作可见</strong>，而且<strong>第一个操作的执行顺序可认为排在第二个操作之前</strong>。</li>
+<li>两个操作之间存在happen-before关系，并不意味着Java平台具体实现必须要按照happen-before关系指定的顺序来执行，如果重排序之后的结果，与按happen-before关系来执行的结果一致，那么这种重排序也是合理的，JMM并不禁止。</li>
 </ol>
+<blockquote>
+<p>注意第二个含义，是“可以认为”第一个执行顺序排在第二个操作“，意思是，即使由于重排序导致时间上第二个操作排在第一个操作之前，它的执行效果也可以等同于”第一个执行顺序排在第二个操作“。</p>
+</blockquote>
 <p>上面的(1)是对程序员的承诺：如果 A happens-before B，那么A的操作结果将对 B 可见，并且执行结果正如A的执行顺序在B之前那样。</p>
 <p>上面的(2)是对编译器和处理器排序的约束原则：在不改变程序的语义的情况下，编译器和处理器怎么优化都是可以的。</p>
 <h2 id="happen-before的规则"><a href="#happen-before的规则" class="headerlink" title="happen-before的规则"></a>happen-before的规则</h2><ul>
-<li>程序执行规则：单个线程中的每个操作，happen-before与该线程的中的任意后续操作。</li>
-<li>监视器锁规则：对于一个锁的解锁，happen-before与随后对这个锁的加锁。</li>
-<li>volatile变量规则：<strong>对于一个volatile域的写，happen-before于任意后续对这个volatile变量的读</strong>。</li>
-<li>传递性：如果A happen-before B，且B happen-before C，那么 A happen-before C。</li>
-<li>start规则：如果线程A执行操作ThreadB.start()（启动B线程），那么A线程的ThreadB.start()操作happen-before于线程B中的任意操作。</li>
-<li>join操作：如果线程A执行操作ThreadB.join()并成功返回，那么线程B中的任意操作happen-before与线程A从ThreadB.join()操作成功返回。</li>
+<li>程序次序规则：一个线程内，按照执行流顺序，书写在前面的操作先行发生于书写在后面的操作;</li>
+<li>锁定规则：一个 unLock 操作先行发生于后面对同一个锁的 lock 操作，注意这个后面指的是”时间上的先后“；</li>
+<li>volatile 变量规则：对一个volatile变量的写操作先行发生于后面对这个volatile变量的读操作，注意这个后面指的是”时间上的先后“;</li>
+<li>传递规则：如果操作 A 先行发生于操作 B，而操作 B 又先行发生于操作 C，则可以得出操作 A 先行发生于操作C;</li>
+<li>线程启动规则：Thread 对象的 <code>start()</code> 方法先行发生于此线程的每个一个动作;</li>
+<li>线程中断规则：对线程<code>interrupt()</code>方法的调用先行发生于被中断线程的代码检测到中断事件的发生;</li>
+<li>线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过 <code>Thread.join()</code> 方法结束、<code>Thread.isAlive()</code>的返回值手段检测到线程已经终止执行;</li>
+<li>对象终结规则：一个对象的初始化完成先行发生于他的<code>finalize()</code>方法的开始。</li>
 </ul>
+<blockquote>
+<p>这 8 条原则摘自《深入理解Java虚拟机》。</p>
+</blockquote>
 <p>其中第三条规则，尤其需要注意一下。</p>
-<h1 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h1><p>volatile: 为了确保共享变量能被准确和一致地更新，线程应该确保通过排它锁单独的更改这个变量。</p>
+<p>这 8 条规则中，前 4 条规则是比较重要的，后 4 条规则都是显而易见的。</p>
+<h1 id="volatile的内存语义"><a href="#volatile的内存语义" class="headerlink" title="volatile的内存语义"></a>volatile的内存语义</h1><p>volatile: 为了确保共享变量能被准确和一致地更新，线程应该确保通过排它锁单独的更改这个变量。</p>
 <p>Java提供了 <code>volatile</code>，它在多线程中保证了共享变量的可见性——一个线程修改一个共享变量时，另一个线程能读到这个修改值。</p>
 <p>它某种程度上是一个轻量级的<code>synchronized</code>。</p>
+<p><strong>volatile的特性</strong>：</p>
+<ol>
+<li>保证共享变量的可见性；</li>
+<li>禁止指令重排序的优化；</li>
+<li>对单个变量的读写的原子性。</li>
+</ol>
+<p>下面会对此分别作出解释。</p>
+<h2 id="volatile的读-写内存语义"><a href="#volatile的读-写内存语义" class="headerlink" title="volatile的读-写内存语义"></a>volatile的读-写内存语义</h2><ul>
+<li>volatile写的内存语义：当写一个volatile变量时，JMM会把该线程的本地内存中的共享变量值刷新到主内存。</li>
+</ul>
+<ul>
+<li>volatile读的内存语义：当读一个volatile变量时，如果此共享变量值已被另一个线程修改，JMM会把线程对应的本地内存置为无效，然后会从主内存中读取共享变量。</li>
+</ul>
+<p>一个关于可见性的测试：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestVolatile</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">volatile</span> <span class="keyword">boolean</span> finished = <span class="keyword">false</span>; <span class="comment">// 去掉 volatile 再看看执行效果</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doWork</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> x = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (!finished) &#123;</span><br><span class="line">            ++x;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;x is &quot;</span>+x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">done</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        finished = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        TestVolatile test = <span class="keyword">new</span> TestVolatile();</span><br><span class="line">        <span class="keyword">new</span> Thread(test::doWork).start();</span><br><span class="line">        Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        <span class="keyword">new</span> Thread(test::done).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="volatile的禁止重排序规则"><a href="#volatile的禁止重排序规则" class="headerlink" title="volatile的禁止重排序规则"></a>volatile的禁止重排序规则</h2><p>为了优化代码执行顺序，前面提到过编译器和处理器的重排序。</p>
+<p>为了实现volatile的语义，JMM会限制这两种类型的重排序类型。</p>
+<p><strong>JMM规则</strong>:</p>
+<ol>
+<li><p>当第二个操作是volatile写时，不管第一个操作是什么，都不允许重排序；</p>
+</li>
+<li><p>当第一个操作是volatile读时，不管第二个操作是什么，都不能重排序；</p>
+</li>
+<li><p>第一个操作是volatile写，第二个操作是volatile读时，不允许重排序。</p>
+</li>
+</ol>
+<p>其中，第1条保证，在volatile写之前的所有的普通写在执行完 volatile写后都会被刷新到主内存，换言之，如果volatile写没有执行，前面的普通写也不会产生影响（也就是说其他线程不可见）。这个性质对于普通是不具备的（下面会举个例子）</p>
+<p>其中，第2条保证，在volatile读之前，下面的普通读不会执行，直到volatile读执行完，才能执行下面的普通读。</p>
+<p>其中，第3条的保证是自然要有的。</p>
+<p>值得注意的是，第1条、第2条实际上让<strong>volatile写-读</strong>在内存读写顺序上具有<strong>锁的释放-获取</strong>语义。</p>
+<p>volatile写对应锁的释放，volatile读对应锁的获取。</p>
+<p>注意一定只有在一个线程在将锁释放之后，另一个线程可以获取锁。</p>
+<p>这让 volatile 具有一定的有序性。</p>
+<blockquote>
+<p>注意，上述的性质是在JSR-133标准（JDK-5）发布之后才有的语义，之前的volatile的语义比较弱，会给程序员带来了很多违反直觉的结果。</p>
+</blockquote>
+<h2 id="volatile对非原子性约定的修正"><a href="#volatile对非原子性约定的修正" class="headerlink" title="volatile对非原子性约定的修正"></a>volatile对非原子性约定的修正</h2><h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p><code>lock addl $0x0,(%esp)</code></p>
 <p>volatile的两条实现原则：</p>
 <ol>
-<li><p>Lock前缀指令会让处理器缓存写回到内存。</p>
+<li><p>lock前缀指令会让处理器缓存写回到内存。</p>
 <p>锁住总线：从而独占任何共享内存。</p>
 <p>锁住缓存：锁定某块共享内存的缓存并写回到内存，并用缓存一致性协议确保修改的原子性，这常常称为”缓存锁定“。</p>
 <p>缓存一致性机制会阻止同时修改由两个处理器缓存的内存区域数据。</p>
@@ -4894,6 +4942,33 @@
       </tags>
   </entry>
   <entry>
+    <title>大整数取模、最大公约数与最小公倍数、快速幂与慢速乘</title>
+    <url>/2021/11/11/%E5%A4%A7%E6%95%B4%E6%95%B0%E5%8F%96%E6%A8%A1%E3%80%81%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%E4%B8%8E%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E3%80%81%E5%BF%AB%E9%80%9F%E5%B9%82%E4%B8%8E%E6%85%A2%E9%80%9F%E4%B9%98/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="大整数取模"><a href="#大整数取模" class="headerlink" title="大整数取模"></a>大整数取模</h2><p>Description：<br>输入一个字符串 a 代表一个很大的数，一个32位整数b，问a能否整除b。<br><a href="https://vjudge.net/problem/LightOJ-1214">Large Division LightOJ - 1214 
+</a><br>亲测 10ms。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//大整数取模</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> a;</span><br><span class="line"><span class="keyword">int</span> b;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;t;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=t;i++)&#123;</span><br><span class="line">        <span class="built_in">cin</span>&gt;&gt;a&gt;&gt;b;</span><br><span class="line">        b = <span class="built_in">abs</span>(b);</span><br><span class="line">        ll sum=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(a[<span class="number">0</span>]==<span class="string">&#x27;-&#x27;</span>) a.erase(a.begin());</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;a.length();j++)&#123;</span><br><span class="line">            sum = sum*<span class="number">10</span> + a[j]-<span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">            sum%=b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum&gt;<span class="number">0</span>) <span class="built_in">printf</span>(<span class="string">&quot;Case %d: not divisible\n&quot;</span>,i);</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">&quot;Case %d: divisible\n&quot;</span>,i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>亲测，500ms左右，发现Java的BigDecimal速度还是比较慢的。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.math.BigDecimal;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">		<span class="keyword">int</span> t=sc.nextInt();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=t;i++) &#123;</span><br><span class="line">			String as = sc.next();</span><br><span class="line">			String bs = sc.next();</span><br><span class="line">			BigDecimal a = <span class="keyword">new</span> BigDecimal(as);</span><br><span class="line">			BigDecimal b = <span class="keyword">new</span> BigDecimal(bs);</span><br><span class="line">			<span class="keyword">if</span>(a.divideAndRemainder(b)[<span class="number">1</span>].compareTo(<span class="keyword">new</span> BigDecimal(<span class="number">0</span>))==<span class="number">0</span>) &#123;</span><br><span class="line">				System.out.printf(<span class="string">&quot;Case %d: divisible\n&quot;</span>,i);</span><br><span class="line">			&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">				System.out.printf(<span class="string">&quot;Case %d: not divisible\n&quot;</span>,i);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		sc.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">其中；</span><br><span class="line">a.divideAndRemainder(b)返回一个数组，[<span class="number">0</span>]是整除数，[<span class="number">1</span>]是余数。</span><br><span class="line">A.compareTo（B）-<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>分别对应 &lt;,=,&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="最大公约数与最小公倍数"><a href="#最大公约数与最小公倍数" class="headerlink" title="最大公约数与最小公倍数"></a>最大公约数与最小公倍数</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">ll <span class="title">gcd</span><span class="params">(ll a,ll b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> b==<span class="number">0</span>?a: gcd(b,a%b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">lcm</span><span class="params">(ll a,ll b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a/gcd(a,b)*b;  <span class="comment">// 先除再乘，否则可能中间溢出</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="快速幂与慢速乘"><a href="#快速幂与慢速乘" class="headerlink" title="快速幂与慢速乘"></a>快速幂与慢速乘</h2><p>小栗子<br>快速幂： ${ {2^7=2<em>2^6=2</em>(2^3)^2=2*(2*(2^2))^2} }$<br>${ {2^{2^2+2^1+2^0} } }$<br>时间复杂度：O(logn)</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//快速幂</span></span><br><span class="line"><span class="function">ll <span class="title">pow</span><span class="params">(ll a,ll n,ll p)</span></span>&#123;</span><br><span class="line">    ll ans=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(n)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&amp;<span class="number">1</span>) ans=ans*a%p;  <span class="comment">//如果无需取模，去掉 %p即可</span></span><br><span class="line">        a=a*a%p;  <span class="comment">// 是 平方</span></span><br><span class="line">        n/=<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>慢速乘${ {3<em>7=3</em>（2^2+2^1+2^0）} }$</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//慢速乘,大数相乘，速度慢，而且容易溢出</span></span><br><span class="line"><span class="function">ll <span class="title">mul</span><span class="params">(ll a,ll b,ll p)</span></span>&#123;  <span class="comment">//将b分解成 和</span></span><br><span class="line">    ll ans=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b&amp;<span class="number">1</span>) ans=(ans+a)%p;</span><br><span class="line">        a=a*<span class="number">2</span>%p;  <span class="comment">//是乘 2</span></span><br><span class="line">        b/=<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>常见问法：<br><a href="https://vjudge.net/problem/LightOJ-1282">Leading and Trailing LightOJ - 1282</a><br>输出一个大数的最右面3位（%1000即可），和最左面3位。<br>如果要输出最左面的3位呢？<br>${ {n^k=10^p} }$<br>p应该是个带小数的浮点数m,取对数 ${ {p=k*log_{10}(n)} }$,(p的小数部分)*100取整就是答案，因为p的整数部分只控制多少位。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">fmod</span>(a,b) 浮点数的取余数。<span class="built_in">fmod</span>(a,<span class="number">1</span>)即可取出小数。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">//快速幂</span></span><br><span class="line"><span class="function">ll <span class="title">pow</span><span class="params">(ll a,ll n,ll p)</span></span>&#123;</span><br><span class="line">    ll ans=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(n)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&amp;<span class="number">1</span>) ans=ans*a%p;  <span class="comment">//如果无需取模，去掉 %p即可</span></span><br><span class="line">        a=a*a%p;  <span class="comment">// 是 平方</span></span><br><span class="line">        n/=<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;t;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=t;i++)&#123;</span><br><span class="line">        ll n,k;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld%lld&quot;</span>,&amp;n,&amp;k);</span><br><span class="line">        ll ans2 = <span class="built_in">pow</span>(n, k,<span class="number">1000</span>);</span><br><span class="line">        ll ans1 = <span class="built_in">pow</span>(<span class="number">10.0</span>,<span class="number">2.0</span>+<span class="built_in">fmod</span>((<span class="keyword">double</span>)k*<span class="built_in">log10</span>((<span class="keyword">double</span>)n), <span class="number">1</span>));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Case %d: %lld %03lld\n&quot;</span>,i,ans1,ans2);</span><br><span class="line">        <span class="comment">//注意题目要求最右边的3位数字，如果3，则应该输出003</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何解析c语言程序的命令行参数？—— Argtable3使用教程</title>
     <url>/2021/09/23/%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90c%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%EF%BC%9F%E2%80%94%E2%80%94-Argtable3%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="如何构建符合-POSIX-实用程序约定的Shell-CLI"><a href="#如何构建符合-POSIX-实用程序约定的Shell-CLI" class="headerlink" title="如何构建符合 POSIX 实用程序约定的Shell-CLI"></a>如何构建符合 POSIX 实用程序约定的Shell-CLI</h1><h2 id="What-is-Argtable"><a href="#What-is-Argtable" class="headerlink" title="What is Argtable"></a>What is Argtable</h2><p>Argtable是一款开源的ANSI C library，用来解析GNU样式的命令行选项。它通过定义可用于指定命令行语法的声明式API，从而简化了命令行的分析。<br>argtable将自动生成一致的错误处理逻辑和命令行语法的文本描述，这对于一个健壮的cli程序来说，是非常必要的，但是很繁琐。</p>
@@ -4963,45 +5038,6 @@
       </tags>
   </entry>
   <entry>
-    <title>对Jsch的Seession与Channel的线程安全性的测试</title>
-    <url>/2021/08/02/%E5%AF%B9Jsch%E7%9A%84Seession%E4%B8%8EChannel%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E6%80%A7%E7%9A%84%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><ul>
-<li><ul>
-<li>10000个文件(每个文件只有 12 byte)</li>
-</ul>
-<ol>
-<li>1 session 1 channel<br>串行： 37 s<br>并行(4 核)： 死锁<br>或者 throw new SftpException()、at com.jcraft.jsch.ChannelSftp._realpath(ChannelSftp.java:2362)<br>等各种异常</li>
-<li>1 session n channels<br>串行：200 s<br>并行(4 核)：25 s (但是文件下载有丢失)</li>
-<li>n sessions 1 channel<br>串行：1200 s<br>并行(4 核)：320 s</li>
-</ol>
-</li>
-<li><p>100个文件(每个文件有 12 MB)</p>
-<ol>
-<li><p>1 session 1 channel<br>串行： 19 s<br>并行(4 核)： 死锁<br>或者 throw new SftpException()、at com.jcraft.jsch.ChannelSftp._realpath(ChannelSftp.java:2362)<br>等各种异常, 总之文件传输失败</p>
-</li>
-<li><p>1 session n channels<br>串行：20 s<br>并行(4 核)：18s (但是文件下载有丢失)</p>
-</li>
-<li><p>n sessions 1 channel<br>串行：35 s<br>并行(4 核)：10 s</p>
-</li>
-</ol>
-</li>
-<li><p>10个文件(每个文件有 120 MB)</p>
-<ol>
-<li><p>1 session 1 channel<br>串行： 18 s<br>并行(4 核)： 死锁<br>或者 throw new SftpException()、at com.jcraft.jsch.ChannelSftp._realpath(ChannelSftp.java:2362)<br>等各种异常, 总之文件传输失败</p>
-</li>
-<li><p>1 session n channels<br>串行：18 s<br>并行(4 核)：19 s </p>
-</li>
-<li><p>n sessions 1 channel<br>串行：19 s<br>并行(4 核)：8 s </p>
-</li>
-</ol>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>FTP</category>
-      </categories>
-  </entry>
-  <entry>
     <title>常见排序算法笔记（插入排序、希尔排序、归并排序、快速排序、堆排序、计数排序、基数排序）</title>
     <url>/2021/11/03/%E5%B8%B8%E8%A7%81%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%EF%BC%88%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E3%80%81%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E3%80%81%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E3%80%81%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E3%80%81%E5%A0%86%E6%8E%92%E5%BA%8F%E3%80%81%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%E3%80%81%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F%EF%BC%89/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
@@ -5063,6 +5099,45 @@
       <tags>
         <tag>排序</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>对Jsch的Seession与Channel的线程安全性的测试</title>
+    <url>/2021/08/02/%E5%AF%B9Jsch%E7%9A%84Seession%E4%B8%8EChannel%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E6%80%A7%E7%9A%84%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><ul>
+<li><ul>
+<li>10000个文件(每个文件只有 12 byte)</li>
+</ul>
+<ol>
+<li>1 session 1 channel<br>串行： 37 s<br>并行(4 核)： 死锁<br>或者 throw new SftpException()、at com.jcraft.jsch.ChannelSftp._realpath(ChannelSftp.java:2362)<br>等各种异常</li>
+<li>1 session n channels<br>串行：200 s<br>并行(4 核)：25 s (但是文件下载有丢失)</li>
+<li>n sessions 1 channel<br>串行：1200 s<br>并行(4 核)：320 s</li>
+</ol>
+</li>
+<li><p>100个文件(每个文件有 12 MB)</p>
+<ol>
+<li><p>1 session 1 channel<br>串行： 19 s<br>并行(4 核)： 死锁<br>或者 throw new SftpException()、at com.jcraft.jsch.ChannelSftp._realpath(ChannelSftp.java:2362)<br>等各种异常, 总之文件传输失败</p>
+</li>
+<li><p>1 session n channels<br>串行：20 s<br>并行(4 核)：18s (但是文件下载有丢失)</p>
+</li>
+<li><p>n sessions 1 channel<br>串行：35 s<br>并行(4 核)：10 s</p>
+</li>
+</ol>
+</li>
+<li><p>10个文件(每个文件有 120 MB)</p>
+<ol>
+<li><p>1 session 1 channel<br>串行： 18 s<br>并行(4 核)： 死锁<br>或者 throw new SftpException()、at com.jcraft.jsch.ChannelSftp._realpath(ChannelSftp.java:2362)<br>等各种异常, 总之文件传输失败</p>
+</li>
+<li><p>1 session n channels<br>串行：18 s<br>并行(4 核)：19 s </p>
+</li>
+<li><p>n sessions 1 channel<br>串行：19 s<br>并行(4 核)：8 s </p>
+</li>
+</ol>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>FTP</category>
+      </categories>
   </entry>
   <entry>
     <title>架构</title>
@@ -5851,6 +5926,58 @@
       </tags>
   </entry>
   <entry>
+    <title>这次彻底解决在Hexo中渲染MathJax数学公式出现的问题！！！</title>
+    <url>/2021/07/21/%E8%BF%99%E6%AC%A1%E5%BD%BB%E5%BA%95%E8%A7%A3%E5%86%B3%E5%9C%A8Hexo%E4%B8%AD%E6%B8%B2%E6%9F%93MathJax%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%81%EF%BC%81%EF%BC%81/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>好家伙，这个问题已经困扰我好几个小时了。<br>网上的做法众说纷纭，有相似的东西，也有不同的。<br>这次我汇总一下。</p>
+<p>具体的原因和过程可以看<a href="https://www.jianshu.com/p/7ab21c7f0674">在Hexo中渲染MathJax数学公式</a>这篇博客。</p>
+<p>我遇到的问题是，在本地公式可以正常渲染。但是用hexo部署上去的时候，却又这么几种问题。</p>
+<p>ok，分析一下几点原因。</p>
+<ol>
+<li><strong>渲染引擎缺失</strong></li>
+</ol>
+<p>渲染引擎更换一下。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br></pre></td></tr></table></figure>
+
+<p>似乎装这一个就可以了，但是似乎还有人装其他引擎的。</p>
+<ol start="2">
+<li><strong>语义冲突</strong></li>
+</ol>
+<p>进入项目更目录下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim node_modules\kramed\lib\rules\inline.js</span><br></pre></td></tr></table></figure>
+
+<p>修改这么两行。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//  escape: /^\\([\\`*&#123;&#125;\[\]()#$+\-.!_&gt;])/,</span></span><br><span class="line">  <span class="built_in">escape</span>: <span class="regexp">/^\\([`*\[\]()#$+\-.!_&gt;])/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//  em: /^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,</span></span><br><span class="line">  em: <span class="regexp">/^\*((?:\*\*|[\s\S])+?)\*(?!\*)/</span></span><br></pre></td></tr></table></figure>
+
+
+<ol start="3">
+<li><strong>配置文件未将MathJax开启</strong></li>
+</ol>
+<p>这一步操作有些不同，但操作差不多，就是开启MathJax渲染。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Mathjax数学公式</span></span><br><span class="line"><span class="attr">mathjax:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Katex数学公式(allpost设置为false时只有头部设置math:true的文章才开启)</span></span><br><span class="line"><span class="attr">katex:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">allpost:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">copy_tex:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+
+<ol start="4">
+<li><strong>公式语法有误</strong><br>如果上述操作全部完成，还是不能成功，看看有没有语法问题。</li>
+</ol>
+<p>比如，我遇到的问题，如果在公式内连续使用两个花括号，必须加上空格。</p>
+<p>如下面的会渲染失败。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$L_p  &#x3D; (\sum_&#123;i&#x3D;1&#125;^m |x_i - y_i |^&#123;p&#125;  )^&#123;&#123;\tfrac&#123;1&#125;&#123;p&#125;&#125;&#125;$$</span><br></pre></td></tr></table></figure>
+<p>在连续的花括号之间加上空格即可。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$L_p  &#x3D; (\sum_&#123;i&#x3D;1&#125;^m |x_i - y_i |^&#123;p&#125;  )^&#123; &#123;\tfrac&#123;1&#125; &#123;p&#125; &#125; &#125;$$</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo - 写作</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>这次彻底解决HashMap!</title>
     <url>/2021/08/03/%E8%BF%99%E6%AC%A1%E5%BD%BB%E5%BA%95%E8%A7%A3%E5%86%B3HashMap!/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
@@ -5978,58 +6105,6 @@
         <tag>数据结构</tag>
         <tag>Java集合类</tag>
         <tag>源码系列</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>这次彻底解决在Hexo中渲染MathJax数学公式出现的问题！！！</title>
-    <url>/2021/07/21/%E8%BF%99%E6%AC%A1%E5%BD%BB%E5%BA%95%E8%A7%A3%E5%86%B3%E5%9C%A8Hexo%E4%B8%AD%E6%B8%B2%E6%9F%93MathJax%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%81%EF%BC%81%EF%BC%81/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>好家伙，这个问题已经困扰我好几个小时了。<br>网上的做法众说纷纭，有相似的东西，也有不同的。<br>这次我汇总一下。</p>
-<p>具体的原因和过程可以看<a href="https://www.jianshu.com/p/7ab21c7f0674">在Hexo中渲染MathJax数学公式</a>这篇博客。</p>
-<p>我遇到的问题是，在本地公式可以正常渲染。但是用hexo部署上去的时候，却又这么几种问题。</p>
-<p>ok，分析一下几点原因。</p>
-<ol>
-<li><strong>渲染引擎缺失</strong></li>
-</ol>
-<p>渲染引擎更换一下。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br></pre></td></tr></table></figure>
-
-<p>似乎装这一个就可以了，但是似乎还有人装其他引擎的。</p>
-<ol start="2">
-<li><strong>语义冲突</strong></li>
-</ol>
-<p>进入项目更目录下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim node_modules\kramed\lib\rules\inline.js</span><br></pre></td></tr></table></figure>
-
-<p>修改这么两行。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//  escape: /^\\([\\`*&#123;&#125;\[\]()#$+\-.!_&gt;])/,</span></span><br><span class="line">  <span class="built_in">escape</span>: <span class="regexp">/^\\([`*\[\]()#$+\-.!_&gt;])/</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//  em: /^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,</span></span><br><span class="line">  em: <span class="regexp">/^\*((?:\*\*|[\s\S])+?)\*(?!\*)/</span></span><br></pre></td></tr></table></figure>
-
-
-<ol start="3">
-<li><strong>配置文件未将MathJax开启</strong></li>
-</ol>
-<p>这一步操作有些不同，但操作差不多，就是开启MathJax渲染。</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Mathjax数学公式</span></span><br><span class="line"><span class="attr">mathjax:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Katex数学公式(allpost设置为false时只有头部设置math:true的文章才开启)</span></span><br><span class="line"><span class="attr">katex:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">allpost:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">copy_tex:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-
-<ol start="4">
-<li><strong>公式语法有误</strong><br>如果上述操作全部完成，还是不能成功，看看有没有语法问题。</li>
-</ol>
-<p>比如，我遇到的问题，如果在公式内连续使用两个花括号，必须加上空格。</p>
-<p>如下面的会渲染失败。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$L_p  &#x3D; (\sum_&#123;i&#x3D;1&#125;^m |x_i - y_i |^&#123;p&#125;  )^&#123;&#123;\tfrac&#123;1&#125;&#123;p&#125;&#125;&#125;$$</span><br></pre></td></tr></table></figure>
-<p>在连续的花括号之间加上空格即可。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$L_p  &#x3D; (\sum_&#123;i&#x3D;1&#125;^m |x_i - y_i |^&#123;p&#125;  )^&#123; &#123;\tfrac&#123;1&#125; &#123;p&#125; &#125; &#125;$$</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo - 写作</tag>
       </tags>
   </entry>
   <entry>
