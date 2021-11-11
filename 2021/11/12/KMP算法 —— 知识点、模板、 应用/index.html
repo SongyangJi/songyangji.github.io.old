@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    MyBatis文档摘要 |  JsyBlog
+    KMP算法 —— 知识点、模板、 应用 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-MyBatis文档摘要"
+  id="post-KMP算法 —— 知识点、模板、 应用"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,18 +54,18 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  MyBatis文档摘要
+  KMP算法 —— 知识点、模板、 应用
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/08/06/MyBatis%E6%96%87%E6%A1%A3%E6%91%98%E8%A6%81/" class="article-date">
-  <time datetime="2021-08-05T16:00:00.000Z" itemprop="datePublished">2021-08-06</time>
+      <a href="/2021/11/12/KMP%E7%AE%97%E6%B3%95%20%E2%80%94%E2%80%94%20%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%81%E6%A8%A1%E6%9D%BF%E3%80%81%20%E5%BA%94%E7%94%A8/" class="article-date">
+  <time datetime="2021-11-11T17:18:45.000Z" itemprop="datePublished">2021-11-12</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/MyBatis/">MyBatis</a>
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
   </div>
   
 <div class="word_count">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">594</span>
+            <span class="post-count">596</span>
         </span>
     </span>
 
@@ -97,135 +97,23 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><p>MyBatis 的配置文件的层次结构：</p>
-<ul>
-<li>configuration（配置）<ul>
-<li>properties（属性）</li>
-<li>settings（设置）</li>
-<li>typeAliases（类型别名）</li>
-<li>typeHandlers（类型处理器）</li>
-<li>objectFactory（对象工厂）</li>
-<li>plugins（插件）</li>
-<li>environments（环境配置）<ul>
-<li>environment（环境变量）<ul>
-<li>transactionManager（事务管理器）</li>
-<li>dataSource（数据源）</li>
+  <blockquote>
+<p>这里并不打算去详细推导KMP的原理，以及精髓。只是整理了一下KMP算法的模板、应用、理解的关键点。</p>
+</blockquote>
+<h1 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h1><p>KMP算法最基本的应用就是字符串的匹配——给定一个text串，一个pattern串，询问pattern串在text串中是否出现，以及出现几次、位置等等。</p>
+<h1 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KMP</span>&#123;</span></span><br><span class="line">    <span class="built_in">string</span> pattern;</span><br><span class="line">    <span class="keyword">int</span> len ;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; next;  <span class="comment">// 这里的next数组是从1开始的</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 也叫失配数组,next[i] 表示以第i位结尾的子串与模式串的前缀相同的最大长度（但不能是自身），也就是所谓的最长公共前后缀</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Next</span><span class="params">()</span></span>&#123;</span><br><span class="line">        next.resize(len+<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= len; i++) &#123;</span><br><span class="line">            <span class="keyword">while</span>(j &gt; <span class="number">0</span> &amp;&amp; pattern[i] != pattern[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                j = next[j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(pattern[i] == pattern[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            next[i] = j;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    KMP(<span class="keyword">const</span> <span class="built_in">string</span> &amp;pattern) &#123;</span><br><span class="line">        len = pattern.size();</span><br><span class="line">        <span class="keyword">this</span>-&gt;pattern = <span class="string">&quot; &quot;</span> + pattern; </span><br><span class="line">        Next();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSubstringOfText</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; text)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getPositions(text).size() &gt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="comment">// 统计模式串在文本串出现的次数</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getTimes</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; text)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getPositions(text).size();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 统计模式串在文本串的出现的次数</span></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">getPositions</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; text)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        <span class="keyword">if</span>(text.size()  &lt; len) <span class="keyword">return</span> res;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; text.size(); i++)&#123;</span><br><span class="line">            <span class="keyword">while</span> (j &gt; <span class="number">0</span> &amp;&amp; text[i] != pattern[j + <span class="number">1</span>])&#123;</span><br><span class="line">                j = next[j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(text[i] == pattern[j + <span class="number">1</span>])&#123;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(j == len)&#123;</span><br><span class="line">                <span class="comment">// i 是匹配时文本串的位置（从0开始）</span></span><br><span class="line">                res.push_back(i);</span><br><span class="line">                j = next[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="comment">// 求数组f[] 其中 f[i] 表示文本串以i结尾的子串与 pattern 串的前缀相同的最大长度（这里也是从1开始计数）</span></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">getFArray</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; text)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = text.size(), j = <span class="number">0</span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">f</span><span class="params">(m+<span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i= <span class="number">0</span> ;i &lt; m; i++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(j &gt; <span class="number">0</span> &amp;&amp; (j == len || text[i] != pattern[j + <span class="number">1</span>])) &#123;</span><br><span class="line">                j = next[j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(text[i] == pattern[j + <span class="number">1</span>])&#123;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            f[i] = j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> f;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;<span class="title">getNext</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><ul>
+<li>失配数组的求法以及含义。<code>next[]</code></li>
+<li>模式匹配的结果数组。<code>f[]</code></li>
+<li>从DFA(有限状态自动)的角度去理解。(对后面的AC自动机的理解大有裨益)</li>
 </ul>
-</li>
+<h1 id="典型应用"><a href="#典型应用" class="headerlink" title="典型应用"></a>典型应用</h1><ul>
+<li>模式串和文本串的模式匹配。</li>
+<li>处理和前缀和后缀有关的问题。</li>
+<li>处理循环节方面的问题。</li>
 </ul>
-</li>
-<li>databaseIdProvider（数据库厂商标识）</li>
-<li>mappers（映射器）</li>
-</ul>
-</li>
-</ul>
-<h2 id="属性（properties）"><a href="#属性（properties）" class="headerlink" title="属性（properties）"></a>属性（properties）</h2><h2 id="设置（settings）"><a href="#设置（settings）" class="headerlink" title="设置（settings）"></a>设置（settings）</h2><h3 id="对象关系映射相关"><a href="#对象关系映射相关" class="headerlink" title="对象关系映射相关"></a>对象关系映射相关</h3><table>
-<thead>
-<tr>
-<th align="left">设置名</th>
-<th align="left">描述</th>
-<th align="left">有效值</th>
-<th align="left">默认值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">autoMappingBehavior</td>
-<td align="left">指定 MyBatis 应如何自动映射列到字段或属性。 NONE 表示关闭自动映射；PARTIAL 只会自动映射没有定义嵌套结果映射的字段。 FULL 会自动映射任何复杂的结果集（无论是否嵌套）。</td>
-<td align="left">NONE, PARTIAL, FULL</td>
-<td align="left">PARTIAL</td>
-</tr>
-<tr>
-<td align="left">mapUnderscoreToCamelCase</td>
-<td align="left">是否开启驼峰命名自动映射，即从经典数据库列名 A_COLUMN 映射到经典 Java 属性名 aColumn。</td>
-<td align="left">true | false</td>
-<td align="left">False</td>
-</tr>
-<tr>
-<td align="left">autoMappingUnknownColumnBehavior</td>
-<td align="left">指定发现自动映射目标未知列（或未知属性类型）的行为。<code>NONE</code>: 不做任何反应<code>WARNING</code>: 输出警告日志（<code>&#39;org.apache.ibatis.session.AutoMappingUnknownColumnBehavior&#39;</code> 的日志等级必须设置为 <code>WARN</code>）<code>FAILING</code>: 映射失败 (抛出 <code>SqlSessionException</code>)</td>
-<td align="left">NONE, WARNING, FAILING</td>
-<td align="left"></td>
-</tr>
-</tbody></table>
-<h3 id="缓存相关"><a href="#缓存相关" class="headerlink" title="缓存相关"></a>缓存相关</h3><table>
-<thead>
-<tr>
-<th align="left">设置名</th>
-<th align="left">描述</th>
-<th align="left">有效值</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">cacheEnabled</td>
-<td align="left">全局性地开启或关闭所有映射器配置文件中已配置的任何缓存。</td>
-<td align="left">true | false</td>
-<td>true</td>
-</tr>
-<tr>
-<td align="left">localCacheScope</td>
-<td align="left">MyBatis 利用本地缓存机制（Local Cache）防止循环引用和加速重复的嵌套查询。 默认值为 SESSION，会缓存一个会话中执行的所有查询。 若设置值为 STATEMENT，本地缓存将仅用于执行语句，对相同 SqlSession 的不同查询将不会进行缓存。</td>
-<td align="left">SESSION | STATEMENT</td>
-<td>SESSION</td>
-</tr>
-<tr>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td></td>
-</tr>
-</tbody></table>
-<h3 id="数据库连接与执行器相关"><a href="#数据库连接与执行器相关" class="headerlink" title="数据库连接与执行器相关"></a>数据库连接与执行器相关</h3><table>
-<thead>
-<tr>
-<th align="left">设置名</th>
-<th align="left">描述</th>
-<th align="left">有效值</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">defaultStatementTimeout</td>
-<td align="left">设置超时时间，它决定数据库驱动等待数据库响应的秒数。</td>
-<td align="left">任意正整数</td>
-<td>未设置 (null)</td>
-</tr>
-<tr>
-<td align="left">defaultExecutorType</td>
-<td align="left">配置默认的执行器。SIMPLE 就是普通的执行器；REUSE 执行器会重用预处理语句（PreparedStatement）； BATCH 执行器不仅重用语句还会执行批量更新。</td>
-<td align="left">SIMPLE REUSE BATCH</td>
-<td>SIMPLE</td>
-</tr>
-<tr>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td></td>
-</tr>
-</tbody></table>
-<h3 id="日志相关"><a href="#日志相关" class="headerlink" title="日志相关"></a>日志相关</h3><table>
-<thead>
-<tr>
-<th align="left">设置名</th>
-<th align="left">描述</th>
-<th align="left">有效值</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">logPrefix</td>
-<td align="left">指定 MyBatis 增加到日志名称的前缀。</td>
-<td align="left">任何字符串</td>
-<td>未设置</td>
-</tr>
-<tr>
-<td align="left">logImpl</td>
-<td align="left">指定 MyBatis 所用日志的具体实现，未指定时将自动查找。</td>
-<td align="left">SLF4J | LOG4J | LOG4J2 | JDK_LOGGING | COMMONS_LOGGING | STDOUT_LOGGING | NO_LOGGING</td>
-<td>未设置</td>
-</tr>
-</tbody></table>
-<h2 id="类型别名（typeAliases）"><a href="#类型别名（typeAliases）" class="headerlink" title="类型别名（typeAliases）"></a>类型别名（typeAliases）</h2><h2 id="类型处理器（typeHandlers）"><a href="#类型处理器（typeHandlers）" class="headerlink" title="类型处理器（typeHandlers）"></a>类型处理器（typeHandlers）</h2> 
+ 
       <!-- reward -->
       
     </div>
@@ -289,12 +177,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/08/06/MyBatis%E6%96%87%E6%A1%A3%E6%91%98%E8%A6%81/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/11/12/KMP%E7%AE%97%E6%B3%95%20%E2%80%94%E2%80%94%20%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%81%E6%A8%A1%E6%9D%BF%E3%80%81%20%E5%BA%94%E7%94%A8/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E6%A1%A3%E7%B3%BB%E5%88%97/" rel="tag">文档系列</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" rel="tag">字符串算法</a></li></ul>
 
     </footer>
   </div>
@@ -302,19 +190,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2021/08/06/MyBatis%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%20%E2%80%94%E2%80%94%20session%20%E5%8C%85%E7%9B%B8%E5%85%B3/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            MyBatis源码剖析 —— session 包相关
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/08/05/ThreadLocal%E4%BD%BF%E7%94%A8%E3%80%81%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" class="article-nav-link">
+      <a href="/2021/11/11/%E5%A4%A7%E6%95%B4%E6%95%B0%E5%8F%96%E6%A8%A1%E3%80%81%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%E4%B8%8E%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E3%80%81%E5%BF%AB%E9%80%9F%E5%B9%82%E4%B8%8E%E6%85%A2%E9%80%9F%E4%B9%98/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">ThreadLocal使用、源码解析</div>
+        <div class="article-nav-title">大整数取模、最大公约数与最小公倍数、快速幂与慢速乘</div>
       </a>
     
   </nav>
