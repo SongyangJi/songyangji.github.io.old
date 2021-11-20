@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Linux多进程、多线程编程 |  JsyBlog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/images/ayer.png" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Linux多进程、多线程编程"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Linux多进程、多线程编程
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/11/20/Linux%E5%A4%9A%E8%BF%9B%E7%A8%8B%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/" class="article-date">
+  <time datetime="2021-11-20T14:13:12.000Z" itemprop="datePublished">2021-11-20</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4.5k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">18 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="进程-线程相关"><a href="#进程-线程相关" class="headerlink" title="进程/线程相关"></a>进程/线程相关</h1><h2 id="线程相关"><a href="#线程相关" class="headerlink" title="线程相关"></a>线程相关</h2><h2 id="background-information"><a href="#background-information" class="headerlink" title="background information"></a>background information</h2><p>线程和进程的理论概念不再赘述。<br>Linux 中，系统是不认识线程还是进程的，它只认识 task。</p>
+<blockquote>
+<p>下面的阐述都是 Unix like 下的有关线程的语义。</p>
+</blockquote>
+<p>主线程和子线程</p>
+<ul>
+<li>共享： 用户区内，除了栈区是不共享的，其余都是共享的。</li>
+<li>不共享： 栈区（当有 1 主 + 4 子线程时候，栈区会被平分为 5 份）</li>
+</ul>
+<p>多进程共享的资源（fork、clone出的子进程和父进程）：</p>
+<ul>
+<li><p>代码</p>
+</li>
+<li><p>文件描述符</p>
+</li>
+<li><p>内存映射区 –mmap<br>多线程共享的资源：</p>
+</li>
+<li><p>堆</p>
+</li>
+<li><p>全局变量 </p>
+</li>
+<li><p>线程号和线程 ID 是有区别的<br>查看方式： 找到程序的进程 ID后， <code>ps -Lf $(pid)</code>，LWP那一列即为线程ID。</p>
+</li>
+</ul>
+<h3 id="pthread-create"><a href="#pthread-create" class="headerlink" title="pthread_create"></a>pthread_create</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>pthread非linux系统的默认库， 需手动链接-线程库 -lpthread</p>
+</li>
+<li><p>函数说明:<br>返回成功时，由 tidp 指向的内存单元被设置为新创建线程的线程ID。a<br>ttr参数用于指定各种不同的线程属性。<br>新创建的线程从start_rtn函数的地址开始运行，该函数只有一个万能指针参数arg。<br>如果需要向start_rtn函数传递的参数不止一个，那么需要把这些参数放到一个结构体中，然后把这个结构的地址作为arg的参数传入。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_create</span><span class="params">(<span class="keyword">pthread_t</span> *tidp,<span class="keyword">const</span> <span class="keyword">pthread_attr_t</span> *attr, <span class="keyword">void</span> *(*start_rtn)(<span class="keyword">void</span>*),<span class="keyword">void</span> *arg)</span></span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>参数说明：<br>第一个参数为指向线程标识符的指针。<br>第二个参数用来设置线程属性。<br>第三个参数是线程运行函数的起始地址。<br>最后一个参数是运行函数的参数。</p>
+</li>
+<li><p>返回值<br>若线程创建成功，则返回0。若线程创建失败，则返回出错编号，并且*thread中的内容是未定义的。</p>
+</li>
+<li><p>代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> num = <span class="number">13</span>; <span class="comment">//设置为全局变量，在全局区域，共享</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">myfun</span><span class="params">(<span class="keyword">void</span>* arg)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">void</span>* p = (<span class="keyword">void</span> *)&amp;num;  <span class="comment">//传一个地址进去（voi* 也是 4 个字节）</span></span><br><span class="line">    <span class="keyword">pthread_t</span> id[<span class="number">5</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">        pthread_create(&amp;(id[i]), <span class="literal">NULL</span>, myfun, p);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;i = %d, thread id: %ld\n&quot;</span>, i, id[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">myfun</span><span class="params">(<span class="keyword">void</span>* arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;num = %d, child thread id: %ld\n&quot;</span>, (*((<span class="keyword">int</span> *)arg))++, pthread_self());</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>参考链接<br><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man3/pthread_create.3.html">pthread_create(3) — Linux manual page</a><br><a target="_blank" rel="noopener" href="https://xmuli.tech/posts/28f8209f/">Linux中创建多线程实例pthread_create()</a></p>
+</li>
+</ul>
+<h3 id="pthread-join"><a href="#pthread-join" class="headerlink" title="pthread_join"></a>pthread_join</h3><p>pthread_join()即是子线程合入主线程，主线程阻塞等待子线程结束，然后回收子线程资源。</p>
+<p>注意，默认情况下，资源是不会随着子线程的exit或return而回收的。</p>
+<ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>函数说明:<br>thread_join()函数，以阻塞的方式等待thread指定的线程结束。当函数返回时，被等待线程的资源被收回。<br>如果线程已经结束，那么该函数会立即返回。并且thread指定的线程必须是 joinable 的。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_join</span><span class="params">(<span class="keyword">pthread_t</span> thread, <span class="keyword">void</span> **retval)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>thread: 线程标识符，即线程ID，标识唯一线程。<br>retval: 用户定义的指针，用来存储被等待线程的返回值。</p>
+</li>
+<li><p>返回值<br>0代表成功。 失败，返回的则是错误号。</p>
+</li>
+</ul>
+<ul>
+<li>示例代码：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">thread_function</span><span class="params">(<span class="keyword">void</span> *arg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Thread working... %d \n&quot;</span>, i);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">pthread_t</span> mythread;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pthread_create(&amp;mythread, <span class="literal">NULL</span>, thread_function, <span class="literal">NULL</span>)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;error creating thread.&quot;</span>);</span><br><span class="line">        <span class="built_in">abort</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (pthread_join(mythread, <span class="literal">NULL</span>)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;error join thread.&quot;</span>);</span><br><span class="line">        <span class="built_in">abort</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;thread done! \n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> 输出</span></span><br><span class="line"><span class="comment">Thread working...! 0 </span></span><br><span class="line"><span class="comment">Thread working...! 1 </span></span><br><span class="line"><span class="comment">Thread working...! 2 </span></span><br><span class="line"><span class="comment">Thread working...! 3 </span></span><br><span class="line"><span class="comment">Thread working...! 4 </span></span><br><span class="line"><span class="comment">Thread working...! 5 </span></span><br><span class="line"><span class="comment">Thread working...! 6 </span></span><br><span class="line"><span class="comment">Thread working...! 7 </span></span><br><span class="line"><span class="comment">thread done! </span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>如果去掉<code>pthread_join</code>的调用的话，<br>输出为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">thread done! </span><br><span class="line">Thread working... 0 </span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+<p>也就是说，子线程来不及执行它的函数，就因为父线程的死亡而被迫终结了。</p>
+<h3 id="pthread-detach"><a href="#pthread-detach" class="headerlink" title="pthread_detach"></a>pthread_detach</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>函数说明:<br>pthread_join()函数的替代函数，可回收创建时detachstate属性设置为PTHREAD_CREATE_JOINABLE的线程的存储空间。<br>该函数不会阻塞父线程。<br>pthread_join()函数用于只是应用程序在线程tid终止时回收其存储空间。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_detach</span><span class="params">(<span class="keyword">pthread_t</span> tid)</span></span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>返回值<br>thread_detach() 在调用成功完成之后返回零。其他任何返回值都表示出现了错误。</p>
+</li>
+</ul>
+<p>注意，即使如此，父线程退出时，子线程仍然会强制退出。</p>
+<h3 id="pthread-cancel"><a href="#pthread-cancel" class="headerlink" title="pthread_cancel"></a>pthread_cancel</h3><ul>
+<li><p>函数说明：<br>发送终止信号给thread线程，如果成功则返回0，否则为非0值。发送成功并不意味着thread会终止。</p>
+</li>
+<li><p>函数定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cancel</span><span class="params">(<span class="keyword">pthread_t</span> thread)</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>示例代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @Author: 吉松阳</span></span><br><span class="line"><span class="comment"> * @Date: 2021/9/26</span></span><br><span class="line"><span class="comment"> * @Description: </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_message_function</span><span class="params">(<span class="keyword">void</span> *ptr)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">pthread_t</span> thread1;</span><br><span class="line">    pthread_create(&amp;thread1, <span class="literal">NULL</span>, (<span class="keyword">void</span> *) &amp;print_message_function, (<span class="keyword">void</span> *) <span class="number">0</span>);</span><br><span class="line">    sleep(<span class="number">3</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;main thread\n&quot;</span>);</span><br><span class="line">    pthread_cancel(thread1);</span><br><span class="line">    sleep(<span class="number">7</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_message_function</span><span class="params">(<span class="keyword">void</span> *ptr)</span> </span>&#123;</span><br><span class="line">    pthread_detach(pthread_self());</span><br><span class="line">    sleep(<span class="number">6</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;child thread\n&quot;</span>);</span><br><span class="line">    pthread_exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 实验证明 pthread_exit 确实起作用了</span></span><br></pre></td></tr></table></figure></li>
+<li><p>参考链接：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lijunamneg/archive/2013/01/25/2877211.html">线程取消(pthread_cancel)</a></p>
+</li>
+</ul>
+<h2 id="信号处理相关"><a href="#信号处理相关" class="headerlink" title="信号处理相关"></a>信号处理相关</h2><h3 id="raise"><a href="#raise" class="headerlink" title="raise"></a>raise</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>函数说明:<br>C 库函数, 会促使生成信号 sig。sig 参数与 SIG 宏兼容。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sig -- 要发送的信号码。</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">raise</span><span class="params">(<span class="keyword">int</span> sig)</span></span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>查看所有信号：使用 <code>kill -l</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ kill -l</span><br><span class="line"> 1) SIGHUP	 2) SIGINT	 3) SIGQUIT	 4) SIGILL	 5) SIGTRAP</span><br><span class="line"> 6) SIGABRT	 7) SIGBUS	 8) SIGFPE	 9) SIGKILL	10) SIGUSR1</span><br><span class="line">11) SIGSEGV	12) SIGUSR2	13) SIGPIPE	14) SIGALRM	15) SIGTERM</span><br><span class="line">16) SIGSTKFLT	17) SIGCHLD	18) SIGCONT	19) SIGSTOP	20) SIGTSTP</span><br><span class="line">21) SIGTTIN	22) SIGTTOU	23) SIGURG	24) SIGXCPU	25) SIGXFSZ</span><br><span class="line">26) SIGVTALRM	27) SIGPROF	28) SIGWINCH	29) SIGIO	30) SIGPWR</span><br><span class="line">31) SIGSYS	34) SIGRTMIN	35) SIGRTMIN+1	36) SIGRTMIN+2	37) SIGRTMIN+3</span><br><span class="line">38) SIGRTMIN+4	39) SIGRTMIN+5	40) SIGRTMIN+6	41) SIGRTMIN+7	42) SIGRTMIN+8</span><br><span class="line">43) SIGRTMIN+9	44) SIGRTMIN+10	45) SIGRTMIN+11	46) SIGRTMIN+12	47) SIGRTMIN+13</span><br><span class="line">48) SIGRTMIN+14	49) SIGRTMIN+15	50) SIGRTMAX-14	51) SIGRTMAX-13	52) SIGRTMAX-12</span><br><span class="line">53) SIGRTMAX-11	54) SIGRTMAX-10	55) SIGRTMAX-9	56) SIGRTMAX-8	57) SIGRTMAX-7</span><br><span class="line">58) SIGRTMAX-6	59) SIGRTMAX-5	60) SIGRTMAX-4	61) SIGRTMAX-3	62) SIGRTMAX-2</span><br></pre></td></tr></table></figure>
+
+<p>值得注意的是，<br>当一个进程调用fork时，因为子进程在开始时复制父进程的存储映像，信号捕捉函数的地址在子进程中是有意义的，所以子进程继承父进程的信号处理方式。<br>但是当子进程调用exec后，因为exec运行新的程序后会覆盖从父进程继承来的存储映像。<br>那么信号捕捉函数在新程序中已无意义，所以exec会将原先设置为要捕捉的信号都更改为默认动作。</p>
+<ul>
+<li>返回值<br>如果成功该函数返回零，否则返回非零。</li>
+</ul>
+<h3 id="signal"><a href="#signal" class="headerlink" title="signal"></a>signal</h3><ul>
+<li>头文件:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>函数说明:<br>C 库函数,设置一个函数来处理信号，即带有 sig 参数的信号处理程序。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (*signal(<span class="keyword">int</span> sig, <span class="keyword">void</span> (*func)(<span class="keyword">int</span>)))(<span class="keyword">int</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>参数说明：</p>
+<ul>
+<li>sig – 在信号处理程序中作为变量使用的信号码。下面是一些重要的标准信号常量</li>
+<li>func – 一个指向函数的指针。它可以是一个由程序定义的函数，也可以是下面预定义函数之一。<ul>
+<li>SIG_DFL    默认的信号处理程序。</li>
+<li>SIG_IGN    忽视信号。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>返回值<br>该函数返回之前的信号处理程序</li>
+</ul>
+<ul>
+<li>实例代码</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">signal_catchfunc</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ret;</span><br><span class="line">    signal(SIGINT, signal_catchfunc);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;开始生成一个信号\n&quot;</span>);</span><br><span class="line">    ret = raise(SIGINT);</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;错误，不能生成SIGINT信号\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;退出....\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">signal_catchfunc</span><span class="params">(<span class="keyword">int</span> signal)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;捕获信号\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="sandbox使用的信号"><a href="#sandbox使用的信号" class="headerlink" title="sandbox使用的信号"></a>sandbox使用的信号</h3><p>信号的共达60余个，这里只介绍一下sandbox中使用的信号。</p>
+<h3 id="SIGUSR1-SIGUSR2"><a href="#SIGUSR1-SIGUSR2" class="headerlink" title="SIGUSR1/SIGUSR2"></a>SIGUSR1/SIGUSR2</h3><p>SIGUSR1 用户自定义信号 默认处理：进程终止;<br>SIGUSR2 用户自定义信号默认处理：进程终止。</p>
+<h3 id="SIGSEGV"><a href="#SIGSEGV" class="headerlink" title="SIGSEGV"></a>SIGSEGV</h3><p>在POSIX兼容的平台上，SIGSEGV是当一个进程<strong>执行了一个无效的内存引用</strong>，或<strong>发生段错误</strong>时发送给它的信号。<br>SIGSEGV的符号常量在头文件<code>signal.h</code>中定义。<br>因为在不同平台上，信号数字可能变化，因此最好使用符号信号名。通常，它是信号#11。<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/SIGSEGV">SIGSEGV维基百科</a></p>
+<h2 id="execXX-函数组"><a href="#execXX-函数组" class="headerlink" title="execXX 函数组"></a>execXX 函数组</h2><p>exec函数族提供了一个在进程中启动另一个程序执行的方法。它可以根据指定的文件名或目录名找到可执行文件，<br>并用它来取代原调用进程的数据段、代码段和堆栈段，在执行完之后，原调用进程的内容除了进程号外，其他全部被新的进程替换了。<br>另外，这里的可执行文件既可以是二进制文件，也可以是Linux下任何可执行的脚本文件。</p>
+<p>exec函数一共有六个，其中execve为内核级系统调用，<br>其他（execl，execle，execlp，execv，execvp）都是调用execve的库函数。<br>不同之处在于如何找到程序、如何指定参数以及环境来自何处。</p>
+<ul>
+<li><p>名称中带有 v 的调用，用带有一个数组参数来指定argv[]新程序的数组。数组的最后一个元素为 NULL。</p>
+</li>
+<li><p>名称中带有 l 的调用，将新程序的参数作为函数本身的可变长度参数列表。参数的结尾为参数指针(char *)NULL。<br>你应该始终进行类型转换，因为NULL实际是整数常量，并且调用可变参数函数时的默认参数转换不会将其转换为指针。</p>
+</li>
+<li><p>名称中带有 e 的调用，需要一个额外的参数（或l情况下的参数）来提供新程序的环境；否则，程序将继承当前进程的环境。</p>
+</li>
+</ul>
+<h3 id="execve"><a href="#execve" class="headerlink" title="execve"></a>execve</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>函数说明:<br>pthread_create是类Unix操作系统（Unix、Linux、Mac OS X等）的创建线程的函数。<br>它的功能是创建线程（实际上就是确定调用该线程函数的入口点），在线程创建以后，就开始运行相关的线程函数。</p>
+</li>
+<li><p>函数定义:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">execve</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">char</span> *<span class="keyword">const</span> argv[], <span class="keyword">char</span> *<span class="keyword">const</span> envp[])</span></span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>返回值:<br>如果执行成功则函数不会返回(后面的代码也并不会执行了)，执行失败则直接返回-1，失败原因存于errno 中。</p>
+</li>
+</ul>
+<ul>
+<li>示例代码:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @Author: 吉松阳</span></span><br><span class="line"><span class="comment"> * @Date: 2021/9/22</span></span><br><span class="line"><span class="comment"> * @Description: </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *argv[] = &#123;<span class="string">&quot;ls&quot;</span>, <span class="string">&quot;-el&quot;</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    <span class="keyword">char</span> *envp[] = &#123;<span class="string">&quot;PATH=/bin&quot;</span>, <span class="number">0</span>&#125;;</span><br><span class="line">    execve(<span class="string">&quot;/bin/ls&quot;</span>, argv, envp);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  total 128</span></span><br><span class="line"><span class="comment">  drwxr-xr-x  5 jisongyang  staff    160 Sep 22 22:07 CMakeFiles</span></span><br><span class="line"><span class="comment">  -rw-r--r--  1 jisongyang  staff   6687 Sep 22 22:06 Makefile</span></span><br><span class="line"><span class="comment">  -rw-r--r--  1 jisongyang  staff   1021 Sep 22 22:06 cmake_install.cmake</span></span><br><span class="line"><span class="comment">  -rwxr-xr-x  1 jisongyang  staff  50424 Sep 22 22:22 test_execve</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>参考链接:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/execve.2.html">execve(2) — Linux manual page</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/20823371/what-is-the-difference-between-the-functions-of-the-exec-family-of-system-calls">What is the difference between the functions of the exec family of system calls like exec and execve?</a></li>
+</ol>
+<h3 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>函数说明:<br>sleep()会令目前的进程暂停, 直到达到参数seconds 所指定的时间, 或是被信号所中断.</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">sleep</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> seconds)</span></span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>返回值<br>若进程暂停到参数seconds 所指定的时间则返回0, 若有信号中断则返回剩余秒数.</p>
+</li>
+</ul>
+<h2 id="wait-函数组"><a href="#wait-函数组" class="headerlink" title="wait 函数组"></a>wait 函数组</h2><p>进程调用 exit() 退出执行后，被设置为僵死状态。<br>这时父进程可以通过 wait4() 系统调用查询子进程是否终结，之后再进行最后的操作，彻底删除进程所占用的内存资源。<br>wait4() 系统调用由 linux 内核实现。<br>linux 系统通常提供了 wait()、waitpid()、wait3()、wait4() 这四个函数，<br>四个函数的参数不同，语义也有细微的差别，但是都返回关于终止进程的状态信息。</p>
+<h3 id="wait"><a href="#wait" class="headerlink" title="wait"></a>wait</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;        // 提供类型 pid_t 的定义</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>函数说明:<br>当进程调用 wait() 时，会暂停目前进程的执行（即阻塞），由 wait() 来自动分析是否当前进程的某个子进程已经退出，<br>如果找到了这样一个已经变成僵尸进程的子进程，wait 就会收集这个子进程的信息，并将其彻底销毁后返回；<br>如果没有找到这样一个子进程，wait 就会一直阻塞在这里，直到出现<strong>僵尸进程</strong>。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">pid_t</span> <span class="title">wait</span><span class="params">(<span class="keyword">int</span> *status)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数 status 保存着子进程退出时的一些状态（包括 task_struct、thread_info及内核栈等）它是一个指向 int 类型的指针；<br>如果不在意子进程的结束状态值，只想把这个僵尸进程消灭掉（实际上，大多数时候都是这样做的），则可以将这个参数设为 NULL。</p>
+</li>
+</ul>
+<p>关于 status参数比较复杂，可以参考这里<br><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/linux/kernel/syscall/part3/index.html">传送门</a></p>
+<ul>
+<li>返回值<br>如果 wait() 调用成功，则会返回被收集子进程的进程ID；如果被调用进程没有子进程，则调用失败，返回 -1</li>
+</ul>
+<h3 id="waitpid"><a href="#waitpid" class="headerlink" title="waitpid"></a>waitpid</h3><ul>
+<li><p>函数原型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">pid_t</span> <span class="title">waitpid</span><span class="params">(<span class="keyword">pid_t</span> pid,<span class="keyword">int</span> *status,<span class="keyword">int</span> options)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>waitpid() 函数的功能与 wait() 的功能类似，不过，它比 wait() 函数多了两个参数：</p>
+</li>
+<li><p>1）参数 pid 为欲等待的子进程的识别码：<br>pid &lt; -1 ：等待进程组 ID 为 pid 绝对值的进程组中的任何子进程；<br>pid = -1 ：等待任何子进程，此时 waitpid() 相当于 wait()。实际上，wait()就是 pid = -1、options = 0 的waitpid()， 且有：<br>pid = 0 ：等待进程组 ID 与当前进程相同的任何子进程（也就是等待同一个进程组中的任何子进程）；<br>pid &gt; 0 ：等待任何子进程 ID 为 pid 的子进程，只要指定的子进程还没有结束，waitpid() 就会一直等下去。</p>
+</li>
+<li><p>2）参数 options 提供一些额外的选项来控制 waitpid()：<br>WNOHANG：如果没有任何已经结束了的子进程，则马上返回，不等待；<br>WUNTRACED：如果子进程进入暂停执行的情况，则马上返回，但结束状态不予理会；<br>也可以将这两个选项组合起来使用，使用 OR 操作。如果不想使用这两个选项，也可以直接把 options 设为 0 </p>
+</li>
+<li><p>3）waitpid() 的返回值，有三种：<br>a）正常返回时，waitpid() 返回收集到的子进程的PID；<br>b）如果设置了 WNOHANG，而调用 waitpid() 时，没有发现已退出的子进程可收集，则返回0；<br>c）如果调用出错，则返回 -1，这时erron 会被设置为相应的值以指示错误所在。（当 pid 所指示的子进程不错在，或此进程存在，但不是调用进程的子进程， waitpid() 就会返回出错，这时 erron 被设置为 ECHILD）</p>
+</li>
+</ul>
+<h3 id="wait3-wait4"><a href="#wait3-wait4" class="headerlink" title="wait3/wait4"></a>wait3/wait4</h3><p>函数原型</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/tpyes.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">pid_t</span> <span class="title">wait3</span><span class="params">(<span class="keyword">int</span> *status,<span class="keyword">int</span> options,struct rusage *rusage)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">pid_t</span> <span class="title">wait4</span><span class="params">(<span class="keyword">pid_t</span> pid,<span class="keyword">int</span> *status,<span class="keyword">int</span> options,struct rusage *rusage)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>wait3() 和 wait4() 函数除了可以获得子进程状态信息外，还可以获得子进程的资源使用信息，这些信息是通过参数 <strong>rusage</strong> 得到的。<br>而 wait3() 与 wait4() 之间的区别是，wait3() 等待所有进程，而 wait4() 可以根据 pid 的值选择要等待的子进程。<br>参数 pid 的意义与 waitpid() 函数的一样。</p>
+<p>其中，需要注意的是，参数rusage所指向的结构中返回终止子进程的资源使用情况。其中包括进程使用的CPU时间总量以及内存管理的统计数据。<br>如下，为它的结构定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rusage</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">ru_utime</span>;</span> <span class="comment">/* user CPU time used */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">ru_stime</span>;</span> <span class="comment">/* system CPU time used */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_maxrss;        <span class="comment">/* maximum resident set size */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_ixrss;         <span class="comment">/* integral shared memory size */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_idrss;         <span class="comment">/* integral unshared data size */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_isrss;         <span class="comment">/* integral unshared stack size */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_minflt;        <span class="comment">/* page reclaims (soft page faults) */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_majflt;        <span class="comment">/* page faults (hard page faults) */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_nswap;         <span class="comment">/* swaps */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_inblock;       <span class="comment">/* block input operations */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_oublock;       <span class="comment">/* block output operations */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_msgsnd;        <span class="comment">/* IPC messages sent */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_msgrcv;        <span class="comment">/* IPC messages received */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_nsignals;      <span class="comment">/* signals received */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_nvcsw;         <span class="comment">/* voluntary context switches */</span></span><br><span class="line">    <span class="keyword">long</span>   ru_nivcsw;        <span class="comment">/* involuntary context switches */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>其中比较重要的三项：</p>
+<ol>
+<li>timeval ru_utime; /* user CPU time used */        用户态CPU使用时间</li>
+<li>timeval ru_stime; /* system CPU time used */      内核态CPU使用时间</li>
+<li>ru_maxrss;        /* maximum resident set size */ 最大驻留集</li>
+</ol>
+<p>还可以shell中使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">man getrusage</span><br></pre></td></tr></table></figure>
+
+<h3 id="如何使用int-status"><a href="#如何使用int-status" class="headerlink" title="如何使用int* status"></a>如何使用int* status</h3><p>如果参数status的值不是NULL，wait就会把子进程退出时的状态取出并存入其中，这指向整数值（int），<br>指出了子进程是正常退出还是被非正常结束的，以及正常结束时的返回值，或被哪一个信号结束的等信息。<br>由于这些信息被存放在<strong>一个整数的不同二进制位</strong>中，所以用常规的方法读取会非常麻烦，<br>于是就设计了一套专门的宏来完成这项工作，下面介绍一下其中最常用的几个。</p>
+<p>请注意，下面的宏中的 status 虽然名字一样，这里的参数status并不同于wait中的参数<br>一个是指向整数的指针，而是那个指针所指向的整数，切记不要搞混。</p>
+<h3 id="WIFEXITED-int-status"><a href="#WIFEXITED-int-status" class="headerlink" title="WIFEXITED(int status)"></a>WIFEXITED(int status)</h3><p>这个宏用来指出进程是否为正常退出的，如果是，它会返回一个非零值。</p>
+<h3 id="WEXITSTATUS-status"><a href="#WEXITSTATUS-status" class="headerlink" title="WEXITSTATUS(status)"></a>WEXITSTATUS(status)</h3><p><strong>当WIFEXITED返回非零值时</strong>，可以用这个宏来提取<strong>子进程的返回值</strong>。<br>如果子进程调用exit(5)退出，WEXITSTATUS(status) 就会返回5；如果子进程调用exit(7)，WEXITSTATUS(status)就会返回7。<br>请注意，如果进程不是正常退出的，也就是 说，WIFEXITED返回0，这个值就毫无意义。</p>
+<p>所以二者往往这样配合使用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//正常退出判断</span></span><br><span class="line"><span class="keyword">if</span>(WIFEXITED(status))&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;child exit with %d\n&quot;</span>, WEXITSTATUS(status));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="WIFSIGNALED-status"><a href="#WIFSIGNALED-status" class="headerlink" title="WIFSIGNALED(status)"></a>WIFSIGNALED(status)</h3><p>这个宏来指出进程是否遇到未处理的信号而意外退出，如果是，返回非零0.</p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p><strong>当 WIFSIGNALED 返回非零值时</strong>，此时可通过WTERMSIG(status)获取使得<strong>进程退出的信号编号</strong></p>
+<p>所以二者可以这样配合使用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//因为某种信号中断获取状态</span></span><br><span class="line"><span class="keyword">if</span>(WIFSIGNALED(status))&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;child killed by %d\n&quot;</span>, WTERMSIG(status));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>参考链接<br><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/wait4.2.html">wait4(2) — Linux manual page</a></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/11/20/Linux%E5%A4%9A%E8%BF%9B%E7%A8%8B%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/" rel="tag">进程</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2021/11/20/Linux%E6%97%B6%E9%97%B4%E7%9B%B8%E5%85%B3%E5%BA%93%E5%87%BD%E6%95%B0/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Linux时间相关库函数</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2021
+        <i class="ri-heart-fill heart_icon"></i> SongyangJi
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+      <li>
+          <img src="/images/beian.png"></img>
+          <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=01234567890123" target="_black" rel="nofollow">备案</a>
+      </li>
+        
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>
