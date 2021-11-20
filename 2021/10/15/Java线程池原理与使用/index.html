@@ -117,8 +117,58 @@
 
 
 
-
-<p>其中构造参数的含义为：<br>| 序号 | 名称            | 类型                     | 含义             |<br>| —- | ————— | ———————— | —————- |<br>| 1    | corePoolSize    | int                      | 核心线程池大小   |<br>| 2    | maximumPoolSize | int                      | 最大线程池大小   |<br>| 3    | keepAliveTime   | long                     | 线程最大空闲时间 |<br>| 4    | unit            | TimeUnit                 | 时间单位         |<br>| 5    | workQueue       | BlockingQueue  | 线程等待队列     |<br>| 6    | threadFactory   | ThreadFactory            | 线程创建工厂     |<br>| 7    | handler         | RejectedExecutionHandler | 拒绝策略         |</p>
+<h2 id="构造参数的含义"><a href="#构造参数的含义" class="headerlink" title="构造参数的含义"></a>构造参数的含义</h2><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>corePoolSize</td>
+<td>int</td>
+<td>核心线程池大小</td>
+</tr>
+<tr>
+<td>2</td>
+<td>maximumPoolSize</td>
+<td>int</td>
+<td>最大线程池大小</td>
+</tr>
+<tr>
+<td>3</td>
+<td>keepAliveTime</td>
+<td>long</td>
+<td>线程最大空闲时间</td>
+</tr>
+<tr>
+<td>4</td>
+<td>unit</td>
+<td>TimeUnit</td>
+<td>时间单位</td>
+</tr>
+<tr>
+<td>5</td>
+<td>workQueue</td>
+<td>BlockingQueue</td>
+<td>线程等待队列</td>
+</tr>
+<tr>
+<td>6</td>
+<td>threadFactory</td>
+<td>ThreadFactory</td>
+<td>线程创建工厂</td>
+</tr>
+<tr>
+<td>7</td>
+<td>handler</td>
+<td>RejectedExecutionHandler</td>
+<td>拒绝策略</td>
+</tr>
+</tbody></table>
 <h2 id="内部机制"><a href="#内部机制" class="headerlink" title="内部机制"></a>内部机制</h2><ol>
 <li><p>如果当前线程池的线程数还没有达到基本大小(poolSize &lt; corePoolSize)，无论是否有空闲的线程新增一个线程处理新提交的任务；</p>
 </li>
