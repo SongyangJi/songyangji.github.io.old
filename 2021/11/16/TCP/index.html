@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">8.7k</span>
+            <span class="post-count">9.3k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">31 分钟</span>
+            <span class="post-count">33 分钟</span>
         </span>
     </span>
 </div>
@@ -153,7 +153,7 @@
 </blockquote>
 <p><strong>理论最大值</strong></p>
 <ul>
-<li><p>Client 最大 TCP 连接数<br>client 在每次发起 TCP 连接请求时，如果自己并不指定端口的话，系统会随机选择一个本地端口（local port），该端口是独占的，不能和其他 TCP 连接共享。TCP 端口的数据类型是 unsigned short，因此本地端口个数最大只有 65536，除了端口 0不能使用外，其他端口在空闲时都可以正常使用，这样可用端口最多有 65535 （2的16次方）个。</p>
+<li><p>Client 最大 TCP 连接数<br>client 在每次发起 TCP 连接请求时，<strong>如果自己并不指定端口的话，系统会随机选择一个本地端口</strong>（local port），<strong>该端口是独占的</strong>，不能和其他 TCP 连接共享。TCP 端口的数据类型是 unsigned short，因此本地端口个数最大只有 65536，除了端口 0 不能使用外，其他端口在空闲时都可以正常使用，这样可用端口最多有 65535 （2的16次方）个。</p>
 </li>
 <li><p>Server最大 TCP 连接数<br>server 通常固定在某个本地端口上监听，等待 client 的连接请求。不考虑地址重用（Unix 的 SO_REUSEADDR 选项）的情况下，即使 server 端有多个 IP，本地监听端口也是独占的，因此 server 端 TCP 连接 4 元组中只有客户端的 IP 地址和端口号是可变的，因此<strong>最大 TCP 连接=客户端 IP 数 × 客户端 port 数</strong>，对 IPV4，在不考虑 IP 地址分类的情况下，最大 TCP 连接数约为 2 的 32 次方（IP 数）× 2 的 16 次方（port 数），也就是 server 端单机最大 TCP 连接数约为 2 的 48 次方。</p>
 </li>
@@ -473,6 +473,11 @@
 </ul>
 <p>⽂。</p>
 <p>所以客户端在 TIME-WAIT 状态等待 2MSL 时间后，就可以保证双⽅的连接都可以正常的关闭。</p>
+<blockquote>
+<p> 一个极端的情况：如果客户端第四次挥⼿ack丢失，服务端超时重发的fin报⽂也丢失，客户端timewait时间超过了2msl，这个时候会发⽣什么？认为连接已经关闭吗？</p>
+<p>当客户端 timewait 时间超过了 2MSL，则客户端就直接进⼊关闭状态。</p>
+<p>服务端超时重发 fin 报⽂的次数如果超过 <code>tcp_orphan_retries</code> ⼤⼩后，服务端也会关闭 TCP 连接。</p>
+</blockquote>
 <h3 id="为什么-TIME-WAIT-等待的时间是-2MSL"><a href="#为什么-TIME-WAIT-等待的时间是-2MSL" class="headerlink" title="为什么 TIME_WAIT 等待的时间是 2MSL"></a>为什么 TIME_WAIT 等待的时间是 2MSL</h3><p><strong>MSL</strong> 是 <code>Maximum Segment Lifetime</code>，报⽂最⼤⽣存时间，<strong>它是任何 TCP 报⽂在⽹络上存在的最⻓时间</strong>，超过这个时</p>
 <p>间报⽂将被丢弃。因为 TCP 报⽂基于是 IP 协议的，⽽ IP 头中有⼀个 TTL 字段，是 IP 数据报可以经过的最⼤路</p>
 <p>由数，每经过⼀个处理他的路由器此值就减 1，当此值为 0 则数据报将被丢弃，同时发送 ICMP 报⽂通知源主机。</p>
@@ -506,19 +511,28 @@
 <p>第⼆个危害是会造成严重的后果的，要知道，端⼝资源也是有限的，⼀般可以开启的端⼝为 32768～61000 ，也</p>
 <p>可以通过如下参数设置指定<code>net.ipv4.ip_local_port_range</code>。</p>
 <p>如果发起连接⼀⽅的 <strong>TIME_WAIT</strong> 状态过多，占满了所有端⼝资源，则会导致⽆法创建新连接。</p>
+<p>对于客户端和服务端而言， TIME-WAIT 状态的危害的侧重点并不一样：</p>
+<ul>
+<li><strong>客户端受端⼝资源限制</strong>：客户端TIME_WAIT过多，就会导致端⼝资源被占⽤，因为端⼝就65536个，被占满就会导致⽆法创建新连</li>
+</ul>
+<p>接。</p>
+<ul>
+<li><p><strong>服务端受系统资源限制</strong>：</p>
+<p>由于⼀个 TCP 四元组表示 TCP 连接，理论上服务端可以建⽴很多连接，服务端只监听⼀个端⼝，但是会把</p>
+<p>连接扔给处理线程，所以理论上监听的端⼝可以继续监听。但是线程池处理不了那么多⼀直不断的连接了。</p>
+<p>所以当服务端出现⼤ᰁ TIMEWAIT 时，系统资源容易被耗尽。</p>
+</li>
+</ul>
 <h3 id="如何解决TIME-WAIT过多"><a href="#如何解决TIME-WAIT过多" class="headerlink" title="如何解决TIME_WAIT过多"></a>如何解决TIME_WAIT过多</h3><p>这⾥给出优化 TIME-WAIT 的⼏个⽅式，都是有利有弊：</p>
 <ol>
-<li><p>打开 net.ipv4.tcp_tw_reuse 和 net.ipv4.tcp_timestamps 选项；</p>
-</li>
-<li><p>net.ipv4.tcp_max_tw_buckets</p>
-</li>
-<li><p>使⽤ SO_LINGER ，应⽤强制使⽤ RST 关闭。</p>
-</li>
+<li>打开 net.ipv4.tcp_tw_reuse 和 net.ipv4.tcp_timestamps 选项；</li>
+<li>net.ipv4.tcp_max_tw_buckets</li>
+<li>使⽤ SO_LINGER ，应⽤强制使⽤ RST 关闭。</li>
+<li>使用 SO_REUSEADDR</li>
 </ol>
 <p><strong>⽅式⼀：<em>net.ipv4.tcp_tw_reuse</em> 和 <em>tcp_timestamps</em></strong></p>
 <p>如下的 Linux 内核参数开启后，则可以复⽤处于 <strong>TIME_WAIT</strong> 的 <strong>socket</strong> 为新的连接所⽤。</p>
-<p>有⼀点需要注意的是，<strong>tcp_tw_reuse</strong> 功能<strong>只能⽤于客户端</strong>（连接发起⽅），因为开启了该功能，在调⽤ <strong>connect()</strong></p>
-<p>函数时，内核会随机找⼀个 <strong>time_wait</strong> 状态超过 <strong>1</strong> 秒的连接给新的连接复⽤。</p>
+<p>有⼀点需要注意的是，<strong>tcp_tw_reuse</strong> 功能<strong>只能⽤于客户端</strong>（连接发起⽅），因为开启了该功能，在调⽤ <strong>connect()</strong> 函数时，内核会随机找⼀个 <strong>time_wait</strong> 状态超过 <strong>1</strong> 秒的连接给新的连接复⽤。</p>
 <p><code>net.ipv4.tcp_tw_reuse = 1</code></p>
 <p>使⽤这个选项，还有⼀个前提，需要打开对 TCP 时间戳的⽀持，即</p>
 <p><code>net.ipv4.tcp_timestamps=1</code>(默认即为 1)</p>
@@ -538,6 +552,24 @@
 <p>如果 l_onoff 为⾮ 0， 且 l_linger 值为 0，那么调⽤ close 后，会⽴该发送⼀个 RST 标志给对端，该 TCP 连接</p>
 <p>将跳过四次挥⼿，也就跳过了 TIME_WAIT 状态，直接关闭。</p>
 <p>但这为跨越 TIME_WAIT 状态提供了⼀个可能，不过是⼀个⾮常危险的⾏为，不值得提倡。</p>
+<p>**方式四：socket设置SO_REUSEADDR **</p>
+<p> SO_REUSEADDR 是⽤户态的选项，⽤于「连接的服务⽅」，⽤来告诉操作系统内核，如果端⼝已被占⽤，</p>
+<p>但是 TCP 连接状态位于 TIME_WAIT ，可以重⽤端⼝。如果端⼝忙，⽽ TCP 处于其他状态，重⽤会有</p>
+<p>“Address already in use” 的错误信息。</p>
+<p>注意 <code>SO_REUSEADDR</code>和<code>net.ipv4.tcp_tw_reuse</code>的区别：</p>
+<ol>
+<li>tcp_tw_reuse 是内核选项，主要⽤在连接的发起⽅（客户端）。TIME_WAIT 状态的连接创建时间超过 1 秒</li>
+</ol>
+<p>后，新的连接才可以被复⽤，注意，这⾥是「连接的发起⽅」；</p>
+<ol start="2">
+<li>SO_REUSEADDR 是⽤户态的选项，⽤于「连接的服务⽅」，⽤来告诉操作系统内核，如果端⼝已被占⽤，</li>
+</ol>
+<p>但是 TCP 连接状态位于 TIME_WAIT ，可以᯿⽤端⼝。如果端⼝忙，⽽ TCP 处于其他状态，重⽤会有</p>
+<p>“Address already in use” 的错误信息。</p>
+<p>tcp_tw_reuse 是为了缩短 time_wait 的时间，避免出现⼤ᰁ的 time_wait 连接⽽占⽤系统资源，解决的是 accept</p>
+<p>后的问题。</p>
+<p>SO_REUSEADDR 是为了解决 time_wait 状态带来的端⼝占⽤问题，以及⽀持同⼀个 port 对应多个 ip，解决的是</p>
+<p>bind 时的问题。</p>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/leetbook/read/networks-interview-highlights/ek40dd/">计算机网络面试突击</a></p>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE">传输控制协议</a></p>
