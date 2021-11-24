@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">9.2k</span>
+            <span class="post-count">8.7k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">33 分钟</span>
+            <span class="post-count">31 分钟</span>
         </span>
     </span>
 </div>
@@ -191,7 +191,7 @@
 <li>CWR — Congestion Window Reduced，定义于 RFC 3168（2001）。</li>
 <li>ECE — ECN-Echo有两种意思，取决于SYN标志的值，定义于 RFC 3168（2001）。</li>
 <li>URG — 为1表示高优先级数据包，紧急指针字段有效。</li>
-<li><strong>ACK</strong> — 为1表示确认号字段有效</li>
+<li><strong>ACK</strong> — 为1表示<strong>确认号（ack）</strong>字段有效，用于表示已经接收到消息了</li>
 <li>PSH — 为1表示是带有PUSH标志的数据，指示接收方应该尽快将这个报文段交给应用层而不用等待缓冲区装满。</li>
 <li><strong>RST</strong> — 为1<strong>表示出现严重差错</strong>，可能需要重新创建TCP连接。还可以<strong>用于拒绝非法的报文段和拒绝连接请求</strong>。</li>
 <li><strong>SYN</strong> — 为1表示这是<strong>连接请求或是连接接受请求</strong>，<strong>用于创建连接和使顺序号同步</strong>。</li>
@@ -223,7 +223,15 @@
 </ul>
 </li>
 </ul>
-<h1 id="TCP-连接管理有限状态自动机"><a href="#TCP-连接管理有限状态自动机" class="headerlink" title="TCP 连接管理有限状态自动机"></a>TCP 连接管理有限状态自动机</h1><p>建立连接和释放连接所需要的步骤，可以用一个有限状态自动机来表示，该状态自动机的11种状态如下。</p>
+<h1 id="TCP-连接管理有限状态自动机"><a href="#TCP-连接管理有限状态自动机" class="headerlink" title="TCP 连接管理有限状态自动机"></a>TCP 连接管理有限状态自动机</h1><h2 id="有限状态机"><a href="#有限状态机" class="headerlink" title="有限状态机"></a>有限状态机</h2><p>有限状态机 (FSM : Finite State Machine) 又称有限状态自动机，简称状态机，是表示有限个状态以及在这些状态之间的转移和动作等行为的数学模型。FSM 的四个基本概念如下：</p>
+<ol>
+<li>状态 state: 描述机器在特定时间上处于的 环境(circumstance)或状况(status)</li>
+<li>转换 Transition: 从一种状态到另一种状态的行为(act)</li>
+<li>事件 Event: 导致状态发生变化的事情</li>
+<li>动作 Action: 机器从一种状态转换之前对事件所做的响应</li>
+</ol>
+<p>FSM通过解释协议可以处于的所有不同状态、可以在每个状态中发生的事件、针对事件采取的操作以及结果发生的转换来描述协议。协议通常在第一次运行时以特定的开始状态启动。尔后，它遵循一系列步骤使其进入常规操作状态，并根据特定类型的输入或其他情况移动到其他状态。状态机之所以称为有限状态机，是因为只有有限数量的状态。</p>
+<p>建立连接和释放连接所需要的步骤，可以用一个有限状态自动机来表示，该状态自动机的11种状态如下。</p>
 <p>在每一种状态中，都存在特定的合法事件：当一个合法事件发生时，可能需要采取某个动作；当发生其他事件时，则报告一个错误。</p>
 <p>下表为TCP状态码列表，以<strong>S</strong>指代服务器，<strong>C</strong>指代客户端，<strong>S&amp;C</strong>表示两者，<strong>S/C</strong>表示两者之一：</p>
 <ul>
@@ -240,28 +248,40 @@
 <p>服务器与客户的连接已经打开，收到的数据可以发送给用户。数据传输步骤的正常情况。此时连接两端是平等的。这称作全连接。</p>
 </li>
 <li><p>FIN-WAIT-1 S&amp;C</p>
-<p>（服务器或客户）主动关闭端调用close（）函数发出FIN请求包，表示本方的数据发送全部结束，等待TCP连接另一端的ACK确认包或FIN&amp;ACK请求包。</p>
+<p>（服务器或客户）主动关闭端调用close（）函数发出FIN请求包，表示<strong>本方的数据发送全部结束</strong>，等待TCP连接另一端的ACK确认包或FIN&amp;ACK请求包。</p>
 </li>
 <li><p>FIN-WAIT-2 S&amp;C</p>
-<p>主动关闭端在FIN-WAIT-1状态下收到ACK确认包，进入等待远程TCP的连接终止请求的半关闭状态。这时可以接收数据，但不再发送数据。</p>
+<p>主动关闭端在FIN-WAIT-1状态下收到ACK确认包，进入等待远程TCP的连接终止请求的半关闭状态。这时<strong>主动关闭端可以接收数据，但不再发送数据</strong>。</p>
 </li>
 <li><p>CLOSE-WAIT S&amp;C</p>
-<p>被动关闭端接到FIN后，就发出ACK以回应FIN请求，并进入等待本地用户的连接终止请求的半关闭状态。这时可以发送数据，但不再接收数据。</p>
+<p>被动关闭端接到FIN后，就发出ACK以回应FIN请求，并进入等待本地用户的连接终止请求的半关闭状态。这时<strong>被动关闭端可以发送数据，但不再接收数据</strong>。</p>
 </li>
 <li><p>CLOSING S&amp;C</p>
 <p>在发出FIN后，又收到对方发来的FIN后，进入等待对方对己方的连接终止（FIN）的确认（ACK）的状态。少见。</p>
 </li>
 <li><p>LAST-ACK S&amp;C</p>
-<p>被动关闭端全部数据发送完成之后，向主动关闭端发送FIN，进入等待确认包的状态。</p>
+<p>被动关闭端全部数据发送完成之后，<strong>向主动关闭端发送FIN，进入等待确认包</strong>的状态。</p>
 </li>
 <li><p>TIME-WAIT S/C</p>
-<p>主动关闭端接收到FIN后，就发送ACK包，等待足够时间以确保被动关闭端收到了终止请求的确认包。（按照RFC 793，一个连接可以在TIME-WAIT保证最大四分钟，即最大分段寿命（Maximum Segment Lifetime）的2倍）</p>
+<p>主动关闭端接收到FIN后，就发送ACK包，<strong>等待足够时间以确保被动关闭端收到了终止请求的确认包</strong>。（按照RFC 793，一个连接可以在TIME-WAIT保证最大四分钟，即最大分段寿命（Maximum Segment Lifetime）的2倍）</p>
 </li>
 <li><p>CLOSED S&amp;C<br>完全没有连接。</p>
 </li>
 </ul>
+<p><img src="/2021/11/16/TCP/tcpfsm.jpg" alt="img"></p>
+<p>另附一张图：</p>
+<img src="tcp-state.jpg" style="zoom:60%;" />
+
+
+
+
+
+
+
+
+
 <h1 id="TCP三次握手"><a href="#TCP三次握手" class="headerlink" title="TCP三次握手"></a>TCP三次握手</h1><h2 id="三次握手的过程"><a href="#三次握手的过程" class="headerlink" title="三次握手的过程"></a>三次握手的过程</h2><p><strong>图示</strong></p>
-<p><img src="/TCP/3way.png"></p>
+<p><img src="/2021/11/16/TCP/3way.png"></p>
 <p><strong>文字描述</strong>（可能更清楚）</p>
 <ol>
 <li>A –&gt; B  SYN my sequence number is X</li>
@@ -315,7 +335,7 @@
 <p><em>The principle reason for the three-way handshake is to prevent old duplicate connection initiations from causing confusion.</em></p>
 <p>简单来说，三次握手的<strong>首要原因是为了防止旧的重复连接初始化造成混乱。</strong></p>
 <p>网络环境是错综复杂的，往往并不是如我们期望的一样，先发送的数据包，就先到达目标主机，相反可能会由于网络拥堵等原因，会使得旧的数据包，先到达目标主机，那么这种情况下 TCP 三次握手是如何避免的呢？</p>
-<img src="TCP/avoid-old-duplicate-CR.jpg" style="zoom:50%;" />
+<img src="avoid-old-duplicate-CR.jpg" style="zoom:50%;" />
 
 
 
@@ -340,7 +360,7 @@
 <li>可以标识发送出去的数据包中， 哪些是已经被对方收到的；</li>
 </ul>
 <p>可见，序列号在 TCP 连接中占据着非常重要的作用，所以当客户端发送携带「初始序列号」的 <code>SYN</code> 报文的时候，需要服务端回一个 <code>ACK</code> 应答报文，表示客户端的 SYN 报文已被服务端成功接收，那当服务端发送「初始序列号」给客户端的时候，依然也要得到客户端的应答回应，<strong>这样一来一回，才能确保双方的初始序列号能被可靠的同步。</strong></p>
-<img src="TCP/4and3way.jpg" style="zoom:50%;" />
+<img src="4and3way.jpg" style="zoom:50%;" />
 
 
 
@@ -348,7 +368,7 @@
 <p>而两次握手只保证了一方的初始序列号能被对方成功接收，没办法保证双方的初始序列号都能被确认接收。</p>
 <h3 id="避免资源浪费"><a href="#避免资源浪费" class="headerlink" title="避免资源浪费"></a>避免资源浪费</h3><p>如果只有「两次握手」，当客户端的 <code>SYN</code> 请求连接在网络中阻塞，客户端没有接收到 <code>ACK</code> 报文，就会重新发送 <code>SYN</code> ，由于没有第三次握手，服务器不清楚客户端是否收到了自己发送的建立连接的 <code>ACK</code> 确认信号，所以每收到一个 <code>SYN</code> 就只能先主动建立一个连接，这会造成什么情况呢？</p>
 <p>如果客户端的 <code>SYN</code> 阻塞了，重复发送多次 <code>SYN</code> 报文，那么服务器在收到请求后就会<strong>建立多个冗余的无效链接，造成不必要的资源浪费。</strong></p>
-<img src="TCP/2-way.jpg" alt="img" style="zoom:50%;" />
+<img src="2-way.jpg" alt="img" style="zoom:50%;" />
 
 
 
@@ -380,7 +400,7 @@
 <p>客户端在经过 2MSL ⼀段时间后，⾃动进⼊ CLOSED 状态，⾄此客户端也完成连接的关闭。</p>
 <p><strong>你可以看到，每个⽅向都需要⼀个 FIN 和⼀个 ACK，因此通常被称为四次挥⼿。</strong></p>
 <p><strong>图示</strong></p>
-<img src="TCP/4way.png" style="zoom:50%;" />
+<img src="4way.png" style="zoom:50%;" />
 
 
 
@@ -413,7 +433,7 @@
 <p>闭；</p>
 <p><strong>原因1:防⽌旧连接的数据包</strong></p>
 <p>假设 TIME-WAIT 没有等待时间或时间过短，被延迟的数据包抵达后会发⽣什么呢？</p>
-<img src="TCP/timewait1.png" style="zoom:50%;" />
+<img src="timewait1.png" style="zoom:50%;" />
 
 
 
@@ -433,7 +453,7 @@
 </blockquote>
 <p>也就是说，TIME-WAIT 作⽤是<strong>等待⾜够的时间以确保最后的ACK能让被动关闭⽅接收</strong>，从⽽帮助其正常关闭。</p>
 <p>假设 TIME-WAIT 没有等待时间或时间过短，断开连接会造成什么问题呢？</p>
-<img src="TCP/timewait2.png" style="zoom:50%;" />
+<img src="timewait2.png" style="zoom:50%;" />
 
 
 
@@ -518,10 +538,6 @@
 <p>如果 l_onoff 为⾮ 0， 且 l_linger 值为 0，那么调⽤ close 后，会⽴该发送⼀个 RST 标志给对端，该 TCP 连接</p>
 <p>将跳过四次挥⼿，也就跳过了 TIME_WAIT 状态，直接关闭。</p>
 <p>但这为跨越 TIME_WAIT 状态提供了⼀个可能，不过是⼀个⾮常危险的⾏为，不值得提倡。</p>
-<blockquote>
-<p>MSL是Maximum Segment Lifetime英文的缩写，中文可以译为“报文最大生存时间”，他是任何报文在网络上存在的最长时间，超过这个时间报文将被丢弃。因为tcp报文（segment）是ip数据报（datagram）的数据部分。<br>而ip头中有一个TTL域，TTL是time to live的缩写，中文可以译为“生存时间”，这个生存时间是由源主机设置初始值但不是存的具体时间，而是存储了一个ip数据报可以经过的最大路由数，每经过一个处理他的路由器此值就减1，当此值为0则数据报将被丢弃，同时发送ICMP报文通知源主机。RFC 793中规定MSL为2分钟，实际应用中常用的是30秒，1分钟和2分钟等。<br>2MSL即两倍的MSL，TCP的TIME_WAIT状态也称为2MSL等待状态，当TCP的一端发起主动关闭，在发出最后一个ACK包后，即第3次握手完成后发送了第四次握手的ACK包后就进入了TIME_WAIT状态，必须在此状态上停留两倍的MSL时间，等待2MSL时间主要目的是怕最后一个ACK包对方没收到，那么对方在超时后将重发第三次握手的FIN包，主动关闭端接到重发的FIN包后可以再发一个ACK应答包。在TIME_WAIT状态时两端的端口不能使用，要等到2MSL时间结束才可继续使用。当连接处于2MSL等待阶段时任何迟到的报文段都将被丢弃。不过在实际应用中可以通过设置SO_REUSEADDR选项达到不必等待2MSL时间结束再使用此端口。<br>TTL与MSL是有关系的但不是简单的相等的关系，MSL要大于等于TTL。<br>RTT是客户到服务器往返所花时间（round-trip time，简称RTT），TCP含有动态估算RTT的算法。TCP还持续估算一个给定连接的RTT，这是因为RTT受网络传输拥塞程序的变化而变化。<br>表示从发送端发送数据开始，到发送端收到来自接收端的确认（接收端收到数据后便立即发送确认），总共经历的时延。<br>一般认为单向时延=传输时延t1+传播时延t2+排队时延t3<br>t1是数据从进入节点到传输媒体所需要的时间，通常等于数据块长度/信道带宽<br>t2是信号在信道中需要传播一定距离而花费的时间，等于信道长度/传播速率（光纤中电磁波的传播速率约为210^5 km/s，铜缆中2.310^5 km/s）<br>t3可笼统归纳为随机噪声，由途径的每一跳设备及收发两端负荷情况及吞吐排队情况决定(包含互联网设备和传输设备时延)</p>
-<p>作者：匿名用户<br>链接：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/leetbook/read/networks-interview-highlights/esno32/?discussion=M1ykZJ">https://leetcode-cn.com/leetbook/read/networks-interview-highlights/esno32/?discussion=M1ykZJ</a><br>来源：力扣（LeetCode）<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-</blockquote>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/leetbook/read/networks-interview-highlights/ek40dd/">计算机网络面试突击</a></p>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE">传输控制协议</a></p>
