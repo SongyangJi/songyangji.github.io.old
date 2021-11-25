@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4k</span>
+            <span class="post-count">4.9k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">14 分钟</span>
+            <span class="post-count">17 分钟</span>
         </span>
     </span>
 </div>
@@ -97,7 +97,18 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="并发编程中的三个主要问题"><a href="#并发编程中的三个主要问题" class="headerlink" title="并发编程中的三个主要问题"></a>并发编程中的三个主要问题</h1><h2 id="可见性问题"><a href="#可见性问题" class="headerlink" title="可见性问题"></a>可见性问题</h2><h2 id="原子性问题"><a href="#原子性问题" class="headerlink" title="原子性问题"></a>原子性问题</h2><h2 id="有序性问题"><a href="#有序性问题" class="headerlink" title="有序性问题"></a>有序性问题</h2><h1 id="Java-内存模型"><a href="#Java-内存模型" class="headerlink" title="Java 内存模型"></a>Java 内存模型</h1><p>Java线程之间的通信由Java内存模型（也就是JMM）来控制，JMM决定一个线程对共享变量的写入何时对另一个线程可见。</p>
+  <h1 id="并发编程中的三个主要问题"><a href="#并发编程中的三个主要问题" class="headerlink" title="并发编程中的三个主要问题"></a>并发编程中的三个主要问题</h1><h2 id="可见性问题"><a href="#可见性问题" class="headerlink" title="可见性问题"></a>可见性问题</h2><p>当一个线程修改共享变量的值的时候，其他能否立即得知这个修改，这是第一个问题。</p>
+<h2 id="原子性问题"><a href="#原子性问题" class="headerlink" title="原子性问题"></a>原子性问题</h2><p>这里的原子性，有两个尺度。</p>
+<ol>
+<li>小的尺度上，对于单个变量（主要对long、double而言）的修改是否具有原子性。</li>
+<li>大的尺度上，对于一个方法或者代码块的原子性如何保证。</li>
+</ol>
+<h2 id="有序性问题"><a href="#有序性问题" class="headerlink" title="有序性问题"></a>有序性问题</h2><p>有序性问题在并发编程时是最令人困惑的。</p>
+<p>这里先指明，<strong>如果没有作出一些合理的同步工作</strong>，那么<strong>在单个线程中执行顺序具有顺序性</strong>， 但是<strong>在一个线程中观察另一个线程的操作都是不具有有序性的</strong>。</p>
+<blockquote>
+<p> 正由于上面的问题，才有了这篇文章，其中有的问题这篇文章已经可以回答，有的还不能（主要是对<strong>锁的内存语义</strong>没有阐述）。</p>
+</blockquote>
+<h1 id="Java-内存模型"><a href="#Java-内存模型" class="headerlink" title="Java 内存模型"></a>Java 内存模型</h1><p>Java线程之间的通信由Java内存模型（也就是JMM）来控制，JMM决定一个线程对共享变量的写入何时对另一个线程可见。</p>
 <p>从抽象的角度看，JMM定义了线程和主内存之间的抽象关系：线程之间的共享变量存储在主内存（Main memory）中，每个线程都有一个私有的本地内存（Local memory），本地内存存储了线程读写共享变量的副本。本地内存是JMM的一个抽象，它涵盖cache、store buffer、寄存器以及其他的硬件和编译器优化。</p>
 <p><img src="/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/main-local.png"></p>
 <h2 id="重排序和内存屏障"><a href="#重排序和内存屏障" class="headerlink" title="重排序和内存屏障"></a>重排序和内存屏障</h2><h3 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h3><p>在执行程序的过程中，为了提高性能，编译器和处理器通常会对指令进行重排序。重排序主要分为三类。</p>
@@ -228,7 +239,9 @@
 <p>所以，在x86机器上，仅仅需要在每个volatile写后面插入StoreLoad屏障即可。</p>
 <p>那么这个内存屏障究竟是什么呢？</p>
 <p>实际上仍然依赖使用带有Lock前缀的汇编代码来完成。</p>
-<h1 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h1><h2 id="happen-before的作用"><a href="#happen-before的作用" class="headerlink" title="happen-before的作用"></a>happen-before的作用</h2><h2 id="happen-before的定义"><a href="#happen-before的定义" class="headerlink" title="happen-before的定义"></a>happen-before的定义</h2><p>JSR-133中对Java内存模型<strong>happen-before</strong>的定义如下：</p>
+<h1 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h1><h2 id="happen-before的作用"><a href="#happen-before的作用" class="headerlink" title="happen-before的作用"></a>happen-before的作用</h2><p>我们先不讲happen-before的定义和规则，先旗帜鲜明地指出<strong>happen-before的价值</strong>。</p>
+<p>正因为上面的一系列的内存屏障等等底层的细节，让Java工作组觉得对于开发者极不友好，很难在跨平台的编程环境中编写出可靠的多线程程序，他们提出了happen-before这个规则， 或者说是工具，帮助程序在不了解内存屏障这些概念的情况下依旧可以对他们的程序的执行顺序有个清醒的判断。</p>
+<h2 id="happen-before的定义"><a href="#happen-before的定义" class="headerlink" title="happen-before的定义"></a>happen-before的定义</h2><p>JSR-133中对Java内存模型<strong>happen-before</strong>的定义如下：</p>
 <p><code>happen-before</code>是 Java 模型中定义的两项操作的偏序关系。</p>
 <ol>
 <li>如果一个操作happen-before另一个操作，那么<strong>第一个操作的执行结果将对第二个操作可见</strong>，而且<strong>第一个操作的执行顺序可认为排在第二个操作之前</strong>。</li>
@@ -254,6 +267,31 @@
 </blockquote>
 <p>其中第三条规则，尤其需要注意一下。</p>
 <p>这 8 条规则中，前 4 条规则是比较重要的，后 4 条规则都是显而易见的。</p>
+<p>所以，只有在可以使用上面的8条规则的前提下，才能使用happen-before的规则， 进而判断程序的执行顺序。</p>
+<p>否则不能仅靠你的直觉判断，那完全不可信。</p>
+<h2 id="happen-before与时间上的先后顺序的关系"><a href="#happen-before与时间上的先后顺序的关系" class="headerlink" title="happen-before与时间上的先后顺序的关系"></a>happen-before与时间上的先后顺序的关系</h2><p>先说答案，二者之间没有必然的关系。</p>
+<p>一一解释。</p>
+<ol>
+<li><p>A happen-before B, A 在时间上就排在B前面吗？</p>
+<p>不一定。前面已经说了，在单线程中as-serial就是来确保这个事情的，就是两个无数据依赖关系的变量的读写顺序可以被交换，但是仍然具有happen-before关系。</p>
+</li>
+<li><p>A 在时间上就排在B前面，A 就 happen-before B 吗?</p>
+<p>happen-before的定义要求中有<strong>操作的可见性</strong>，但是在多线程中，如果有正确的同步操作（synchronized、volatile等），那么先发生的操作也不一定对发生的操作可见。</p>
+</li>
+</ol>
+<h2 id="使用happen-before解释DoubleCheckLock"><a href="#使用happen-before解释DoubleCheckLock" class="headerlink" title="使用happen-before解释DoubleCheckLock"></a>使用happen-before解释DoubleCheckLock</h2><p>下面是使用双重检查锁实现单例的经典代码。（为什么这么写，就不细讲了）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//懒汉式</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton singleton = <span class="keyword">null</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getSingleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(singleton==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class)&#123;</span><br><span class="line">                <span class="keyword">if</span>(singleton==<span class="keyword">null</span>)&#123;</span><br><span class="line">                    singleton = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里我只讲为什么 <code>volatile</code>可以实现代码重排序的效果。</p>
+<p>使用的工具正是happen-before。</p>
+<p><img src="/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/dlc.png"></p>
+<p>根据happe-before的第一条规则（<strong>程序次序规则</strong>），可以得到各个线程内的蓝色线（代表happen-before的偏序关系）。</p>
+<p>根据<strong>volatile 变量规则</strong>，可以得到红色的那条线。</p>
+<p>最后根据<strong>传递性规则</strong>，可以得出5个操作的全序关系，这就做到了对象的安全访问。</p>
+<p>（多说一句，本质上volatile是通过禁止线程A的2、3的重排序实现happen-before的）。</p>
+<p>反过来，如果没有volatile修饰，那么那条红色的线也就不复存在，自然操作5完全可能排在操作2的前面，从而导致对象的不安全访问。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/296949412">既然CPU有缓存一致性协议（MESI），为什么JMM还需要volatile关键字？</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiaowenmu1/article/details/89705740">MESI（缓存一致性协议）</a></p>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/MESI%E5%8D%8F%E8%AE%AE">MESI协议-wiki</a></p>
