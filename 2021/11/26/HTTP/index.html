@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    SpringMVC 常用注解 |  JsyBlog
+    HTTP协议 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-SpringMVC 常用注解"
+  id="post-HTTP"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,18 +54,18 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  SpringMVC 常用注解
+  HTTP协议
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/04/02/SpringMVC%20%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3/" class="article-date">
-  <time datetime="2021-04-01T16:00:00.000Z" itemprop="datePublished">2021-04-02</time>
+      <a href="/2021/11/26/HTTP/" class="article-date">
+  <time datetime="2021-11-26T00:33:48.000Z" itemprop="datePublished">2021-11-26</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/SpringMVC/">SpringMVC</a>
+    <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
   </div>
   
 <div class="word_count">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">824</span>
+            <span class="post-count">2.4k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">9 分钟</span>
         </span>
     </span>
 </div>
@@ -97,49 +97,377 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="Controller"><a href="#Controller" class="headerlink" title="@Controller"></a>@Controller</h1><p><code>@Controller</code> 用于标记在一个类上，使用它标记的类就是一个SpringMVC Controller 对象。分发处理器将会扫描使用了该注解的类的方法，并检测该方法是否使用了@RequestMapping 注解。<br><strong>@Controller 只是定义了一个控制器类，而使用@RequestMapping 注解的方法才是真正处理请求的处理器。</strong></p>
-<h2 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h2><p>一般我们直接把这个注解加上控制类上，既声明这是一个控制类，也将对象转成json格式传给前端。</p>
-<p><code>@RestController</code>  = <code>@Controller</code> + <code>@ResponseBody</code></p>
-<h1 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="@RequestMapping"></a>@RequestMapping</h1><h2 id="URL匹配"><a href="#URL匹配" class="headerlink" title="URL匹配"></a>URL匹配</h2><p>@RequestMapping是一个用来处理请求地址映射的注解，可用于类或方法上。</p>
-<p>通过类路径和方法路径结合访问controller方法</p>
-<blockquote>
-<p>当@RequestMapping 标记在Controller 类上的时候，里面使用@RequestMapping<br>标记的方法的请求地址都是相对于类上的@RequestMapping 而言的；当Controller<br>类上没有标记@RequestMapping 注解时，方法上的@RequestMapping<br>都是绝对路径。这种绝对路径和相对路径所组合成的最终路径都是相对于根路径“/ ”而言的。</p>
-</blockquote>
-<p>总之，这个注解的作用是完成了 <strong>url到控制器方法</strong>的映射。</p>
-<ul>
-<li>常规使用：类路径+方法路径<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="comment">// 这个注解在返回非视图的对象时使用</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/user&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/name&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">name</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;jsy&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/age&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">age</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">18</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-启动服务器后，访问 <a target="_blank" rel="noopener" href="http://localhost:8080/user/name">http://localhost:8080/user/name</a> 。</li>
-</ul>
-<ul>
-<li><p><strong>URL模板</strong><br>为了取出URL模板中的 参数，需要使用<code>@PathVariable</code>注解，下面会细讲。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="comment">// 这个注解在返回非视图的对象时使用</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/user/&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/name/&#123;p1&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">name</span><span class="params">(<span class="meta">@PathVariable</span> String p1)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我叫&quot;</span>+p1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>正则匹配</strong><br>举一个最简单的例子：通配符<code>*</code><br>如<code>@RequestMapping(&quot;*/user/&quot;)</code>会匹配到<code>/test/user/</code>等等。</p>
-</li>
-</ul>
-<h2 id="value和method属性"><a href="#value和method属性" class="headerlink" title="value和method属性"></a>value和method属性</h2><ul>
-<li><strong>value</strong><br>  指定请求的实际地址，指定的地址可以是URI Template 模式</li>
-<li><strong>method</strong><br>  指定请求的method类型， GET、POST、PUT、DELETE等。也就是<strong>窄化了请求范围</strong> </li>
-</ul>
-<h2 id="GetMapping、-PostMapping"><a href="#GetMapping、-PostMapping" class="headerlink" title="@GetMapping、@PostMapping"></a>@GetMapping、@PostMapping</h2><p>根据上面的<code>method</code>属性，可以直接使用<code>@RequestMapping</code>的衍生注解：</p>
-<ul>
-<li>@GetMapping 等同于 @RequestMapping(method = RequestMethod.GET)</li>
-<li>@PostMapping 等同于 @RequestMapping(method = RequestMethod.POST)</li>
-<li>@PutMapping 等同于 @RequestMapping(method = RequestMethod.PUT)</li>
-<li>@DeleteMapping 等同于 @RequestMapping(method = RequestMethod.DELETE)</li>
-<li>@PatchMapping 等同于 @RequestMapping(method = RequestMethod.PATCH)<br>等等。</li>
-</ul>
-<h1 id="获取参数"><a href="#获取参数" class="headerlink" title="获取参数"></a>获取参数</h1><h2 id="PathVariable"><a href="#PathVariable" class="headerlink" title="@PathVariable"></a>@PathVariable</h2><p><strong>用于将请求URL中的模板变量映射到功能处理方法的参数上，即取出uri模板中的变量作为参数。</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="comment">// 这个注解在返回非视图的对象时使用</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;,method = RequestMethod.GET)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/name/&#123;p1&#125;/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">name</span><span class="params">(<span class="meta">@PathVariable(&quot;p1&quot;)</span> String p,<span class="meta">@PathVariable</span> <span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我叫&quot;</span>+p+<span class="string">&quot;,学号是&quot;</span>+id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意点，如果所需要使用的变量名跟参数名不相同的时候，就要明确指出使用的是URI 模板中的哪个变量!</p>
-<h2 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h2><p>默认会将post请求中body中的json串反序列话为实体类：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping(&quot;/student&quot;)</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">post</span><span class="params">(<span class="meta">@RequestBody</span> Student student)</span> </span>&#123;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+  <h2 id="HTTP头部"><a href="#HTTP头部" class="headerlink" title="HTTP头部"></a>HTTP头部</h2><p>HTTP 头部本质上是一个传递额外重要信息的键值对。</p>
+<p>主要分为：通用头部，请求头部，响应头部和实体头部。</p>
+<ol>
+<li>通用头：是客户端和服务器都可以使用的头部，可以在客户端、服务器和其他应用程序之间提供一些非常有用的通用功能，如Date头部。</li>
+<li>请求头：请求报文特有的，它们为服务器提供了一些额外信息，比如客户端希望接收什么类型的数据，如Accept头部。</li>
+<li>响应头：响应报文特有的，比如，客服端在与哪种类型的服务器进行交互，如Server头部。</li>
+<li>实体头：实体首部字段是包含在请求报文和响应报文中的实体部分使用的首部，用于补充内容的更新时间等与实体相关的信息。</li>
+</ol>
+<h3 id="通用头部"><a href="#通用头部" class="headerlink" title="通用头部"></a>通用头部</h3><table>
+<thead>
+<tr>
+<th>协议头</th>
+<th>说明</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cache-Control</td>
+<td>用来指定当前的请求/回复中是否使用缓存机制</td>
+<td>Cache-Control: no-store</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>客户端（浏览器）想要优先使用的连接类型</td>
+<td>Connection: keep-alive (Upgrade)</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>报文创建时间</td>
+<td>Date: Dec, 26 Dec 2015 17: 30: 00 GMT</td>
+</tr>
+<tr>
+<td>Trailer</td>
+<td>会实现说明在报文主体后记录哪些首部字段，该首部字段可以使用在 HTTP/1.1 版本分块传输编码时</td>
+<td>Trailer: Expiress</td>
+</tr>
+<tr>
+<td>Transfer-Encoding</td>
+<td>用来改变报文格式</td>
+<td>Transfer-Encoding: chunked</td>
+</tr>
+<tr>
+<td>Upgrade</td>
+<td>要求服务器升级到一个高版本协议</td>
+<td>Upgrade: HTTP/2.0, SHTTP/1.3, IRC/6.9, RTA/x11</td>
+</tr>
+<tr>
+<td>Via</td>
+<td>告诉服务器，这个请求是由哪些代理发出的</td>
+<td>Via: 1.0 fred, 1.1 <a href="http://itbilu.com.com" target="_blank">itbilu.com.com</a> (Apache/1.1)</td>
+</tr>
+<tr>
+<td>Warning</td>
+<td>一个一般性的警告，表示在实体内容中可能存在错误</td>
+<td>Warning: 199 Miscellaneous warning</td>
+</tr>
+</tbody>
+</table>
 
 
 
-<h2 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h2><p>这就是 GET请求的 query-string的格式，形如： <strong>?name1=value1&amp;name2=value2</strong>。</p>
-<p>@RequestParam就是用来提取中其中的值的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping(&quot;/student&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Student <span class="title">get</span><span class="params">(<span class="meta">@RequestParam</span> String name, <span class="meta">@RequestParam</span> <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比较重要的有 <code>Cache-Control</code>、<code>Connection</code>。</p>
+<h3 id="请求头部"><a href="#请求头部" class="headerlink" title="请求头部"></a>请求头部</h3><table>
+<thead>
+<tr>
+<th>协议头</th>
+<th>说明</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accept</td>
+<td>告诉服务器自己允许哪些媒体类型</td>
+<td>Accept: text/plain</td>
+</tr>
+<tr>
+<td>Accept-Charset</td>
+<td>浏览器申明可接受的字符集</td>
+<td>Accept-Charset: utf-8</td>
+</tr>
+<tr>
+<td>Accept-Encoding</td>
+<td>浏览器申明自己接收的编码方法</td>
+<td>Accept-Encoding: gzip, deflate</td>
+</tr>
+<tr>
+<td>Accept-Language</td>
+<td>浏览器可接受的响应内容语言列表</td>
+<td>Accept-Language: en-US</td>
+</tr>
+<tr>
+<td>Authorization</td>
+<td>用于表示 HTTP 协议中需要认证资源的认证信息</td>
+<td>Authorization: Basic OSdjJGRpbjpvcGVul ANIc2SdDE==</td>
+</tr>
+<tr>
+<td>Expect</td>
+<td>表示客户端要求服务器做出特定的行为</td>
+<td>Expect: 100-continue</td>
+</tr>
+<tr>
+<td>From</td>
+<td>发起此请求的用户的邮件地址</td>
+<td>From: <a href="mailto:user@itbilu.com" target="_blank">user@itbilu.com</a></td>
+</tr>
+<tr>
+<td>Host</td>
+<td>表示服务器的域名以及服务器所监听的端口号</td>
+<td>Host: <a href="http://www.itbilu.com:80" target="_blank">www.itbilu.com:80</a></td>
+</tr>
+<tr>
+<td>If-XXX</td>
+<td>条件请求</td>
+<td>If-Modified-Since: Dec, 26 Dec 2015 17:30:00 GMT</td>
+</tr>
+<tr>
+<td>Max-Forwards</td>
+<td>限制该消息可被代理及网关转发的次数</td>
+<td>Max-Forwards: 10</td>
+</tr>
+<tr>
+<td>Range</td>
+<td>表示请求某个实体的一部分，字节偏移以 0 开始</td>
+<td>Range: bytes=500-999</td>
+</tr>
+<tr>
+<td>Referer</td>
+<td>表示浏览器所访问的前一个页面，可以认为是之前访问页面的链接将浏览器带到了当前页面</td>
+<td>Referer: <a href="http://itbilu.com/nodejs" target="_blank">http://itbilu.com/nodejs</a></td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>浏览器的身份标识字符串</td>
+<td>User-Agent: Mozilla/……</td>
+</tr>
+</tbody>
+</table>
 
+
+
+
+
+
+<h3 id="响应头部"><a href="#响应头部" class="headerlink" title="响应头部"></a>响应头部</h3><table>
+<thead>
+<tr>
+<th>协议头</th>
+<th>说明</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accept-Ranges</td>
+<td>字段的值表示可用于定义范围的单位</td>
+<td>Accept-Ranges: bytes</td>
+</tr>
+<tr>
+<td>Age</td>
+<td>创建响应的时间</td>
+<td>Age：5744337</td>
+</tr>
+<tr>
+<td>ETag</td>
+<td>唯一标识分配的资源</td>
+<td>Etag：W/"585cd998-7c0f"</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>表示重定向后的 URL</td>
+<td>Location: <a href="http://www.zcmhi.com/archives/94.html" target="_blank">http://www.zcmhi.com/archives/94.html</a></td>
+</tr>
+<tr>
+<td>Retry-After</td>
+<td>告知客户端多久后再发送请求</td>
+<td>Retry-After: 120</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>告知客户端服务器信息</td>
+<td>Server: Apache/1.3.27 (Unix) (Red-Hat/Linux)</td>
+</tr>
+<tr>
+<td>Vary</td>
+<td>缓存控制</td>
+<td>Vary: Origin</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="实体头部"><a href="#实体头部" class="headerlink" title="实体头部"></a>实体头部</h3><table>
+<thead>
+<tr>
+<th>协议头</th>
+<th>说明</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Allow</td>
+<td>对某网络资源的有效的请求行为，不允许则返回405</td>
+<td>Allow: GET, HEAD</td>
+</tr>
+<tr>
+<td>Content-encoding</td>
+<td>返回内容的编码方式</td>
+<td>Content-Encoding: gzip</td>
+</tr>
+<tr>
+<td>Content-Length</td>
+<td>返回内容的字节长度</td>
+<td>Content-Length: 348</td>
+</tr>
+<tr>
+<td>Content-Language</td>
+<td>响应体的语言</td>
+<td>Content-Language: en,zh</td>
+</tr>
+<tr>
+<td>Content-Location</td>
+<td>请求资源可替代的备用的另一地址</td>
+<td>Content-Location: /index.htm</td>
+</tr>
+<tr>
+<td>Content-MD5</td>
+<td>返回资源的MD5校验值</td>
+<td>Content-MD5: Q2hlY2sgSW50ZWdyaXR5IQ==</td>
+</tr>
+<tr>
+<td>Content-Range</td>
+<td>在整个返回体中本部分的字节位置</td>
+<td>Content-Range: bytes 21010-47021/47022</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>返回内容的MIME类型</td>
+<td>Content-Type: text/html; charset=utf-8</td>
+</tr>
+<tr>
+<td>Expires</td>
+<td>响应过期的日期和时间</td>
+<td>Expires: Thu, 01 Dec 2010 16:00:00 GMT</td>
+</tr>
+<tr>
+<td>Last-Modified</td>
+<td>请求资源的最后修改时间</td>
+<td>Last-Modified: Tue, 15 Nov 2010 12:45:26 GMT</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h2><p>HTTP 状态码由三个十进制数字组成，第一个数字定义了状态码的类型，后两个并没有起到分类的作用。HTTP 状态码共有 5 种类型：</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1XX</td>
+<td>指示信息–表示请求正在处理</td>
+</tr>
+<tr>
+<td>2XX</td>
+<td><strong>成功</strong>–表示请求已被成功处理完毕</td>
+</tr>
+<tr>
+<td>3XX</td>
+<td><strong>重定向</strong>–要完成的请求需要进行附加操作</td>
+</tr>
+<tr>
+<td>4XX</td>
+<td><strong>客户端错误</strong>–请求有语法错误或者请求无法实现，服务器无法处理请求</td>
+</tr>
+<tr>
+<td>5XX</td>
+<td><strong>服务器端错误</strong>–服务器处理请求出现错误</td>
+</tr>
+</tbody></table>
+<p>下面是常用的状态码分类：</p>
+<h3 id="1xx"><a href="#1xx" class="headerlink" title="1xx"></a>1xx</h3><p>1xx 类状态码属于提示信息，是协议处理中的⼀种中间状态，实际⽤到的⽐较少。</p>
+<h3 id="2xx"><a href="#2xx" class="headerlink" title="2xx"></a>2xx</h3><p>2xx 类状态码表示服务器成功处理了客户端的请求，也是我们最愿意看到的状态。</p>
+<p>「<strong>200 OK</strong>」是最常⻅的成功状态码，表示⼀切正常。如果是⾮ HEAD 请求，服务器返回的响应头都会有 body</p>
+<p>数据。</p>
+<p>「<strong>204 No Content</strong>」也是常⻅的成功状态码，与 200 OK 基本相同，但响应头没有 body 数据。「<strong>206 Partial Content</strong>」是应⽤于 HTTP 分块下载或断点续传，表示响应返回的 body 数据并不是资源的全部，⽽</p>
+<p>是其中的⼀部分，也是服务器处理成功的状态。</p>
+<h3 id="3xx"><a href="#3xx" class="headerlink" title="3xx"></a>3xx</h3><p>3xx 类状态码表示客户端请求的资源发送了变动，需要客户端⽤新的 URL ᯿新发送请求获取资源，也就是重定</p>
+<p>向。</p>
+<p>「<strong>301 Moved Permanently</strong>」表示永久᯿定向，说明请求的资源已经不存在了，需改⽤新的 URL 再次访问。</p>
+<p>「<strong>302 Found</strong>」表示临时᯿定向，说明请求的资源还在，但暂时需要⽤另⼀个 URL 来访问。</p>
+<p>301 和 302 都会在响应头⾥使⽤字段 Location ，指明后续要跳转的 URL，浏览器会⾃动᯿定向新的 URL。 </p>
+<p>「<strong>304 Not Modified</strong>」不具有跳转的含义，表示资源未修改，᯿定向已存在的缓冲⽂件，也称缓存᯿定向，⽤于缓</p>
+<p>存控制。</p>
+<h3 id="4xx"><a href="#4xx" class="headerlink" title="4xx"></a>4xx</h3><p>4xx 类状态码表示客户端发送的报⽂有误，服务器⽆法处理，也就是错误码的含义。</p>
+<p>「<strong>400 Bad Request</strong>」表示客户端请求的报⽂有错误，但只是个笼统的错误。</p>
+<p>「<strong>403 Forbidden</strong>」表示服务器禁⽌访问资源，并不是客户端的请求出错。</p>
+<p>「<strong>404 Not Found</strong>」表示请求的资源在服务器上不存在或未找到，所以⽆法提供给客户端。</p>
+<h3 id="5xx"><a href="#5xx" class="headerlink" title="5xx"></a>5xx</h3><p>5xx 类状态码表示客户端请求报⽂正确，但是服务器处理时内部发⽣了错误，属于服务器端的错误码。</p>
+<p>「<strong>500 Internal Server Error</strong>」与 400 类型，是个笼统通⽤的错误码，服务器发⽣了什么错误，我们并不知道。</p>
+<p>「<strong>501 Not Implemented</strong>」表示客户端请求的功能还不⽀持，类似“即将开业，敬请期待”的意思。</p>
+<p>「<strong>502 Bad Gateway</strong>」通常是服务器作为⽹关或代理时返回的错误码，表示服务器⾃身⼯作正常，访问后端服务器</p>
+<p>发⽣了错误。</p>
+<p>「<strong>503 Service Unavailable</strong>」表示服务器当前很忙，暂时⽆法响应服务器，类似“⽹络服务正忙，请稍后᯿试”的意</p>
+<p>思。</p>
+<h2 id="HTTP方法"><a href="#HTTP方法" class="headerlink" title="HTTP方法"></a>HTTP方法</h2><p>HTTP/1.0 定义了三种请求方法：GET, POST 和 HEAD 方法。</p>
+<p>HTTP/1.1 增加了六种请求方法：OPTIONS, PUT, PATCH, DELETE, TRACE 和 CONNECT 方法。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>请求指定的页面信息，并返回具体内容，通常只用于读取数据。</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>类似于 GET 请求，只不过返回的响应中没有具体的内容，用于获取报头。</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>向指定资源提交数据进行处理请求（例如提交表单或者上传文件）。数据被包含在请求体中。POST 请求可能会导致新的资源的建立或已有资源的更改。</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>替换指定的资源，没有的话就新增。</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>请求服务器删除 URL 标识的资源数据。</td>
+</tr>
+<tr>
+<td>CONNECT</td>
+<td>将服务器作为代理，让服务器代替用户进行访问。</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>向服务器发送该方法，会返回对指定资源所支持的 HTTP 请求方法。</td>
+</tr>
+<tr>
+<td>TRACE</td>
+<td>回显服务器收到的请求数据，即服务器返回自己收到的数据，主要用于测试和诊断。</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>是对 PUT 方法的补充，用来对已知资源进行局部更新。</td>
+</tr>
+</tbody>
+</table>
+
+
+
+<p>用的最多的自然是<code>GET</code>、<code>POST</code>了， 甚至有一种观点认为只需要使用POST就够了。</p>
+<h3 id="GET-和-POST-的区别"><a href="#GET-和-POST-的区别" class="headerlink" title="GET 和 POST 的区别"></a>GET 和 POST 的区别</h3><ul>
+<li>get 提交的数据会放在 URL 之后，并且<strong>请求参数会被完整的保留在浏览器的记录</strong>里，由于<strong>参数直接暴露在 URL 中</strong>，可能会存在安全问题，因此往往用于获取资源信息。GET上要在url之外带一些参数就只能依靠url上附带querystring。</li>
+<li>get 请求只支持 URL 编码，post 请求支持多种编码格式。</li>
+<li>get 只支持 ASCII 字符格式的参数，而 post 方法没有限制。</li>
+<li>get 提交的数据大小有限制（这里所说的限制是针对浏览器而言的），而 post 方法提交的数据没限制</li>
+<li>get 方式需要使用 Request.QueryString 来取得变量的值，而 post 方式通过 Request.Form 来获取。</li>
+<li>get 方法产生一个 TCP 数据包，post 方法产生两个（并不是所有的浏览器中都产生两个）。</li>
+</ul>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE">超文本传输协议 - 维基百科，自由的百科全书</a></p>
  
       <!-- reward -->
       
@@ -204,12 +532,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/04/02/SpringMVC%20%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/11/26/HTTP/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
 
     </footer>
   </div>
@@ -217,19 +545,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2021/07/01/Spring%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%20%20%E2%80%94%E2%80%94%20%20IOC%E5%AE%B9%E5%99%A8%20I%20%EF%BC%88IOC%E5%AE%B9%E5%99%A8%E3%80%81DI%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%89/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Spring 学习笔记1  ——  IOC容器 I （IOC容器、DI依赖注入）
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/03/08/hello-world/" class="article-nav-link">
+      <a href="/2021/11/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E2%80%94%E2%80%94-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E5%8F%8AJava%E5%AE%9E%E7%8E%B0/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Hello World</div>
+        <div class="article-nav-title">设计模式 —— 单例模式及Java实现</div>
       </a>
     
   </nav>
