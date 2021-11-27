@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.6k</span>
+            <span class="post-count">3.5k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">5 分钟</span>
+            <span class="post-count">14 分钟</span>
         </span>
     </span>
 </div>
@@ -100,14 +100,14 @@
   <h3 id="两阶段锁协议"><a href="#两阶段锁协议" class="headerlink" title="两阶段锁协议"></a>两阶段锁协议</h3><p>两阶段锁协议（2PL）是一种能够保证事务可串行化的协议，它将事务的获取锁和释放锁划分成了增长（Growing）和缩减（Shrinking）两个不同的阶段。</p>
 <p>在增长阶段，一个事务可以获得锁但是不能释放锁；而在缩减阶段事务只可以释放锁，并不能获得新的锁，如果只看 2PL 的定义，那么到这里就已经介绍完了，但是它还有两个变种：</p>
 <ol>
-<li><strong>Strict 2PL</strong>：事务持有的<strong>互斥</strong>锁必须在提交后再释放；</li>
-<li><strong>Rigorous 2PL</strong>：事务持有的<strong>所有</strong>锁必须在提交后释放；</li>
+<li><strong>严格两阶段锁</strong>（Strict 2PL）：事务持有的<strong>互斥</strong>锁必须在提交后再释放；</li>
+<li><strong>强两阶段锁</strong>（Rigorous 2PL）：事务持有的<strong>所有</strong>锁必须在提交后释放；</li>
 </ol>
 <h1 id="MySQL中锁机制"><a href="#MySQL中锁机制" class="headerlink" title="MySQL中锁机制"></a>MySQL中锁机制</h1><h2 id="按粒度分"><a href="#按粒度分" class="headerlink" title="按粒度分"></a>按粒度分</h2><p>表锁<br>行锁</p>
 <p>简单的说，表锁上锁的粒度是table，而行锁可以只对部分行上锁。</p>
 <p>后者粒度低得多，这也是为什么InnoDB引擎是默认的引擎，除非你的数据库操作只有读，没有写和加锁读。</p>
 <p>否则表锁的代价太大。</p>
-<p><img src="/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/2017-10-02-granularity-hierarchy.png" alt="granularity-hierarchy"></p>
+<p><img src="/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/granularity-hierarchy.png" alt="granularity-hierarchy"></p>
 <h2 id="按是否意向锁区分"><a href="#按是否意向锁区分" class="headerlink" title="按是否意向锁区分"></a>按是否意向锁区分</h2><p>意向锁、非意向锁</p>
 <p>（见上图）</p>
 <p>虽然这种不同粒度的锁能够解决父节点被加锁时，子节点不能被加锁的问题，但是我们没有办法在子节点被加锁时，立刻确定父节点能不能被加锁。</p>
@@ -117,7 +117,7 @@
 <p>加的是互斥行锁，就给表加上意向互斥锁（IX）；</p>
 <p>加的是共享行锁，就给锁加上意向共享锁（IS）。</p>
 <p>见下图，各种锁的兼容性矩阵。</p>
-<p><img src="/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/2017-10-02-lock-type-compatibility-matrix.png" alt="lock-type-compatibility-matrix"></p>
+<p><img src="/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/lock-type-compatibility-matrix.png" alt="lock-type-compatibility-matrix"></p>
 <h2 id="按读写性质分"><a href="#按读写性质分" class="headerlink" title="按读写性质分"></a>按读写性质分</h2><p>读锁（共享锁、S锁）<br>写锁（互斥锁、X锁）</p>
 <p>这个锁的语义和其他地方（如Java中的<code>ReadWriteLock</code>）锁的意义是一致的。</p>
 <p>读锁-读锁共享；读锁-写锁互斥；写锁-写锁互斥。</p>
@@ -192,6 +192,96 @@
 <li>等待状态一样</li>
 <li>被加锁的记录在同一个页面中</li>
 </ul>
+<img src="lock-structure.png" style="zoom:30%;" />
+
+
+
+<ul>
+<li><p><strong>锁所在的事务信息</strong>：无论表级锁还是行级锁，都是属于一个事务的，这里记载着属于这个事务的信息。</p>
+</li>
+<li><p><strong>索引信息</strong>：对于行级锁而言，需要记录一下加锁的记录属于哪个索引。</p>
+</li>
+<li><p>表锁或者行锁信息：</p>
+<p>如果是行锁的话：</p>
+<ul>
+<li>Space ID：记录所在表空间。</li>
+<li>Page Number：记录所在的页号</li>
+<li>n_bits：对弈行级锁而言，一条记录对应一个比特，实际上就是用一个位图结构去记录那些行记录被加了锁，n_bits则是表示使用了多少比特。</li>
+</ul>
+</li>
+<li><p><strong>type mode</strong></p>
+<ul>
+<li><p><strong>lock_mode</strong>（锁模式）</p>
+<ul>
+<li>LOCK_IS（共享意向锁）</li>
+<li>LOCK_IX（独占意向锁）</li>
+<li>LOCK_S（共享锁）</li>
+<li>LOCK_X（独占锁）</li>
+<li>LOCK_AUTO_INC（AUTO_INC锁）</li>
+</ul>
+</li>
+<li><p><strong>lock_type</strong>（锁类型）</p>
+<ul>
+<li>LOCK_TABLE（表级锁）</li>
+<li>LOCK_REC （行级锁）</li>
+</ul>
+</li>
+<li><p><strong>rec_lock_type</strong> （行锁的具体类型，只有当lock_type为LOCK_REC时才是有效的）</p>
+<ul>
+<li>LOCK_ORDINARY（next_key临键锁）</li>
+<li>LOCK_GAP（间隙锁）</li>
+<li>LOCK_REC_NOT_GAP（记录锁）</li>
+<li>LOCK_INSERT_INTENTION（插入意向锁）</li>
+</ul>
+</li>
+<li><p><strong>LOCK_WAITING</strong> </p>
+<p>1 表示当前事务尚未得到锁，正处于等待状态，0 表示当前事务已经或得到锁。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>其实仅仅看这个一个type mode 的结构皆可以知道MySQL锁的整体结构了。</p>
+<p><img src="/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/typemode.png"></p>
+<ul>
+<li>其他信息</li>
+</ul>
+<p>为了更好地管理系统运行过程中生成的锁结构，有哈希表、链表等等数据结构方便管理</p>
+<ul>
+<li><p>比特数组</p>
+<p>n_bits属性指出这个位图有多大，那么这一堆比特位就是用来隐射这一页中有哪些记录加上了锁的。</p>
+</li>
+</ul>
+<h1 id="查看事务的加锁情况"><a href="#查看事务的加锁情况" class="headerlink" title="查看事务的加锁情况"></a>查看事务的加锁情况</h1><p>也许需要打开一些配置项：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> innodb_status_output<span class="operator">=</span><span class="keyword">ON</span>;</span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> innodb_status_output_locks<span class="operator">=</span><span class="keyword">ON</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在MySQL Clinet中使用<code>show engine innodb status</code></p>
+<p>这里只列出关于事务和锁的信息，其余信息省略：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 当前活动的事务</span> </span><br><span class="line">TRANSACTIONS</span><br><span class="line">------------</span><br><span class="line"><span class="meta">#</span><span class="bash"> 下一个分配的事务ID信息</span></span><br><span class="line">Trx id counter 7203081</span><br><span class="line">Purge done for trx&#x27;s n:o &lt; 7203074 undo n:o &lt; 0 state: running but idle</span><br><span class="line"><span class="meta">#</span><span class="bash"> 每个回滚段中都有一个History链表，链表的长度为 57</span></span><br><span class="line">History list length 57</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 下面对于每一个会话列出它的事务信息</span></span><br><span class="line">LIST OF TRANSACTIONS FOR EACH SESSION:</span><br><span class="line"><span class="meta">#</span><span class="bash">  每一个<span class="string">&#x27;---TRANSACTION&#x27;</span> 后面跟着响应的事务的信息</span></span><br><span class="line">---TRANSACTION 422190990756560, not started</span><br><span class="line">0 lock struct(s), heap size 1136, 0 row lock(s)</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 事务ID7203080, 活跃了 163 秒</span></span><br><span class="line">---TRANSACTION 7203080, ACTIVE 163 sec</span><br><span class="line"><span class="meta">#</span><span class="bash"> 2个锁结构， 7个行锁（实际上只有6条记录）（这里的锁结构指的就是前面的锁的内存结构）</span></span><br><span class="line">2 lock struct(s), heap size 1136, 7 row lock(s)</span><br><span class="line"><span class="meta">#</span><span class="bash"> MySQL内部线程号、操作系统中的线程号等信息</span></span><br><span class="line">MySQL thread id 17, OS thread handle 13048123392, query id 389 localhost 127.0.0.1 root</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 锁结构1. 表级别的意向互斥锁</span></span><br><span class="line">TABLE LOCK table `test_lock`.`test_lock` trx id 7203080 lock mode IX</span><br><span class="line"><span class="meta">#</span><span class="bash"> 锁结构2. 记录锁（</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 详细解释：表空间号是106，页号是4，锁的位图大小为80，索引是PRIMARY聚簇索引，X型实际上是next-key-lock，（aka 临键锁）</span></span><br><span class="line">RECORD LOCKS space id 106 page no 4 n bits 80 index PRIMARY of table `test_lock`.`test_lock` trx id 7203080 lock_mode X</span><br><span class="line"><span class="meta">#</span><span class="bash"> 紧接着就是加锁记录的详细信息</span></span><br><span class="line">Record lock, heap no 1 PHYSICAL RECORD: n_fields 1; compact format; info bits 0</span><br><span class="line"> 0: len 8; hex 73757072656d756d; asc supremum;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 2 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000000; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0502; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 0100000164102a; asc     d *;;</span><br><span class="line"> 3: len 4; hex 80000000; asc     ;;</span><br><span class="line"> 4: len 4; hex 80000000; asc     ;;</span><br><span class="line"> 5: len 4; hex 80000000; asc     ;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 3 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0502; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 01000001641060; asc     d `;;</span><br><span class="line"> 3: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 4: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 5: len 4; hex 8000000a; asc     ;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 4 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0551; asc    . Q;;</span><br><span class="line"> 2: len 7; hex 010000012c112d; asc     , -;;</span><br><span class="line"> 3: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 4: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 5: len 4; hex 80000014; asc     ;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 5 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 8000001e; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0502; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 01000001641100; asc     d  ;;</span><br><span class="line"> 3: len 4; hex 8000001e; asc     ;;</span><br><span class="line"> 4: len 4; hex 8000001e; asc     ;;</span><br><span class="line"> 5: len 4; hex 8000001e; asc     ;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 6 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000028; asc    (;;</span><br><span class="line"> 1: len 6; hex 0000002e13cd; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 02000001591605; asc     Y  ;;</span><br><span class="line"> 3: len 4; hex 80000028; asc    (;;</span><br><span class="line"> 4: len 4; hex 80000028; asc    (;;</span><br><span class="line"> 5: len 4; hex 80000028; asc    (;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 7 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000032; asc    2;;</span><br><span class="line"> 1: len 6; hex 0000002e0990; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 020000013e14d7; asc     &gt;  ;;</span><br><span class="line"> 3: len 4; hex 80000032; asc    2;;</span><br><span class="line"> 4: len 4; hex 80000032; asc    2;;</span><br><span class="line"> 5: len 4; hex 80000032; asc    2;;</span><br><span class="line"></span><br><span class="line">--------</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>死锁示例sql：</p>
+<p>事务1</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">start</span> transaction ;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test_lock <span class="keyword">where</span> primary_id <span class="operator">=</span> <span class="number">10</span> <span class="keyword">for</span> update ;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test_lock <span class="keyword">where</span> primary_id <span class="operator">=</span> <span class="number">20</span> <span class="keyword">for</span> update ;</span><br></pre></td></tr></table></figure>
+
+<p>事务2</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">start</span> transaction ;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test_lock <span class="keyword">where</span> primary_id <span class="operator">=</span> <span class="number">20</span> <span class="keyword">for</span> update ;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test_lock <span class="keyword">where</span> primary_id <span class="operator">=</span> <span class="number">10</span> <span class="keyword">for</span> update ;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>InnoDB的死锁检测机制</strong></p>
+<p>当它检测到死锁发生时，会选择一个较小的事务（所谓较小的事务，就是在事务执行过程中插入、更新后删除的记录较少的事务）进行回滚（这个是自动完成的），并向客户端发送一条消息：<code>[40001][1213] Deadlock found when trying to get lock; try restarting transaction</code> .</p>
+<blockquote>
+<p>那么如何定位到死锁的发生的地方呢？</p>
+</blockquote>
+<p>仍然是使用<code>show engine innnodb status</code>来查看死锁信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">------------------------</span><br><span class="line"><span class="meta">#</span><span class="bash"> 最近一次捕捉的死锁信息</span></span><br><span class="line">LATEST DETECTED DEADLOCK</span><br><span class="line">------------------------</span><br><span class="line"><span class="meta">#</span><span class="bash"> 死锁发生时间</span></span><br><span class="line">2021-11-27 11:49:06 0x309c3d000</span><br><span class="line"><span class="meta">#</span><span class="bash"> 死锁发生时的第一个事务信息</span></span><br><span class="line">*** (1) TRANSACTION:</span><br><span class="line">TRANSACTION 7203086, ACTIVE 12 sec starting index read</span><br><span class="line"><span class="meta">#</span><span class="bash"> 该事务使用了一个表，为一个表上了锁</span></span><br><span class="line">mysql tables in use 1, locked 1</span><br><span class="line"><span class="meta">#</span><span class="bash"> 拥有 3 个锁结构，2个行锁</span></span><br><span class="line">LOCK WAIT 3 lock struct(s), heap size 1136, 2 row lock(s)</span><br><span class="line"><span class="meta">#</span><span class="bash"> 线程信息</span></span><br><span class="line">MySQL thread id 24, OS thread handle 13048426496, query id 978 localhost 127.0.0.1 root statistics</span><br><span class="line"><span class="meta">#</span><span class="bash"> 发生锁时执行的SQL语句</span></span><br><span class="line">/* ApplicationName=DataGrip 2020.3.1 */ select * from test_lock where primary_id = 20 for update</span><br><span class="line"><span class="meta">#</span><span class="bash"> 当前线程正在等待获取的锁</span></span><br><span class="line">*** (1) WAITING FOR THIS LOCK TO BE GRANTED:</span><br><span class="line">RECORD LOCKS space id 106 page no 4 n bits 80 index PRIMARY of table `test_lock`.`test_lock` trx id 7203086 lock_mode X locks rec but not gap waiting</span><br><span class="line"><span class="meta">#</span><span class="bash"> 这条记录正对应着 select * from test_lock <span class="built_in">where</span> primary_id = 20 <span class="keyword">for</span> update ;</span></span><br><span class="line">Record lock, heap no 4 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0551; asc    . Q;;</span><br><span class="line"> 2: len 7; hex 010000012c112d; asc     , -;;</span><br><span class="line"> 3: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 4: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 5: len 4; hex 80000014; asc     ;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 死锁发生时的第二个事务信息</span></span><br><span class="line">*** (2) TRANSACTION:</span><br><span class="line">TRANSACTION 7203087, ACTIVE 9 sec starting index read</span><br><span class="line">mysql tables in use 1, locked 1</span><br><span class="line">3 lock struct(s), heap size 1136, 2 row lock(s)</span><br><span class="line">MySQL thread id 25, OS thread handle 13048729600, query id 987 localhost 127.0.0.1 root statistics</span><br><span class="line">/* ApplicationName=DataGrip 2020.3.1 */ select * from test_lock where primary_id = 10 for update</span><br><span class="line"><span class="meta">#</span><span class="bash"> 此事务已经或得到的锁</span></span><br><span class="line">*** (2) HOLDS THE LOCK(S):</span><br><span class="line">RECORD LOCKS space id 106 page no 4 n bits 80 index PRIMARY of table `test_lock`.`test_lock` trx id 7203087 lock_mode X locks rec but not gap</span><br><span class="line"><span class="meta">#</span><span class="bash"> 这条记录正对应着 select * from test_lock <span class="built_in">where</span> primary_id = 20 <span class="keyword">for</span> update ;</span></span><br><span class="line">Record lock, heap no 4 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0551; asc    . Q;;</span><br><span class="line"> 2: len 7; hex 010000012c112d; asc     , -;;</span><br><span class="line"> 3: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 4: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 5: len 4; hex 80000014; asc     ;;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 此事务等待的锁</span></span><br><span class="line">*** (2) WAITING FOR THIS LOCK TO BE GRANTED:</span><br><span class="line">RECORD LOCKS space id 106 page no 4 n bits 80 index PRIMARY of table `test_lock`.`test_lock` trx id 7203087 lock_mode X locks rec but not gap waiting</span><br><span class="line">Record lock, heap no 3 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0502; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 01000001641060; asc     d `;;</span><br><span class="line"> 3: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 4: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 5: len 4; hex 8000000a; asc     ;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> InnoDB决定回滚第二个事务</span></span><br><span class="line">*** WE ROLL BACK TRANSACTION (2)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>不过注意，默认只记录最近一次死锁信息，可以将全局变量<code>innodb_print_all_deadlocks</code>设置为ON，这样的话</p>
+<p>死锁发生的信息就会都记录在MySQL的错误日志中，然后就可以通过查看错误日志来分析更多的日志情况了。</p>
+<p>于是，根据死锁发生的死锁日志来逆向定位产生的死锁的语句，然后再优化我们的业务。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p><a target="_blank" rel="noopener" href="https://draveness.me/database-concurrency-control/">浅谈数据库并发控制 - 锁和 MVCC</a></p>
 </blockquote>
