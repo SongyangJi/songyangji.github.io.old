@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    tags |  JsyBlog
+    Redis实现分布式锁 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -42,13 +42,242 @@
       
     <main class="content on">
       <section class="outer">
+  <article
+  id="post-Redis实现分布式锁"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Redis实现分布式锁
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" class="article-date">
+  <time datetime="2021-11-29T03:00:11.000Z" itemprop="datePublished">2021-11-29</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+  </div>
   
-    <h1 class="page-type-title">标签</h1>
-    <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/" rel="tag">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FTP/" rel="tag">FTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FTP-Linux/" rel="tag">FTP Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/File/" rel="tag">File</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IPC/" rel="tag">IPC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/" rel="tag">InnoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JMM/" rel="tag">JMM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JUC/" rel="tag">JUC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaEE/" rel="tag">JavaEE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" rel="tag">Java语言基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E9%9B%86%E5%90%88%E7%B1%BB/" rel="tag">Java集合类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jmeter/" rel="tag">Jmeter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kafka/" rel="tag">Kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E5%86%85%E6%A0%B8/" rel="tag">Linux内核</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E9%85%8D%E7%BD%AE/" rel="tag">Linux配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Message-Queue/" rel="tag">Message Queue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NoSQL/" rel="tag">NoSQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI/" rel="tag">OSI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot-%E9%9B%86%E6%88%90%E4%B8%80%E5%88%87/" rel="tag">SpringBoot 集成一切</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring%E4%B9%8B%E6%95%B4%E5%90%88%E4%B8%80%E5%88%87/" rel="tag">Spring之整合一切</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring%E6%A0%B8%E5%BF%83/" rel="tag">Spring核心</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/" rel="tag">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZooKeeper/" rel="tag">ZooKeeper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c%E8%AF%AD%E8%A8%80/" rel="tag">c语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-%E5%86%99%E4%BD%9C/" rel="tag">hexo - 写作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/" rel="tag">lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E6%A0%B8/" rel="tag">内核</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" rel="tag">分布式锁</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="tag">单例模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95/" rel="tag">字符串算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BB%BA%E7%AB%99/" rel="tag">建站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E6%A1%A3%E7%B3%BB%E5%88%97/" rel="tag">文档系列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A1%86%E6%9E%B6%E6%BA%90%E7%A0%81%E7%B3%BB%E5%88%97/" rel="tag">框架源码系列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%A0/" rel="tag">池</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E7%B3%BB%E5%88%97/" rel="tag">源码系列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AC%AC%E4%B8%89%E6%96%B9-Jar-%E6%95%B4%E5%90%88/" rel="tag">第三方 Jar 整合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" rel="tag">算法题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag">索引</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%9B%B8%E5%85%B3/" rel="tag">线程/进程调度相关</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" rel="tag">背包问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/" rel="tag">进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B/" rel="tag">进程/线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%94%81/" rel="tag">锁</a></li></ul>
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">664</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">2 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
   
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在许多环境中不同进程必须以互斥方式使用共享资源进行操作时，分布式锁是一个非常有用的原语。此试图提供一种更规范的算法来实现Redis的分布式锁。我们提出了一种称为<code>Redlock</code>的算法，它实现了<code>DLM</code>（猜测是<code>Distributed Lock Manager</code>的缩写，分布式锁管理器），我们认为它比普通的单实例方法更安全。</p>
+<h2 id="安全和活性保证"><a href="#安全和活性保证" class="headerlink" title="安全和活性保证"></a>安全和活性保证</h2><p>算法的三个核心特征（三大最低保证）：</p>
+<ul>
+<li><strong>Safety property</strong>（安全性）：互斥。确保在任何给定时刻下，只有一个客户端可以持有锁；</li>
+<li><strong>Liveness property A</strong>（活性A）：无死锁。即使存在曾经锁定资源的客户端崩溃或者出现网络分区异常，确保锁总是能够成功获取；</li>
+<li><strong>Liveness property B</strong>（活性B）：容错性。只要大多数Redis节点处于正常运行状态，客户端就可以获取和释放锁。</li>
+</ul>
+<h2 id="主从结构故障转移时的并发问题"><a href="#主从结构故障转移时的并发问题" class="headerlink" title="主从结构故障转移时的并发问题"></a>主从结构故障转移时的并发问题</h2><p>文档中还指出了目前算法对于故障转移的实现还存在明显的竞态条件问题（描述的应该是<code>Redis</code>主从架构下的问题）：</p>
+<ul>
+<li>客户端A获取Redis主节点中的锁（假设锁定的资源为X）</li>
+<li>在Redis主节点把KEY同步到Redis从节点之前，Redis主节点崩溃</li>
+<li>Redis从节点因为故障晋升为主节点</li>
+<li>此时，客户端B获取资源X的锁成功，问题是资源X的锁在前面已经被客户端A获取过，这样就出现了并发问题。</li>
+</ul>
+<h2 id="单机下Redis实现锁"><a href="#单机下Redis实现锁" class="headerlink" title="单机下Redis实现锁"></a>单机下Redis实现锁</h2><p>单个实例是我们将用于此处描述的分布式算法的基础。</p>
+<h3 id="锁的获取"><a href="#锁的获取" class="headerlink" title="锁的获取"></a>锁的获取</h3><p>下面的redis命令是获取锁的核心思想 —— 如果键不存在，则设置一个id值（此时相当于拿到了锁），并且为了保证上面所说的活性要求，还设置了键的过期时间。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET resource_name my_random_value NX PX 30000</span><br></pre></td></tr></table></figure>
+
+<p>这实际上是<code>setnx</code>和<code>setex</code>的结合体，不过它是原子的。</p>
+<p>如果较低版本的客户端中不支持这个命令，那就要使用lua脚本。</p>
+<h3 id="锁的释放"><a href="#锁的释放" class="headerlink" title="锁的释放"></a>锁的释放</h3><p>下面的lua脚本的含义是：</p>
+<p>当键存在，并且键值正是当前线程的独属id时（也就是防止释放别的线程加的锁，这就是这个独属于加到锁的线程的id的作用）。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> redis.call(<span class="string">&quot;get&quot;</span>,KEYS[<span class="number">1</span>]) == ARGV[<span class="number">1</span>] <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">return</span> redis.call(<span class="string">&quot;del&quot;</span>,KEYS[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/throwable/p/14264804.html">冷饭新炒：理解Redisson中分布式锁的实现 </a></p>
+<p><a target="_blank" rel="noopener" href="https://redis.io/topics/distlock">Distributed locks with Redis</a></p>
+</blockquote>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NoSQL/" rel="tag">NoSQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" rel="tag">分布式锁</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/11/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            计算机网络面试问题汇总
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/11/29/Jmeter%E4%BD%BF%E7%94%A8/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Jmeter使用</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
 </section>
-
-
       <footer class="footer">
   <div class="outer">
     <ul>
@@ -178,6 +407,23 @@
 <script src="/js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
