@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">512</span>
+            <span class="post-count">658</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">2 分钟</span>
         </span>
     </span>
 </div>
@@ -108,7 +108,7 @@
 <li><p>可靠性<br>TCP 是可靠交付数据的，数据可以⽆差错、不丢失、不重复、按需到达。<br>UDP 是尽最⼤努⼒交付，不保证可靠交付数据。</p>
 </li>
 <li><p>拥塞控制、流量控制</p>
-<p>TCP 有拥塞控制和流ᰁ控制机制，保证数据传输的安全性。UDP 则没有，即使⽹络⾮常拥堵了，也不会影响 UDP 的发送速率。</p>
+<p>TCP 有拥塞控制和流量控制机制，保证数据传输的安全性。UDP 则没有，即使⽹络⾮常拥堵了，也不会影响 UDP 的发送速率。</p>
 </li>
 <li><p>⾸部开销</p>
 <p>TCP ⾸部⻓度较⻓，会有⼀定的开销，⾸部在没有使⽤「选项」字段时是 20 个字节，如果使⽤了「选项」</p>
@@ -122,9 +122,9 @@
 <p>UDP 是⼀个包⼀个包的发送，是有边界的，但可能会丢包和乱序。</p>
 </li>
 <li><p>分⽚不同</p>
-<p>TCP 的数据⼤⼩如果⼤于 MSS ⼤⼩，则会在传输层进⾏分⽚，⽬标主机收到后，也同样在传输层组装 TCP数据包，如果中途丢失了⼀个分⽚，只需要传输丢失的这个分⽚。</p>
-<p>UDP 的数据⼤⼩如果⼤于 MTU ⼤⼩，则会在 IP 层进⾏分⽚，⽬标主机收到后，在 IP 层组装完数据，接着</p>
-<p>再传给传输层，但是如果中途丢了⼀个分⽚，在实现可靠传输的 UDP 时则就需要᯿传所有的数据包，这样</p>
+<p><strong>TCP 的数据⼤⼩如果⼤于 MSS ⼤⼩，则会在传输层进⾏分⽚</strong>，<strong>⽬标主机收到后，也同样在传输层组装 TCP数据包</strong>，如果中途丢失了⼀个分⽚，只需要传输丢失的这个分⽚。</p>
+<p><strong>UDP 的数据⼤⼩如果⼤于 MTU ⼤⼩，则会在 IP 层进⾏分⽚</strong>，<strong>⽬标主机收到后，在 IP 层组装完数据，接着</strong></p>
+<p><strong>再传给传输层</strong>，但是如果中途丢了⼀个分⽚，在实现可靠传输的 UDP 时则就需要重传所有的数据包，这样</p>
 <p>传输效率⾮常差，所以通常 UDP 的报⽂应该⼩于 MTU。</p>
 </li>
 </ol>
@@ -139,6 +139,7 @@
 <li>视频、⾳频等多媒体通信</li>
 <li>⼴播通信</li>
 </ol>
+<h3 id="UDP-为什么是不可靠的？bind-和-connect-对于-UDP-的作用是什么"><a href="#UDP-为什么是不可靠的？bind-和-connect-对于-UDP-的作用是什么" class="headerlink" title="UDP 为什么是不可靠的？bind 和 connect 对于 UDP 的作用是什么"></a>UDP 为什么是不可靠的？bind 和 connect 对于 UDP 的作用是什么</h3><p>UDP 只有一个 socket 接收缓冲区，没有 socket 发送缓冲区，即只要有数据就发，不管对方是否可以正确接收。而在对方的 socket 接收缓冲区满了之后，新来的数据报无法进入到 socket 接受缓冲区，此数据报就会被丢弃，因此 UDP 不能保证数据能够到达目的地，此外，UDP 也没有流量控制和重传机制，故UDP的数据传输是不可靠的。</p>
  
       <!-- reward -->
       
