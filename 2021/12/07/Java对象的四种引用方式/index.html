@@ -63,13 +63,17 @@
     <div class="article-meta">
       <a href="/2021/12/07/Java%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8%E6%96%B9%E5%BC%8F/" class="article-date">
   <time datetime="2021-12-06T17:42:49.000Z" itemprop="datePublished">2021-12-07</time>
-</a>   
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+  </div>
+  
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">0</span>
+            <span class="post-count">1.1k</span>
         </span>
     </span>
 
@@ -78,20 +82,73 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">4 分钟</span>
         </span>
     </span>
 </div>
  
     </div>
       
+    <div class="tocbot"></div>
+
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-   
+  <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Reference</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//引用的对象</span></span><br><span class="line">    <span class="keyword">private</span> T referent;        </span><br><span class="line">    <span class="comment">//回收队列，由使用者在Reference的构造函数中指定</span></span><br><span class="line">    <span class="keyword">volatile</span> ReferenceQueue&lt;? <span class="keyword">super</span> T&gt; queue;</span><br><span class="line">     <span class="comment">//当该引用被加入到queue中的时候，该字段被设置为queue中的下一个元素，以形成链表结构</span></span><br><span class="line">    <span class="keyword">volatile</span> Reference next;</span><br><span class="line">    <span class="comment">//在GC时，JVM底层会维护一个叫DiscoveredList的链表，存放的是Reference对象，discovered字段指向的就是链表中的下一个元素，由JVM设置</span></span><br><span class="line">    <span class="keyword">transient</span> <span class="keyword">private</span> Reference&lt;T&gt; discovered;  </span><br><span class="line">    <span class="comment">//进行线程同步的锁对象</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Lock</span> </span>&#123; &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Lock lock = <span class="keyword">new</span> Lock();</span><br><span class="line">    <span class="comment">//等待加入queue的Reference对象，在GC时由JVM设置，会有一个java层的线程(ReferenceHandler)源源不断的从pending中提取元素加入到queue</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Reference&lt;Object&gt; pending = <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>一个Reference对象的生命周期如下：</p>
+<p><img src="/2021/12/07/Java%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8%E6%96%B9%E5%BC%8F/java-ref.png"></p>
+<h1 id="1-强引用"><a href="#1-强引用" class="headerlink" title="1.强引用"></a>1.强引用</h1><p>我们平日里面的用到的new了一个对象就是强引用，例如 <code>Object obj = new Object();</code></p>
+<p>当JVM的内存空间不足时，宁愿抛出OutOfMemoryError使得程序异常终止也不愿意回收具有<strong>强引用的存活着的对象</strong>！</p>
+<p>回收的时间是不一定的，具体得看GC回收策略。</p>
+<h1 id="2-软引用"><a href="#2-软引用" class="headerlink" title="2.软引用"></a>2.软引用</h1><p>软引用的生命周期比强引用短一些。软引用是通过<code>SoftReference</code>类实现的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object obj = <span class="keyword">new</span> Object();</span><br><span class="line">SoftReference softObj = <span class="keyword">new</span> SoftReference(obj);</span><br><span class="line">obj = <span class="keyword">null</span>； <span class="comment">//去除强引用</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这样就是一个简单的软引用使用方法。通过<code>get()</code>方法获取对象。</p>
+<p><strong>当JVM认为内存空间不足时，就回去试图回收软引用指向的对象</strong>，也就是说在JVM抛出<code>OutOfMemoryError</code>之前，会去清理软引用对象。</p>
+<p>软引用可以与引用队列<code>(ReferenceQueue)</code>联合使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Object obj = <span class="keyword">new</span> Object();</span><br><span class="line">ReferenceQueue queue = <span class="keyword">new</span> ReferenceQueue();</span><br><span class="line">SoftReference softObj = <span class="keyword">new</span> SoftReference(obj,queue);</span><br><span class="line">obj = <span class="keyword">null</span>； <span class="comment">//去除强引用</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>当<code>softObj</code>软引用的<code>obj</code>被GC回收之后，<code>softObj</code> 对象就会被塞到<code>queue</code>中，之后我们可以通过这个队列的<code>poll()</code>来检查你关心的对象是否被回收了，如果队列为空，就返回一个<code>null</code>。反之就返回软引用对象也就是<code>softObj</code>。</p>
+<p><strong>软引用一般用来实现内存敏感的缓存</strong>，如果有空闲内存就可以保留缓存，当内存不足时就清理掉，这样就保证使用缓存的同时不会耗尽内存。例如图片缓存框架中缓存图片就是通过软引用的。</p>
+<h1 id="3-弱引用"><a href="#3-弱引用" class="headerlink" title="3.弱引用"></a>3.弱引用</h1><p>弱引用是通过<code>WeakReference</code>类实现的，它的生命周期比软引用还要短, 也是通过<code>get()</code>方法获取对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object obj = <span class="keyword">new</span> Object();</span><br><span class="line">WeakReference&lt;Object&gt; weakObj = <span class="keyword">new</span> WeakReference&lt;Object&gt;(obj);</span><br><span class="line">obj = <span class="keyword">null</span>； <span class="comment">//去除强引用</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>在GC的时候，JVM 不管内存空间足不足都会回收这个对象</strong>，同样也可以配合<code>ReferenceQueue</code> 使用，也同样适用于内存敏感的缓存。</p>
+<p><code>ThreadLocal</code>中的<code>Entry</code>就是继承了<code>WeakReference</code>类，这<code>Entry</code>弱引用着<code>ThreadLocal</code>。</p>
+<h1 id="4-幻象引用"><a href="#4-幻象引用" class="headerlink" title="4.幻象引用"></a>4.幻象引用</h1><p>也称虚引用，是通过<code>PhantomReference</code>类实现的。任何时候可能被GC回收,就像没有引用一样。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Object obj = <span class="keyword">new</span> Object();</span><br><span class="line">ReferenceQueue queue = <span class="keyword">new</span> ReferenceQueue();</span><br><span class="line">PhantomReference&lt;Object&gt; phantomObj = <span class="keyword">new</span> PhantomReference&lt;Object&gt;(obj , queue);</span><br><span class="line">obj = <span class="keyword">null</span>； <span class="comment">//去除强引用</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>不过<strong>无法通过虚引用访问对象的任何属性或者函数</strong>。</p>
+<p>那就要问了要它有什么用？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PhantomReference</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">Reference</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 永远返回 null</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>虚引用仅仅只是提供了一种确保对象被<code>finalize</code>以后来做某些事情的机制。比如说这个对象被回收之后发一个系统通知啊啥的。虚引用是必须配合<code>ReferenceQueue</code> 使用的，具体使用方法和上面提到软引用的一样。主要用来跟踪对象被垃圾回收的活动。</p>
+<p>一个错误认知：</p>
+<blockquote>
+<p>严格的说，<strong>虚引用是会影响对象生命周期的</strong>，如果不做任何处理，只要虚引用不被回收，那其引用的对象永远不会被回收。所以一般来说，从ReferenceQueue中获得PhantomReference对象后，如果PhantomReference对象不会被回收的话（比如被其他GC ROOT可达的对象引用），需要调用clear方法解除PhantomReference和其引用对象的引用关系。</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039994284"><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039994284">Java四种引用类型原理你真的搞明白了吗？五分钟带你深入理解！</a></a></p>
+</blockquote>
+ 
       <!-- reward -->
       
     </div>
@@ -160,6 +217,8 @@
 </div>
 
 <div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+
     </footer>
   </div>
 
