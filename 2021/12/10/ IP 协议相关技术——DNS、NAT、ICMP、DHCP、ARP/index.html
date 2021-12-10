@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.1k</span>
+            <span class="post-count">5.3k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">7 分钟</span>
+            <span class="post-count">19 分钟</span>
         </span>
     </span>
 </div>
@@ -99,8 +99,63 @@
        
   <h1 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h1><blockquote>
 <p>注意DNS是应用层的协议，不是网络层的协议。</p>
-<p>下面的几个协议都是网络层的协议。</p>
 </blockquote>
+<h2 id="DNS简介"><a href="#DNS简介" class="headerlink" title="DNS简介"></a>DNS简介</h2><p>DNS（Domain Name System）是域名系统的英文缩写，是一种组织成域层次结构的计算机和网络服务命名系统，用于 TCP/IP 网络。</p>
+<h2 id="DNS-作用"><a href="#DNS-作用" class="headerlink" title="DNS 作用"></a>DNS 作用</h2><p>通常我们有两种方式识别主机：通过主机名或者 IP 地址。人们喜欢便于记忆的主机名表示，而路由器则喜欢定长的、有着层次结构的 IP 地址。为了满足这些不同的偏好，我们就需要一种能够进行主机名到 IP 地址转换的目录服务，<strong>域名系统作为将域名和 IP 地址相互映射的一个分布式数据库</strong>，能够使人更方便地访问互联网。</p>
+<h2 id="DNS-域名解析原理"><a href="#DNS-域名解析原理" class="headerlink" title="DNS 域名解析原理"></a>DNS 域名解析原理</h2><p>DNS 采用了分布式的设计方案，其域名空间采用一种树形的层次结构：</p>
+<p><img src="/dns.png"></p>
+<p>上图展示了 DNS 服务器的部分层次结构，从上到下依次为<strong>根域名服务器</strong>、<strong>顶级域名服务器</strong>和<strong>权威域名服务器</strong>。</p>
+<ol>
+<li><p>域名服务器在因特网上有13个，大部分位于北美洲。</p>
+</li>
+<li><p>第二层为顶级域服务器，这些服务器负责顶级域名（如 com、org、net、edu）和所有国家的顶级域名（如uk、fr、ca 和 jp）。</p>
+</li>
+<li><p>在第三层为权威 DNS 服务器，因特网上具有公共可访问主机（例如 Web 服务器和邮件服务器）的每个组织机构必须提供公共可访问的 DNS 记录，这些记录由组织机构的权威 DNS 服务器负责保存，这些记录将这些主机的名称映射为 IP 地址。</p>
+</li>
+</ol>
+<p>所以域名的层级关系类似⼀个树状结构：</p>
+<ul>
+<li><p>根 DNS 服务器</p>
+</li>
+<li><p>顶级域 DNS 服务器（com）</p>
+</li>
+<li><p>权威 DNS 服务器（server.com）</p>
+</li>
+</ul>
+<p>除此之外，还有一类重要的 DNS 服务器，叫做<strong>本地 DNS 服务器</strong>。本地 DNS 服务器严格来说不在 DNS 服务器的层次结构中，但它对 DNS 层次结构是很重要的。</p>
+<p>一般来说，<strong>每个网络服务提供商（ISP） 都有一台本地 DNS 服务器</strong>。<strong>当主机与某个 ISP 相连时，该 ISP 提供一台主机的 IP 地址，该主机具有一台或多台其本地 DNS 服务器的 IP 地址</strong>。主机的本地 DNS 服务器通常和主机距离较近，<strong>当主机发起 DNS 请求时，该请求被发送到本地 DNS 服务器，它起着代理的作用，并将该请求转发到 DNS 服务器层次结构中</strong>。</p>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><img src="dns2.png" style="zoom:30%;" />
+
+<p>我们以一个例子来了解 DNS 的工作原理，假设主机 A（IP 地址为 abc.xyz.edu） 想知道主机 B 的 IP 地址 （def.mn.edu）。</p>
+<ol>
+<li>主机 A 首先<strong>向它的本地 DNS 服务器发送一个 DNS 查询报文</strong>。该查询报文含有被转换的主机名 def.mn.edu</li>
+<li>本地 DNS 服务器<strong>将该报文转发到根 DNS 服务器</strong>；</li>
+<li>根 DNS 服务器注意到查询的 IP 地址前缀为 edu 后向本地 DNS 服务器<strong>返回负责 edu 的顶级域名服务器的 IP 地址列表</strong>。</li>
+<li>该本地 DNS 服务器则再次向这些顶级域名服务器发送查询报文。该顶级域名服务器注意到 mn.edu 的前缀，并<strong>用权威域名服务器的 IP 地址进行响应</strong>。</li>
+<li>通常情况下，顶级域名服务器并不总是知道每台主机的权威 DNS 服务器的 IP 地址，而只知道中间的某个服务器，该中间 DNS 服务器依次能找到用于相应主机的 IP 地址，我们假设中间经历了权威服务器 ① 和 ②，最后<strong>找到了负责 def.mn.edu 的权威 DNS 服务器</strong> ③</li>
+<li>之后，<strong>本地 DNS 服务器直接向该服务器发送查询报文</strong>从而获得主机 B 的IP 地址。</li>
+</ol>
+<p>在上图中，IP 地址的查询其实经历了两种查询方式，分别是递归查询和迭代查询。</p>
+<p><strong>域名解析查询的两种方式</strong></p>
+<p>DNS查询有两种方式：<strong>递归</strong>和<strong>迭代</strong>。</p>
+<ul>
+<li><p>DNS客户端设置使用的DNS服务器一般都是递归服务器，它负责全权处理客户端的DNS查询请求，直到返回最终结果。</p>
+</li>
+<li><p>DNS服务器之间一般采用迭代查询方式。</p>
+</li>
+</ul>
+<h2 id="DNS-为什么用-UDP"><a href="#DNS-为什么用-UDP" class="headerlink" title="DNS 为什么用 UDP"></a>DNS 为什么用 UDP</h2><h3 id="综合使用TCP和UDP"><a href="#综合使用TCP和UDP" class="headerlink" title="综合使用TCP和UDP"></a>综合使用TCP和UDP</h3><p>更正确的答案是 DNS 既使用 TCP 又使用 UDP。</p>
+<p>当进行区域传送（<strong>主域名服务器向辅助域名服务器传送变化的那部分数据</strong>）时会使用 TCP，因为数据同步传送的数据量比一个请求和应答的数据量要多，而 TCP 允许的报文长度更长，因此为了保证数据的正确性，会使用基于可靠连接的 TCP。（DNS服务器与服务器之间用TCP）</p>
+<p>udp适用于小包，无上下文的情况，好处是开销小。很容易理解，udp查询就是一问一答，url和ip地址都是很短的字符串，都不会超过一个包。</p>
+<p>当客户端向 DNS 服务器查询域名 ( 域名解析) 的时候，一般返回的内容不会超过 <strong>DNS 报文的最大长度，即 512 字节</strong>。用 UDP 传输时，不需要经过 TCP 三次握手的过程，从而大大提高了响应速度，但这要求域名解析器和域名服务器都必须自己处理超时和重传从而保证可靠性。</p>
+<h3 id="历史发展"><a href="#历史发展" class="headerlink" title="历史发展"></a>历史发展</h3><p>当年内容贫乏，硬件性能低下。认为主机查询的动作频次低，数据量少。用TCP短连结握手和挥手的开销比查询还高。用长连接服务器又承受不住。UDP是很好的选择。</p>
+<p>互联网起来后DNS频率急剧增加，所以又加上了TCP版本。</p>
+<p>随着恶意的DNS污染出现后，DNS又升级了TLS版本。</p>
+<h3 id="无需TCP的可靠传输（省去握手挥手开销）"><a href="#无需TCP的可靠传输（省去握手挥手开销）" class="headerlink" title="无需TCP的可靠传输（省去握手挥手开销）"></a>无需TCP的可靠传输（省去握手挥手开销）</h3><ol>
+<li>第一，传输包的大小。首先我们知道tcp要做的事很简单，就是要保证一个可靠及高效的服务。所谓可靠，那就是比如说，本要发的包丢了，那就重传，目的尽量保证这个包到达对端。但是你如果包很大，你每次都整体重传，那肯定不满足高效的原则了（tcp做的很大一部分工作也就是把需要丢的包重传而不是每次整体重传）。基于此，dns查询的包基本大小就是固定的，就是一个包的大小，如果丢了那就再传一次就得了，根本不需要tcp的这种可靠传输。</li>
+<li>第二，如果只是传输一个包大小，再来几个握手来几个挥手，就太得不偿失了。</li>
+<li>第三，dns查询，本身一个查询，对端就会给一个回复，这个回复就可以当做是一个响应。已经能满足dns查询的这种需求了。</li>
+</ol>
 <p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039759438"><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039759438">DNS劫持如何避免和解决?</a></a></p>
 <h1 id="ARP-地址解析协议"><a href="#ARP-地址解析协议" class="headerlink" title="ARP 地址解析协议"></a>ARP 地址解析协议</h1><p>地址解析协议（英语：Address Resolution Protocol，缩写：ARP）是一个通过解析网络层地址来找寻数据链路层地址的网络传输协议，它在IPv4中极其重要。</p>
 <p>在IPv6中<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%82%BB%E5%B1%85%E5%8F%91%E7%8E%B0%E5%8D%8F%E8%AE%AE">邻居发现协议</a>（NDP）用于代替地址解析协议（ARP）。</p>
@@ -216,7 +271,68 @@
 <p>后一种情况下被连接计算机的IP地址将被重写，使得外网主机发出的数据包能够到达内网主机。</p>
 <p>实际上，<strong>以上两种方式通常会一起被使用以支持双向通信</strong>。</p>
 <p>如何支持这样的一对多的映射关系呢？就是利用发送端的源端口来进行的。</p>
-<h1 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h1><h1 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h1> 
+<h1 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h1><p><strong>动态主配置协议</strong>（英语：<strong>D</strong>ynamic <strong>H</strong>ost <strong>C</strong>onfiguration <strong>P</strong>rotocol，缩写：<strong>DHCP</strong>），是一个用于<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE">IP</a>网络的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE">网络协议</a>，位于<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B">OSI模型</a>的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E5%B1%82">应用层</a>，使用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE">UDP</a>协议工作，主要有两个用途：</p>
+<ul>
+<li><strong>用于内部网或网络服务供应商自动分配IP地址给用户</strong>；</li>
+<li>用于内部网管理员对所有电脑作中央管理。</li>
+</ul>
+<blockquote>
+<p> 我们的电脑通常都是通过 DHCP 动态获取 IP 地址，⼤⼤省去了配 IP 信息繁琐的过程。</p>
+</blockquote>
+<h2 id="DHCP工作步骤"><a href="#DHCP工作步骤" class="headerlink" title="DHCP工作步骤"></a>DHCP工作步骤</h2><ol>
+<li><strong>发现</strong> ：客户端⾸先发起 <strong>DHCP</strong> 发现报⽂（<strong>DHCP DISCOVER</strong>） 的 IP 数据报，由于客户端没有 IP 地址，也不知道</li>
+</ol>
+<p>DHCP 服务器的地址，所以使⽤的是 UDP ⼴播通信，其使⽤的⼴播⽬的地址是 255.255.255.255（端⼝</p>
+<p>67） 并且使⽤ 0.0.0.0（端⼝ 68） 作为源 IP 地址。DHCP 客户端将该 IP 数据报传递给链路层，链路层然后</p>
+<p>将帧⼴播到所有的⽹络中设备。</p>
+<ol start="2">
+<li><p><strong>提供</strong> ：DHCP 服务器收到 DHCP 发现报⽂时，⽤ <strong>DHCP</strong> 提供报⽂（<strong>DHCP OFFER</strong>） 向客户端做出响应。该报⽂仍然使⽤ IP ⼴播地址 255.255.255.255，该报⽂信息携带服务器提供可租约的 IP 地址、⼦⽹掩码、默认⽹关、DNS 服务器以及 <strong>IP</strong> 地址租⽤期。</p>
+</li>
+<li><p><strong>请求</strong> ：客户端收到⼀个或多个服务器的 DHCP 提供报⽂后，从中选择⼀个服务器，并向选中的服务器发送 <strong>DHCP</strong> 请求报⽂（<strong>DHCP REQUEST</strong>进⾏响应，回显配置的参数。</p>
+</li>
+<li><p><strong>确认</strong> ：最后，服务端⽤ <strong>DHCP ACK</strong> 报⽂对 DHCP 请求报⽂进⾏响应，应答所要求的参数。</p>
+</li>
+</ol>
+<p>⼀旦客户端收到 DHCP ACK 后，交互便完成了，并且<strong>客户端能够在租⽤期内使⽤ DHCP 服务器分配的 IP 地址</strong>。</p>
+<p><strong>如果租约的 DHCP IP 地址快到期时，客户端会向服务器发送 DHCP 请求报⽂</strong>：</p>
+<ul>
+<li><p>服务器如果同意继续租⽤，则⽤ DHCP ACK 报⽂进⾏应答，客户端就会延⻓租期。</p>
+</li>
+<li><p>服务器如果不同意继续租⽤，则⽤ DHCP NACK 报⽂，客户端就要停⽌使⽤租约的 IP 地址。</p>
+</li>
+</ul>
+<p>可以发现，DHCP 交互中，全程都是使⽤ <strong>UDP</strong> ⼴播通信。</p>
+<h2 id="DHCP中继"><a href="#DHCP中继" class="headerlink" title="DHCP中继"></a>DHCP中继</h2><blockquote>
+<p> 如果 DHCP 服务器和客户端不是在同⼀个局域⽹内，路由器⼜不会转发⼴播包，那不是每个⽹络都要配⼀个 DHCP 服务器？</p>
+</blockquote>
+<img src="dhcp.png" style="zoom:60%;" />
+
+
+
+<p>所以，为了解决这⼀问题，就出现了 <strong>DHCP中继代理</strong>。有了 DHCP 中继代理以后，对不同⽹段的 <strong>IP</strong> 地址分配也可以由⼀个 <strong>DHCP</strong> 服务器统⼀进⾏管理。DHCP 客户端会向 DHCP 中继代理发送 DHCP 请求包，⽽ <strong>DHCP 中继代理在收到这个⼴播包以后，再以单播的形式发给 DHCP 服务器</strong>。</p>
+<p>服务器端收到该包以后再向 DHCP 中继代理返回应答，并由 DHCP 中继代理将此包⼴播给 DHCP 客户端 。</p>
+<p>因此，DHCP 服务器即使不在同⼀个链路上也可以实现统⼀分配和管理IP地址。</p>
+<h1 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h1><p><strong>ICMP</strong>（Internet Control Message Protocol）是<strong>因特网控制报文协议</strong>，主要是实现 IP 协议中未实现的部分功能，是一种网络层协议。</p>
+<p><strong>该协议并不传输数据，只传输控制信息来辅助网络层通信</strong>。</p>
+<p>路由器严密监视Internet的操作，当路由器处理一个数据包发生意外的时候，可通过Internet控制消息协议向数据包的源端报告有关事件。</p>
+<p>其主要的功能是验证网络是否畅通（确认接收方是否成功接收到 IP 数据包）以及辅助 IP 协议实现可靠传输（若发生 IP 丢包，ICMP 会通知发送方 IP 数据包被丢弃的原因，之后发送方会进行相应的处理）。</p>
+<p>最重要的消息类型：</p>
+<ol>
+<li>目的地不可达：数据包无法传递，原因如不能定位一个目标，或者设置了DF但却遇到了小数据包网络；</li>
+<li>超时：当TTL达到0而被丢弃时，路由器发送超时消息；</li>
+<li>参数问题：在头字段中检测到一个非法字段；</li>
+<li>源抑制：抑制包，可以用于拥塞控制（但现在很少使用）；</li>
+<li>重定向：一个数据包被错误的路由；</li>
+<li>响应请求与应答：检查一台机器是否存活；</li>
+<li>请求/应答时间戳：与上面类似不过要求带上时间戳。</li>
+</ol>
+<h2 id="ICMP应用"><a href="#ICMP应用" class="headerlink" title="ICMP应用"></a>ICMP应用</h2><ul>
+<li><p>Ping<br>Ping（Packet Internet Groper），即<strong>因特网包探测器</strong>，是一种工作在网络层的服务命令，主要用于测试网络连接量。本地主机通过向目的主机发送 ICMP Echo 请求报文，目的主机收到之后会发送 Echo 响应报文，Ping 会根据时间和成功响应的次数估算出数据包往返时间以及丢包率从而推断网络是否通畅、运行是否正常等。</p>
+</li>
+<li><p>TraceRoute<br>TraceRoute 是 ICMP 的另一个应用，其<strong>主要用来跟踪一个分组从源点耗费最少 TTL 到达目的地的路径</strong>。TraceRoute 通过逐渐增大 TTL 值并重复发送数据报来实现其功能，首先，TraceRoute 会发送一个 TTL 为 1 的 IP 数据报到目的地，当路径上的第一个路由器收到这个数据报时，它将 TTL 的值减 1，此时 TTL = 0，所以路由器会将这个数据报丢掉，并返回一个差错报告报文，之后源主机会接着发送一个 TTL 为 2 的数据报，并重复此过程，直到数据报能够刚好到达目的主机。此时 TTL = 0，因此目的主机要向源主机发送 ICMP 终点不可达差错报告报文，之后源主机便知道了到达目的主机所经过的路由器 IP 地址以及到达每个路由器的往返时间。</p>
+</li>
+</ul>
+ 
       <!-- reward -->
       
     </div>
@@ -305,7 +421,7 @@
     
       <a href="/2021/12/09/Redis%E9%AB%98%E5%8F%AF%E7%94%A8/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Redi高可用</div>
+        <div class="article-nav-title">Redis高可用</div>
       </a>
     
   </nav>
