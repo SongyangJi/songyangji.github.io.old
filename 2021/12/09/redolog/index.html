@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.8k</span>
+            <span class="post-count">1.9k</span>
         </span>
     </span>
 
@@ -112,7 +112,15 @@
 <li>redo日志相对来讲比较紧凑，占用的空间比较小；</li>
 <li>redo日志是顺序写入磁盘的，磁盘的顺序IO效率很高。</li>
 </ol>
-<h2 id="redo日志格式"><a href="#redo日志格式" class="headerlink" title="redo日志格式"></a>redo日志格式</h2><ol>
+<h2 id="redo日志格式"><a href="#redo日志格式" class="headerlink" title="redo日志格式"></a>redo日志格式</h2><p>redo log 包括两部分：</p>
+<ol>
+<li><p>一个是内存中的日志缓冲(redo log buffer)；</p>
+</li>
+<li><p>另一个是磁盘上的日志文件(redo log file)。</p>
+</li>
+</ol>
+<p>下面依次介绍</p>
+<ol>
 <li>type：这条redo日志的格式；</li>
 <li>space ID：表空间 ID；</li>
 <li>page number：页号；</li>
@@ -258,7 +266,7 @@
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            undolog
+            MySQL —— Undo log
           
         </div>
       </a>
