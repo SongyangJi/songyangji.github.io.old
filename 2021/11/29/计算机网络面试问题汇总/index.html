@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.5k</span>
+            <span class="post-count">2.1k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">5 分钟</span>
+            <span class="post-count">7 分钟</span>
         </span>
     </span>
 </div>
@@ -139,7 +139,26 @@
 </blockquote>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/SYN_flood">SYN flood Wiki</a></p>
 <h1 id="从浏览器输入域名到显示出网页的过程"><a href="#从浏览器输入域名到显示出网页的过程" class="headerlink" title="从浏览器输入域名到显示出网页的过程"></a>从浏览器输入域名到显示出网页的过程</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lepeCoder/p/15147895.html">https://www.cnblogs.com/lepeCoder/p/15147895.html</a></p>
-<h1 id="DNS-劫持"><a href="#DNS-劫持" class="headerlink" title="DNS 劫持"></a>DNS 劫持</h1> 
+<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><h2 id="TCP-粘包问题"><a href="#TCP-粘包问题" class="headerlink" title="TCP 粘包问题"></a>TCP 粘包问题</h2><p><strong>为什么会发生TCP粘包和拆包?</strong></p>
+<p>① 发送方写入的数据大于套接字缓冲区的大小，此时将发生拆包。</p>
+<p>② 发送方写入的数据小于套接字缓冲区大小，由于 TCP 默认使用 Nagle 算法，只有当收到一个确认后，才将分组发送给对端，当发送方收集了多个较小的分组，就会一起发送给对端，这将会发生粘包。</p>
+<p>③ 进行 MSS （最大报文长度）大小的 TCP 分段，当 TCP 报文的数据部分大于 MSS 的时候将发生拆包。</p>
+<p>④ 发送方发送的数据太快，接收方处理数据的速度赶不上发送端的速度，将发生粘包。</p>
+<p><strong>常见解决方法</strong></p>
+<p>① <strong>在消息的头部添加消息长度字段</strong>，服务端获取消息头的时候解析消息长度，然后向后读取相应长度的内容。</p>
+<p>② 固定消息数据的长度，服务端每次读取既定长度的内容作为一条完整消息，当消息不够长时，空位补上固定字符。但是该方法会浪费网络资源。</p>
+<p>③ <strong>设置消息边界，也可以理解为分隔符</strong>，服务端从数据流中按消息边界分离出消息内容，一般使用换行符。</p>
+<blockquote>
+<ol>
+<li><p>单看传输层，TCP是「面向字节流」传输的，本身是没有「包」的概念的，接收方将接收的报文段（segment）的数据提取出来按序放置在缓存中。</p>
+</li>
+<li><p>但是从应用层的角度看是有「包」的概念的，例如http/1.1中采用了「管道(pipeline)」的思想，即可以多个http数据流「复用」同一个TCP，因此各个http数据流之间是「纠缠」的，那么就需要在应用层进行处理，「区分不同」的数据流，自然就需要处理「粘包」的问题。</p>
+</li>
+<li><p>个人认为TCP层没有「包」的概念反映了TCP层对应用层「多数据流」的支持较弱，这恰恰导致了粘包问题。而这种弱势也导致了HTTP/3转向了QUIC，也就是基于UDP，自行实现更好的「多数据流复用/分用」。</p>
+</li>
+</ol>
+</blockquote>
+ 
       <!-- reward -->
       
     </div>
