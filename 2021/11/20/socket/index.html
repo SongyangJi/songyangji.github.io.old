@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.4k</span>
+            <span class="post-count">2.8k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">8 分钟</span>
+            <span class="post-count">10 分钟</span>
         </span>
     </span>
 </div>
@@ -123,7 +123,20 @@
 <p>这⾥需要注意的是，服务端调⽤ accept 时，连接成功了会返回⼀个已完成连接的 socket，后续⽤来传输数据。</p>
 <p>所以，监听的 socket 和真正⽤来传送数据的 socket，是两个 socket，⼀个叫作<strong>监听 socket</strong>，⼀个叫作<strong>已完成连接 socket</strong>。</p>
 <p>成功连接建⽴之后，双⽅开始通过 read 和 write 函数来读写数据，就像往⼀个⽂件流⾥⾯写东⻄⼀样。</p>
-<h2 id="select函数"><a href="#select函数" class="headerlink" title="select函数"></a>select函数</h2><h2 id="poll-函数"><a href="#poll-函数" class="headerlink" title="poll 函数"></a>poll 函数</h2><h2 id="epoll-函数"><a href="#epoll-函数" class="headerlink" title="epoll 函数"></a>epoll 函数</h2><h3 id="相关接口"><a href="#相关接口" class="headerlink" title="相关接口"></a>相关接口</h3><p>epoll API是Linux专有的特性，相较于<code>select</code>和<code>poll</code>，<code>epoll</code>更加灵活且<strong>没有描述符限制</strong>。<code>epoll</code>设计也与<code>select</code>和<code>poll</code>不同，主要包含以下三个接口：</p>
+<h2 id="select函数"><a href="#select函数" class="headerlink" title="select函数"></a>select函数</h2><p>select 实现多路复⽤的⽅式是，<strong>将已连接的 Socket 都放到⼀个⽂件描述符集合</strong>，</p>
+<p>然后<strong>调⽤ select 函数将⽂件描述符集合拷⻉到内核⾥，让内核来检查是否有⽹络事件产⽣</strong>，检查的⽅式很粗暴，就是通过<strong>遍历⽂件描述符集合的⽅式</strong>，<strong>当检查到有事件产⽣后，将此 Socket 标记为可读或可写， 接着再把整个⽂件描述符集合拷⻉回⽤户态⾥</strong>，然后⽤户态还需要<strong>再通过遍历的⽅法找到可读或可写的 Socke</strong>t，然后再对其处</p>
+<p>理。</p>
+<p>所以，对<strong>于 select 这种⽅式，需要进⾏ 2 次「遍历」⽂件描述符集合****，⼀次是在内核态⾥，⼀个次是在⽤</strong></p>
+<p><strong>户态⾥</strong> ，⽽且还会发⽣ <strong>2</strong> 次「拷⻉」⽂件描述符集合，先从⽤户空间传⼊内核空间，由内核修改后，再传</p>
+<p>出到⽤户空间中。</p>
+<p>select 使⽤固定⻓度的 BitsMap，表示⽂件描述符集合，⽽且<strong>所⽀持的⽂件描述符的个数是有限制的</strong>，在</p>
+<p>Linux 系统中，由内核中的 FD_SETSIZE 限制， 默认最⼤值为 1024 ，只能监听 0~1023 的⽂件描述符。</p>
+<h2 id="poll-函数"><a href="#poll-函数" class="headerlink" title="poll 函数"></a>poll 函数</h2><p>poll 不再⽤ BitsMap 来存储所关注的⽂件描述符，取⽽代之⽤动态数组，以链表形式来组织，突破了</p>
+<p>select 的⽂件描述符个数限制，当然还会受到系统⽂件描述符限制。</p>
+<p>但是 poll 和 select 并没有太⼤的本质区别，都是使⽤「线性结构」存储进程关注的 <strong>Socket</strong> 集合，因此都</p>
+<p>需要遍历⽂件描述符集合来找到可读或可写的 <strong>Socket</strong>，时间复杂度为 **O(n)**，⽽且也需要在⽤户态与内核</p>
+<p>态之间拷⻉⽂件描述符集合，这种⽅式随着并发数上来，性能的损耗会呈指数级增⻓。</p>
+<h2 id="epoll-函数"><a href="#epoll-函数" class="headerlink" title="epoll 函数"></a>epoll 函数</h2><h3 id="相关接口"><a href="#相关接口" class="headerlink" title="相关接口"></a>相关接口</h3><p>epoll API是Linux专有的特性，相较于<code>select</code>和<code>poll</code>，<code>epoll</code>更加灵活且<strong>没有描述符限制</strong>。<code>epoll</code>设计也与<code>select</code>和<code>poll</code>不同，主要包含以下三个接口：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_create</span><span class="params">(<span class="keyword">int</span> size)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="keyword">int</span> epfd, <span class="keyword">int</span> op, <span class="keyword">int</span> fd, struct epoll_event *event)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="keyword">int</span> epfd, struct epoll_event * events, <span class="keyword">int</span> maxevents, <span class="keyword">int</span> timeout)</span></span>;</span><br></pre></td></tr></table></figure>
 
 
