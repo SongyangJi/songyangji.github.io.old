@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    JUC之并发安全的HashMap —— ConcurrentHashMap |  JsyBlog
+    JVM内存结构 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-ConcurrentHashMap"
+  id="post-JVM"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,18 +54,18 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  JUC之并发安全的HashMap —— ConcurrentHashMap
+  JVM内存结构
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/12/12/ConcurrentHashMap/" class="article-date">
-  <time datetime="2021-12-12T08:15:24.000Z" itemprop="datePublished">2021-12-12</time>
+      <a href="/2021/12/12/JVM/" class="article-date">
+  <time datetime="2021-12-12T10:31:40.000Z" itemprop="datePublished">2021-12-12</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JUC/">JUC</a>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
   </div>
   
 <div class="word_count">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">693</span>
+            <span class="post-count">0</span>
         </span>
     </span>
 
@@ -82,55 +82,21 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">1 分钟</span>
         </span>
     </span>
 </div>
  
     </div>
       
-    <div class="tocbot"></div>
-
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>本篇文章将要介绍的 ConcurrentHashMap 是 HashMap 的并发版本，它是线程安全的，并且在高并发的情境下，性能优于 HashMap 很多。</p>
-<h2 id="历史版本的演变"><a href="#历史版本的演变" class="headerlink" title="历史版本的演变"></a>历史版本的演变</h2><blockquote>
-<p><em>一句话总结</em></p>
-<p>从JDK7版本的ReentrantLock+Segment+HashEntry，到JDK8版本中synchronized+CAS+HashEntry+红黑树。</p>
-</blockquote>
-<h3 id="JDK7"><a href="#JDK7" class="headerlink" title="JDK7"></a>JDK7</h3><p>JDK7 采用<strong>分段锁技术</strong>，<strong>整个 Hash 表被分成多个段（默认为16段），每个段中会对应一个 Segment 段锁</strong>，<strong>段与段之间可以并发访问，但是多线程想要操作同一个段是需要获取锁的</strong>。所有的 put，get，remove 等方法都是根据键的 hash 值对应到相应的段中，然后尝试获取锁进行访问。</p>
-<p>相当于通过增加锁的数量来降低锁的粒度。</p>
-<p><img src="/ConcurrentHashMap/jdk7-segment.png"></p>
-<p>下图为JDK7的数据结构。</p>
-<p><img src="/ConcurrentHashMap/jdk7-segment2.awebp"></p>
-<h3 id="JDK8"><a href="#JDK8" class="headerlink" title="JDK8"></a>JDK8</h3><p>J<strong>DK8 取消了基于 Segment 的分段锁思想</strong>，<strong>改用 CAS + synchronized 控制并发操作</strong>，在某些方面提升了性能。</p>
-<p><strong>并且追随 1.8 版本的 HashMap 底层实现，使用数组+链表+红黑树进行数据存储</strong>。本篇主要介绍 1.8 版本的 ConcurrentHashMap 的具体实现。</p>
-<p>有关其之前版本的实现情况，这里推荐几篇文章：</p>
-<p><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/e694f1e868ec">谈谈ConcurrentHashMap1.7和1.8的不同实现</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/everSeeker/p/5601861.html">ConcurrentHashMap在jdk1.8中的改进</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/study-everyday/p/6430462.html">ConcurrentHashMap原理分析（1.7与1.8）</a></p>
-<h3 id="JDK7与JDK8的区别"><a href="#JDK7与JDK8的区别" class="headerlink" title="JDK7与JDK8的区别"></a>JDK7与JDK8的区别</h3><ol>
-<li><strong>底层数据结构</strong>：<strong>取消了Segment分段锁的数据结构</strong>，取而代之的是Node数组+链表+红黑树的结构，从而实现了对每一行数据进行加锁，进一步减少并发冲突的概率。</li>
-</ol>
-<blockquote>
-<p>Node类成员变量Node的元素val和指针next都标注volatile，目的是在多线程环境下<strong>线程A修改结点的val或者新增节点的时候是对线程B可见的</strong>。</p>
-</blockquote>
-<blockquote>
-<p>ConcurrentHashMap有成员变量transient volatile Node&lt;K,V&gt;[] table，此volatile的目的是<strong>为了使Node数组在扩容的时候对其他线程具有可见性</strong>。（例如：volatile int array[10]是指array的地址是volatile的而不是数组元素的值是volatile的.）</p>
-</blockquote>
-<ol start="2">
-<li><strong>保证线程安全机制</strong>：JDK7采用segment的分段锁机制实现线程安全，其中segment继承自ReentrantLock。<strong>JDK8采用CAS(读)+Synchronized(写)保证线程安全</strong>。</li>
-<li><strong>锁的粒度</strong>：原来是对需要进行数据操作的Segment加锁<strong>，JDK8调整为对每个数组元素加锁（Node）</strong>。</li>
-<li><strong>链表转化为红黑树</strong>：定位结点的hash算法简化会带来弊端，Hash冲突加剧，因此在链表节点数量大于8时，会将链表转化为红黑树进行存储。</li>
-<li><strong>查询时间复杂度</strong>：从原来的遍历链表O(n)，变成遍历红黑树O(logN)。</li>
-</ol>
-<h3 id="Collections-synchronizedMap、HahsTable、ConcurrentHashMap区别"><a href="#Collections-synchronizedMap、HahsTable、ConcurrentHashMap区别" class="headerlink" title="Collections.synchronizedMap、HahsTable、ConcurrentHashMap区别"></a>Collections.synchronizedMap、HahsTable、ConcurrentHashMap区别</h3><blockquote>
-<p>参考文章</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yangming1996/p/8031199.html">为并发而生的 ConcurrentHashMap（Java 8）</a></p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903813892014087">解读Java8中ConcurrentHashMap是如何保证线程安全的</a></p>
-</blockquote>
+  <p><img src="/JVM/jvm-memory.jpg"></p>
+<p><img src="/JVM/jvm-memory2" alt="图片"></p>
  
       <!-- reward -->
       
@@ -195,12 +161,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/12/12/ConcurrentHashMap/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/12/12/JVM/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JUC/" rel="tag">JUC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91%E9%9B%86%E5%90%88%E7%B1%BB/" rel="tag">并发集合类</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
 
     </footer>
   </div>
@@ -208,19 +174,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2021/12/12/JVM/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            JVM内存结构
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/12/10/Sandbox%E7%9A%84%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6/" class="article-nav-link">
+      <a href="/2021/12/12/ConcurrentHashMap/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Sandbox的安全机制</div>
+        <div class="article-nav-title">JUC之并发安全的HashMap —— ConcurrentHashMap</div>
       </a>
     
   </nav>
