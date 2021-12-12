@@ -164,7 +164,7 @@
 <li><strong>将已经下线的主节点(如localhost:6379)设置为新的主节点的从节点</strong>，当localhost:6379重新上线后，它会成为新的主节点的从节点。</li>
 </ol>
 <p>通过上述几个关键概念，可以基本了解哨兵的工作原理。为了更形象的说明，下图展示了领导者哨兵节点的日志，包括从节点启动到完成故障转移。</p>
-<p><img src="/Redis-%E5%93%A8%E5%85%B5/Redis-%E5%93%A8%E5%85%B51.png"></p>
+<p><img src="/2021/12/09/Redis-%E5%93%A8%E5%85%B5/Redis-%E5%93%A8%E5%85%B51.png"></p>
 <h2 id="配置与实践建议"><a href="#配置与实践建议" class="headerlink" title="配置与实践建议"></a>配置与实践建议</h2><h3 id="参数配置"><a href="#参数配置" class="headerlink" title="参数配置"></a>参数配置</h3><p>下面介绍与哨兵相关的几个配置。</p>
 <ol>
 <li>sentinel monitor {masterName} {masterIp} {masterPort} {quorum}</li>
