@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.8k</span>
+            <span class="post-count">3k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">10 分钟</span>
+            <span class="post-count">11 分钟</span>
         </span>
     </span>
 </div>
@@ -131,12 +131,26 @@
 <p>出到⽤户空间中。</p>
 <p>select 使⽤固定⻓度的 BitsMap，表示⽂件描述符集合，⽽且<strong>所⽀持的⽂件描述符的个数是有限制的</strong>，在</p>
 <p>Linux 系统中，由内核中的 FD_SETSIZE 限制， 默认最⼤值为 1024 ，只能监听 0~1023 的⽂件描述符。</p>
-<h2 id="poll-函数"><a href="#poll-函数" class="headerlink" title="poll 函数"></a>poll 函数</h2><p>poll 不再⽤ BitsMap 来存储所关注的⽂件描述符，取⽽代之⽤动态数组，以链表形式来组织，突破了</p>
-<p>select 的⽂件描述符个数限制，当然还会受到系统⽂件描述符限制。</p>
-<p>但是 poll 和 select 并没有太⼤的本质区别，都是使⽤「线性结构」存储进程关注的 <strong>Socket</strong> 集合，因此都</p>
-<p>需要遍历⽂件描述符集合来找到可读或可写的 <strong>Socket</strong>，时间复杂度为 **O(n)**，⽽且也需要在⽤户态与内核</p>
-<p>态之间拷⻉⽂件描述符集合，这种⽅式随着并发数上来，性能的损耗会呈指数级增⻓。</p>
-<h2 id="epoll-函数"><a href="#epoll-函数" class="headerlink" title="epoll 函数"></a>epoll 函数</h2><h3 id="相关接口"><a href="#相关接口" class="headerlink" title="相关接口"></a>相关接口</h3><p>epoll API是Linux专有的特性，相较于<code>select</code>和<code>poll</code>，<code>epoll</code>更加灵活且<strong>没有描述符限制</strong>。<code>epoll</code>设计也与<code>select</code>和<code>poll</code>不同，主要包含以下三个接口：</p>
+<h2 id="poll-函数"><a href="#poll-函数" class="headerlink" title="poll 函数"></a>poll 函数</h2><p><strong>poll 不再⽤位图或数组来存储所关注的⽂件描述符，取⽽代之⽤动态数组</strong>，以<strong>链表形式来组织，突破了</strong></p>
+<p><strong>select 的⽂件描述符个数限制</strong>，当然还会受到系统⽂件描述符限制。</p>
+<p>但是 poll 和 select 并没有太⼤的本质区别，都是使⽤「线性结构」存储进程关注的 <strong>Socket</strong> 集合，因此<strong>都</strong></p>
+<p><strong>需要遍历⽂件描述符集合</strong>来找到可读或可写的 <strong>Socket</strong>，时间复杂度为 **O(n)**，</p>
+<p>⽽且<strong>也需要在⽤户态与内核态之间拷⻉⽂件描述符集合</strong>，这种⽅式随着并发数上来，性能的损耗会呈指数级增⻓。</p>
+<h2 id="epoll-函数"><a href="#epoll-函数" class="headerlink" title="epoll 函数"></a>epoll 函数</h2><p>epoll 通过两个⽅⾯，很好解决了 select/poll 的问题。</p>
+<ul>
+<li>第⼀点，epoll 在内核⾥<strong>使⽤红⿊树来跟踪进程所有待检测的⽂件描述符</strong>，把需要监控的 socket 通过</li>
+</ul>
+<p><code>epoll_ctl()</code> 函数加⼊内核中的红⿊树⾥，红⿊树是个⾼效的数据结构，增删查⼀般时间复杂度是</p>
+<p>O(logn) ，通过对这棵⿊红树进⾏操作，<strong>这样就不需要像 select/poll 每次操作时都传⼊整个 socket 集</strong></p>
+<p><strong>合，只需要传⼊⼀个待检测的 socket，减少了内核和⽤户空间⼤量的数据拷⻉和内存分配</strong>。</p>
+<ul>
+<li>第⼆点， epoll 使⽤<strong>事件驱动</strong>的机制，<strong>内核⾥维护了⼀个链表来记录就绪事件</strong>，<strong>当某个 socket 有事件发⽣</strong></li>
+</ul>
+<p><strong>时，通过回调函数内核会将其加⼊到这个就绪事件列表中</strong>，当⽤户调⽤ <code>epoll_wait() </code>函数时，<strong>只会返回有</strong></p>
+<p><strong>事件发⽣的⽂件描述符的个数，不需要像 select/poll 那样轮询扫描整个 socket 集合</strong>，⼤⼤提⾼了检测的效</p>
+<p>率。</p>
+<p><img src="/socket/epoll.png"></p>
+<h3 id="相关接口"><a href="#相关接口" class="headerlink" title="相关接口"></a>相关接口</h3><p>epoll API是Linux专有的特性，相较于<code>select</code>和<code>poll</code>，<code>epoll</code>更加灵活且<strong>没有描述符限制</strong>。<code>epoll</code>设计也与<code>select</code>和<code>poll</code>不同，主要包含以下三个接口：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_create</span><span class="params">(<span class="keyword">int</span> size)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="keyword">int</span> epfd, <span class="keyword">int</span> op, <span class="keyword">int</span> fd, struct epoll_event *event)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="keyword">int</span> epfd, struct epoll_event * events, <span class="keyword">int</span> maxevents, <span class="keyword">int</span> timeout)</span></span>;</span><br></pre></td></tr></table></figure>
 
 
@@ -179,11 +193,12 @@
 <p>数组<code>evlist</code>的空间由调用者负责申请</p>
 <p>等待epfd上的io事件，最多返回maxevents个事件。<br>参数evlist用来从内核得到事件的集合，maxevents告之内核这个evlist有多大，这个maxevents的值不能大于创建epoll_create()时的size，参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。该函数返回需要处理的事件数目，如返回0表示已超时。</p>
 <h3 id="epoll的工作模式"><a href="#epoll的工作模式" class="headerlink" title="epoll的工作模式"></a>epoll的工作模式</h3><p>epoll对文件描述符的操作有两种模式：<strong>LT（level trigger）</strong>和<strong>ET（edge trigger）</strong>。LT模式是默认模式，LT模式与ET模式的区别如下：</p>
-<p><strong>LT模式</strong>：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，<strong>应用程序可以不立即处理该事件</strong>。下次调用epoll_wait时，会再次响应应用程序并通知此事件。<br><strong>ET模式</strong>：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，<strong>应用程序必须立即处理该事件</strong>。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。</p>
-<p>LT模式下，主要缓冲区数据一次没有处理完，那么下次<code>epoll_wait</code>返回时，还会返回这个句柄；</p>
-<p>而ET模式下，缓冲区数据一次没处理结束，那么下次是不会再通知了，只在第一次返回．所以在ET模式下，一般是通过while循环，一次性读完全部数据．epoll默认使用的是LT．</p>
+<p><strong>LT模式</strong>：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，<strong>应用程序可以不立即处理该事件</strong>。下次调用epoll_wait时，会再次响应应用程序并通知此事件。</p>
+<p><strong>ET模式</strong>：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，<strong>应用程序必须立即处理该事件</strong>。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。</p>
+<p>LT模式下，<strong>主要缓冲区数据一次没有处理完，那么下次<code>epoll_wait</code>返回时，还会返回这个句柄</strong>；</p>
+<p>而ET模式下，缓冲区数据一次没处理结束，那么下次就不会再通知了，只在第一次返回．所以在ET模式下，一般是通过while循环，一次性读完全部数据<strong>．epoll默认使用的是LT</strong>．</p>
 <h4 id="1-LT模式"><a href="#1-LT模式" class="headerlink" title="1. LT模式"></a>1. LT模式</h4><p>LT(level triggered)是默认的工作方式，并且<strong>同时支持block和no-block</strong> socket.在这种做法中，内核告诉你一个文件描述符是否就绪了，然后你可以对这个就绪的fd进行IO操作。如果你不作任何操作，内核还是会继续通知你的。</p>
-<h4 id="2-ET模式"><a href="#2-ET模式" class="headerlink" title="2. ET模式"></a>2. ET模式</h4><p>ET(edge-triggered)是高速工作方式，只支持no-block socket。在这种模式下，当描述符从未就绪变为就绪时，内核通过epoll告诉你。然后它会假设你知道文件描述符已经就绪，并且不会再为那个文件描述符发送更多的就绪通知，直到你做了某些操作导致那个文件描述符不再为就绪状态了(比如，你在发送，接收或者接收请求，或者发送接收的数据少于一定量时导致了一个EWOULDBLOCK 错误）。但是请注意，如果一直不对这个fd作IO操作(从而导致它再次变成未就绪)，内核不会发送更多的通知(only once)</p>
+<h4 id="2-ET模式"><a href="#2-ET模式" class="headerlink" title="2. ET模式"></a>2. ET模式</h4><p><strong>ET(edge-triggered)是高速工作方式</strong>，只支持no-block socket。在这种模式下，当描述符从未就绪变为就绪时，内核通过epoll告诉你。然后它会假设你知道文件描述符已经就绪，并且不会再为那个文件描述符发送更多的就绪通知，直到你做了某些操作导致那个文件描述符不再为就绪状态了(比如，你在发送，接收或者接收请求，或者发送接收的数据少于一定量时导致了一个EWOULDBLOCK 错误）。但是请注意，如果一直不对这个fd作IO操作(从而导致它再次变成未就绪)，内核不会发送更多的通知(only once)</p>
 <p><strong>ET模式在很大程度上减少了epoll事件被重复触发的次数</strong>，因此效率要比LT模式高。epoll工作在ET模式的时候，<strong>必须使用非阻塞套接口</strong>，以避免由于一个文件句柄的阻塞读/阻塞写操作把处理多个文件描述符的任务饿死。</p>
 <p><strong>假如有这样一个例子：</strong></p>
 <ol>
