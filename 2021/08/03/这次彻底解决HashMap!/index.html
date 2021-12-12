@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">7.2k</span>
+            <span class="post-count">7.3k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">35 分钟</span>
+            <span class="post-count">36 分钟</span>
         </span>
     </span>
 </div>
@@ -164,7 +164,10 @@
 
 
 
-<h2 id="resize（扩容操作）"><a href="#resize（扩容操作）" class="headerlink" title="resize（扩容操作）"></a>resize（扩容操作）</h2><p>扩容操作分为两个部分：</p>
+<h2 id="resize（扩容操作）"><a href="#resize（扩容操作）" class="headerlink" title="resize（扩容操作）"></a>resize（扩容操作）</h2><blockquote>
+<p>jdk 1.8 以来，rehash 的过程也进行了改动，基于复制的算法思想,不直接操作原链，而是定义了两条链表分别完成对原链的结点分离操作，即使是多线程的情况下也是安全的。</p>
+</blockquote>
+<p>扩容操作分为两个部分：</p>
 <h3 id="确定新的容量和阈值"><a href="#确定新的容量和阈值" class="headerlink" title="确定新的容量和阈值"></a>确定新的容量和阈值</h3><p>具体的：</p>
 <ol>
 <li><p>如果调用的是无参构造参数，在第一次扩容时，容量默认是16，扩容阈值为12（16*0.75）</p>
