@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">8k</span>
+            <span class="post-count">8.1k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">28 分钟</span>
+            <span class="post-count">29 分钟</span>
         </span>
     </span>
 </div>
@@ -351,7 +351,7 @@
 </table>
 
 
-<p>比较重要的有<code>Content-encoding</code>、<code>Content-Length</code>、<code>Content-Type</code></p>
+<p>比较重要的有<code>Content-encoding</code>、<code>Content-Length</code>、<code>Content-Type</code>、<code>Content-MD5</code>、</p>
 <h2 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h2><p>HTTP 状态码由三个十进制数字组成，第一个数字定义了状态码的类型，后两个并没有起到分类的作用。HTTP 状态码共有 5 种类型：</p>
 <table>
 <thead>
@@ -386,15 +386,17 @@
 <h3 id="2xx"><a href="#2xx" class="headerlink" title="2xx"></a>2xx</h3><p>2xx 类状态码表示服务器成功处理了客户端的请求，也是我们最愿意看到的状态。</p>
 <p>「<strong>200 OK</strong>」是最常⻅的成功状态码，表示⼀切正常。如果是⾮ HEAD 请求，服务器返回的响应头都会有 body</p>
 <p>数据。</p>
-<p>「<strong>204 No Content</strong>」也是常⻅的成功状态码，与 200 OK 基本相同，但响应头没有 body 数据。「<strong>206 Partial Content</strong>」是应⽤于 HTTP 分块下载或断点续传，表示响应返回的 body 数据并不是资源的全部，⽽</p>
-<p>是其中的⼀部分，也是服务器处理成功的状态。</p>
-<h3 id="3xx"><a href="#3xx" class="headerlink" title="3xx"></a>3xx</h3><p>3xx 类状态码表示客户端请求的资源发送了变动，需要客户端⽤新的 URL ᯿新发送请求获取资源，也就是重定</p>
+<p>「<strong>204 No Content</strong>」也是常⻅的成功状态码，与 200 OK 基本相同，但响应头没有 body 数据。</p>
+<p>「<strong>206 Partial Content</strong>」是应⽤于 HTTP 分块下载或断点续传，表示响应返回的 body 数据并不是资源的全部，⽽是其中的⼀部分，也是服务器处理成功的状态。</p>
+<h3 id="3xx"><a href="#3xx" class="headerlink" title="3xx"></a>3xx</h3><p>3xx 类状态码表示客户端请求的资源发送了变动，需要客户端⽤新的 URL 重新发送请求获取资源，也就是重定</p>
 <p>向。</p>
-<p>「<strong>301 Moved Permanently</strong>」表示永久᯿定向，说明请求的资源已经不存在了，需改⽤新的 URL 再次访问。</p>
-<p>「<strong>302 Found</strong>」表示临时᯿定向，说明请求的资源还在，但暂时需要⽤另⼀个 URL 来访问。</p>
-<p>301 和 302 都会在响应头⾥使⽤字段 Location ，指明后续要跳转的 URL，浏览器会⾃动᯿定向新的 URL。 </p>
-<p>「<strong>304 Not Modified</strong>」不具有跳转的含义，表示资源未修改，᯿定向已存在的缓冲⽂件，也称缓存᯿定向，⽤于缓</p>
-<p>存控制。</p>
+<p>「<strong>301 Moved Permanently</strong>」表示永久重定向，说明请求的资源已经不存在了，需改⽤新的 URL 再次访问。</p>
+<p>「<strong>302 Found</strong>」表示临时重定向，说明请求的资源还在，但暂时需要⽤另⼀个 URL 来访问。</p>
+<p>301 和 302 都会在响应头⾥使⽤字段 Location ，指明后续要跳转的 URL，浏览器会⾃动重定向新的 URL。 </p>
+<p>「<strong>304 Not Modified</strong>」不具有跳转的含义，表示资源未修改，重定向已存在的缓冲⽂件，也称缓存重定向，⽤于缓存控制。</p>
+<blockquote>
+<p>重定向有两种：一种是302响应，称为临时重定向，一种是301响应，称为永久重定向。两者的区别是，如果服务器发送301永久重定向响应，浏览器会缓存<code>/hi</code>到<code>/hello</code>这个重定向的关联，下次请求<code>/hi</code>的时候，浏览器就直接发送<code>/hello</code>请求了。</p>
+</blockquote>
 <h3 id="4xx"><a href="#4xx" class="headerlink" title="4xx"></a>4xx</h3><p>4xx 类状态码表示客户端发送的报⽂有误，服务器⽆法处理，也就是错误码的含义。</p>
 <p>「<strong>400 Bad Request</strong>」表示客户端请求的报⽂有错误，但只是个笼统的错误。</p>
 <p>「<strong>403 Forbidden</strong>」表示服务器禁⽌访问资源，并不是客户端的请求出错。</p>
@@ -404,8 +406,7 @@
 <p>「<strong>501 Not Implemented</strong>」表示客户端请求的功能还不⽀持，类似“即将开业，敬请期待”的意思。</p>
 <p>「<strong>502 Bad Gateway</strong>」通常是服务器作为⽹关或代理时返回的错误码，表示服务器⾃身⼯作正常，访问后端服务器</p>
 <p>发⽣了错误。</p>
-<p>「<strong>503 Service Unavailable</strong>」表示服务器当前很忙，暂时⽆法响应服务器，类似“⽹络服务正忙，请稍后᯿试”的意</p>
-<p>思。</p>
+<p>「<strong>503 Service Unavailable</strong>」表示服务器当前很忙，暂时⽆法响应服务器，类似“⽹络服务正忙，请稍后᯿试”的意思。</p>
 <h2 id="HTTP方法"><a href="#HTTP方法" class="headerlink" title="HTTP方法"></a>HTTP方法</h2><p>HTTP/0.9 只定义了一种方法: GET。</p>
 <p>HTTP/1.0 定义了三种请求方法：GET, POST 和 HEAD 方法。</p>
 <p>HTTP/1.1 增加了六种请求方法：OPTIONS, PUT, PATCH, DELETE, TRACE 和 CONNECT 方法。</p>
