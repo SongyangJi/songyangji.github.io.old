@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">8.9k</span>
+            <span class="post-count">9.2k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">32 分钟</span>
+            <span class="post-count">33 分钟</span>
         </span>
     </span>
 </div>
@@ -674,16 +674,16 @@
 <h3 id="3-数据流"><a href="#3-数据流" class="headerlink" title="3. 数据流"></a>3. 数据流</h3><p>HTTP/2 的数据包不是按顺序发送的，同⼀个连接⾥⾯连续的数据包，可能属于不同的回应。因此，必须要对数据包做标记，指出它属于哪个回应。<br>每个请求或回应的所有数据包，称为⼀个数据流（ Stream ）。每个数据流都标记着⼀个独⼀⽆⼆的编号，其中规定客户端发出的数据流编号为奇数， 服务器发出的数据流编号为偶数</p>
 <p>客户端还可以<strong>指定数据流的优先级</strong>。优先级⾼的请求，服务器就先响应该请求。</p>
 <h3 id="4-多路复⽤"><a href="#4-多路复⽤" class="headerlink" title="4. 多路复⽤"></a>4. 多路复⽤</h3><p>HTTP/2 是可以<strong>在⼀个连接中并发多个请求或回应，⽽不⽤按照顺序⼀⼀对应</strong>。</p>
-<p><strong>移除了 HTTP/1.1 中的串⾏请求</strong>，不需要排队等待，也就<strong>解决了「队头阻塞」问题，降低了延迟</strong>，⼤幅度提⾼</p>
+<p><strong>移除了 HTTP/1.1 中的串⾏请求</strong>，不需要排队等待，也就<strong>解决了「队头阻塞」问题（一定程度上），降低了延迟</strong>，⼤幅度提⾼</p>
 <p>了连接的利⽤率。</p>
 <p>举例来说，在⼀个 TCP 连接⾥，服务器收到了客户端 A 和 B 的两个请求，如果发现 A 处理过程⾮常耗时，于是就</p>
 <p>回应 A 请求已经处理好的部分，接着回应 B 请求，完成后，再回应 A 请求剩下的部分。</p>
 <p><img src="/2021/11/26/HTTP/%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8.png"></p>
 <h3 id="5-服务器推送"><a href="#5-服务器推送" class="headerlink" title="5. 服务器推送"></a>5. 服务器推送</h3><p>HTTP/2 还在⼀定程度上改善了传统的「请求 - 应答」⼯作模式，服务不再是被动地响应，也可以主动向客户端发</p>
-<p>送消息。举例来说，<strong>在浏览器刚请求 HTML 的时候，就提前把可能会⽤到的 JS、CSS ⽂件等静态资源主动发给客户端，减少延时的等待，也就是服务器推送</strong>（Server Push，也叫 Cache Push）。</p>
+<p>送消息。举例来说，在浏览器刚请求 HTML 的时候，就提前把可能会⽤到的 JS、CSS ⽂件等静态资源主动发给客户端，减少延时的等待，也就是服务器推送（Server Push，也叫 Cache Push）。</p>
 <h2 id="HTTP-2-0-和-HTTP-3-0-的区别"><a href="#HTTP-2-0-和-HTTP-3-0-的区别" class="headerlink" title="HTTP/2.0 和 HTTP/3.0 的区别"></a>HTTP/2.0 和 HTTP/3.0 的区别</h2><p>HTTP/2 主要的问题在于，多个 HTTP 请求在复⽤⼀个 TCP 连接，下层的 TCP 协议是不知道有多少个 HTTP 请求<br>的。所以⼀旦发⽣了丢包现象，就会触发 TCP 的重传机制，这样在⼀个 TCP 连接中的所有的 HTTP 请求都必须等待这个丢了的包被重传回来。</p>
 <ul>
-<li><strong>队头阻塞问题</strong>：HTTP/1.1 中的管道（ pipeline）传输中如果有⼀个请求阻塞了，那么队列后请求也统统被阻塞住了</li>
+<li><strong>队头阻塞问题</strong>：HTTP/1.1 中的管道（ pipeline）传输中如果有⼀个请求阻塞了，那么队列后面请求也统统被阻塞住了</li>
 <li><strong>复用TCP的丢包问题</strong>：HTTP/2 多个请求复⽤⼀个TCP连接，⼀旦发⽣丢包，就会阻塞住所有的 HTTP 请求。</li>
 </ul>
 <p>这都是基于 TCP 传输层的问题，所以 HTTP/3 把 HTTP 下层的 TCP 协议改成了 UDP！</p>
@@ -700,26 +700,53 @@
 <p>TLS3 升级成了最新的 1.3 版本，头部压缩算法也升级成了 QPack 。</p>
 <p>HTTPS 要建⽴⼀个连接，要花费 6 次交互，先是建⽴三次握⼿，然后是 TLS/1.3 的三次握⼿。QUIC 直接</p>
 <p>把以往的 TCP 和 TLS/1.3 的 6 次交互合并成了 <strong>3</strong> 次，减少了交互次数。</p>
-<p>所以， QUIC 是⼀个在 UDP 之上的伪 TCP + TLS + HTTP/2 的多路复⽤的协议。</p>
+<p>所以， <strong>QUIC 是⼀个在 UDP 之上的伪 TCP + TLS + HTTP/2 的多路复⽤</strong>的协议。</p>
 <p>QUIC 是新协议，对于很多⽹络设备，根本不知道什么是 QUIC，只会当做 UDP，这样会出现新的问题。所以</p>
 <p>HTTP/3 现在普及的进度⾮常的缓慢，不知道未来 UDP 是否能够逆袭 TCP。</p>
 </blockquote>
-<h2 id="了解HTTP3"><a href="#了解HTTP3" class="headerlink" title="了解HTTP3"></a>了解HTTP3</h2><p>QUIC 协议</p>
-<p>QUIC（Quick UDP Internet Connections），直译为快速 UDP 网络连接，是谷歌制定的一种基于 UDP 的低延迟传输协议。其主要目的是解决采用传输层 TCP 协议存在的问题，同时满足传输层和应用层对多连接、低延迟等的需求。该协议融合了 TCP, TLS, HTTP/2 等协议的特性，并基于 UDP传输。该协议带来的主要提升有：</p>
+<h2 id="了解HTTP3"><a href="#了解HTTP3" class="headerlink" title="了解HTTP3"></a>了解HTTP3</h2><h3 id="HTTP-2-存在的问题"><a href="#HTTP-2-存在的问题" class="headerlink" title="HTTP/2 存在的问题"></a>HTTP/2 存在的问题</h3><p>我们知道，传统 Web 平台的数据传输都基于 TCP 协议，而 TCP 协议在创建连接之前不可避免的需要三次握手，如果需要提高数据交互的安全性，即增加传输层安全协议（TLS），还会增加更多的握手次数。</p>
+<p> HTTP 从 1.0 到 2.0，其传输层都是基于 TCP 协议的。即使是带来巨大性能提升的 HTTP/2，也无法完全解决 TCP 协议存在的固有问题（慢启动，拥塞窗口尺寸的设置等）。</p>
+<p><strong>此外，HTTP/2 多路复用只是减少了连接数，其队头的拥塞问题并没有完全解决</strong>，倘若 TCP 丢包率过大，则 HTTP/2 的表现将不如 HTTP/1.1。</p>
+<h3 id="QUIC-协议"><a href="#QUIC-协议" class="headerlink" title="QUIC 协议"></a>QUIC 协议</h3><p>QUIC（Quick UDP Internet Connections），直译为<strong>快速 UDP 网络连接</strong>，是谷歌制定的一种基于 UDP 的低延迟传输协议。其主要目的是解决采用传输层 TCP 协议存在的问题，同时满足传输层和应用层对多连接、低延迟等的需求。该协议融合了 TCP, TLS, HTTP/2 等协议的特性，并基于 UDP传输。该协议带来的主要提升有：</p>
 <p>低延迟连接。当客户端第一次连接服务器时，QUIC 只需要 1 RTT（Round-Trid Time）延迟就可以建立安全可靠的连接（采用 TLS 1.3 版本），相比于 TCP + TLS 的 3 次 RTT 要更加快捷。之后，客户端可以在本地缓存加密的认证信息，当再次与服务器建立连接时可以实现 0 RTT 的连接建立延迟。</p>
 <p>QUIC 复用了 HTTP/2 协议的多路复用功能，由于 QUIC 基于 UDP，所以也避免了 HTTP/2存在的队头阻塞问题。</p>
 <p>基于 UDP 协议的 QUIC 运行在用户域而不是系统内核，这使得 QUIC 协议可以快速的更新和部署，从而很好地解决了 TPC 协议部署及更新的困难。</p>
 <p>QUIC 的报文是经过加密和认证的，除了少量的报文，其它所有的 QUIC 报文头部都经过了认证，报文主体经过了加密。只要有攻击者篡改 QUIC 报文，接收端都能及时发现。</p>
 <p>具有向前纠错机制，每个数据包携带了除了本身内容外的部分其他数据包的内容，使得在出现少量丢包的情况下，尽量地减少其它包的重传次数，其通过牺牲单个包所携带的有效数据大小换来更少的重传次数，这在丢包数量较小的场景下能够带来一定程度的性能提升。</p>
-<p>HTTP/3</p>
-<p>HTTP/3 是在 QUIC 基础上发展起来的，其底层使用 UDP 进行数据传输，上层仍然使用 HTTP/2。在 UDP 与 HTTP/2 之间存在一个 QUIC 层，其中 TLS 加密过程在该层进行处理。HTTP/3 主要有以下几个特点：</p>
-<p>① 使用 UDP 作为传输层进行通信；</p>
-<p>② 在 UDP 之上的 QUIC 协议保证了 HTTP/3 的安全性。QUIC 在建立连接的过程中就完成了 TLS 加密握手；</p>
+<h3 id="HTTP-3"><a href="#HTTP-3" class="headerlink" title="HTTP/3"></a>HTTP/3</h3><p><strong>HTTP/3 是在 QUIC 基础上发展起来的，其底层使用 UDP 进行数据传输</strong>，上层仍然使用 HTTP/2。</p>
+<p><strong>在 UDP 与 HTTP/2 之间存在一个 QUIC 层</strong>，<strong>其中 TLS 加密过程在该层进行处理</strong>。</p>
+<p>HTTP/3 主要有以下几个特点：</p>
+<p>① <strong>使用 UDP 作为传输层进行通信</strong>；</p>
+<p>② <strong>在 UDP 之上的 QUIC 协议保证了 HTTP/3 的安全性</strong>。QUIC 在建立连接的过程中就完成了 TLS 加密握手；</p>
 <p>③ 建立连接快，正常只需要 1 RTT 即可建立连接。如果有缓存之前的会话信息，则直接验证和建立连接，此过程 0 RTT。建立连接时，也可以带有少量业务数据；</p>
 <p>④ 不和具体底层连接绑定，QUIC 为每个连接的两端分别分配了一个唯一 ID，上层连接只认这对逻辑 ID。网络切换或者断连时，只需要继续发送数据包即可完成连接的建立；</p>
 <p>⑤ 使用 QPACK 进行头部压缩，因为 在 HTTP/2 中的 HPACK 要求传输过程有序，这会导致队头阻塞，而 QPACK 不存在这个问题。</p>
+<blockquote>
+<p><strong>tcp的慢</strong></p>
+<ol>
+<li>握手次数过多(TCP以及SSL/TLS的握手)</li>
+<li>防止拥塞的<strong>慢启动</strong></li>
+<li><strong>丢包导致的队头阻塞</strong></li>
+</ol>
+<p><strong>quic为啥快</strong></p>
+<ol>
+<li><strong>减少往返次数RTT</strong>,缩短连接建立时间： 缓存对方的信息</li>
+<li>连接多路复用，<strong>且采用独立数据流避免丢包阻塞</strong></li>
+<li>使用前行纠错恢复丢失的包，减少超时重传</li>
+<li>连接保存连接标志符，网络迁移连接快</li>
+</ol>
+</blockquote>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如下为HTTP协议族的网络协议层架构：</p>
 <img src="http123.png" style="zoom:80%;" />
+
+
+
+
+
+
+
+<p>最后我们使用一张图来清晰的表示出 HTTP 协议的发展变化：</p>
+<img src="HTTP/http-all.png" style="zoom:48%;" />
 
 
 
