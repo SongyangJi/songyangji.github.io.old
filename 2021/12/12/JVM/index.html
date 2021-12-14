@@ -98,9 +98,9 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h2 id="JVM内存结构图"><a href="#JVM内存结构图" class="headerlink" title="JVM内存结构图"></a>JVM内存结构图</h2><p>《深入理解Java虚拟机（第2版）》</p>
-<p><img src="/JVM/jvm-memory.jpg"></p>
+<p><img src="/2021/12/12/JVM/jvm-memory.jpg"></p>
 <p><strong>Java8内存结构介绍</strong></p>
-<p><img src="/JVM/jvm-memory2.png" alt="图片"></p>
+<p><img src="/2021/12/12/JVM/jvm-memory2.png" alt="图片"></p>
 <h2 id="虚拟机内存与本地内存的区别"><a href="#虚拟机内存与本地内存的区别" class="headerlink" title="虚拟机内存与本地内存的区别"></a>虚拟机内存与本地内存的区别</h2><p>Java虚拟机在执行的时候会把管理的内存分配成不同的区域，这些区域被称为虚拟机内存，同时，对于虚拟机没有直接管理的物理内存，也有一定的利用，这些被利用却不在虚拟机内存数据区的内存，我们称它为<code>本地内存</code>，这两种内存有一定的区别：</p>
 <ul>
 <li><p>JVM内存<br>受虚拟机内存大小的参数控制，当大小超过参数设置的大小时就会报OOM</p>
