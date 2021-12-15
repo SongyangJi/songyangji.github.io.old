@@ -127,7 +127,7 @@
 </li>
 </ul>
 <p><img src="/2021/12/12/GC/mark-sweep.png"></p>
-<h3 id="2-复制算法"><a href="#2-复制算法" class="headerlink" title="2. 复制算法"></a>2. 复制算法</h3><p>这种收集算法解决了标记清除算法存在的效率问题。它将内存区域划分成相同的两个<strong>内存块</strong>。每次仅使用一半的空间，<code>JVM</code>生成的新对象放在一半空间中。当一半空间用完时进行<code>GC</code>，把可到达对象复制到另一半空间，然后把使用过的内存空间一次清理掉。</p>
+<h3 id="2-标记-复制算法"><a href="#2-标记-复制算法" class="headerlink" title="2. 标记-复制算法"></a>2. 标记-复制算法</h3><p>这种收集算法解决了标记清除算法存在的效率问题。它将内存区域划分成相同的两个<strong>内存块</strong>。每次仅使用一半的空间，<code>JVM</code>生成的新对象放在一半空间中。当一半空间用完时进行<code>GC</code>，把可到达对象复制到另一半空间，然后把使用过的内存空间一次清理掉。</p>
 <ul>
 <li><p><strong>优点</strong>：</p>
 <p>按顺序分配内存即可，实现简单、运行高效，不用考虑内存碎片。</p>
@@ -170,17 +170,17 @@
 </thead>
 <tbody><tr>
 <td>Serial</td>
-<td>新生代，复制算法</td>
+<td>新生代，<strong>复制算法</strong></td>
 <td>单线程</td>
 </tr>
 <tr>
 <td>ParNew</td>
-<td>新生代，复制算法</td>
+<td>新生代，<strong>复制算法</strong></td>
 <td>并行的多线程收集器</td>
 </tr>
 <tr>
 <td>Parallel Scavenge</td>
-<td>新生代，复制算法</td>
+<td>新生代，<strong>复制算法</strong></td>
 <td>并行的多线程收集器</td>
 </tr>
 </tbody></table>
@@ -204,7 +204,7 @@
 </tr>
 <tr>
 <td>CMS（Concurrent Mark Sweep ）</td>
-<td>老年代，标记清除算法</td>
+<td>老年代，<strong>标记清除算法</strong></td>
 <td>并行和并发收集器</td>
 </tr>
 <tr>
@@ -828,23 +828,6 @@
 
 
 
-    
-    <div id="music">
-    
-    
-    
-    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
-        src="//music.163.com/outchain/player?type=2&id=22707008&auto=1&height=66"></iframe>
-</div>
-
-<style>
-    #music {
-        position: fixed;
-        right: 15px;
-        bottom: 0;
-        z-index: 998;
-    }
-</style>
     
   </div>
 </body>
