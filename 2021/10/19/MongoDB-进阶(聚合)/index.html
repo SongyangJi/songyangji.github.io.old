@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.1k</span>
+            <span class="post-count">2.5k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">10 分钟</span>
         </span>
     </span>
 </div>
@@ -191,7 +191,159 @@
 </tr>
 </tbody></table>
 <p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline/">参考文档</a></p>
-<h2 id="聚合管道表达式"><a href="#聚合管道表达式" class="headerlink" title="聚合管道表达式"></a>聚合管道表达式</h2><p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/">参考文档</a></p>
+<h2 id="聚合管道表达式"><a href="#聚合管道表达式" class="headerlink" title="聚合管道表达式"></a>聚合管道表达式</h2><blockquote>
+<p>详细的 <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/">参考文档</a></p>
+</blockquote>
+<h1 id="常用例子"><a href="#常用例子" class="headerlink" title="常用例子"></a>常用例子</h1><h2 id="group"><a href="#group" class="headerlink" title="group"></a>group</h2><h3 id="含义与作用"><a href="#含义与作用" class="headerlink" title="含义与作用"></a>含义与作用</h3><p>按指定的<code>_id</code>表达式对输入文档进行分组，并为每个不同的分组输出一个文档。<code>_id</code>每个输出文档的字段都包含唯一的按值分组。输出文档还可以包含保存某些<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/group/#std-label-accumulators-group">累加器表达式</a>值的计算字段。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  $group:</span><br><span class="line">    &#123;</span><br><span class="line">      _id: &lt;expression&gt;, &#x2F;&#x2F; Group By Expression</span><br><span class="line">      &lt;field1&gt;: &#123; &lt;accumulator1&gt; : &lt;expression1&gt; &#125;,</span><br><span class="line">      ...</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>_id</code></td>
+<td align="left"><em>必须的</em>。如果指定null或者常量，相当于不分组。</td>
+</tr>
+<tr>
+<td align="left"><code>field</code></td>
+<td align="left"><em>可选的.</em> 使用 <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/group/#std-label-accumulators-group">accumulator operators</a>.计算</td>
+</tr>
+</tbody></table>
+<p>常用的 <strong>累加器运算符</strong>：</p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/avg/#mongodb-group-grp.-avg"><code>$avg</code></a></td>
+<td align="left">返回数值的平均值。忽略非数字值。<em>在5.0版更改</em>：在<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/setWindowFields/#mongodb-pipeline-pipe.-setWindowFields"><code>$setWindowFields</code></a>阶段可用。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/count-accumulator/#mongodb-group-grp.-count"><code>$count</code></a></td>
+<td align="left">返回组中的文档数。区别于<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/count/#mongodb-pipeline-pipe.-count"><code>$count</code></a>流水线阶段。<em>5.0版中的新功能</em>：在<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/group/#mongodb-pipeline-pipe.-group"><code>$group</code></a>和 <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/setWindowFields/#mongodb-pipeline-pipe.-setWindowFields"><code>$setWindowFields</code></a>阶段可用。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/first/#mongodb-group-grp.-first"><code>$first</code></a></td>
+<td align="left">从每个组的第一个文档返回一个值。仅当文档已排序时才定义顺序。与<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/first-array-element/#mongodb-expression-exp.-first"><code>$first</code></a>数组运算符不同。<em>在5.0版更改</em>：在<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/setWindowFields/#mongodb-pipeline-pipe.-setWindowFields"><code>$setWindowFields</code></a>阶段可用。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/last/#mongodb-group-grp.-last"><code>$last</code></a></td>
+<td align="left">从每个组的最后一个文档返回一个值。仅当文档已排序时才定义顺序。与<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/last-array-element/#mongodb-expression-exp.-last"><code>$last</code></a>数组运算符不同。<em>在5.0版更改</em>：在<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/setWindowFields/#mongodb-pipeline-pipe.-setWindowFields"><code>$setWindowFields</code></a>阶段可用。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/max/#mongodb-group-grp.-max"><code>$max</code></a></td>
+<td align="left">返回每个组的最高表达式值。<em>在5.0版更改</em>：在<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/setWindowFields/#mongodb-pipeline-pipe.-setWindowFields"><code>$setWindowFields</code></a>阶段可用。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/min/#mongodb-group-grp.-min"><code>$min</code></a></td>
+<td align="left">返回每个组的最低表达式值。<em>在5.0版更改</em>：在<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/setWindowFields/#mongodb-pipeline-pipe.-setWindowFields"><code>$setWindowFields</code></a>阶段可用。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/sum/#mongodb-group-grp.-sum"><code>$sum</code></a></td>
+<td align="left">返回数值的总和。忽略非数字值。<em>在5.0版更改</em>：在<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/setWindowFields/#mongodb-pipeline-pipe.-setWindowFields"><code>$setWindowFields</code></a>阶段可用。</td>
+</tr>
+</tbody></table>
+<h3 id="小例子"><a href="#小例子" class="headerlink" title="小例子"></a>小例子</h3><ol>
+<li>以下聚合操作按<code>item</code> 字段对文档进行分组，计算每个商品的总销售额并仅返回总销售额大于或等于 100 的商品：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">db.sales.aggregate(</span><br><span class="line">  [</span><br><span class="line">    &#x2F;&#x2F; First Stage</span><br><span class="line">    &#123;</span><br><span class="line">      $group :</span><br><span class="line">        &#123;</span><br><span class="line">          _id : &quot;$item&quot;,</span><br><span class="line">          totalSaleAmount: &#123; $sum: &#123; $multiply: [ &quot;$price&quot;, &quot;$quantity&quot; ] &#125; &#125;</span><br><span class="line">        &#125;</span><br><span class="line">     &#125;,</span><br><span class="line">     &#x2F;&#x2F; Second Stage</span><br><span class="line">     &#123;</span><br><span class="line">       $match: &#123; &quot;totalSaleAmount&quot;: &#123; $gte: 100 &#125; &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   ]</span><br><span class="line"> )</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="2">
+<li>计算计数、总和和平均值</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">db.sales.aggregate([</span><br><span class="line">  &#x2F;&#x2F; First Stage</span><br><span class="line">  &#123;</span><br><span class="line">    $match : &#123; &quot;date&quot;: &#123; $gte: new ISODate(&quot;2014-01-01&quot;), $lt: new ISODate(&quot;2015-01-01&quot;) &#125; &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#x2F;&#x2F; Second Stage</span><br><span class="line">  &#123;</span><br><span class="line">    $group : &#123;</span><br><span class="line">       _id : &#123; $dateToString: &#123; format: &quot;%Y-%m-%d&quot;, date: &quot;$date&quot; &#125; &#125;,</span><br><span class="line">       totalSaleAmount: &#123; $sum: &#123; $multiply: [ &quot;$price&quot;, &quot;$quantity&quot; ] &#125; &#125;,</span><br><span class="line">       averageQuantity: &#123; $avg: &quot;$quantity&quot; &#125;,</span><br><span class="line">       count: &#123; $sum: 1 &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#x2F;&#x2F; Third Stage</span><br><span class="line">  &#123;</span><br><span class="line">    $sort : &#123; totalSaleAmount: -1 &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> ])</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>第一阶段：</p>
+<p>该<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/match/#mongodb-pipeline-pipe.-match"><code>$match</code></a>阶段对文档进行过滤，仅将 2014 年的文档传递到下一阶段。</p>
+</li>
+<li><p>第二阶段：</p>
+<p>该<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/group/#mongodb-pipeline-pipe.-group"><code>$group</code></a>阶段按日期对单据进行分组，并计算每组单据的总销售额、平均数量和总数。</p>
+</li>
+<li><p>第三阶段：</p>
+<p>该<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/sort/#mongodb-pipeline-pipe.-sort"><code>$sort</code></a>阶段按每个组的总销售额以降序对结果进行排序。</p>
+</li>
+</ul>
+<p>相当于如下SQL</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="type">date</span>,</span><br><span class="line">       <span class="built_in">Sum</span>(( price <span class="operator">*</span> quantity )) <span class="keyword">AS</span> totalSaleAmount,</span><br><span class="line">       <span class="built_in">Avg</span>(quantity)             <span class="keyword">AS</span> averageQuantity,</span><br><span class="line">       <span class="built_in">Count</span>(<span class="operator">*</span>)                  <span class="keyword">AS</span> Count</span><br><span class="line"><span class="keyword">FROM</span>   sales</span><br><span class="line"><span class="keyword">GROUP</span>  <span class="keyword">BY</span> <span class="type">Date</span>(<span class="type">date</span>)</span><br><span class="line"><span class="keyword">ORDER</span>  <span class="keyword">BY</span> totalSaleAmount <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="lookup实现关联查询"><a href="#lookup实现关联查询" class="headerlink" title="lookup实现关联查询"></a>lookup实现关联查询</h2><blockquote>
+<p>参考<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/">官方文档</a></p>
+</blockquote>
+<h3 id="含义与作用-1"><a href="#含义与作用-1" class="headerlink" title="含义与作用"></a>含义与作用</h3><p>对<em>同一</em> 数据库中的未分片集合执行左外部联接，以从“联接”集合中过滤文档以进行处理。对于每个输入文档，lookup阶段会添加一个新的数组字段，其元素是“joined”集合中的匹配文档。该lookup阶段将这些重塑的文档传递到下一阶段。</p>
+<h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="meta">   $</span><span class="bash">lookup:</span></span><br><span class="line">     &#123;</span><br><span class="line">       from: &lt;collection to join&gt;,</span><br><span class="line">       localField: &lt;field from the input documents&gt;,</span><br><span class="line">       foreignField: &lt;field from the documents of the &quot;from&quot; collection&gt;,</span><br><span class="line">       as: &lt;output array field&gt;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体的字段的含义是：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#std-label-lookup-eq-from">from</a></td>
+<td align="left">Specifies the collection in the <em>same</em> database to perform the join with. The <code>from</code> collection cannot be sharded. For details, see <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#std-label-lookup-sharded-collections">Sharded Collection Restrictions</a>.</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#std-label-lookup-eq-localField">localField</a></td>
+<td align="left">Specifies the field from the documents input to the <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#mongodb-pipeline-pipe.-lookup"><code>$lookup</code></a> stage. <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#mongodb-pipeline-pipe.-lookup"><code>$lookup</code></a> performs an equality match on the <code>localField</code> to the <code>foreignField</code> from the documents of the <code>from</code> collection. If an input document does not contain the <code>localField</code>, the <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#mongodb-pipeline-pipe.-lookup"><code>$lookup</code></a> treats the field as having a value of <code>null</code> for matching purposes.</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#std-label-lookup-eq-foreignField">foreignField</a></td>
+<td align="left">Specifies the field from the documents in the <code>from</code> collection. <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#mongodb-pipeline-pipe.-lookup"><code>$lookup</code></a> performs an equality match on the <code>foreignField</code> to the <code>localField</code> from the input documents. If a document in the <code>from</code> collection does not contain the <code>foreignField</code>, the <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#mongodb-pipeline-pipe.-lookup"><code>$lookup</code></a> treats the value as <code>null</code> for matching purposes.</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#std-label-lookup-eq-as">as</a></td>
+<td align="left">Specifies the name of the new array field to add to the input documents. The new array field contains the matching documents from the <code>from</code> collection. If the specified name already exists in the input document, the existing field is <em>overwritten</em>.</td>
+</tr>
+</tbody></table>
+<p>上面的查询语句等效为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span>, <span class="operator">&lt;</span>output <span class="keyword">array</span> field<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">FROM</span> collection</span><br><span class="line"><span class="keyword">WHERE</span> <span class="operator">&lt;</span>output <span class="keyword">array</span> field<span class="operator">&gt;</span> <span class="keyword">IN</span> (</span><br><span class="line">   <span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line">   <span class="keyword">FROM</span> <span class="operator">&lt;</span>collection <span class="keyword">to</span> <span class="keyword">join</span><span class="operator">&gt;</span></span><br><span class="line">   <span class="keyword">WHERE</span> <span class="operator">&lt;</span>foreignField<span class="operator">&gt;</span> <span class="operator">=</span> <span class="operator">&lt;</span>collection.localField<span class="operator">&gt;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="小例子-1"><a href="#小例子-1" class="headerlink" title="小例子"></a>小例子</h3><p>订单表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">db.orders.insertMany( [</span><br><span class="line">   &#123; &quot;_id&quot; : 1, &quot;item&quot; : &quot;almonds&quot;, &quot;price&quot; : 12, &quot;quantity&quot; : 2 &#125;,</span><br><span class="line">   &#123; &quot;_id&quot; : 2, &quot;item&quot; : &quot;pecans&quot;, &quot;price&quot; : 20, &quot;quantity&quot; : 1 &#125;,</span><br><span class="line">   &#123; &quot;_id&quot; : 3  &#125;</span><br><span class="line">] )</span><br></pre></td></tr></table></figure>
+
+
+
+<p>库存表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">db.inventory.insertMany( [</span><br><span class="line">   &#123; &quot;_id&quot; : 1, &quot;sku&quot; : &quot;almonds&quot;, &quot;description&quot;: &quot;product 1&quot;, &quot;instock&quot; : 120 &#125;,</span><br><span class="line">   &#123; &quot;_id&quot; : 2, &quot;sku&quot; : &quot;bread&quot;, &quot;description&quot;: &quot;product 2&quot;, &quot;instock&quot; : 80 &#125;,</span><br><span class="line">   &#123; &quot;_id&quot; : 3, &quot;sku&quot; : &quot;cashews&quot;, &quot;description&quot;: &quot;product 3&quot;, &quot;instock&quot; : 60 &#125;,</span><br><span class="line">   &#123; &quot;_id&quot; : 4, &quot;sku&quot; : &quot;pecans&quot;, &quot;description&quot;: &quot;product 4&quot;, &quot;instock&quot; : 70 &#125;,</span><br><span class="line">   &#123; &quot;_id&quot; : 5, &quot;sku&quot;: null, &quot;description&quot;: &quot;Incomplete&quot; &#125;,</span><br><span class="line">   &#123; &quot;_id&quot; : 6 &#125;</span><br><span class="line">] )</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查询语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.orders.aggregate( [</span><br><span class="line">   &#123;</span><br><span class="line">     $lookup:</span><br><span class="line">       &#123;</span><br><span class="line">         from: &quot;inventory&quot;,</span><br><span class="line">         localField: &quot;item&quot;,</span><br><span class="line">         foreignField: &quot;sku&quot;,</span><br><span class="line">         as: &quot;inventory_docs&quot;</span><br><span class="line">       &#125;</span><br><span class="line">  &#125;</span><br><span class="line">] )</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查询结果</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="attr">&quot;_id&quot;</span> : <span class="number">1</span>,</span><br><span class="line">   <span class="attr">&quot;item&quot;</span> : <span class="string">&quot;almonds&quot;</span>,</span><br><span class="line">   <span class="attr">&quot;price&quot;</span> : <span class="number">12</span>,</span><br><span class="line">   <span class="attr">&quot;quantity&quot;</span> : <span class="number">2</span>,</span><br><span class="line">   <span class="attr">&quot;inventory_docs&quot;</span> : [</span><br><span class="line">      &#123; <span class="attr">&quot;_id&quot;</span> : <span class="number">1</span>, <span class="attr">&quot;sku&quot;</span> : <span class="string">&quot;almonds&quot;</span>, <span class="attr">&quot;description&quot;</span> : <span class="string">&quot;product 1&quot;</span>, <span class="attr">&quot;instock&quot;</span> : <span class="number">120</span> &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">   <span class="attr">&quot;_id&quot;</span> : <span class="number">2</span>,</span><br><span class="line">   <span class="attr">&quot;item&quot;</span> : <span class="string">&quot;pecans&quot;</span>,</span><br><span class="line">   <span class="attr">&quot;price&quot;</span> : <span class="number">20</span>,</span><br><span class="line">   <span class="attr">&quot;quantity&quot;</span> : <span class="number">1</span>,</span><br><span class="line">   <span class="attr">&quot;inventory_docs&quot;</span> : [</span><br><span class="line">      &#123; <span class="attr">&quot;_id&quot;</span> : <span class="number">4</span>, <span class="attr">&quot;sku&quot;</span> : <span class="string">&quot;pecans&quot;</span>, <span class="attr">&quot;description&quot;</span> : <span class="string">&quot;product 4&quot;</span>, <span class="attr">&quot;instock&quot;</span> : <span class="number">70</span> &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">   <span class="attr">&quot;_id&quot;</span> : <span class="number">3</span>,</span><br><span class="line">   <span class="attr">&quot;inventory_docs&quot;</span> : [</span><br><span class="line">      &#123; <span class="attr">&quot;_id&quot;</span> : <span class="number">5</span>, <span class="attr">&quot;sku&quot;</span> : <span class="literal">null</span>, <span class="attr">&quot;description&quot;</span> : <span class="string">&quot;Incomplete&quot;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">&quot;_id&quot;</span> : <span class="number">6</span> &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
  
       <!-- reward -->
       
@@ -297,7 +449,7 @@
     <ul>
       <li>
         Copyrights &copy;
-        2020-2021
+        2020-2022
         <i class="ri-heart-fill heart_icon"></i> SongyangJi
       </li>
     </ul>
