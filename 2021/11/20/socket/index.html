@@ -97,7 +97,7 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="socket编程"><a href="#socket编程" class="headerlink" title="socket编程"></a>socket编程</h2><img src="socket/socket-state.png" style="zoom:50%;" />
+  <h2 id="socket编程"><a href="#socket编程" class="headerlink" title="socket编程"></a>socket编程</h2><img src="socket-state.png" style="zoom:50%;" />
 
 
 
@@ -149,7 +149,7 @@
 <p><strong>时，通过回调函数内核会将其加⼊到这个就绪事件列表中</strong>，当⽤户调⽤ <code>epoll_wait() </code>函数时，<strong>只会返回有</strong></p>
 <p><strong>事件发⽣的⽂件描述符的个数，不需要像 select/poll 那样轮询扫描整个 socket 集合</strong>，⼤⼤提⾼了检测的效</p>
 <p>率。</p>
-<p><img src="/socket/epoll.png"></p>
+<p><img src="/2021/11/20/socket/epoll.png"></p>
 <h3 id="相关接口"><a href="#相关接口" class="headerlink" title="相关接口"></a>相关接口</h3><p>epoll API是Linux专有的特性，相较于<code>select</code>和<code>poll</code>，<code>epoll</code>更加灵活且<strong>没有描述符限制</strong>。<code>epoll</code>设计也与<code>select</code>和<code>poll</code>不同，主要包含以下三个接口：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_create</span><span class="params">(<span class="keyword">int</span> size)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="keyword">int</span> epfd, <span class="keyword">int</span> op, <span class="keyword">int</span> fd, struct epoll_event *event)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="keyword">int</span> epfd, struct epoll_event * events, <span class="keyword">int</span> maxevents, <span class="keyword">int</span> timeout)</span></span>;</span><br></pre></td></tr></table></figure>
 

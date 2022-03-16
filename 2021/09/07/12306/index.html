@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    架构 |  JsyBlog
+    12306究竟难在哪里 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-架构"
+  id="post-12306"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,18 +54,18 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  架构
+  12306究竟难在哪里
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/09/07/%E6%9E%B6%E6%9E%84/" class="article-date">
+      <a href="/2021/09/07/12306/" class="article-date">
   <time datetime="2021-09-06T16:00:00.000Z" itemprop="datePublished">2021-09-07</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    <a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a>
   </div>
   
 <div class="word_count">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">3.6k</span>
+            <span class="post-count">5.5k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">12 分钟</span>
+            <span class="post-count">20 分钟</span>
         </span>
     </span>
 </div>
@@ -137,7 +137,8 @@
 </ol>
 <h4 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h4><p>略去<br>更新逻辑</p>
 <h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><h3 id="数据分片"><a href="#数据分片" class="headerlink" title="数据分片"></a>数据分片</h3><p>分库分表的需要</p>
-<p>垂直分片<br>图<br>水平分片<br>图</p>
+<p>垂直分片 </p>
+<p>水平分片</p>
 <p>分库分表带来的问题：</p>
 <ol>
 <li>维护困难</li>
@@ -166,15 +167,29 @@
 <h3 id="库存是什么-——-火车售票的余票算法"><a href="#库存是什么-——-火车售票的余票算法" class="headerlink" title="库存是什么? —— 火车售票的余票算法"></a>库存是什么? —— 火车售票的余票算法</h3><h4 id="路径节点对构成-sku"><a href="#路径节点对构成-sku" class="headerlink" title="路径节点对构成 sku"></a>路径节点对构成 sku</h4><p>网上自称某宝工程师写的12306文章。他们将<strong>路径上的每个站点对</strong>独立成一件商品，每次购、退票都需要查询删改库存，造成巨大的数据库操作开销。</p>
 <p>将每站点全部商品位化，是为了<strong>营造高并发的假象</strong>而已，白白浪费了计算资源。以每趟车2000张票为例子。</p>
 <p>某宝的工程师算法逻辑是直接操作库的逻辑，那么将数据库映射成为bmp处理，但这又带来新的问题，比如锁定机制，数据同步机制，写入仲裁机制，这些在本算法中由天然的cpu硬件机制来实施。与硬件有一致性，机制成熟算法健壮性有保证。如果人为的另立机制想拓展bmp算法的性能会导致很多问题，</p>
+<p>![image-20220316031959849](../../../../../Library/Application Support/typora-user-images/image-20220316031959849.png)</p>
 <h4 id="站点座位bitmap法"><a href="#站点座位bitmap法" class="headerlink" title="站点座位bitmap法"></a>站点座位bitmap法</h4><p>抢票的基本单位是某一列列车。</p>
-<p>对此列列车经过的所有站点都创建等容量大小的位图（容量大小为座位数量）—— 当然，如果有多个类型的座位，同理每种类型都创建位图即可。</p>
-<p>位图0表示空闲，1表示已占。</p>
-<p>用户每次买票获取此列车对应所有中途站点的位图，对这些位图（或者说二进制串）做位运算，</p>
+<p>对<strong>此列列车经过的所有站点都创建等容量大小的位图（容量大小为座位数量）</strong>—— 当然，如果有多个类型的座位，同理每种类型都创建位图即可。</p>
+<p><strong>位图0表示空闲，1表示已占。</strong></p>
+<p><strong>用户每次买票获取此列车对应所有中途站点的位图，对这些位图（或者说二进制串）做按位或运算</strong>，</p>
 <p>运算结果为1的表明不能被购买（只要有一个为1，就不能购买），为0的表明还没有人购买，可以售出。</p>
+<p>如果有用户抢到某个余座，需要将这几个连续的位图的对应bit的0全部改成1（原子地更新）。</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;mid=2247484331&amp;idx=1&amp;sn=3e0294efe74cd7b9a421aef778081c69&amp;source=41#wechat_redirect">https://mp.weixin.qq.com/s?__biz=MzkxNDEyOTI0OQ==&amp;mid=2247484331&amp;idx=1&amp;sn=3e0294efe74cd7b9a421aef778081c69&amp;source=41#wechat_redirect</a></p>
 <h2 id="”库存“扣减的问题"><a href="#”库存“扣减的问题" class="headerlink" title="”库存“扣减的问题"></a>”库存“扣减的问题</h2><h3 id="超卖问题的解决"><a href="#超卖问题的解决" class="headerlink" title="超卖问题的解决"></a>超卖问题的解决</h3><h4 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h4><p>悲观锁（Pessimistic Lock），顾名思义，就是很悲观，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会block直到它拿到锁。</p>
 <p>悲观锁：假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作。</p>
 <p>Java synchronized、ReentrantLock 就属于悲观锁的一种实现，每次线程要修改数据时都先获得锁，保证同一时刻只有一个线程能操作数据，其他线程则会被block。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ... LOCK <span class="keyword">IN</span> SHARE MODE;</span><br><span class="line"><span class="keyword">SELECT</span> ... <span class="keyword">FOR</span> UPDATE;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ... LOCK <span class="keyword">IN</span> SHARE MODE;  <span class="operator">/</span><span class="operator">/</span> <span class="keyword">SELECT</span> ... <span class="keyword">FOR</span> SHARE;</span><br><span class="line"><span class="keyword">SELECT</span> ... <span class="keyword">FOR</span> UPDATE;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>具体一点的一点：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectWithXLock&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;TrainStationSeatStatusMap&quot;</span>&gt;</span></span><br><span class="line">    select</span><br><span class="line">    train_id,</span><br><span class="line">    working_date,</span><br><span class="line">    type,</span><br><span class="line">    station_id,</span><br><span class="line">    status</span><br><span class="line">    from train_station_seat_status</span><br><span class="line">    where</span><br><span class="line">    train_id = #&#123;trainId&#125;             // 列车id</span><br><span class="line">    and working_date = #&#123;workingDate&#125; // 日期</span><br><span class="line">    and type = #&#123;type&#125;                // 座位类型</span><br><span class="line">    and station_id in                 // 车站id</span><br><span class="line">    <span class="tag">&lt;<span class="name">foreach</span> <span class="attr">item</span>=<span class="string">&quot;item&quot;</span> <span class="attr">index</span>=<span class="string">&quot;index&quot;</span> <span class="attr">collection</span>=<span class="string">&quot;stationIds&quot;</span></span></span><br><span class="line"><span class="tag">             <span class="attr">open</span>=<span class="string">&quot;(&quot;</span> <span class="attr">separator</span>=<span class="string">&quot;,&quot;</span> <span class="attr">close</span>=<span class="string">&quot;)&quot;</span>&gt;</span></span><br><span class="line">        #&#123;item&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">foreach</span>&gt;</span></span><br><span class="line">    for update ;                      // 写锁</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>悲观锁</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 悲观锁</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SeatLocation <span class="title">buyTicketAndOccupySeatWithPessimisticLock</span><span class="params">(DrivingPlan drivingPlan, SeatType seatType)</span> <span class="keyword">throws</span> TicketSaleCoreException </span>&#123;</span><br><span class="line">    Integer trainId = drivingPlan.getTrain().getTrainId();</span><br><span class="line">    LocalDate workingDate = drivingPlan.getWorkingDate();</span><br><span class="line">    ArrayList&lt;Integer&gt; stationIds = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    drivingPlan.getSeatStatusOfPassStations(seatType).forEach(trainStationSeatStatus -&gt; stationIds.add(trainStationSeatStatus.getStationId()));</span><br><span class="line">    <span class="comment">// 加互斥锁，一次性拿到所有需要的状态位图</span></span><br><span class="line">    List&lt;TrainStationSeatStatus&gt; trainStationSeatStatuses = trainStationSeatStatusMapper.selectWithXLock(trainId, workingDate, seatType, stationIds);</span><br><span class="line">    <span class="comment">// 检查位图结构</span></span><br><span class="line">    checkHasSameCapacity(trainStationSeatStatuses);</span><br><span class="line">    <span class="comment">// 二进制串集作按位或运算</span></span><br><span class="line">    <span class="keyword">boolean</span>[] availSeats = getAvailSeats(trainStationSeatStatuses);</span><br><span class="line">    <span class="comment">// 获取所有可用的座位</span></span><br><span class="line">    List&lt;Integer&gt; availSeatsIds = getAvailSeats(availSeats);</span><br><span class="line">    <span class="keyword">if</span> (availSeatsIds.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 随机从空闲座位中挑一个空闲座位</span></span><br><span class="line">    <span class="keyword">int</span> idx = randomSeatIndex(availSeats);</span><br><span class="line">    <span class="comment">// 更改位图</span></span><br><span class="line">    occupyOneSeat(idx, trainStationSeatStatuses);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 更改座位-位图状态</span></span><br><span class="line">    trainStationSeatStatuses.forEach(trainStationSeatStatus -&gt; &#123;</span><br><span class="line">        Integer stationId = trainStationSeatStatus.getStationId();</span><br><span class="line">        trainStationSeatStatusMapper.update(</span><br><span class="line">                trainStationSeatStatus,</span><br><span class="line">                <span class="keyword">new</span> UpdateWrapper&lt;TrainStationSeatStatus&gt;()</span><br><span class="line">                        .eq(<span class="string">&quot;train_id&quot;</span>, trainId)</span><br><span class="line">                        .eq(<span class="string">&quot;working_date&quot;</span>, workingDate)</span><br><span class="line">                        .eq(<span class="string">&quot;type&quot;</span>, seatType)</span><br><span class="line">                        .eq(<span class="string">&quot;station_id&quot;</span>, stationId)</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 查询对应位置的座位</span></span><br><span class="line">    <span class="keyword">return</span> seatMapper.selectOne(<span class="keyword">new</span> QueryWrapper&lt;TrainPatternSeatMap&gt;()</span><br><span class="line">            .eq(<span class="string">&quot;train_pattern_id&quot;</span>, drivingPlan.getTrain().getTrainPatternId())</span><br><span class="line">            .eq(<span class="string">&quot;type&quot;</span>, seatType)</span><br><span class="line">            .eq(<span class="string">&quot;idx&quot;</span>, idx)).getSeatLocation();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
 
 <h4 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h4><p>乐观锁（Optimistic Lock），顾名思义，就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在提交更新的时候会判断一下在此期间别人有没有去更新这个数据。乐观锁适用于读多写少的应用场景，这样可以提高吞吐量。</p>
@@ -184,16 +199,84 @@
 
 
 
+<p>但是在本例中，不能简单地使用这个方案，因为这里需要原子性地一次性修改掉多个位串记录。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 乐观锁</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SeatLocation <span class="title">buyTicketAndOccupySeatWithOptimisticLock</span><span class="params">(DrivingPlan drivingPlan, SeatType seatType)</span> <span class="keyword">throws</span> TicketSaleCoreException, OptimisticLockFailure </span>&#123;</span><br><span class="line">        Integer trainId = drivingPlan.getTrain().getTrainId();</span><br><span class="line">        LocalDate workingDate = drivingPlan.getWorkingDate();</span><br><span class="line"><span class="comment">//         先乐观锁尝试</span></span><br><span class="line"><span class="comment">//         无锁读</span></span><br><span class="line">        List&lt;TrainStationSeatStatus&gt; seatStatusOfPassStations = drivingPlan.getSeatStatusOfPassStations(seatType);</span><br><span class="line">        List&lt;TrainStationSeatStatus&gt; realStationSeatStatuses = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        seatStatusOfPassStations.forEach(trainStationSeatStatus -&gt; &#123;</span><br><span class="line">            TrainStationSeatStatus status = trainStationSeatStatusMapper.selectOne(<span class="keyword">new</span> QueryWrapper&lt;TrainStationSeatStatus&gt;()</span><br><span class="line">                    .eq(<span class="string">&quot;train_id&quot;</span>, trainId)</span><br><span class="line">                    .eq(<span class="string">&quot;working_date&quot;</span>, workingDate)</span><br><span class="line">                    .eq(<span class="string">&quot;type&quot;</span>, seatType)</span><br><span class="line">                    .eq(<span class="string">&quot;station_id&quot;</span>, trainStationSeatStatus.getStationId()));</span><br><span class="line">            realStationSeatStatuses.add(status);</span><br><span class="line">        &#125;);</span><br><span class="line">        seatStatusOfPassStations = realStationSeatStatuses;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据二进制位图检查座位的可用情况</span></span><br><span class="line">        checkHasSameCapacity(seatStatusOfPassStations);</span><br><span class="line">        <span class="keyword">boolean</span>[] availSeats = getAvailSeats(seatStatusOfPassStations);</span><br><span class="line">        List&lt;Integer&gt; availSeatsIds = getAvailSeats(availSeats);</span><br><span class="line">        <span class="comment">// 快照读，若此时无票，则直接返回</span></span><br><span class="line">        <span class="keyword">if</span> (availSeatsIds.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 尝试占座</span></span><br><span class="line">        <span class="keyword">int</span> idx = randomSeatIndex(availSeats);</span><br><span class="line">        occupyOneSeat(idx, seatStatusOfPassStations);</span><br><span class="line">        <span class="keyword">for</span> (TrainStationSeatStatus trainStationSeatStatus : seatStatusOfPassStations) &#123;</span><br><span class="line">            <span class="keyword">int</span> succ = trainStationSeatStatusMapper.update(trainStationSeatStatus,</span><br><span class="line">                    <span class="keyword">new</span> UpdateWrapper&lt;TrainStationSeatStatus&gt;()</span><br><span class="line">                            .eq(<span class="string">&quot;train_id&quot;</span>, trainId)</span><br><span class="line">                            .eq(<span class="string">&quot;working_date&quot;</span>, workingDate)</span><br><span class="line">                            .eq(<span class="string">&quot;type&quot;</span>, trainStationSeatStatus.getType())</span><br><span class="line">                            .eq(<span class="string">&quot;station_id&quot;</span>, trainStationSeatStatus.getStationId()));</span><br><span class="line">            <span class="comment">// 只要有一个更新失败，前面的操作必须全部回滚，这里的回滚绝不可以是自己做&quot;补偿操作&quot;，而应该是抛出异常迫使回滚</span></span><br><span class="line">            <span class="keyword">if</span> (succ == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> OptimisticLockFailure();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 流程到这里，表明乐观锁争抢修改成功</span></span><br><span class="line">        <span class="comment">// 查询对应位置的座位</span></span><br><span class="line">        <span class="keyword">return</span> seatMapper.selectOne(<span class="keyword">new</span> QueryWrapper&lt;TrainPatternSeatMap&gt;()</span><br><span class="line">                .eq(<span class="string">&quot;train_pattern_id&quot;</span>, drivingPlan.getTrain().getTrainPatternId())</span><br><span class="line">                .eq(<span class="string">&quot;type&quot;</span>, seatType)</span><br><span class="line">                .eq(<span class="string">&quot;idx&quot;</span>, idx)).getSeatLocation();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
 <h4 id="自适应锁"><a href="#自适应锁" class="headerlink" title="自适应锁"></a>自适应锁</h4><p>不要有一种错觉，觉得乐观锁实现了无锁并发安全，就觉得乐观锁的性能远远优越悲观锁，</p>
 <p>这个是有几个前提的，读多写少，竞争程度不激烈，短事务。（总而言之，减少因为乐观锁加锁失败重试的次数）</p>
-<p>解决方案：<br>借鉴JUC源码中对于volatile变量的使用，多一次尝试volatile读从而尽可能避免volatile写的高额开销。</p>
 <p>所以，我的策略是，对于上述两种加锁方式，同时予以实现。<br>具体的，默认先使用乐观锁并发修改数据，同时设定乐观锁失败重试次数做多为1次（可以根据实际情况修改配置），如果仍然未修改成功，再改用悲观锁进行竞争修改数据。</p>
-<h2 id="技术难点举例"><a href="#技术难点举例" class="headerlink" title="技术难点举例"></a>技术难点举例</h2><h3 id="分片键与索引"><a href="#分片键与索引" class="headerlink" title="分片键与索引"></a>分片键与索引</h3><p>跨库join的问题：<br>如何调节分片键与索引的矛盾: 冗余。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SeatLocation <span class="title">buyTicketAndOccupySeat</span><span class="params">(DrivingPlan drivingPlan, SeatType seatType)</span> <span class="keyword">throws</span> TicketSaleCoreException </span>&#123;</span><br><span class="line"><span class="comment">//        System.out.println(&quot;乐观锁最大重试次数 &quot; + MAX_OPTIMISTIC_LOCK_RETRIES);</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MAX_OPTIMISTIC_LOCK_RETRIES; i++) &#123;</span><br><span class="line">            SeatLocation seatLocation = transactionTemplate.execute(transactionStatus -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">// 没有抛出自定义的异常，说明一切正常，</span></span><br><span class="line">                    <span class="keyword">return</span> buyTicketAndOccupySeatWithOptimisticLock(drivingPlan, seatType);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (OptimisticLockFailure | TicketSaleCoreException failure) &#123;</span><br><span class="line">                    transactionStatus.setRollbackOnly();</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="comment">// 乐观锁已经争抢成功</span></span><br><span class="line">            <span class="keyword">if</span> (seatLocation != <span class="keyword">null</span>) <span class="keyword">return</span> seatLocation;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> buyTicketAndOccupySeatWithPessimisticLock(drivingPlan, seatType);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="技术难点举例"><a href="#技术难点举例" class="headerlink" title="技术难点举例"></a>技术难点举例</h2><h3 id="库存超卖"><a href="#库存超卖" class="headerlink" title="库存超卖"></a>库存超卖</h3><p>这里的库存指的就是一般意义上的库存：</p>
+<blockquote>
+<p>常见的库存扣减方式有：</p>
+<ul>
+<li>下单减库存：即当买家下单后，在商品的总库存中减去买家购买数量。下单减库存是最简单的减库存方式，也是控制最精确的一种，下单时直接通过数据库的事务机制控制商品库存，这样一定不会出现超卖的情况。但是你要知道，有些人下完单可能并不会付款。</li>
+<li>付款减库存：即买家下单后，并不立即减库存，而是等到有用户付款后才真正减库存，否则库存一直保留给其他买家。但因为付款时才减库存，如果并发比较高，有可能出现买家下单后付不了款的情况，因为可能商品已经被其他人买走了。</li>
+<li>预扣库存：这种方式相对复杂一些，买家下单后，库存为其保留一定的时间（如 30 分钟），超过这个时间，库存将会自动释放，释放后其他买家就可以继续购买。在买家付款前，系统会校验该订单的库存是否还有保留：如果没有保留，则再次尝试预扣；如果库存不足（也就是预扣失败）则不允许继续付款；如果预扣成功，则完成付款并实际地减去库存。<br>至于采用哪一种减库存方式更多是业务层面的考虑，减库存最核心的是大并发请求时保证数据库中的库存字段值不能为负数。</li>
+</ul>
+</blockquote>
+<p>解决方案已经在上面已经有了部分描述——介绍了纯数据库层面的解决方案。</p>
+<p>下面介绍一下使用Redis的做法：<strong>Lua脚本处理秒杀请求</strong></p>
+<p>大致处理过程如下：</p>
+<ol>
+<li>将商品信息预热到redis中；</li>
+<li>用户扣库存请求用lua在redis里完成</li>
+<li>及时将redis的记录落到数据库（定时任务）</li>
+</ol>
+<h3 id="避免重复下单"><a href="#避免重复下单" class="headerlink" title="避免重复下单"></a>避免重复下单</h3><p>用户快速点了两次 “提交订单”  按钮，浏览器会向后端发送两条创建订单的请求，最终会创建两条一模一样的订单。</p>
+<p><strong>幂等性如何保证</strong>？</p>
+<ol>
+<li><strong>先select后insert</strong></li>
+</ol>
+<p>这种插入数据（不论是新增一行，还是将修改字段的空值）的场景比较容易处理，先查后改。</p>
+<ol start="2">
+<li><strong>数据库自身特性 “主键唯一约束”</strong></li>
+</ol>
+<p>利用数据库自身特性 “主键唯一约束”，在插入订单记录时，带上主键值，如果订单重复，记录插入会失败。</p>
+<p>操作过程：</p>
+<p>引入一个服务，用于生成一个“全局唯一的订单号”；</p>
+<p>进入创建订单页面时，前端请求该服务，预生成订单ID；</p>
+<p>提交订单时，请求参数除了业务参数外，还要带上这个预生成订单ID。</p>
+<ol start="3">
+<li><strong>建防重表</strong></li>
+</ol>
+<p>有时候表中并非所有的场景都不允许产生重复的数据，只有某些特定场景才不允许。这时候，直接在表中加唯一索引，显然是不太合适的。</p>
+<p>针对这种情况，我们可以通过<code>建防重表</code>来解决问题。</p>
+<p>该表可以只包含两个字段：<code>id</code> 和 <code>唯一索引</code>，唯一索引可以是多个字段比如：name、code等组合起来的唯一标识，例如：susan_0001。</p>
+<ol start="4">
+<li><strong>建立业务状态机</strong></li>
+</ol>
+<p>很多时候业务表是有状态的，比如订单表中有：1-下单、2-已支付、3-完成、4-撤销等状态。如果这些状态的值是有规律的，按照业务节点正好是从小到大，我们就能通过它来保证接口的幂等性。</p>
+<ol start="5">
+<li><strong>分布式锁</strong></li>
+</ol>
+<p>具体使用分布式锁，各式各样了。不过核心思想就是<code>setnx</code>。</p>
+<ol start="6">
+<li><strong>带过期期限的token</strong></li>
+</ol>
+<p>请求时先请求token，token存redis，带过期时间。实际业务处理时redis里有token直接返回，反之执行数据操作。</p>
+<h3 id="订单分库分表，多维度查询"><a href="#订单分库分表，多维度查询" class="headerlink" title="订单分库分表，多维度查询"></a>订单分库分表，多维度查询</h3><p>如果电商网站的订单数过多，我们一般会想到 <code>分库分表</code> 解决策略。没问题，这个大方向是对的。</p>
+<p><strong>但是查询维度很多。</strong></p>
+<p>1、买家，查询 <code>我的订单</code> 列表，需要根据 <code>buyer_id</code> 来查询</p>
+<p>2、查看订单详情，需要根据 <code>order_id</code> 来查询</p>
+<p>3、卖家，查询 <code>我的销售</code> 列表，需要根据 <code>seller_id</code> 来查询</p>
+<p><strong>而订单分表只有一个分表键，如何满足多维度 SQL 操作呢</strong>？</p>
+<p>如何调节分片键与索引的矛盾: <strong>冗余</strong>。</p>
 <ol>
 <li>全量冗余</li>
 <li>关系冗余</li>
 </ol>
 <p>举例:<br>order表</p>
+<p>![order_table](../../../../../Library/Application Support/typora-user-images/image-20220316031324461.png)</p>
 <h3 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h3><h4 id="XA"><a href="#XA" class="headerlink" title="XA"></a>XA</h4><h4 id="Seata-的-AT"><a href="#Seata-的-AT" class="headerlink" title="Seata 的 AT"></a>Seata 的 AT</h4> 
       <!-- reward -->
       
@@ -258,7 +341,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/09/07/%E6%9E%B6%E6%9E%84/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/09/07/12306/" alt="微信分享二维码">
     </div>
 </div>
 
