@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    MongoDB 索引 |  JsyBlog
+    死锁 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-MongoDB 索引"
+  id="post-死锁"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,26 +54,22 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  MongoDB 索引
+  死锁
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/11/02/MongoDB%20%E7%B4%A2%E5%BC%95/" class="article-date">
-  <time datetime="2021-11-02T00:08:21.000Z" itemprop="datePublished">2021-11-02</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/NoSQL/">NoSQL</a>
-  </div>
-  
+      <a href="/2022/03/20/%E6%AD%BB%E9%94%81/" class="article-date">
+  <time datetime="2022-03-20T07:36:12.000Z" itemprop="datePublished">2022-03-20</time>
+</a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">741</span>
+            <span class="post-count">2.2k</span>
         </span>
     </span>
 
@@ -82,7 +78,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">7 分钟</span>
         </span>
     </span>
 </div>
@@ -97,39 +93,124 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>索引支持在 MongoDB 中高效执行查询。</p>
-<p><strong>如果没有索引，MongoDB 必须执行<em>集合扫描</em>，即扫描<em>集合中的</em>每个文档，以选择那些与查询语句匹配的文档</strong>。如果查询存在合适的索引，MongoDB 可以使用该索引来限制它必须检查的文档数量。</p>
-<p>索引是特殊的数据结构（<strong>MongoDB 索引使用 B 树数据结构</strong>），它以易于遍历的形式存储集合数据集的一小部分。索引存储特定字段或字段集的值，按字段值排序。索引条目的排序支持高效的等式匹配和基于范围的查询操作。此外，MongoDB 可以使用索引中的排序返回排序结果。</p>
-<p>从根本上说，<strong>MongoDB 中的索引类似于其他数据库系统中的索引</strong>（因为数据结构使用的都是B树）。MongoDB 在<strong>集合</strong>级别定义索引，并支持 MongoDB 集合中文档的任何字段或子字段的索引。</p>
-<h2 id="默认-id索引"><a href="#默认-id索引" class="headerlink" title="默认_id索引"></a>默认<code>_id</code>索引</h2><p>MongoDB在创建集合期间在<code>_id</code>字段上 创建唯一索引。该索引可防止客户端插入具有相同字段值的两个文档。您不能在字段上删除此索引。</p>
-<h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><p>索引一旦创建就不能重命名。相反，您必须删除并使用新名称重新创建索引。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.createIndex( &lt;key and index type specification&gt;, &lt;options&gt; )</span><br></pre></td></tr></table></figure>
-
-<h2 id="查看索引"><a href="#查看索引" class="headerlink" title="查看索引"></a>查看索引</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.getIndexes()</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h2 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h2><p>MongoDB 提供了许多不同的索引类型来支持特定类型的数据和查询。</p>
-<h3 id="单字段索引"><a href="#单字段索引" class="headerlink" title="单字段索引"></a>单字段索引</h3><p>MongoDB支持在文档的单个字段上创建用户定义的升序/降序索引。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.createIndex( &#123; score: 1 &#125; )</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="https://docs.mongodb.com/manual/images/index-ascending.bakedsvg.svg"></p>
-<h3 id="复合索引"><a href="#复合索引" class="headerlink" title="复合索引"></a>复合索引</h3><p>MongoDB 还支持多个字段上的用户定义索引，即 <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/index-compound/">复合索引</a>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.createIndex( &#123; userid: 1, score: -1 &#125; )</span><br></pre></td></tr></table></figure>
-
-
-
-<p>复合索引中列出的字段顺序很重要。例如，如果复合索引由 组成<code>&#123; userid: 1, score: -1 &#125;</code>，则索引首先按升序排序<code>userid</code>，然后在每个<code>userid</code> 值中按降序排序<code>score</code>。</p>
-<p><img src="https://docs.mongodb.com/manual/images/index-compound-key.bakedsvg.svg"></p>
-<h3 id="多键索引"><a href="#多键索引" class="headerlink" title="多键索引"></a>多键索引</h3><p>MongoDB 使用<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/index-multikey/">多键索引</a>来索引<strong>存储在数组中的内容</strong>。<br>如果你索引一个包含数组值的字段，MongoDB 会<strong>为数组的每个元素创建单独的索引条目</strong>。这些<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/index-multikey/">多键索引</a>允许查询通过匹配数组的一个或多个元素来选择包含数组的文档。</p>
-<p>如果索引字段包含数组值，MongoDB 会自动判断是否创建多键索引；您<strong>不需要显式指定多键类型</strong>。</p>
-<p><img src="https://docs.mongodb.com/manual/images/index-multikey.bakedsvg.svg"></p>
-<h3 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h3><p>为了支持<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/hashed-sharding/#std-label-sharding-hashed-sharding">基于散列的分片</a>，MongoDB 提供了一种<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/index-hashed/">散列索引</a>类型，它对字段值的散列值进行索引。这些索引在其范围内具有更随机的值分布，但<strong>仅支持相等匹配</strong>，<strong>不支持基于范围的查询</strong>。</p>
+  <h1 id="死锁的基本概念"><a href="#死锁的基本概念" class="headerlink" title="死锁的基本概念"></a>死锁的基本概念</h1><h2 id="死锁与饥饿"><a href="#死锁与饥饿" class="headerlink" title="死锁与饥饿"></a>死锁与饥饿</h2><ul>
+<li><strong>死锁</strong>：一组处于等待（阻塞）状态的进程，每一个进程持有其他进程所需要的资源，而又等待使用其他进程所拥有的资源，致使这组进程互相等待，均无法向前推进。另一种定义：当一组进程中每个进程都在等待一个事件，而这一事件只能由这一组进程的另一个进程引起时，这组进程处于死锁状态。</li>
+<li><strong>饥饿</strong>：就绪进程长时间得不到调度是处于等待状态，而不是死锁中的互相等待。若信号量的等待队列按照LIFO或优先级管理，则可能导致饥饿。</li>
+</ul>
+<h2 id="死锁形成的条件"><a href="#死锁形成的条件" class="headerlink" title="死锁形成的条件"></a>死锁形成的条件</h2><p>如果以下四个条件同时满足，就会引起死锁：</p>
+<ul>
+<li>mutual exclusion互斥：至少一个资源要求互斥地共享；</li>
+<li>hold and wait占有并等待：一个进程至少占有一个资源并等待另一资源，该资源为其它进程所占有；</li>
+<li>no preemption非抢占：资源不能被抢占，只能进程完成任务后自动释放；</li>
+<li>circular wait循环等待：互相等待形成一个环。</li>
+</ul>
+<h2 id="死锁的处理方法"><a href="#死锁的处理方法" class="headerlink" title="死锁的处理方法"></a>死锁的处理方法</h2><p>从大的方面来讲有四种解决方案：</p>
+<ul>
+<li><p><strong>使用协议预防死锁</strong><br>死锁预防是指一组方法，需要确定至少一个必要条件不成立。</p>
+<p>预防的特点是<strong>保证一定不会死锁，但是会降低资源利用率和系统吞吐量</strong>，属于静态的处理方法。</p>
+</li>
+<li><p><strong>使用动态追踪技术避免死锁</strong></p>
+<p>死锁避免要求操作系统事先得到有关进程申请使用资源的额外信息。当进程申请资源时，若发现满足该资源的请求可能导致死锁发生，则拒绝该申请。</p>
+<p>死锁避免算法会因为<strong>追踪当前资源分配成本增加运行成本</strong>，但是<strong>相对于静态的死锁预防方法它允许更多的并发使用资源，所以系统吞吐量大于死锁预防</strong>。</p>
+</li>
+<li><p><strong>允许进入死锁状态，检测并加以恢复</strong></p>
+</li>
+<li><p><strong>忽视死锁问题</strong><br>大多数系统使用，因为死锁发生并不频繁，预防、避免和恢复耗费太大。</p>
+</li>
+</ul>
+<h1 id="死锁预防"><a href="#死锁预防" class="headerlink" title="死锁预防"></a>死锁预防</h1><p>死锁预防是指实现破坏死锁的形成条件，预防的特点是一定不会死锁，但是会降低资源利用率和系统吞吐量。</p>
+<h3 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h3><p>非共享资源必须互斥，共享资源不要求互斥所以不会死锁。无法从互斥条件下手避免死锁。</p>
+<h3 id="2-占有并等待"><a href="#2-占有并等待" class="headerlink" title="2. 占有并等待"></a>2. 占有并等待</h3><ul>
+<li><p>拥有不等待：资源静态分配策略，要求一个进程在执行前获得所有资源</p>
+</li>
+<li><p>等待不拥有：进程在申请其他资源的时候必须释放已分配的资源。</p>
+</li>
+</ul>
+<p>缺点：资源利用率低，分配以后可能很久不被使用；产生饥饿，对于第一种协议，如果有进程需要多个常用资源，就可能会永久等待。</p>
+<h3 id="3-非抢占"><a href="#3-非抢占" class="headerlink" title="3. 非抢占"></a>3. 非抢占</h3><p>如果一个进程占有一些资源并在申请一些无法立刻分配到的资源，那么它占有的这些资源就都可以被抢占。该进程将会在它重新获得原有的资源以及原本要申请的资源的时候重启。</p>
+<p>用于状态可保存和恢复的资源如CPU，memory等，不适用于打印机等。</p>
+<h3 id="4-循环等待"><a href="#4-循环等待" class="headerlink" title="4. 循环等待"></a>4. 循环等待</h3><p>对所有资源类型进行完全排序，要求每个进程按递增顺序申请资源。</p>
+<p>如哲学家就餐问题，桌上的五根筷子分别编号，所有人只能按照从小到大的顺序申请筷子，所以永远不会出现每个人获得一只筷子的情况。</p>
+<p>再比如，当一个进程对资源的使用顺序为5→2→4→3→1的时候，它的申请顺序仍然是12345，也就是说即使1是最后使用，也要先申请。这种浪费在程序越大、申请资源越多的时候越是明显。</p>
+<h1 id="死锁避免"><a href="#死锁避免" class="headerlink" title="死锁避免"></a>死锁避免</h1><h2 id="安全状态-safe-state"><a href="#安全状态-safe-state" class="headerlink" title="安全状态(safe state)"></a>安全状态(safe state)</h2><p>如果系统能按照某个顺序为每个进程分配资源并能避免死锁，系统状态就是安全的。或者说，<strong>如果存在一个安全序列safe sequence&lt;P0,P1,P2,…,Pn&gt;，使得前面的进程能够得到足够的资源完成，同时它释放的资源又能满足后面的进程的话，就是安全的</strong>。</p>
+<p>下面给出一个简单的例子：</p>
+<table>
+<thead>
+<tr>
+<th>process</th>
+<th>maximum</th>
+<th>allocation</th>
+<th>need</th>
+<th>available</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>p0</td>
+<td>10</td>
+<td>5</td>
+<td>5</td>
+<td>3</td>
+</tr>
+<tr>
+<td>p1</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>p2</td>
+<td>9</td>
+<td>2</td>
+<td>7</td>
+<td>3</td>
+</tr>
+</tbody></table>
+<p>现在给出一个安全序列&lt;P1,P0,P2&gt;，之所以说它是安全序列，可以这样分析：P1分配到2个资源以后可以完成任务释放4个资源，那么总共可用资源变成5个，分配给P0以后待其完成任务释放10个资源可以让P2使用，这个分配顺序能确保不会产生死锁，所以系统状态是安全的。</p>
+<p>但是，<strong>不安全状态并不一定会导致死锁</strong>。因为我们这里的最大资源需求量很有可能会超出真正需求量，反之，死锁状态一定是不安全状态。</p>
+<p><strong>有了安全状态的概念，就可以定义避免算法以确保系统不会死锁，其思想就是简单的确保系统始终处于安全状态。</strong></p>
+<h2 id="单实例——资源分配图-RAG——resource-allocation-graph"><a href="#单实例——资源分配图-RAG——resource-allocation-graph" class="headerlink" title="单实例——资源分配图(RAG——resource-allocation graph)"></a>单实例——资源分配图(RAG——resource-allocation graph)</h2><p>使用具有claim边的RAG，适用于每种资源类型有单个实例的资源分配系统。</p>
+<p><img src="/2022/03/20/%E6%AD%BB%E9%94%81/rag.png"></p>
+<p>有如下重要概念：</p>
+<ol>
+<li>虚边：将要请求或可能使用claim edge;</li>
+<li>实边：请求边和分配边request，assignment</li>
+</ol>
+<p>规定：<br>如果没有环，就是安全状态；<br>如果有环，即使环中有虚边，也是不安全状态，在避免算法里面是不允许出现的；<br>如果出现了实边环，就是死锁。</p>
+<h2 id="多实例——银行家算法-Banker’s-Algorithm"><a href="#多实例——银行家算法-Banker’s-Algorithm" class="headerlink" title="多实例——银行家算法(Banker’s Algorithm)"></a>多实例——银行家算法(Banker’s Algorithm)</h2><blockquote>
+<p>在银行中，客户申请贷款的数量是有限的，每个客户在第一次申请贷款时要声明完成该项目所需的最大资金量，在满足所有贷款要求时，客户应及时归还。银行家在客户申请的贷款数量不超过自己拥有的最大值时，都应尽量满足客户的需要。在这样的描述中，银行家就好比操作系统，资金就是资源，客户就相当于要申请资源的进程。</p>
+</blockquote>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/indexes/">官方文档索引</a></p>
+<p>上面的算法针对的是每个资源都只有单实例的情况。</p>
+</blockquote>
+<p>当新进程进入系统时，必须说明其可能需要的每种类型资源实例的最大数量。用户申请一组资源时，系统必须确保这些资源分配后系统仍处于安全状态。</p>
+<p>设系统中共有n个进程和m种资源类型</p>
+<ul>
+<li><p>安全性算法：确定计算机系统是否处于安全状态</p>
+<ul>
+<li>向量finish[n]存储进程是否已经完成，初始状态为false；</li>
+<li>向量available[m]存储当前每种资源的剩余可用量，初始值为资源总量；</li>
+<li>向量need[n] [m]存储每个进程的所需要的每种资源的数量(need即max——最多需要多少资源)；</li>
+<li>寻找是否存在finish=false且所需资源need[i] ≤ available的进程，如果存在，让这个进程获得所需要的资源执行结束，然后释放资源，这个时候它的finish=true，而总的available也要加上该进程原来占有的资源；</li>
+<li>循环执行上一步直到没有符合条件的进程。这时候如果finish全部为true，那么系统处于安全状态，我们就能获得一个安全序列。</li>
+</ul>
+</li>
+<li><p>资源请求算法：判断是否可安全允许请求</p>
+<ul>
+<li>确定request≤need，否则出错；request≤available，否则等待</li>
+<li>按照请求假分配，修改系统当前的available、need，然后判断假分配以后系统状态是否安全。如果安全，该分配得到允许。</li>
+</ul>
+</li>
+</ul>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><p><strong>P - 进程的集合</strong><br><strong>Mp - 进程p的最大的请求数目</strong><br><strong>Cp - 进程p当前被分配的资源</strong><br><strong>A - 当前可用的资源</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (P != ∅) &#123;</span><br><span class="line">    found = FALSE;</span><br><span class="line">    foreach (p ∈ P) &#123;</span><br><span class="line">        <span class="keyword">if</span> (Mp − Cp ≤ A) &#123;</span><br><span class="line">             <span class="comment">/* p可以獲得他所需的資源。假設他得到資源後執行；執行終止，並釋放所擁有的資源。*/</span></span><br><span class="line">             A = A + Cp ;</span><br><span class="line">             P = P − &#123;p&#125;;</span><br><span class="line">             found = TRUE;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (! found) <span class="keyword">return</span> FAIL;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> OK;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95">银行家算法</a></p>
 </blockquote>
  
       <!-- reward -->
@@ -195,32 +276,21 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/11/02/MongoDB%20%E7%B4%A2%E5%BC%95/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/03/20/%E6%AD%BB%E9%94%81/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NoSQL/" rel="tag">NoSQL</a></li></ul>
-
     </footer>
   </div>
 
    
   <nav class="article-nav">
     
-      <a href="/2021/11/02/%E4%B8%80%E4%BA%9B%E8%BF%98%E4%B8%8D%E9%94%99%E7%9A%84%E9%A2%98/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            (no title)
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/10/31/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-InnoDB%E7%9A%84MVCC%E6%9C%BA%E5%88%B6/" class="article-nav-link">
+      <a href="/2022/03/19/Redis%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">MySQL系列—— InnoDB的MVCC机制</div>
+        <div class="article-nav-title">Redis底层数据结构</div>
       </a>
     
   </nav>
