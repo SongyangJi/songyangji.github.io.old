@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    MongoDB 索引 |  JsyBlog
+    大文件排序 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-MongoDB 索引"
+  id="post-大文件排序"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,18 +54,18 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  MongoDB 索引
+  大文件排序
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/11/02/MongoDB%20%E7%B4%A2%E5%BC%95/" class="article-date">
-  <time datetime="2021-11-02T00:08:21.000Z" itemprop="datePublished">2021-11-02</time>
+      <a href="/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2022-03-20T15:16:05.000Z" itemprop="datePublished">2022-03-20</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/NoSQL/">NoSQL</a>
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
   </div>
   
 <div class="word_count">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">741</span>
+            <span class="post-count">842</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">3 分钟</span>
         </span>
     </span>
 </div>
@@ -97,39 +97,22 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>索引支持在 MongoDB 中高效执行查询。</p>
-<p><strong>如果没有索引，MongoDB 必须执行<em>集合扫描</em>，即扫描<em>集合中的</em>每个文档，以选择那些与查询语句匹配的文档</strong>。如果查询存在合适的索引，MongoDB 可以使用该索引来限制它必须检查的文档数量。</p>
-<p>索引是特殊的数据结构（<strong>MongoDB 索引使用 B 树数据结构</strong>），它以易于遍历的形式存储集合数据集的一小部分。索引存储特定字段或字段集的值，按字段值排序。索引条目的排序支持高效的等式匹配和基于范围的查询操作。此外，MongoDB 可以使用索引中的排序返回排序结果。</p>
-<p>从根本上说，<strong>MongoDB 中的索引类似于其他数据库系统中的索引</strong>（因为数据结构使用的都是B树）。MongoDB 在<strong>集合</strong>级别定义索引，并支持 MongoDB 集合中文档的任何字段或子字段的索引。</p>
-<h2 id="默认-id索引"><a href="#默认-id索引" class="headerlink" title="默认_id索引"></a>默认<code>_id</code>索引</h2><p>MongoDB在创建集合期间在<code>_id</code>字段上 创建唯一索引。该索引可防止客户端插入具有相同字段值的两个文档。您不能在字段上删除此索引。</p>
-<h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><p>索引一旦创建就不能重命名。相反，您必须删除并使用新名称重新创建索引。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.createIndex( &lt;key and index type specification&gt;, &lt;options&gt; )</span><br></pre></td></tr></table></figure>
-
-<h2 id="查看索引"><a href="#查看索引" class="headerlink" title="查看索引"></a>查看索引</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.getIndexes()</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h2 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h2><p>MongoDB 提供了许多不同的索引类型来支持特定类型的数据和查询。</p>
-<h3 id="单字段索引"><a href="#单字段索引" class="headerlink" title="单字段索引"></a>单字段索引</h3><p>MongoDB支持在文档的单个字段上创建用户定义的升序/降序索引。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.createIndex( &#123; score: 1 &#125; )</span><br></pre></td></tr></table></figure>
+  <h1 id="分割-多路归并"><a href="#分割-多路归并" class="headerlink" title="分割+多路归并"></a>分割+多路归并</h1><p>我们可以将一个很大的文件，切分成很多个小文件，使得每个小文件能够单独的装进内存，并将每个小文件进行内排序（快速排序等等），然后再将多个小文件进行多路归并排序，最终得到一个有序的文件。</p>
+<p>多路归并排序在大数据领域也是常用的算法，常用于海量数据排序。当数据量特别大时，这些数据无法被单个机器内存容纳，它需要被切分位多个集合分别由不同的机器进行内存排序（map过程），然后再进行多路归并算法将来自多个不同机器的数据进行排序（reduce 过程），这是流式多路归并排序。</p>
+<p>多路归并排序的优势在于内存消耗极低，它的内存占用和输入文件的数量成正比，和数据总量无关，数据总量只会线性正比影响排序的时间。</p>
+<p><img src="/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/Large_File_Sorting.jpg" alt="img"></p>
+<h1 id="多路归并的几种方案"><a href="#多路归并的几种方案" class="headerlink" title="多路归并的几种方案"></a>多路归并的几种方案</h1><p>多路归并排序有3种思路，分别是使用堆、胜者树、败者数。</p>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p>从 K 个序列中各取一个元素，并记录每个元素的来源数组，建立一个含 K 个元素的小根堆。此时堆顶就是最小的元素，取出堆顶元素，并从堆顶元素的来源序列中取下一个元素放入堆顶，然后向下调整。在向下调整过程中需要和其两个子结点比较，需要比较 2 次。</p>
+<h2 id="胜者树"><a href="#胜者树" class="headerlink" title="胜者树"></a>胜者树</h2><p>胜者树在向上调整的时候首先需要获得父结点，然后再获得兄弟结点，然后再比较。比堆少一半的比较次数。</p>
+<h2 id="败者树"><a href="#败者树" class="headerlink" title="败者树"></a>败者树</h2><p>败者树在向上调整的时候，只需要获得父结点并比较即可。相较于胜者树，它不必获取兄弟结点了，减小了访存时间。</p>
+<h1 id="使用MapReduce解决"><a href="#使用MapReduce解决" class="headerlink" title="使用MapReduce解决"></a>使用MapReduce解决</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FileSystem;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.IntWritable;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.LongWritable;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Job;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.fs.Path;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.Text;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.input.TextInputFormat;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.net.URI;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: SongyangJi</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span>: 2022/3/20</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Sort</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMapper</span> <span class="keyword">extends</span> <span class="title">Mapper</span>&lt;<span class="title">LongWritable</span>, <span class="title">Text</span>, <span class="title">IntWritable</span>, <span class="title">IntWritable</span>&gt; </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> IntWritable data = <span class="keyword">new</span> IntWritable(); <span class="comment">//静态变量了解一下</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">map</span><span class="params">(LongWritable key, Text value, Context context)</span></span></span><br><span class="line"><span class="function">                <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">            String line = value.toString();</span><br><span class="line">            data.set(Integer.parseInt(line));</span><br><span class="line">            context.write(data, <span class="keyword">new</span> IntWritable(<span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyReducer</span> <span class="keyword">extends</span> <span class="title">Reducer</span>&lt;<span class="title">IntWritable</span>, <span class="title">IntWritable</span>, <span class="title">IntWritable</span>, <span class="title">Text</span>&gt; </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> Text word = <span class="keyword">new</span> Text();</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(IntWritable key, Iterable&lt;IntWritable&gt; values, Context context)</span></span></span><br><span class="line"><span class="function">                <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (IntWritable val : values) &#123;</span><br><span class="line">                context.write(key, <span class="keyword">new</span> Text());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Configuration conf = <span class="keyword">new</span> Configuration();</span><br><span class="line">        Job job = Job.getInstance(conf, <span class="string">&quot;Sort&quot;</span>);</span><br><span class="line">        <span class="comment">//run jar class 主方法</span></span><br><span class="line">        job.setJarByClass(Sort.class);</span><br><span class="line">        <span class="comment">//设置map</span></span><br><span class="line">        job.setMapperClass(MyMapper.class);</span><br><span class="line">        job.setMapOutputKeyClass(IntWritable.class);</span><br><span class="line">        job.setMapOutputValueClass(IntWritable.class);</span><br><span class="line">        <span class="comment">//设置reduce</span></span><br><span class="line">        job.setReducerClass(MyReducer.class);</span><br><span class="line">        job.setOutputKeyClass(IntWritable.class);</span><br><span class="line">        job.setOutputValueClass(IntWritable.class);</span><br><span class="line">        <span class="comment">//设置input format</span></span><br><span class="line">        job.setInputFormatClass(TextInputFormat.class);</span><br><span class="line">        <span class="comment">//设置output format</span></span><br><span class="line">        job.setOutputFormatClass(TextOutputFormat.class);</span><br><span class="line">        <span class="comment">// 设置输入输出路径</span></span><br><span class="line">        FileInputFormat.addInputPath(job, <span class="keyword">new</span> Path(args[<span class="number">0</span>]));</span><br><span class="line">        FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(args[<span class="number">1</span>]));</span><br><span class="line">        System.exit(job.waitForCompletion(<span class="keyword">true</span>) ? <span class="number">0</span> : <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<p><img src="https://docs.mongodb.com/manual/images/index-ascending.bakedsvg.svg"></p>
-<h3 id="复合索引"><a href="#复合索引" class="headerlink" title="复合索引"></a>复合索引</h3><p>MongoDB 还支持多个字段上的用户定义索引，即 <a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/index-compound/">复合索引</a>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.createIndex( &#123; userid: 1, score: -1 &#125; )</span><br></pre></td></tr></table></figure>
-
-
-
-<p>复合索引中列出的字段顺序很重要。例如，如果复合索引由 组成<code>&#123; userid: 1, score: -1 &#125;</code>，则索引首先按升序排序<code>userid</code>，然后在每个<code>userid</code> 值中按降序排序<code>score</code>。</p>
-<p><img src="https://docs.mongodb.com/manual/images/index-compound-key.bakedsvg.svg"></p>
-<h3 id="多键索引"><a href="#多键索引" class="headerlink" title="多键索引"></a>多键索引</h3><p>MongoDB 使用<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/index-multikey/">多键索引</a>来索引<strong>存储在数组中的内容</strong>。<br>如果你索引一个包含数组值的字段，MongoDB 会<strong>为数组的每个元素创建单独的索引条目</strong>。这些<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/index-multikey/">多键索引</a>允许查询通过匹配数组的一个或多个元素来选择包含数组的文档。</p>
-<p>如果索引字段包含数组值，MongoDB 会自动判断是否创建多键索引；您<strong>不需要显式指定多键类型</strong>。</p>
-<p><img src="https://docs.mongodb.com/manual/images/index-multikey.bakedsvg.svg"></p>
-<h3 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h3><p>为了支持<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/hashed-sharding/#std-label-sharding-hashed-sharding">基于散列的分片</a>，MongoDB 提供了一种<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/index-hashed/">散列索引</a>类型，它对字段值的散列值进行索引。这些索引在其范围内具有更随机的值分布，但<strong>仅支持相等匹配</strong>，<strong>不支持基于范围的查询</strong>。</p>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/indexes/">官方文档索引</a></p>
+<p>参考</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1592913">https://cloud.tencent.com/developer/article/1592913</a></p>
+<p><a target="_blank" rel="noopener" href="https://luisstruggle.github.io/blog/Large_File_Sorting.html">https://luisstruggle.github.io/blog/Large_File_Sorting.html</a></p>
 </blockquote>
  
       <!-- reward -->
@@ -195,32 +178,30 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/11/02/MongoDB%20%E7%B4%A2%E5%BC%95/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/" rel="tag">MongoDB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NoSQL/" rel="tag">NoSQL</a></li></ul>
-
     </footer>
   </div>
 
    
   <nav class="article-nav">
     
-      <a href="/2021/11/02/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%90%84%E7%A7%8D%E9%81%8D%E5%8E%86%EF%BC%88%E9%80%92%E5%BD%92%E4%B8%8E%E8%BF%AD%E4%BB%A3%E5%AE%9E%E7%8E%B0%EF%BC%89%E4%BB%A5%E5%8F%8A%E4%BD%BF%E7%94%A8%E4%B8%AD%E5%BA%8F%E3%80%81%EF%BC%88%E5%89%8D%E5%BA%8F-%E5%90%8E%E5%BA%8F%EF%BC%89%E8%BF%98%E5%8E%9F%E4%BA%8C%E5%8F%89%E6%A0%91/" class="article-nav-link">
+      <a href="/2022/03/21/JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            二叉树的各种遍历（递归与迭代实现）以及使用中序、（前序 | 后序）还原二叉树
+            JVM类加载机制
           
         </div>
       </a>
     
     
-      <a href="/2021/10/31/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-InnoDB%E7%9A%84MVCC%E6%9C%BA%E5%88%B6/" class="article-nav-link">
+      <a href="/2022/03/20/%E5%A0%86/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">MySQL系列—— InnoDB的MVCC机制</div>
+        <div class="article-nav-title">堆</div>
       </a>
     
   </nav>
