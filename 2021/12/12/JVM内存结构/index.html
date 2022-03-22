@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-JVM"
+  id="post-JVM内存结构"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -61,7 +61,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2021/12/12/JVM/" class="article-date">
+      <a href="/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" class="article-date">
   <time datetime="2021-12-12T10:31:40.000Z" itemprop="datePublished">2021-12-12</time>
 </a> 
   <div class="article-category">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2k</span>
+            <span class="post-count">2.1k</span>
         </span>
     </span>
 
@@ -98,9 +98,9 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h2 id="JVM内存结构图"><a href="#JVM内存结构图" class="headerlink" title="JVM内存结构图"></a>JVM内存结构图</h2><p>《深入理解Java虚拟机（第2版）》</p>
-<p><img src="/2021/12/12/JVM/jvm-memory.jpg"></p>
+<p><img src="/jvm-memory.jpg"></p>
 <p><strong>Java8内存结构介绍</strong></p>
-<p><img src="/2021/12/12/JVM/jvm-memory2.png" alt="图片"></p>
+<p><img src="/jvm-memory2.png" alt="图片"></p>
 <h2 id="虚拟机内存与本地内存的区别"><a href="#虚拟机内存与本地内存的区别" class="headerlink" title="虚拟机内存与本地内存的区别"></a>虚拟机内存与本地内存的区别</h2><p>Java虚拟机在执行的时候会把管理的内存分配成不同的区域，这些区域被称为虚拟机内存，同时，对于虚拟机没有直接管理的物理内存，也有一定的利用，这些被利用却不在虚拟机内存数据区的内存，我们称它为<code>本地内存</code>，这两种内存有一定的区别：</p>
 <ul>
 <li><p>JVM内存<br>受虚拟机内存大小的参数控制，当大小超过参数设置的大小时就会报OOM</p>
@@ -159,6 +159,9 @@
 </li>
 </ul>
 <p>java堆既可以是固定大小的，也可以是可扩展的（通过参数<code>-Xmx</code>和<code>-Xms</code>设定），如果堆无法扩展或者无法分配内存时也会报OOM。</p>
+<blockquote>
+<p>静态变量 存储位置：JDK8之前，静态成员变量确实存放在方法区；但JDK8之后就取消了“永久代”，取而代之的是“元空间”，永久代中的数据也进行了迁移，静态成员变量迁移到了堆中（方法区是JVM的规范，永久代是方法区的具体实现）。</p>
+</blockquote>
 <h3 id="方法区（Method-Area）"><a href="#方法区（Method-Area）" class="headerlink" title="方法区（Method Area）"></a>方法区（Method Area）</h3><p>方法区绝对是网上所有关于java内存结构文章争论的焦点，因为方法区的实现在java8做了一次大革新，现在我们来讨论一下：</p>
 <p><strong>方法区是所有线程共享的内存</strong>，</p>
 <p>在java8以前是放在JVM内存中的，<strong>由永久代实现，受JVM内存大小参数的限制</strong>;</p>
@@ -267,7 +270,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/12/12/JVM/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -280,7 +283,7 @@
    
   <nav class="article-nav">
     
-      <a href="/2021/12/12/GC/" class="article-nav-link">
+      <a href="/2021/12/12/JVM-GC/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           

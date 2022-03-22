@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-GC"
+  id="post-JVM-GC"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -61,7 +61,7 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2021/12/12/GC/" class="article-date">
+      <a href="/2021/12/12/JVM-GC/" class="article-date">
   <time datetime="2021-12-12T10:31:40.000Z" itemprop="datePublished">2021-12-12</time>
 </a> 
   <div class="article-category">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.1k</span>
+            <span class="post-count">4.4k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">14 分钟</span>
+            <span class="post-count">15 分钟</span>
         </span>
     </span>
 </div>
@@ -126,7 +126,7 @@
 <p>标记、清除过程效率低，<strong>产生大量不连续的内存碎片</strong>，提高了垃圾回收的频率。</p>
 </li>
 </ul>
-<p><img src="/2021/12/12/GC/mark-sweep.png"></p>
+<p><img src="/mark-sweep.png"></p>
 <h3 id="2-标记-复制算法"><a href="#2-标记-复制算法" class="headerlink" title="2. 标记-复制算法"></a>2. 标记-复制算法</h3><p>这种收集算法解决了标记清除算法存在的效率问题。它将内存区域划分成相同的两个<strong>内存块</strong>。每次仅使用一半的空间，<code>JVM</code>生成的新对象放在一半空间中。当一半空间用完时进行<code>GC</code>，把可到达对象复制到另一半空间，然后把使用过的内存空间一次清理掉。</p>
 <ul>
 <li><p><strong>优点</strong>：</p>
@@ -136,7 +136,7 @@
 <p><strong>可用的内存大小缩小为原来的一半</strong>，<strong>对象存活率高时会频繁进行复制</strong>。</p>
 </li>
 </ul>
-<p><img src="/2021/12/12/GC/gc-copy.png"></p>
+<p><img src="/gc-copy.png"></p>
 <h3 id="3-标记-整理算法"><a href="#3-标记-整理算法" class="headerlink" title="3. 标记-整理算法"></a>3. 标记-整理算法</h3><p><strong>标记-整理算法</strong> 采用和 <strong>标记-清除算法</strong> 一样的方式进行对象的标记，但后续不直接对可回收对象进行清理，而是将所有的<strong>存活对象</strong>往一端<strong>空闲空间</strong>移动，然后清理掉端边界以外的内存空间。</p>
 <ul>
 <li><p><strong>优点</strong>：</p>
@@ -144,16 +144,26 @@
 </li>
 <li><p><strong>缺点</strong>：</p>
 <p>仍<strong>需要进行局部对象移动，一定程度上降低了效率</strong>。</p>
-<p><img src="/2021/12/12/GC/mark-compact.png"></p>
+<p><img src="/mark-compact.png"></p>
 </li>
 </ul>
-<h3 id="4-分代收集算法"><a href="#4-分代收集算法" class="headerlink" title="4. 分代收集算法"></a>4. 分代收集算法</h3><p>当前商业虚拟机都采用<strong>分代收集</strong>的垃圾收集算法。分代收集算法，顾名思义是根据对象的<strong>存活周期</strong>将内存划分为几块。一般包括<strong>年轻代</strong>、<strong>老年代</strong> 和 <strong>永久代</strong>，如图所示：</p>
-<p><img src="/2021/12/12/GC/gc-generation.png"></p>
+<h3 id="4-分代收集算法"><a href="#4-分代收集算法" class="headerlink" title="4. 分代收集算法"></a>4. 分代收集算法</h3><h4 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h4><ul>
+<li>部分收集（Partial GC）指目标不是完整收集整个Java堆的垃圾收集，其中可以分为：</li>
+<li><ul>
+<li>新生代收集（Minor GC/Young GC）: 指目标只是新生代的垃圾收集；</li>
+<li>老年代收集（Major GC/Old GC）: 指目标只是老年代的垃圾收集。注意这个名词可能有歧义，有的也指整堆收集。</li>
+<li>混合收集（Mixed GC）：指目标是收集整个新生代以及部分老年代的来及收集。目前只有G1收集器有这种行为。</li>
+</ul>
+</li>
+<li>整堆收集（Full GC）：收集整个Java堆和方法区的垃圾收集。</li>
+</ul>
+<p>当前商业虚拟机都采用<strong>分代收集</strong>的垃圾收集算法。分代收集算法，顾名思义是根据对象的<strong>存活周期</strong>将内存划分为几块。一般包括<strong>年轻代</strong>、<strong>老年代</strong> 和 <strong>永久代</strong>，如图所示：</p>
+<p><img src="/gc-generation.png"></p>
 <blockquote>
 <p>上图中的 永久（Permanent）代在 JDK8之后便被取消。</p>
 </blockquote>
 <h4 id="新生代（Young-generation）"><a href="#新生代（Young-generation）" class="headerlink" title="新生代（Young generation）"></a>新生代（Young generation）</h4><p>绝大多数最新被创建的对象会被分配到这里，由于<strong>大部分对象</strong>在创建后会很快变得<strong>不可达</strong>，所以很多对象被创建在<strong>新生代</strong>，然后<strong>消失</strong>。对象从这个区域消失的过程我们称之为 <code>minor GC</code>。</p>
-<p><strong>新生代</strong> 中存在一个<code>Eden</code>区和两个<code>Survivor</code>区。新对象会首先分配在<code>Eden</code>中（<strong>如果新对象过大，会直接分配在老年代</strong>中）。在<code>GC</code>中，<code>Eden</code>中的对象会被移动到<code>Survivor</code>中，直至对象满足一定的年纪（定义为熬过<code>GC</code>的次数），会被移动到<strong>老年代</strong>。</p>
+<p><strong>新生代</strong> 中存在一个<code>Eden</code>区和两个<code>Survivor</code>区（Survivor 区里面分为 from 和 to 区），每次只使用Eden和其中的一块Survivor区。新对象会首先分配在<code>Eden</code>中（<strong>如果新对象过大，会直接分配在老年代</strong>中）。在<code>GC</code>中，<code>Eden</code>中的对象会被移动到<code>Survivor</code>中，直至对象满足一定的年纪（定义为熬过<code>GC</code>的次数），会被移动到<strong>老年代</strong>。</p>
 <p>可以设置<strong>新生代</strong>和<strong>老年代</strong>的相对大小。这种方式的优点是新生代大小会随着整个<strong>堆</strong>大小<strong>动态扩展</strong>。参数 <code>-XX:NewRatio</code> 设置<strong>老年代</strong>与<strong>新生代</strong>的比例。例如 <code>-XX:NewRatio=8</code> 指定 <strong>老年代/新生代</strong> 为<code>8/1</code>. <strong>老年代</strong> 占堆大小的 <code>7/8</code> ，<strong>新生代</strong> 占堆大小的 <code>1/8</code>（默认即是 <code>1/8</code>）。</p>
 <h4 id="老年代（Old-generation）"><a href="#老年代（Old-generation）" class="headerlink" title="老年代（Old generation）"></a>老年代（Old generation）</h4><p>对象没有变得不可达，并且从新生代中<strong>存活</strong>下来，会被<strong>拷贝</strong>到这里。其所占用的空间要比新生代多。也正由于其相对<strong>较大的空间</strong>，发生在<strong>老年代</strong>上的<code>GC</code>要比<strong>新生代</strong>要<strong>少得多</strong>。对象从<strong>老年代</strong>中消失的过程，可以称之为<code>major GC</code>（或者<code>full GC</code>）。</p>
 <p><code>JDK8</code>堆内存一般是划分为<strong>年轻代</strong>和<strong>老年代</strong>，<strong>不同年代</strong> 根据自身特性采用<strong>不同的垃圾收集算法</strong>。</p>
@@ -170,17 +180,17 @@
 </thead>
 <tbody><tr>
 <td>Serial</td>
-<td>新生代，<strong>复制算法</strong></td>
+<td>新生代，<strong>标记复制算法</strong></td>
 <td>单线程</td>
 </tr>
 <tr>
 <td>ParNew</td>
-<td>新生代，<strong>复制算法</strong></td>
+<td>新生代，<strong>标记复制算法</strong></td>
 <td>并行的多线程收集器</td>
 </tr>
 <tr>
 <td>Parallel Scavenge</td>
-<td>新生代，<strong>复制算法</strong></td>
+<td>新生代，<strong>标记复制算法</strong></td>
 <td>并行的多线程收集器</td>
 </tr>
 </tbody></table>
@@ -213,7 +223,7 @@
 <td>并行和并发收集器</td>
 </tr>
 </tbody></table>
-<p><img src="/2021/12/12/GC/gc-machines.png"></p>
+<p><img src="/gc-machines.png"></p>
 <p><strong>注：</strong></p>
 <ul>
 <li><strong>并行：垃圾收集的多线程的同时进行</strong>。</li>
@@ -227,7 +237,7 @@
 <h2 id="Parallel-Scavenge（ParallerGC）-Parallel-Old"><a href="#Parallel-Scavenge（ParallerGC）-Parallel-Old" class="headerlink" title="Parallel Scavenge（ParallerGC）/Parallel Old"></a>Parallel Scavenge（ParallerGC）/Parallel Old</h2><p><strong>关注吞吐量的垃圾收集器</strong>，<strong>高吞吐量则可以高效率地利用 CPU 时间</strong>（但对响应时间有负面影响），尽快完成程序的运算任务，主要适合在后台运算而不需要太多交互的任务。所谓吞吐量就是 CPU 用于运行用户代码的时间与 CPU 总消耗时间的比值，即吞吐量=运行用户代码时间/（运行用户代码时间+垃圾收集时间）</p>
 <h2 id="CMS（Concurrent-Mark-Sweep）"><a href="#CMS（Concurrent-Mark-Sweep）" class="headerlink" title="CMS（Concurrent Mark Sweep）"></a>CMS（Concurrent Mark Sweep）</h2><p>CMS收集器是一种<strong>以获取最短回收停顿时间为目标</strong>的收集器。目前很大一部分的 Java 应用集中在互联网站或者 B/S 系统的服务端上，这类应用尤其<strong>重视服务的响应速度，希望系统停顿时间最短</strong>，以给用户带来较好的体验。</p>
 <p>CMS 收集器就非常符合这类应用的需求。<code>-XX:+UseConcMarkSweepGC</code> ，<strong>一般新生代使用 ParNew，老年代的用 CMS</strong>，从名字（包含“Mark Sweep”）上就可以看出，CMS 收集器是基于“标记—清除”算法实现的，它的运作过程相对于前面几种收集器来说更复杂一些。</p>
-<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><p><img src="/2021/12/12/GC/gc-cms.png"></p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><p><img src="/gc-cms.png"></p>
 <p>整个过程分为 4 个步骤，包括：</p>
 <p>1、<strong>初始标记</strong>：仅仅只是标记一下 <strong>GC Roots 能直接关联到的对象</strong>，速度很快，需要停顿（STW -Stop the world）。（需要 STW）</p>
 <p>2、<strong>并发标记</strong>：从 GC Root 开始对堆中对象进行可达性分析，找到存活对象，它在整个回收过程中耗时最长，不需要停顿。（无需STW）</p>
@@ -264,19 +274,16 @@
 <p>G1 算法将堆划分为若干个独立区域（Region），它仍然属于分代收集器。</p>
 <p>不过，这些区域的一部分包含新生代，<strong>新生代的垃圾收集依然采用暂停所有应用线程的方式，将存活对象拷贝到老年代或者 Survivor 空间</strong>。</p>
 <p>例如其中一个独立区域如图：</p>
-<p><img src="/2021/12/12/GC/g1-region.png"></p>
-<h3 id="步骤-1"><a href="#步骤-1" class="headerlink" title="步骤"></a>步骤</h3><p><img src="/2021/12/12/GC/gc-g1.png"></p>
+<p><img src="/g1-region.png"></p>
+<h3 id="步骤-1"><a href="#步骤-1" class="headerlink" title="步骤"></a>步骤</h3><p><img src="/gc-g1.png"></p>
 <p>大致分为4个步骤：</p>
 <ol>
-<li><p><strong>初始标记</strong>：仅仅只是标记一下 GC Roots 能直接关联到的对象，并且修改 TAMS（Nest Top Mark Start）的值，让下一阶段用户程序并发运行时，能在正确可以的 Region 中创建对象，此阶段需要停顿线程(STW)，但耗时很短。</p>
-</li>
-<li><p><strong>并发标记</strong>：从 GC Root 开始对堆中对象进行可达性分析，找到存活对象，此阶段耗时较长，但可与用户程序并发执行。</p>
-</li>
-<li><p><strong>最终标记</strong>：<strong>为了修正在并发标记期间因用户程序继续运作而导致标记产生变动的那一部分标记记录</strong>，虚拟机将这段时间对象变化记录在线程的 <code>Remembered Set Logs</code> 里面，最终标记阶段需要把 Remembered Set Logs 的数据合并到 Remembered Set 中。这阶段需要停顿线程(STW)，但是可并行执行。</p>
-</li>
-<li><p><strong>筛选回收</strong>：<strong>首先对各个 Region 中的回收价值和成本进行排序，根据用户所期望的 GC 停顿时间来制定回收计划</strong>。此阶段其实也可以做到与用户程序一起并发执行，但是因为只回收一部分 Region，时间是用户可控制的，而且停顿用户线程将大幅度提高收集效率。</p>
-</li>
+<li><strong>初始标记</strong>：仅仅只是标记一下 GC Roots 能直接关联到的对象，并且修改 TAMS（Nest Top Mark Start）的值，让下一阶段用户程序并发运行时，能在正确可以的 Region 中创建对象，此阶段需要停顿线程(STW)，但耗时很短。</li>
+<li><strong>并发标记</strong>：从 GC Root 开始对堆中对象进行可达性分析，找到存活对象，此阶段耗时较长，但可与用户程序并发执行。</li>
+<li><strong>最终标记</strong>：<strong>为了修正在并发标记期间因用户程序继续运作而导致标记产生变动的那一部分标记记录</strong>，虚拟机将这段时间对象变化记录在线程的 <code>Remembered Set Logs</code> 里面，最终标记阶段需要把 Remembered Set Logs 的数据合并到 Remembered Set 中。这阶段需要停顿线程(STW)，但是可并行执行。</li>
+<li><strong>筛选回收</strong>：<strong>首先对各个 Region 中的回收价值和成本进行排序，根据用户所期望的 GC 停顿时间来制定回收计划</strong>。此阶段其实也可以做到与用户程序一起并发执行，但是因为只回收一部分 Region，时间是用户可控制的，而且停顿用户线程将大幅度提高收集效率。</li>
 </ol>
+<p>G1 从整体来看是基于<strong>标记整理</strong>算法实现的收集器，从局部（两个Region之间）上来看是基于复制算法实现的。</p>
 <h2 id="垃圾回收器的一些重要参数"><a href="#垃圾回收器的一些重要参数" class="headerlink" title="垃圾回收器的一些重要参数"></a>垃圾回收器的一些重要参数</h2><p>使用<code>java -XX:+PrintCommandLineFlags -version</code>查看关于垃圾收集器的一些信息。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-XX:InitialHeapSize=268435456 -XX:MaxHeapSize=4294967296 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC</span><br><span class="line">java version &quot;1.8.0_281&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_281-b09)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.281-b09, mixed mode)</span><br></pre></td></tr></table></figure>
 
@@ -422,7 +429,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/12/12/GC/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/12/12/JVM-GC/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -445,7 +452,7 @@
       </a>
     
     
-      <a href="/2021/12/12/JVM/" class="article-nav-link">
+      <a href="/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
         <div class="article-nav-title">JVM内存结构</div>
       </a>
