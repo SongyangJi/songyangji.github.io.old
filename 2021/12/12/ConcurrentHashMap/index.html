@@ -97,7 +97,7 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>本篇文章将要介绍的 ConcurrentHashMap 是 HashMap 的并发版本，它是线程安全的，并且在高并发的情境下，性能优于 HashMap 很多。</p>
+  <p>本篇文章将要介绍的 ConcurrentHashMap 是 HashMap 的并发版本，它是线程安全的，并且在高并发的情境下，性能优于 Hashtable 很多。</p>
 <h2 id="历史版本的演变"><a href="#历史版本的演变" class="headerlink" title="历史版本的演变"></a>历史版本的演变</h2><blockquote>
 <p><em>一句话总结</em></p>
 <p>从JDK7版本的ReentrantLock+Segment+HashEntry，到JDK8版本中synchronized+CAS+HashEntry+红黑树。</p>
@@ -158,10 +158,11 @@
 <li><strong>链表转化为红黑树</strong>：定位结点的hash算法简化会带来弊端，Hash冲突加剧，因此在链表节点数量大于8时，会将链表转化为红黑树进行存储。</li>
 <li><strong>查询时间复杂度</strong>：从原来的遍历链表O(n)，变成遍历红黑树O(logN)。</li>
 </ol>
-<h3 id="Collections-synchronizedMap、HahsTable、ConcurrentHashMap区别"><a href="#Collections-synchronizedMap、HahsTable、ConcurrentHashMap区别" class="headerlink" title="Collections.synchronizedMap、HahsTable、ConcurrentHashMap区别"></a>Collections.synchronizedMap、HahsTable、ConcurrentHashMap区别</h3><blockquote>
+<h3 id="Collections-synchronizedMap、Hashtable、ConcurrentHashMap区别"><a href="#Collections-synchronizedMap、Hashtable、ConcurrentHashMap区别" class="headerlink" title="Collections.synchronizedMap、Hashtable、ConcurrentHashMap区别"></a>Collections.synchronizedMap、Hashtable、ConcurrentHashMap区别</h3><blockquote>
 <p>参考文章</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yangming1996/p/8031199.html">为并发而生的 ConcurrentHashMap（Java 8）</a></p>
 <p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903813892014087">解读Java8中ConcurrentHashMap是如何保证线程安全的</a></p>
+<p><a target="_blank" rel="noopener" href="https://crossoverjie.top/2018/07/23/java-senior/ConcurrentHashMap/">HashMap? ConcurrentHashMap? 相信看完这篇没人能难住你！</a></p>
 </blockquote>
  
       <!-- reward -->
