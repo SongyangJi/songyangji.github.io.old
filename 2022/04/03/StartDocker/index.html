@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    JVM内存结构 |  JsyBlog
+    Docker入门 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-JVM内存结构"
+  id="post-StartDocker"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,18 +54,18 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  JVM内存结构
+  Docker入门
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" class="article-date">
-  <time datetime="2021-12-12T10:31:40.000Z" itemprop="datePublished">2021-12-12</time>
+      <a href="/2022/04/03/StartDocker/" class="article-date">
+  <time datetime="2022-04-03T10:16:01.000Z" itemprop="datePublished">2022-04-03</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
   </div>
   
 <div class="word_count">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.1k</span>
+            <span class="post-count">1.9k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">7 分钟</span>
+            <span class="post-count">6 分钟</span>
         </span>
     </span>
 </div>
@@ -97,114 +97,59 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="JVM内存结构图"><a href="#JVM内存结构图" class="headerlink" title="JVM内存结构图"></a>JVM内存结构图</h2><p>《深入理解Java虚拟机（第2版）》</p>
-<p><img src="/jvm-memory.jpg"></p>
-<p><strong>Java8内存结构介绍</strong></p>
-<p><img src="/jvm-memory2.png" alt="图片"></p>
-<h2 id="虚拟机内存与本地内存的区别"><a href="#虚拟机内存与本地内存的区别" class="headerlink" title="虚拟机内存与本地内存的区别"></a>虚拟机内存与本地内存的区别</h2><p>Java虚拟机在执行的时候会把管理的内存分配成不同的区域，这些区域被称为虚拟机内存，同时，对于虚拟机没有直接管理的物理内存，也有一定的利用，这些被利用却不在虚拟机内存数据区的内存，我们称它为<code>本地内存</code>，这两种内存有一定的区别：</p>
+  <p>Docker 是<strong>一个用于开发、发布和运行应用程序的开放平台</strong>。Docker 使您能够<strong>将应用程序与基础架构分离</strong>，以便您可以快速交付软件。使用 Docker，您可以像管理应用程序一样管理基础设施。通过利用 Docker 快速交付、测试和部署代码的方法，您可以显着减少编写代码和在生产环境中运行之间的延迟。</p>
+<h2 id="我可以使用-Docker-做什么？"><a href="#我可以使用-Docker-做什么？" class="headerlink" title="我可以使用 Docker 做什么？"></a>我可以使用 Docker 做什么？</h2><ul>
+<li><strong>快速、一致地交付您的应用程序</strong><br>Docker 通过允许开发人员使用提供应用程序和服务的本地容器在标准化环境中工作来简化开发生命周期。</li>
+</ul>
+<p>也就是说，<strong>容器的概念非常适合持续集成和持续交付 (CI/CD) 工作流程。</strong></p>
 <ul>
-<li><p>JVM内存<br>受虚拟机内存大小的参数控制，当大小超过参数设置的大小时就会报OOM</p>
-</li>
-<li><p>本地内存<br>本地内存不受虚拟机内存参数的限制，只受物理内存容量的限制<br>虽然不受参数的限制，但是如果内存的占用超出物理内存的大小，同样也会报OOM</p>
-</li>
+<li><strong>响应式部署和扩展</strong></li>
 </ul>
-<h2 id="各个区域的具体作用"><a href="#各个区域的具体作用" class="headerlink" title="各个区域的具体作用"></a>各个区域的具体作用</h2><h3 id="程序计数器（Program-Counter-Register）"><a href="#程序计数器（Program-Counter-Register）" class="headerlink" title="程序计数器（Program Counter Register）"></a>程序计数器（Program Counter Register）</h3><p><strong>程序计数器就是当前线程所执行的字节码的行号指示器</strong>，<strong>通过改变计数器的值，来选取下一行指令</strong>，通过他来实现跳转、循环、恢复线程等功能。</p>
+<p>Docker 基于容器的平台允许高度可移植的工作负载。Docker 容器可以在开发人员的本地笔记本电脑、数据中心的物理或虚拟机、云提供商或混合环境中运行。</p>
+<p>Docker 的可移植性和轻量级特性还使得动态管理工作负载、根据业务需求<strong>近乎实时地扩展或拆除应用程序和服务变得容易</strong>。</p>
 <ul>
-<li>在任何时刻，一个处理器内核只能运行一个线程，多线程是通过线程轮流切换，分配时间来完成的，这就需要有一个标志来记住每个线程执行到了哪里，这里便需要到了程序计数器。</li>
-<li>所以，<strong>程序计数器是线程私有的</strong>，每个线程都已自己的程序计数器。</li>
-</ul>
-<h3 id="虚拟机栈（JVM-Stacks）"><a href="#虚拟机栈（JVM-Stacks）" class="headerlink" title="虚拟机栈（JVM Stacks）"></a>虚拟机栈（JVM Stacks）</h3><p>虚拟机栈是线程私有的，随线程生灭。虚拟机栈描述的是线程中的方法的内存模型：</p>
-<p>每个方法被执行的时候，都会在虚拟机栈中同步创建一个<strong>栈帧</strong>（stack frame）。</p>
-<ul>
-<li>每个栈帧的包含如下的内容<ul>
-<li>Java基本数据类型（byte/boolean/char/int/long/double/float/short）以及对象的引用 （注：这里的基本数据类型指的是方法内的局部变量）</li>
-<li>局部变量表</li>
-<li>操作数栈</li>
-<li>动态连接</li>
-<li>方法返回地址</li>
-</ul>
-</li>
-</ul>
-<p>方法被执行时入栈，执行完后出栈<br>虚拟机栈可能会抛出两种异常：</p>
-<ul>
-<li>如果线程请求的栈深度大于虚拟机所规定的栈深度，则会抛出<code>StackOverFlowError</code>即栈溢出</li>
-<li>如果虚拟机的栈容量可以动态扩展，那么当虚拟机栈申请不到内存时会抛出<code>OutOfMemoryError</code>即OOM内存溢出</li>
-</ul>
-<h3 id="本地方法栈（Native-Method-Stacks）"><a href="#本地方法栈（Native-Method-Stacks）" class="headerlink" title="本地方法栈（Native Method Stacks）"></a>本地方法栈（Native Method Stacks）</h3><p>本地方法栈与虚拟机栈的作用是相似的,都会抛出<code>OutOfMemoryError</code>和<code>StackOverFlowError</code>，都是<code>线程私有</code>的，主要的区别在于：</p>
-<ul>
-<li>虚拟机栈执行的是java方法</li>
-<li>本地方法栈执行的是native方法</li>
-</ul>
-<h3 id="Java堆（Java-Heap）"><a href="#Java堆（Java-Heap）" class="headerlink" title="Java堆（Java Heap）"></a>Java堆（Java Heap）</h3><p>java堆是JVM内存中最大的一块，由所有<strong>线程共享</strong>,是<strong>由垃圾收集器管理</strong>的内存区域，<strong>主要存放对象实例</strong>，当然由于java虚拟机的发展，堆中也多了许多东西，现在主要有：</p>
-<ul>
-<li><p>对象实例</p>
-<ul>
-<li>类初始化生成的对象；</li>
-<li>基本数据类型的数组也是对象实例。</li>
-</ul>
-</li>
-<li><p>字符串常量池</p>
-<ul>
-<li>字符串常量池原本存放于方法区，jdk7开始放置于堆中；</li>
-<li>字符串常量池存储的是string对象的直接引用，而不是直接存放的对象，是一张<code>string table</code>。</li>
-</ul>
-</li>
-<li><p>静态变量<br>静态变量是有static修饰的变量，jdk7时从方法区迁移至堆中。</p>
-</li>
-<li><p>线程分配缓冲区（Thread Local Allocation Buffer）</p>
-<ul>
-<li>线程私有，但是不影响java堆的共性；</li>
-<li>增加线程分配缓冲区是为了提升对象分配时的效率。</li>
-</ul>
-</li>
-</ul>
-<p>java堆既可以是固定大小的，也可以是可扩展的（通过参数<code>-Xmx</code>和<code>-Xms</code>设定），如果堆无法扩展或者无法分配内存时也会报OOM。</p>
-<blockquote>
-<p>静态变量 存储位置：JDK8之前，静态成员变量确实存放在方法区；但JDK8之后就取消了“永久代”，取而代之的是“元空间”，永久代中的数据也进行了迁移，静态成员变量迁移到了堆中（方法区是JVM的规范，永久代是方法区的具体实现）。</p>
+<li><strong>在相同硬件上运行更多工作负载</strong><blockquote>
+<p>Docker 是轻量级和快速的。它为基于管理程序的虚拟机提供了一种可行且经济高效的替代方案，因此您可以使用更多的计算容量来实现业务目标。Docker 非常适合高密度环境以及需要用更少资源完成更多工作的中小型部署。</p>
 </blockquote>
-<h3 id="方法区（Method-Area）"><a href="#方法区（Method-Area）" class="headerlink" title="方法区（Method Area）"></a>方法区（Method Area）</h3><p>方法区绝对是网上所有关于java内存结构文章争论的焦点，因为方法区的实现在java8做了一次大革新，现在我们来讨论一下：</p>
-<p><strong>方法区是所有线程共享的内存</strong>，</p>
-<p>在java8以前是放在JVM内存中的，<strong>由永久代实现，受JVM内存大小参数的限制</strong>;</p>
-<p>在java8中移除了永久代的内容，<strong>方法区由元空间(Meta Space)实现，并直接放到了本地内存中</strong>，不受JVM参数的限制（当然，如果物理内存被占满了，方法区也会报OOM）。</p>
-<p>并且将原来放在方法区的<strong>字符串常量池</strong>和<strong>静态变量</strong>都转移到了Java堆中，方法区与其他区域不同的地方在于，方法区在编译期间和类加载完成后的内容有少许不同，不过总的来说分为这两部分：</p>
-<ul>
-<li><p>类元信息（Klass）</p>
-<ul>
-<li>类元信息在类编译期间放入方法区，里面放置了类的基本信息，包括类的<code>版本</code>、<code>字段</code>、<code>方法</code>、<code>接口</code>以及<code>常量池表（Constant Pool Table）</code></li>
-<li><code>常量池表（Constant Pool Table）</code>存储了类在编译期间生成的<code>字面量</code>、<code>符号引用</code>这些信息在类加载完后会被解析到运行时常量池中</li>
-</ul>
-</li>
-<li><p>运行时常量池（Runtime Constant Pool）</p>
-<ul>
-<li><strong>运行时常量池主要存放在类加载后被解析的字面量与符号引用</strong>，但不止这些；</li>
-<li>运行时常量池具备动态性，可以添加数据，比较多的使用就是String类的intern()方法</li>
-</ul>
 </li>
 </ul>
-<h2 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h2><p><strong>直接内存位于本地内存，不属于JVM内存</strong>，但是也会在物理内存耗尽的时候报OOM。</p>
-<p>在jdk1.4中加入了NIO（New Input/Putput）类，引入了一种基于通道（channel）与缓冲区（buffer）的新IO方式，它可以使用native函数直接分配堆外内存，然后通过存储在java堆中的DirectByteBuffer对象作为这块内存的引用进行操作，这样可以在一些场景下大大提高IO性能，<strong>避免了在java堆和native堆来回复制数据</strong>。</p>
-<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><h2 id="类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？"><a href="#类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？" class="headerlink" title="类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？"></a>类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？</h2><p>类常量池与运行时常量池都存储在方法区，而<strong>字符串常量池在jdk7时就已经从方法区迁移到了java堆中</strong>。</p>
-<p>在类编译过程中，会把类元信息放到方法区，类元信息的其中一部分便是<strong>类常量池，主要存放字面量和符号引用</strong>，<strong>而字面量的一部分便是文本字符</strong>，在类加载时将字面量和符号引用解析为直接引用存储在运行时常量池；</p>
-<p>对于文本字符来说，它们会在解析时查找字符串常量池，查出这个文本字符对应的字符串对象的直接引用，将直接引用存储在运行时常量池；</p>
-<p><strong>字符串常量池存储的是字符串对象的引用，而不是字符串本身</strong>。</p>
-<h2 id="什么是字面量？什么是符号引用？"><a href="#什么是字面量？什么是符号引用？" class="headerlink" title="什么是字面量？什么是符号引用？"></a>什么是字面量？什么是符号引用？</h2><ul>
-<li><p>字面量</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">1</span>;<span class="comment">//这个1便是字面量</span></span><br><span class="line">String b=<span class="string">&quot;iloveu&quot;</span>;<span class="comment">//iloveu便是字面量</span></span><br></pre></td></tr></table></figure></li>
-<li><ul>
-<li>java代码在编译过程中是无法构建引用的，字面量就是在编译时对于数据的一种表示:</li>
-</ul>
-</li>
-<li><p>符号引用</p>
-</li>
-<li><ul>
-<li>由于在编译过程中并不知道每个类的地址，因为可能这个类还没有加载，所以如果你在一个类中引用了另一个类，那么你完全无法知道他的内存地址，那怎么办，我们只能用他的类名作为符号引用，在类加载完后用这个符号引用去获取他的内存地址。</li>
-<li>例子：我在com.demo.Solution类中引用了com.test.Quest，那么我会把<code>com.test.Quest</code>作为符号引用存到类常量池，等类加载完后，拿着这个引用去方法区找这个类的内存地址。</li>
-</ul>
-</li>
-</ul>
+<p>也就是说，相比对docker更加可靠。</p>
+<h2 id="Docker-architecture"><a href="#Docker-architecture" class="headerlink" title="Docker architecture"></a>Docker architecture</h2><p>Docker 使用客户端-服务器架构。Docker客户端与 Docker守护进程对话，后者负责构建、运行和分发 Docker 容器的繁重工作。Docker 客户端和守护程序可以在同一系统上运行，或者您可以将 Docker 客户端连接到远程 Docker 守护程序。Docker 客户端和守护程序使用 REST API，通过 UNIX 套接字或网络接口进行通信。另一个 Docker 客户端是 Docker Compose，它允许您使用由一组容器组成的应用程序。</p>
+<p><img src="/2022/04/03/StartDocker/architecture.svg" alt="Docker Architecture Diagram"></p>
+<h3 id="The-Docker-daemon（Docker-守护进程）"><a href="#The-Docker-daemon（Docker-守护进程）" class="headerlink" title="The Docker daemon（Docker 守护进程）"></a>The Docker daemon（Docker 守护进程）</h3><p>Docker 守护程序 ( <code>dockerd</code>) 侦听 Docker API 请求并管理 Docker 对象，例如 images, containers, networks, and volumes（镜像、容器、网络和数据卷）。守护进程还可以与其他守护进程通信以管理 Docker 服务。</p>
+<h3 id="The-Docker-client"><a href="#The-Docker-client" class="headerlink" title="The Docker client"></a>The Docker client</h3><p>Docker 客户端 ( <code>docker</code>) 是许多 Docker 用户与 Docker 交互的主要方式。当您使用诸如<code>docker run</code>之类的命令时，客户端会将这些命令发送到<code>dockerd</code>执行它们。该<code>docker</code>命令使用 Docker API。Docker 客户端可以与多个守护进程通信。</p>
+<h3 id="Docker-Desktop"><a href="#Docker-Desktop" class="headerlink" title="Docker Desktop"></a>Docker Desktop</h3><p>Docker Desktop 是一个易于安装的应用程序，适用于您的 Mac 或 Windows 环境，使您能够构建和共享容器化应用程序和微服务。Docker Desktop 包括 Docker 守护程序 ( <code>dockerd</code>)、Docker 客户端 ( <code>docker</code>)、Docker Compose、Docker Content Trust、Kubernetes 和 Credential Helper。</p>
+<h3 id="Docker-registries（注册中心）"><a href="#Docker-registries（注册中心）" class="headerlink" title="Docker registries（注册中心）"></a>Docker registries（注册中心）</h3><p>Docker<em>注册中心</em>存储 Docker 镜像。</p>
+<p>Docker Hub 是一个任何人都可以使用的公共注册中心，并且 Docker 默认配置为在 Docker Hub 上查找镜像。您甚至可以运行自己的私有注册中心。</p>
+<p>当您使用<code>docker pull</code> or <code>docker run</code>命令时，将从您配置的注册中心中提取所需的镜像。</p>
+<p>当您使用该<code>docker push</code>命令时，您的镜像会被推送到您配置的注册中心中。</p>
+<h3 id="Docker-objects"><a href="#Docker-objects" class="headerlink" title="Docker objects"></a>Docker objects</h3><h4 id="Images（镜像）"><a href="#Images（镜像）" class="headerlink" title="Images（镜像）"></a>Images（镜像）</h4><p><em>镜像</em>是一个只读模板，其中包含创建 Docker 容器的指令。</p>
+<p>通常，一个镜像基于另一个镜像，并带有一些额外的自定义。例如，您可以基于<code>ubuntu</code>映像构建一个自己的映像 ，而这个自定义的镜像安装了 Apache Web Server和自己的应用程序，以及使得应用程序运行所需的配置信息。</p>
+<p>你可以创建自己的镜像，也可以只使用其他人创建并在注册中心中发布的镜像。 </p>
+<p>要构建您自己的镜像，你需要使用简单的语法创建一个<em>Dockerfile</em> ，这个docker file便是用于定义创建和运行镜像所需的步骤。</p>
+<p>Dockerfile 中的每条指令都会在映像中创建一个层（layer）。当您更改 Dockerfile 并重建映像时，仅重建那些已更改的层。与其他虚拟化技术相比，这是使映像如此轻量、小巧和快速的部分原因。</p>
+<h4 id="Containers"><a href="#Containers" class="headerlink" title="Containers"></a>Containers</h4><p><em>容器</em>是镜像的可运行实例。</p>
+<p>您可以<strong>使用 Docker API 或 CLI 创建、启动、停止、移动或删除（create, start, stop, move, or delete）容器</strong>。您可以将容器连接到一个或多个网络，将存储附加到它，甚至可以根据其当前状态创建新映像。</p>
+<p>默认情况下，一个容器与其他容器及其主机的隔离相对较好。您可以控制容器的网络、存储或其他底层子系统与其他容器或主机的隔离程度。</p>
+<p><strong>容器由其映像以及您在创建或启动它时提供给它的配置选项定义</strong>。</p>
+<p>当容器被移除时，任何未存储在持久存储介质中的状态更改都会消失。</p>
+<h5 id="示例docker-run命令"><a href="#示例docker-run命令" class="headerlink" title="示例docker run命令"></a>示例<code>docker run</code>命令</h5><p>以下命令运行一个<code>ubuntu</code>容器，以交互方式附加到您的本地命令行会话，然后运行<code>/bin/bash</code>.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -t ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>当您运行此命令时，会发生以下情况（假设您使用的是默认注册中心配置）：</p>
+<ol>
+<li>如果您在本地没有<code>ubuntu</code>映像，Docker 会从您配置的注册中心中提取它，就像您<code>docker pull ubuntu</code>手动运行一样。</li>
+<li>Docker 会创建一个新容器，就像您<code>docker container create</code> 手动运行命令一样。</li>
+<li>Docker 为容器分配一个读写文件系统，作为它的最后一层。这允许正在运行的容器在其本地文件系统中创建或修改文件和目录。</li>
+<li>Docker 创建了一个网络接口来将容器连接到默认网络，因为您没有指定任何网络选项（这是一个默认行为）。这包括为容器分配 IP 地址。默认情况下，容器可以使用主机的网络连接连接到外部网络。</li>
+<li>Docker 启动容器并执行<code>/bin/bash</code>. 因为容器以交互方式运行并附加到您的终端（由于<code>-i</code>and<code>-t</code> 标志），您可以在输出记录到终端时使用键盘提供输入。</li>
+<li>当您键入<code>exit</code>终止<code>/bin/bash</code>命令时，容器会停止但不会被删除。您可以重新启动或删除它。</li>
+</ol>
+<h2 id="底层技术"><a href="#底层技术" class="headerlink" title="底层技术"></a>底层技术</h2><p>Docker 是用Go 编写的，并利用 Linux 内核的几个特性来提供其功能。Docker 使用一种称为<code>namespaces</code>的技术来提供隔离的工作空间（也就是所说的<em>容器</em>的概念）。当您运行容器时，Docker 会为该容器创建一组 <em>命名空间。</em></p>
+<p>这些命名空间提供了一层隔离。容器的每个方面都在单独的命名空间中运行，并且它的访问权限仅限于该命名空间。</p>
 <blockquote>
 <p>参考</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ityouknow/p/5610232.html">jvm系列(二):JVM内存结构</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/overview/">https://docs.docker.com/get-started/overview/</a></p>
 </blockquote>
  
       <!-- reward -->
@@ -270,32 +215,21 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/04/03/StartDocker/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
-
     </footer>
   </div>
 
    
   <nav class="article-nav">
     
-      <a href="/2021/12/15/BlockingQueue/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            JDK的BlockingQueue
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/" class="article-nav-link">
+      <a href="/2022/03/29/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">JVM垃圾回收算法和垃圾回收器</div>
+        <div class="article-nav-title">服务注册与发现</div>
       </a>
     
   </nav>
