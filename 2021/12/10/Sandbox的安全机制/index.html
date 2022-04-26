@@ -168,7 +168,7 @@
 <ul>
 <li>参考链接：<br><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/getrlimit.2.html">getrlimit(2) — Linux manual page</a></li>
 </ul>
-<h1 id="seccomp"><a href="#seccomp" class="headerlink" title="seccomp"></a>seccomp</h1><h2 id="什么是seccomp"><a href="#什么是seccomp" class="headerlink" title="什么是seccomp"></a>什么是seccomp</h2><p>seccomp（全称 <strong>secure computing mode</strong>）是linux kernel从2.6.23版本开始所支持的一种安全机制。<br>seccomp是一种<strong>内核中的安全机制</strong>,正常情况下,程序可以使用所有的syscall,这是不安全的。<br>比如劫持程序流后通过execve的syscall来<code>getshell</code>。<br>通过seccomp我们可以在程序中禁用掉某些syscall,这样就算劫持了程序流也只能调用部分的syscall了.</p>
+<h1 id="使用seccomp限制syscall"><a href="#使用seccomp限制syscall" class="headerlink" title="使用seccomp限制syscall"></a>使用seccomp限制syscall</h1><h2 id="什么是seccomp"><a href="#什么是seccomp" class="headerlink" title="什么是seccomp"></a>什么是seccomp</h2><p>seccomp（全称 <strong>secure computing mode</strong>）是linux kernel从2.6.23版本开始所支持的一种安全机制。<br>seccomp是一种<strong>内核中的安全机制</strong>,正常情况下,程序可以使用所有的syscall,这是不安全的。<br>比如劫持程序流后通过execve的syscall来<code>getshell</code>。<br>通过seccomp我们可以在程序中禁用掉某些syscall,这样就算劫持了程序流也只能调用部分的syscall了.</p>
 <p><strong>通过seccomp，我们限制程序使用某些系统调用，这样可以减少系统的暴露面，同时是程序进入一种“安全”的状态。</strong><br>详细介绍可参考seccomp内核文档(见参考链接)。</p>
 <h2 id="如何使用seccomp"><a href="#如何使用seccomp" class="headerlink" title="如何使用seccomp"></a>如何使用seccomp</h2><p>seccomp可以通过系统调用ptrctl(2)或者通过系统调用seccomp(2)开启，前提是内核配置中开启了CONFIG_SECCOMP和CONFIG_SECCOMP_FILTER。</p>
 <p>seccomp支持两种模式：<strong>SECCOMP_MODE_STRICT</strong> 和 <strong>SECCOMP_MODE_FILTER</strong>。</p>
