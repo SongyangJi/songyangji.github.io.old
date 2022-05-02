@@ -110,13 +110,10 @@
 <p>重新登陆ok</p>
 <h2 id="限制资源的作用范围"><a href="#限制资源的作用范围" class="headerlink" title="限制资源的作用范围"></a>限制资源的作用范围</h2><p>ulimit 作为对资源使用限制的一种工作，是有其作用范围的。那么，它限制的对象是单个用户，单个进程，还是整个系统呢？事实上，ulimit 限制的是当前 shell 进程以及其派生的子进程。举例来说，如果用户同时运行了两个 shell 终端进程，只在其中一个环境中执行了 ulimit – s 100，则该 shell 进程里创建文件的大小收到相应的限制，而同时另一个 shell终端包括其上运行的子程序都不会受其影响。</p>
 <h3 id="针对用户永久生效"><a href="#针对用户永久生效" class="headerlink" title="针对用户永久生效"></a>针对用户永久生效</h3><p>那么，是否有针对某个具体用户的资源加以限制的方法呢？答案是有的，方法是通过修改系统的 /etc/security/limits.conf配置文件。该文件不仅能限制指定用户的资源使用，还能限制指定组的资源使用。该文件的每一行都是对限定的一个描述。<br>imits.conf的格式如下：</p>
-<p><domain>                  <type>      <item>     <value> </p>
-<p>username|@groupname       type        resource          limit</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;domain&gt;                  &lt;type&gt;      &lt;item&gt;     &lt;value&gt; </span><br><span class="line">username|@groupname       type        resource          limit</span><br></pre></td></tr></table></figure>
 <p>domain：username|@groupname：设置需要被限制的用户名，组名前面加@和用户名区别。也可以用通配符*来做所有用户的限制。</p>
 <p>type：有 soft，hard 和 -，soft 指的是当前系统生效的设置值。hard 表明系统中所能设定的最大值。soft 的最大值不能超过hard的值。用 – 就表明同时设置了 soft 和 hard 的值。</p>
-<p>resource：<br>    core – 限制内核文件的大小<br>    date – 最大数据大小<br>    fsize – 最大文件大小<br>    memlock – 最大锁定内存地址空间<br>    nofile – 打开文件的最大数目<br>    rss – 最大持久设置大小<br>    stack – 最大栈大小<br>    cpu – 以分钟为单位的最多 CPU 时间<br>    noproc – 进程的最大数目（系统的最大进程数）<br>    as – 地址空间限制<br>   maxlogins – 此用户允许登录的最大数目</p>
-<p>   要使 limits.conf 文件配置生效，必须要确保 pam_limits.so 文件被加入到启动文件中。</p>
-<p>   查看 /etc/pam.d/login 文件中有：<br>   session required /lib/security/pam_limits.so</p>
+<p>resource：<br>    core – 限制内核文件的大小<br>    date – 最大数据大小<br>    fsize – 最大文件大小<br>    memlock – 最大锁定内存地址空间<br>    nofile – 打开文件的最大数目<br>    rss – 最大持久设置大小<br>    stack – 最大栈大小<br>    cpu – 以分钟为单位的最多 CPU 时间<br>    noproc – 进程的最大数目（系统的最大进程数）<br>    as – 地址空间限制<br>    maxlogins – 此用户允许登录的最大数目<br>要使 limits.conf 文件配置生效，必须要确保 pam_limits.so 文件被加入到启动文件中。<br>查看 /etc/pam.d/login 文件中有：session required /lib/security/pam_limits.so</p>
  
       <!-- reward -->
       
@@ -193,6 +190,15 @@
 
    
   <nav class="article-nav">
+    
+      <a href="/2022/05/02/ssh%E5%85%AC%E9%92%A5%E7%A7%81%E9%92%A5%E5%8E%9F%E7%90%86/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            ssh公钥私钥原理
+          
+        </div>
+      </a>
     
     
       <a href="/2022/04/15/Redis-pipeline/" class="article-nav-link">
