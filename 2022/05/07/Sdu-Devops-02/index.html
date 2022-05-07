@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-     JsyBlog
+    安装Docker、Harbor、Jenkins、Gitlab |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -50,17 +50,30 @@
   data-scroll-reveal
 >
   <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  安装Docker、Harbor、Jenkins、Gitlab
+</h1>
+ 
+
+    </header>
      
     <div class="article-meta">
-      <a href="/2022/05/05/Sdu-Devops-02/" class="article-date">
-  <time datetime="2022-05-05T11:18:08.535Z" itemprop="datePublished">2022-05-05</time>
-</a>   
+      <a href="/2022/05/07/Sdu-Devops-02/" class="article-date">
+  <time datetime="2022-05-07T13:00:00.000Z" itemprop="datePublished">2022-05-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/DevOps/">DevOps</a>
+  </div>
+  
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.7k</span>
+            <span class="post-count">2.5k</span>
         </span>
     </span>
 
@@ -69,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">9 分钟</span>
+            <span class="post-count">14 分钟</span>
         </span>
     </span>
 </div>
@@ -87,6 +100,8 @@
   <h1 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h1><h2 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h2><h3 id="安装Pipeline插件"><a href="#安装Pipeline插件" class="headerlink" title="安装Pipeline插件"></a>安装Pipeline插件</h3><p>在你想创建一条流水线的时候，有可能发现并没有这个UI入口，原因是还没有下载相关插件，所以可以下载插件****，这是一整套和流水线相关的插件。（还有 BlueOcean等其他流水线相关的插件，这里先不使用，只使用classic的pipeline）。</p>
 <p>下载完记得重启<code>docker-compose restart</code>。</p>
 <h2 id="创建流水线"><a href="#创建流水线" class="headerlink" title="创建流水线"></a>创建流水线</h2><h3 id="Jenkinsfile模板"><a href="#Jenkinsfile模板" class="headerlink" title="Jenkinsfile模板"></a>Jenkinsfile模板</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line"></span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&#39;Stage 1: Fetch code from git&#39;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &#39;Stage 1: Fetch code from git -- SUCCESS&#39;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        stage(&#39;Stage 2: Build the project using maven&#39;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &#39;Stage 2: Build the project using maven -- SUCCESS&#39;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        stage(&#39;Stage 3: Make a custom image using docker&#39;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &#39;Stage 3: Make a custom image using docker -- SUCCESS&#39;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        stage(&#39;Stage 4: Push image to Harbor&#39;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &#39;Stage 4: Push image to Harbor -- SUCCESS&#39;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        stage(&#39;Stage 5: Publish over SSH&#39;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                echo &#39;Stage 5: Publish over SSH -- SUCCESS&#39;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 
 <h2 id="从GitLab拉取代码"><a href="#从GitLab拉取代码" class="headerlink" title="从GitLab拉取代码"></a>从GitLab拉取代码</h2><p>流水线片段脚本：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">checkout([$class: &#39;GitSCM&#39;, branches: [[name: &#39;$&#123;branch_tag&#125;&#39;]], extensions: [], userRemoteConfigs: [[url: &#39;http:&#x2F;&#x2F;211.87.224.233:8929&#x2F;sdu-weblab&#x2F;springboot-helloworld.git&#39;]]])</span><br></pre></td></tr></table></figure>
@@ -158,18 +173,31 @@
 
 
 
-<p>执行shell</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp -r /opt/docker_workdir ./</span><br><span class="line">cp ./target/*.jar ./docker_workdir</span><br><span class="line">docker build -t $&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125; ./docker_workdir --build-arg JarFileName=`ls | grep &#x27;jar$&#x27;`</span><br></pre></td></tr></table></figure>
+<p><del>执行shell</del></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp -r /opt/docker_workdir ./</span><br><span class="line">cp ./target/*.jar ./docker_workdir</span><br><span class="line">docker build -t $&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125; ./docker_workdir --build-arg JarFileName=$(ls target -l | grep jar$ | awk &#x27;&#123;print $9&#125;&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p><del>流水线片段</del></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sh &#x27;&#x27;&#x27;cp -r /opt/docker_workdir ./</span><br><span class="line">cp ./target/*.jar ./docker_workdir</span><br><span class="line">docker build -t $&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125; ./docker_workdir --build-arg JarFileName=$(ls target -l | grep jar$ | awk \&#x27;&#123;print $9&#125;\&#x27;)&#x27;&#x27;&#x27;</span><br></pre></td></tr></table></figure>
 
 
 
-<p>流水线片段</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sh &#x27;&#x27;&#x27;cp -r /opt/docker_workdir ./</span><br><span class="line">cp ./target/*.jar ./docker_workdir</span><br><span class="line">docker build -t $&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125; ./docker_workdir --build-arg JarFileName=`ls | grep \&#x27;jar$\&#x27;`&#x27;&#x27;&#x27;</span><br></pre></td></tr></table></figure>
+<p><del>stage: 为</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">stage(&#39;Stage 3: Make a custom image using docker&#39;) &#123;</span><br><span class="line">    steps &#123;</span><br><span class="line">        sh &#39;&#39;&#39;</span><br><span class="line">        cp -r &#x2F;opt&#x2F;docker_workdir .&#x2F;</span><br><span class="line">        cp .&#x2F;target&#x2F;*.jar .&#x2F;docker_workdir</span><br><span class="line">        docker build -t $&#123;JOB_NAME&#125;:$&#123;branch_tag##*&#x2F;&#125; .&#x2F;docker_workdir --build-arg JarFileName&#x3D;$(ls target -l | grep jar$ | awk \&#39;&#123;print $9&#125;\&#39;)</span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        echo &#39;Stage 3: Make a custom image using docker -- SUCCESS&#39;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<p>stage: 为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">stage(&#39;Stage 3: Make a custom image using docker&#39;) &#123;</span><br><span class="line">    steps &#123;</span><br><span class="line">        sh &#39;&#39;&#39;cp -r &#x2F;opt&#x2F;docker_workdir .&#x2F;</span><br><span class="line">        cp .&#x2F;target&#x2F;*.jar .&#x2F;docker_workdir</span><br><span class="line">        docker build -t $&#123;JOB_NAME&#125;:$&#123;branch_tag&#125; .&#x2F;docker_workdir --build-arg JarFileName&#x3D;&#96;ls | grep \&#39;jar$\&#39;&#96;&#39;&#39;&#39;</span><br><span class="line">        echo &#39;Stage 3: Make a custom image using docker -- SUCCESS&#39;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>build_image.sh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cp -r /opt/docker_workdir ./</span><br><span class="line">cp ./target/*.jar ./docker_workdir</span><br><span class="line">jarFileName=$(ls *.jar)</span><br><span class="line">echo &quot;jar is $&#123;jarFileName&#125;&quot;</span><br><span class="line">docker build -t $&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125; ./docker_workdir --build-arg  JarFileName=&quot;$&#123;jarFileName&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
 
 
 
@@ -181,25 +209,86 @@
 
 <p>Jenkinsfile:</p>
 <p>增加以下环境变量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    </span><br><span class="line">		environment &#123;</span><br><span class="line">        harborUser &#x3D; &#39;admin&#39;</span><br><span class="line">        harborPassword &#x3D; &#39;admin&#39;</span><br><span class="line">        harborUrl &#x3D; &#39;211.87.224.233:8930&#39;</span><br><span class="line">        harborRepo &#x3D; &#39;sdu-weblab&#39;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    </span><br><span class="line">		environment &#123;</span><br><span class="line">        harbor_user &#x3D; &#39;admin&#39;</span><br><span class="line">        harbor_password &#x3D; &#39;admin&#39;</span><br><span class="line">        harbor_url &#x3D; &#39;211.87.224.233:8930&#39;</span><br><span class="line">        harbor_repo &#x3D; &#39;sdu-weblab&#39;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
 <p>Shell</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker login -u $&#123;harborUser&#125; -p $&#123;harborPassword&#125; $&#123;harborUrl&#125;</span><br><span class="line">docker tag $&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125; $&#123;harborUrl&#125;/$&#123;harborRepo&#125;/$&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125;</span><br><span class="line">docker push $&#123;harborUrl&#125;/$&#123;harborRepo&#125;/$&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker login -u $&#123;harborUser&#125; -p $&#123;harborPassword&#125; $&#123;harbor_url&#125;</span><br><span class="line">docker tag $&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125; $&#123;harbor_url&#125;/$&#123;harbor_repo&#125;/$&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125;</span><br><span class="line">docker rmi $(docker images -f &quot;dangling=true&quot; -q) -f</span><br><span class="line">docker push $&#123;harbor_url&#125;/$&#123;harbor_repo&#125;/$&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<p>pipeline script:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sh &#x27;&#x27;&#x27;</span><br><span class="line">    docker login -u $&#123;harborUser&#125; -p $&#123;harborPassword&#125; $&#123;harborUrl&#125;</span><br><span class="line">    docker tag $&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125; $&#123;harborUrl&#125;/$&#123;harborRepo&#125;/$&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125;</span><br><span class="line">    docker push $&#123;harborUrl&#125;/$&#123;harborRepo&#125;/$&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125;</span><br><span class="line"> &#x27;&#x27;&#x27;</span><br></pre></td></tr></table></figure>
+<p><del>pipeline script:</del></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sh &#x27;&#x27;&#x27;</span><br><span class="line">    docker login -u $&#123;harborUser&#125; -p $&#123;harborPassword&#125; $&#123;harbor_url&#125;</span><br><span class="line">    docker tag $&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125; $&#123;harbor_url&#125;/$&#123;harbor_repo&#125;/$&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125;</span><br><span class="line">    docker rmi $(docker images -f &quot;dangling=true&quot; -q) -f</span><br><span class="line">    docker push $&#123;harbor_url&#125;/$&#123;harbor_repo&#125;/$&#123;JOB_NAME&#125;:$&#123;branch_tag##*/&#125;</span><br><span class="line"> &#x27;&#x27;&#x27;</span><br></pre></td></tr></table></figure>
 
 
 
-<p>stage为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">stage(&#39;Stage 4: Push image to Harbor&#39;) &#123;</span><br><span class="line">    steps &#123;</span><br><span class="line">        sh &#39;&#39;&#39;</span><br><span class="line">            docker login -u $&#123;harborUser&#125; -p $&#123;harborPassword&#125; $&#123;harborUrl&#125;</span><br><span class="line">            docker tag $&#123;JOB_NAME&#125;:$&#123;branch_tag##*&#x2F;&#125; $&#123;harborUrl&#125;&#x2F;$&#123;harborRepo&#125;&#x2F;$&#123;JOB_NAME&#125;:$&#123;branch_tag##*&#x2F;&#125;</span><br><span class="line">            docker push $&#123;harborUrl&#125;&#x2F;$&#123;harborRepo&#125;&#x2F;$&#123;JOB_NAME&#125;:$&#123;branch_tag##*&#x2F;&#125;</span><br><span class="line">         &#39;&#39;&#39;</span><br><span class="line">        echo &#39;Stage 4: Push image to Harbor -- SUCCESS&#39;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><del>stage为：</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">stage(&#39;Stage 4: Push image to Harbor&#39;) &#123;</span><br><span class="line">    steps &#123;</span><br><span class="line">        sh &#39;&#39;&#39;</span><br><span class="line">            docker login -u $&#123;harborUser&#125; -p $&#123;harborPassword&#125; $&#123;harbor_url&#125;</span><br><span class="line">            docker tag $&#123;JOB_NAME&#125;:$&#123;branch_tag##*&#x2F;&#125; $&#123;harbor_url&#125;&#x2F;$&#123;harbor_repo&#125;&#x2F;$&#123;JOB_NAME&#125;:$&#123;branch_tag##*&#x2F;&#125;</span><br><span class="line">            docker rmi $(docker images -f &quot;dangling&#x3D;true&quot; -q) -f</span><br><span class="line">            docker push $&#123;harbor_url&#125;&#x2F;$&#123;harbor_repo&#125;&#x2F;$&#123;JOB_NAME&#125;:$&#123;branch_tag##*&#x2F;&#125;</span><br><span class="line">         &#39;&#39;&#39;</span><br><span class="line">        echo &#39;Stage 4: Push image to Harbor -- SUCCESS&#39;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
+<p>改为执行本地的脚本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">harbor_user=$1</span><br><span class="line">harbor_password=$2</span><br><span class="line">harbor_url=$3</span><br><span class="line">harbor_repo=$4</span><br><span class="line">project=$5</span><br><span class="line">branch_tag=$6</span><br><span class="line"></span><br><span class="line">image_name=$&#123;harbor_url&#125;/$&#123;harbor_repo&#125;/$&#123;project&#125;:$&#123;branch_tag##*/&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除和镜像关联的容器(正常情况不会有，但这里是单机部署)</span></span><br><span class="line">container_id=$(docker ps -a | grep &quot;$&#123;image_name&#125;&quot; | awk &#x27;&#123;print $1&#125;&#x27;)</span><br><span class="line">if [ &quot;$&#123;container_id&#125;&quot; != &quot;&quot; ] ; then</span><br><span class="line">  echo &quot;Container $&#123;container_id&#125; of $&#123;image_name&#125; is running, now try to kill it...&quot;</span><br><span class="line">  docker stop &quot;$container_id&quot;</span><br><span class="line">  docker rm &quot;$container_id&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span><span class="bash"> todo 这样做其实还有是问题的，就是上面的 container_id 可能会有多个</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> shellcheck <span class="built_in">disable</span>=SC2086</span></span><br><span class="line">docker login -u &quot;$&#123;harbor_user&#125;&quot; -p &quot;$&#123;harbor_password&#125;&quot; $&#123;harbor_url&#125;</span><br><span class="line"></span><br><span class="line">docker tag &quot;$&#123;project&#125;&quot;:&quot;$&#123;branch_tag##*/&#125;&quot; &quot;$&#123;image_name&#125;&quot;</span><br><span class="line">docker rmi $(docker images -f &quot;dangling=true&quot; -q) -f</span><br><span class="line">docker push image_name</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Jenkins端shell：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/opt/docker_workdir/push_to_harbor.sh $harbor_user $harbor_password $harbor_url $harbor_repo $JOB_NAME $branch_tag</span><br></pre></td></tr></table></figure>
+
+<p>流水线片段</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh &#x27;/opt/docker_workdir/push_to_harbor.sh $harbor_user $harbor_password $harbor_url $harbor_repo $JOB_NAME $branch_tag&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<p>其中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 删除悬挂镜像</span></span><br><span class="line">docker rmi $(docker images -f &quot;dangling=true&quot; -q) </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><em>docker中的none:none镜像是怎么回事？</em><br><a target="_blank" rel="noopener" href="https://projectatomic.io/blog/2015/07/what-are-docker-none-none-images/">https://projectatomic.io/blog/2015/07/what-are-docker-none-none-images/</a></p>
+</blockquote>
+<h2 id="通过SSH通知目标服务器部署"><a href="#通过SSH通知目标服务器部署" class="headerlink" title="通过SSH通知目标服务器部署"></a>通过SSH通知目标服务器部署</h2><p>这里使用<strong>Publish Over SSH</strong>。</p>
+<p><strong>部署端</strong>的执行脚本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">harbor_url=$1</span><br><span class="line">harbor_repo=$2</span><br><span class="line">project=$3</span><br><span class="line">version=$4</span><br><span class="line">container_port=$5</span><br><span class="line"></span><br><span class="line">image_name=$harbor_url/$harbor_repo/$project:$version</span><br><span class="line"></span><br><span class="line">container_id=$(docker ps -a | grep &quot;$&#123;image_name&#125;&quot; | awk &#x27;&#123;print $1&#125;&#x27;)</span><br><span class="line"></span><br><span class="line">echo &quot;Check if container of $&#123;image_name&#125; exists...&quot;</span><br><span class="line">if [ &quot;$&#123;container_id&#125;&quot; != &quot;&quot; ] ; then</span><br><span class="line">  echo &quot;Container $&#123;container_id&#125; of $&#123;image_name&#125; is running, now try to kill it...&quot;</span><br><span class="line">  docker stop &quot;$container_id&quot;</span><br><span class="line">  docker rm &quot;$container_id&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">old_image=$(docker images | grep &quot;$&#123;image_name&#125;&quot;)</span><br><span class="line"></span><br><span class="line">if [ &quot;$&#123;old_image&#125;&quot; != &quot;&quot; ] ; then</span><br><span class="line">  echo &quot;Image $image_name exists, now try to remove it&quot;</span><br><span class="line">  docker rmi &quot;$image_name&quot; -f</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo &quot;Try to login Harbor...&quot;</span><br><span class="line">docker login -u amdin -p admin &quot;$harbor_url&quot;</span><br><span class="line">echo &quot;Login Harbor successfully.&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;Try to pull $image_name from Harbor...&quot;</span><br><span class="line">docker pull &quot;$&#123;image_name&#125;&quot;</span><br><span class="line">echo &quot;Pull image $&#123;image_name&#125; from Harbor successfully.&quot;</span><br><span class="line"></span><br><span class="line">docker run -d -p &quot;$container_port&quot; --name &quot;$harbor_repo.$project.$version&quot; &quot;$image_name&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;Deploy service successfully.&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>以上脚本执行了如下事情：</p>
+<ol>
+<li>检查旧版本的容器是否在运行，如果有停止并删除；</li>
+<li>检查旧镜像是否存在，如果有删除；</li>
+<li>登录私服Harbor</li>
+<li>拉取最新的镜像</li>
+<li>运行容器</li>
+</ol>
+<p><strong>发布端（Jenkins）</strong>的执行脚本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd deploy &amp;&amp; touch deploy.log &amp;&amp; /home/jsy/devops/docker_workdir/deploy.sh $harbor_url $harbor_repo $JOB_NAME $branch_tag $container_port &gt; deploy.log</span><br></pre></td></tr></table></figure>
+
+
+
+<p>测试一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd deploy &amp;&amp; touch deploy.log &amp;&amp; &#x2F;home&#x2F;jsy&#x2F;devops&#x2F;docker_workdir&#x2F;deploy.sh 211.87.224.233:8930 sdu-weblab springboot-helloworld origin&#x2F;master 8080 &gt; deploy.log</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>使用sshPublisher生成流水线脚本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sshPublisher(publishers: [sshPublisherDesc(configName: &#x27;sdu-weblab-local-machine&#x27;, transfers: [sshTransfer(cleanRemote: false, excludes: &#x27;&#x27;, execCommand: &quot;cd deploy &amp;&amp; touch deploy.log &amp;&amp; /home/jsy/devops/docker_workdir/deploy.sh $harbor_url $harbor_repo $JOB_NAME $branch_tag $container_port &gt; deploy.log&quot;, execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: &#x27;[, ]+&#x27;, remoteDirectory: &#x27;&#x27;, remoteDirectorySDF: false, removePrefix: &#x27;&#x27;, sourceFiles: &#x27;&#x27;)], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])</span><br></pre></td></tr></table></figure>
+
+
+
+<p>stage为</p>
+<pre><code>        stage(&#39;Stage 5: Publish over SSH&#39;) &#123;
+            steps &#123;
+                sshPublisher(publishers: [sshPublisherDesc(configName: &#39;sdu-weblab-local-machine&#39;, transfers: [sshTransfer(cleanRemote: false, excludes: &#39;&#39;, execCommand: &quot;cd deploy &amp;&amp; touch deploy.log &amp;&amp; /home/jsy/devops/docker_workdir/deploy.sh $harbor_url $harbor_repo $JOB_NAME $branch_tag $container_port &gt; deploy.log&quot;, execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: &#39;[, ]+&#39;, remoteDirectory: &#39;&#39;, remoteDirectorySDF: false, removePrefix: &#39;&#39;, sourceFiles: &#39;&#39;)], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                echo &#39;Stage 5: Publish over SSH -- SUCCESS&#39;
+            &#125;
+        &#125;
+</code></pre>
  
       <!-- reward -->
       
@@ -264,7 +353,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/05/05/Sdu-Devops-02/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/05/07/Sdu-Devops-02/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -275,19 +364,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/05/06/Sdu-Devops-01/" class="article-nav-link">
+      <a href="/2022/05/08/Git%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            安装Docker、Harbor、Jenkins、Gitlab
+            Git的学习笔记
           
         </div>
       </a>
     
     
-      <a href="/2022/05/02/linux%E6%9F%A5%E7%9C%8B%E7%A1%AC%E4%BB%B6%E3%80%81%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF/" class="article-nav-link">
+      <a href="/2022/05/06/Sdu-Devops-01/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">linux查看硬件、系统信息</div>
+        <div class="article-nav-title">安装Docker、Harbor、Jenkins、Gitlab</div>
       </a>
     
   </nav>
