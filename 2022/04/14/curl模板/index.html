@@ -69,7 +69,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">17</span>
+            <span class="post-count">176</span>
         </span>
     </span>
 
@@ -93,6 +93,12 @@
        
   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -H &quot;Content-type: application/json&quot; -X POST </span><br><span class="line">-d &#x27;$json&#x27; &#x27;$url&#x27;</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">curl文件下载</span><br><span class="line">curl将下载文件输出到stdout，将进度信息输出到stderr，不显示进度信息使用–silent 选项。</span><br><span class="line"></span><br><span class="line">1. curl URL --silent</span><br><span class="line">这条命令是将下载文件输出到终端，所有下载的数据都被写入到stdout。</span><br><span class="line"></span><br><span class="line">2. curl URL --silent -O</span><br><span class="line">使用选项 -O 将下载的数据写入到文件，必须使用文件的绝对地址。</span><br><span class="line"></span><br><span class="line">3. curl URL -o filename --progress</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">######################################## 100.0%</span></span></span><br><span class="line">选项 -o 将下载数据写入到指定名称的文件中，并使用 –progress 显示进度条。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>比如:<code>curl http://211.87.224.233:9999/file/sftp/sdu-weblab.helloworld.jingtao.tar.gz -o sdu-weblab.helloworld.jingtao.tar.gz  </code></p>
+<p>${var##*/}</p>
  
       <!-- reward -->
       
