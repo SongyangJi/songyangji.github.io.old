@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Docker容器限制CPU |  JsyBlog
+    Docker容器限制Memory |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-Docker容器限制CPU"
+  id="post-Docker容器限制Memory"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,15 +54,15 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Docker容器限制CPU
+  Docker容器限制Memory
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/" class="article-date">
-  <time datetime="2022-06-09T03:11:04.000Z" itemprop="datePublished">2022-06-09</time>
+      <a href="/2022/06/10/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory/" class="article-date">
+  <time datetime="2022-06-10T02:49:04.000Z" itemprop="datePublished">2022-06-10</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/Docker/">Docker</a>
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.1k</span>
+            <span class="post-count">1.5k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">4 分钟</span>
+            <span class="post-count">5 分钟</span>
         </span>
     </span>
 </div>
@@ -97,47 +97,58 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="压测工具"><a href="#压测工具" class="headerlink" title="压测工具"></a>压测工具</h1><p>使用ubuntu的<code>stress</code> 作为压测工具，并制作镜像</p>
+  <blockquote>
+<p>默认情况下容器使用的资源是不受限制的。也就是可以使用主机内核调度器所允许的最大资源。但是在容器的使用过程中，经常需要对容器可以使用的主机资源进行限制，本文介绍如何限制容器可以使用的主机内存。</p>
+</blockquote>
+<h1 id="压测工具"><a href="#压测工具" class="headerlink" title="压测工具"></a>压测工具</h1><p>使用ubuntu的<code>stress</code> 作为压测工具，并制作镜像</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:latest</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; \</span></span><br><span class="line"><span class="bash">        apt-get install stress</span></span><br></pre></td></tr></table></figure>
 <p>shell命令</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t u-stress:latest .</span><br></pre></td></tr></table></figure>
 
 
 
-<h1 id="限制CPU资源"><a href="#限制CPU资源" class="headerlink" title="限制CPU资源"></a>限制CPU资源</h1><h2 id="限制CPU核心个数（百分比）"><a href="#限制CPU核心个数（百分比）" class="headerlink" title="限制CPU核心个数（百分比）"></a>限制CPU核心个数（百分比）</h2><p>在 docker 1.13 及更高的版本上，能够很容易的限制容器可以使用的主机 CPU 核心个数。<br>只需要通过 –cpus 选项指定容器可以使用的 CPU 个数就可以了，并且还可以指定如 1.5 之类的小数。（为什么还可以是小数呢，后面解释）</p>
-<p>通过下面的命令创建容器，–cpus=2 表示容器最多可以使用主机上两个 CPU：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --cpus=2 u-stress:latest /bin/bash</span><br></pre></td></tr></table></figure>
-<p>然后由 stress 命令创建四个繁忙的进程消耗 CPU 资源：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stress -c 4</span><br></pre></td></tr></table></figure>
-<p>使用<code>docker stats</code>查看容状态，发现容器 CPU 的负载为 200%左右，它的含义为单个 CPU 负载的两倍。我们也可以把它理解为有两颗 CPU核心在 100% 的为它工作。</p>
-<p>再让我们通过 top 命令看看主机 CPU 的真实负载情况：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163457514-1473983991.png" alt="img"></p>
-<p>实际的情况并不是两个 CPU 负载 100%，而另外两个负载 0%。四个 CPU 的负载都是 50%，加起来容器消耗的 CPU 总量就是两个 CPU 100% 的负载。</p>
-<p><strong>所以对于进程来说是没有 CPU 个数这一概念的</strong>，内核只能通过进程消耗的 CPU 时间片来统计出进程占用 CPU 的百分比。这也是我们看到的各种工具中都使用百分比来说明 CPU 使用率的原因。<br>并且 –cpus 选项支持设为小数也从侧面说明了对 CPU 的计量只能是百分比。</p>
-<h2 id="指定固定的-CPU集"><a href="#指定固定的-CPU集" class="headerlink" title="指定固定的 CPU集"></a>指定固定的 CPU集</h2><p>通过 –cpus 选项我们无法让容器始终在一个或某几个 CPU 上运行，但是通过<code>--cpuset-cpus</code> 选项却可以做到！这是非常有意义的，因为现在的多核系统中每个核心都有自己的缓存，如果频繁的调度进程在不同的核心上执行势必会带来缓存失效等开销。下面我们就演示如何设置容器使用固定的 CPU，下面的命令为容器设置了 –cpuset-cpus 选项，指定运行容器的 CPU 编号为 1：(编号从0开始)</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --cpuset-cpus=&quot;1&quot; u-stress:latest /bin/bash</span><br></pre></td></tr></table></figure>
 
 
 
-<p>再启动压力测试命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stress -c 4</span><br></pre></td></tr></table></figure>
 
-<p>然后查看主机 CPU 的负载情况：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163742921-1627559356.png" alt="img"></p>
-<p>这次只有 Cpu1 达到了 100%，其它的 CPU 并未被容器使用。我们还可以反复的执行 stress -c 4 命令，但是始终都是 Cpu1 在干活。<br>再看看容器的 CPU 负载，也是只有 100%：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163808468-652259868.png"></p>
-<p>-cpuset-cpus 选项还可以一次指定多个 CPU：<br>比如：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --cpuset-cpus=&quot;1,3&quot; u-stress:latest /bin/bash</span><br></pre></td></tr></table></figure>
-<p>–cpuset-cpus 选项的一个缺点是必须指定 CPU 在操作系统中的编号，这对于动态调度的环境(无法预测容器会在哪些主机上运行，只能通过程序动态的检测系统中的 CPU 编号，并生成 docker run 命令)会带来一些不便。</p>
-<h2 id="设置使用-CPU-的权重"><a href="#设置使用-CPU-的权重" class="headerlink" title="设置使用 CPU 的权重"></a>设置使用 CPU 的权重</h2><p>当 CPU 资源充足时，设置 CPU 的权重是没有意义的。只有在容器争用 CPU 资源的情况下， CPU 的权重才能让不同的容器分到不同的 CPU 用量。–cpu-shares 选项用来设置 CPU 权重，它的默认值为 1024。我们可以把它设置为 2 表示很低的权重，但是设置为 0 表示使用默认值 1024。<br>下面我们分别运行两个容器，指定它们都使用 Cpu0，并分别设置 –cpu-shares 为 512 和 1024：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -it --rm --cpuset-cpus=<span class="string">&quot;0&quot;</span> --cpu-shares=512 u-stress:latest /bin/bash</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker run -it --rm --cpuset-cpus=<span class="string">&quot;0&quot;</span> --cpu-shares=1024 u-stress:latest /bin/bash</span></span><br></pre></td></tr></table></figure>
+<h1 id="为什么要限制容器对内存的使用？"><a href="#为什么要限制容器对内存的使用？" class="headerlink" title="为什么要限制容器对内存的使用？"></a>为什么要限制容器对内存的使用？</h1><p>限制容器不能过多的使用主机的内存是非常重要的。对于 linux 主机来说，一旦内核检测到没有足够的内存可以分配，就会扔出 OOME(Out Of Memmory Exception)，并开始杀死一些进程用于释放内存空间。糟糕的是任何进程都可能成为内核猎杀的对象，包括 docker daemon 和其它一些重要的程序。更危险的是如果某个支持系统运行的重要进程被干掉了，整个系统也就宕掉了！这里我们考虑一个比较常见的场景，大量的容器把主机的内存消耗殆尽，OOME 被触发后系统内核立即开始杀进程释放内存。如果内核杀死的第一个进程就是 docker daemon 会怎么样？结果是没有办法管理运行中的容器了，这是不能接受的！<br>针对这个问题，docker 尝试通过调整 docker daemon 的 OOM 优先级来进行缓解。内核在选择要杀死的进程时会对所有的进程打分，直接杀死得分最高的进程，接着是下一个。当 docker daemon 的 OOM 优先级被降低后(注意容器进程的 OOM 优先级并没有被调整)，docker daemon 进程的得分不仅会低于容器进程的得分，还会低于其它一些进程的得分。这样 docker daemon 进程就安全多了。</p>
+<p>我们可以通过下面的脚本直观的看一下当前系统中所有进程的得分情况：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">number=$1</span><br><span class="line">for proc in $(find /proc -maxdepth 1 -regex &#x27;/proc/[0-9]+&#x27;); do</span><br><span class="line">    printf &quot;%2d %5d %s\n&quot; \</span><br><span class="line">        &quot;$(cat $proc/oom_score)&quot; \</span><br><span class="line">        &quot;$(basename $proc)&quot; \</span><br><span class="line">        &quot;$(cat $proc/cmdline | tr &#x27;\0&#x27; &#x27; &#x27; | head -c 50)&quot;</span><br><span class="line">done 2&gt;/dev/null | sort -nr | head -n &quot;$number&quot;</span><br></pre></td></tr></table></figure>
 
-<p>在两个容器中都运行 stress -c 4 命令。</p>
-<p>此时主机 Cpu0 的负载为 100%：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164142218-723091322.png"></p>
-<p>容器中 CPU 的负载为：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164255702-1003240099.png"></p>
-<p>两个容器分享一个 CPU，所以总量应该是 100%。具体每个容器分得的负载则取决于 –cpu-shares 选项的设置！我们的设置分别是 512 和 1024，则它们分得的比例为 1:2。在本例中如果想让两个容器各占 50%，只要把 –cpu-shares 选项设为相同的值就可以了。</p>
+
+
+<p>此脚本输出得分最高的 40 个进程，并进行了排序：</p>
+<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171213130216597-1179723743.png"></p>
+<p>第一列显示进程的得分，mysqld 排到的第一名。显示为 node server.js 的都是容器进程，排名普遍比较靠前。红框中的是 docker daemon 进程，非常的靠后，都排到了 sshd 的后面。</p>
+<p>有了上面的机制后是否就可以高枕无忧了呢！不是的，docker 的官方文档中一直强调这只是一种缓解的方案，并且为我们提供了一些降低风险的建议：</p>
+<ul>
+<li>通过测试掌握应用对内存的需求</li>
+<li>保证运行容器的主机有充足的内存</li>
+<li>限制容器可以使用的内存</li>
+<li>为主机配置 swap</li>
+</ul>
+<p>其实就是说：通过限制容器使用的内存上限，可以降低主机内存耗尽时带来的各种风险。</p>
+<h1 id="限制Memory"><a href="#限制Memory" class="headerlink" title="限制Memory"></a>限制Memory</h1><h2 id="限制内存使用上限"><a href="#限制内存使用上限" class="headerlink" title="限制内存使用上限"></a>限制内存使用上限</h2><p>使用<code>-m(--memory=)</code>可以限制容器使用的最大内存。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -m 300M --memory-swap -1 --name con1 u-stress /bin/bash</span><br></pre></td></tr></table></figure>
+
+
+
+<p>下面的 stress 命令会创建一个进程并通过 malloc 函数分配内存：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stress --vm 1 --vm-bytes 500M</span><br></pre></td></tr></table></figure>
+
+<p>通过 docker stats 命令查看实际情况：<br><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171213130510707-38147422.png"></p>
+<p>上面的 docker run 命令中通过 -m 选项限制容器使用的内存上限为 300M。同时设置 memory-swap 值为 -1，它表示容器程序使用内存的受限，而可以使用的 swap 空间使用不受限制(宿主机有多少 swap 容器就可以使用多少)。<br>下面我们通过 top 命令来查看 stress 进程内存的实际情况：<br><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171213130752754-1982342098.png"></p>
+<p>上面的截图中先通过 pgrep 命令查询 stress 命令相关的进程，进程号比较大的那个是用来消耗内存的进程，我们就查看它的内存信息。VIRT 是进程虚拟内存的大小，所以它应该是 500M。RES 为实际分配的物理内存数量，我们看到这个值就在 300M 上下浮动。看样子我们已经成功的限制了容器能够使用的物理内存数量。</p>
+<h2 id="限制可用的-swap-大小"><a href="#限制可用的-swap-大小" class="headerlink" title="限制可用的 swap 大小"></a>限制可用的 swap 大小</h2><p>强调一下 –memory-swap 是必须要与 –memory 一起使用的。</p>
+<p>正常情况下， –memory-swap 的值包含容器可用内存和可用 swap。所以 –memory=”300m” –memory-swap=”1g” 的含义为：<br>容器可以使用 300M 的物理内存，并且可以使用 700M(1G -300M) 的 swap。–memory-swap 是容器可以使用的物理内存和可以使用的 swap 之和。</p>
+<p>把 –memory-swap 设置为 0 和不设置是一样的，此时如果设置了 –memory，容器可以使用的 swap 大小为 –memory 值的两倍。（也就是说缺省情况下swap空间刚好为1倍的memory）</p>
+<p><strong>如果 –memory-swap 的值和 –memory 相同，则容器不能使用 swap</strong>。下面的 demo 演示了在没有 swap 可用的情况下向系统申请大量内存的场景：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -it --rm -m 300M --memory-swap=300M u-stress /bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> stress --vm 1 --vm-bytes 500M</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171213130735519-39244675.png"></p>
+<p>demo 中容器的物理内存被限制在 300M，但是进程却希望申请到 500M 的物理内存。在没有 swap 可用的情况下，进程直接被 OOM kill 了。如果有足够的 swap，程序至少还可以正常的运行。</p>
+<p>我们可以通过 –oom-kill-disable 选项强行阻止 OOM kill 的发生，但是最好不要。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过限制容器可用的物理内存，可以避免容器内服务异常导致大量消耗主机内存的情况(此时让容器重启是较好的策略)，因此可以降低主机内存被耗尽带来的风险。</p>
  
       <!-- reward -->
       
@@ -202,7 +213,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/06/10/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -215,19 +226,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/06/10/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Docker容器限制Memory
-          
-        </div>
-      </a>
     
-    
-      <a href="/2022/05/28/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%A7%A6%E5%8F%91Jenkins%E6%B5%81%E6%B0%B4%E7%BA%BF/" class="article-nav-link">
+      <a href="/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">多种方式触发Jenkins流水线</div>
+        <div class="article-nav-title">Docker容器限制CPU</div>
       </a>
     
   </nav>
