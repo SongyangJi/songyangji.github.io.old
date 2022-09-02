@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.7k</span>
+            <span class="post-count">2.8k</span>
         </span>
     </span>
 
@@ -289,6 +289,9 @@
 <p>最后，业务执行时间长的问题，也可能需要分析一下，看看能不能使用中间件对任务进行拆分和解耦</p>
 </li>
 </ol>
+<h2 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h2><p>队列大小 = 线程数 * (最大响应时间/任务实际处理时间)</p>
+<p>假设目标最大响应时间为0.4s，计算阻塞队列的长度为20 * (0.4 / 0.2) = 40。</p>
+<p>很好理解，就是拿最大响应时间（pct999的响应时间）和平均处理时间的比率*线程数，这些任务可能就是来不及处理堆积在队列里的。</p>
 <blockquote>
 <p>参考链接</p>
 <p><a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-concurrency/thread-pools.html">Thread Pools</a></p>

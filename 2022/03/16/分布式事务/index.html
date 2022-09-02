@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.4k</span>
+            <span class="post-count">6.1k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">15 分钟</span>
+            <span class="post-count">21 分钟</span>
         </span>
     </span>
 </div>
@@ -156,19 +156,30 @@
 <li>R = 1 ， W = N ，对读操作要求高性能高可用，比如类似cache之类业务</li>
 <li>W = Q, R = Q where Q = N / 2 + 1 一般应用适用，读写性能之间取得平衡，如N=3 ， W=2 ， R=2。</li>
 </ul>
-<h1 id="二阶段提交"><a href="#二阶段提交" class="headerlink" title="二阶段提交"></a>二阶段提交</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>XA 分布式协议主要有两个角色：</p>
+<h1 id="2PC-XA协议"><a href="#2PC-XA协议" class="headerlink" title="2PC-XA协议"></a>2PC-XA协议</h1><blockquote>
+<p>2PC的传统方案是在数据库层面实现的，如Oracle、MySQL都支持2PC协议，为了统一标准减少行业内不必要的对接成本，需要制定标准化的处理模型及接口标准，国际开放标准组织Open Group定义分布式事务处理模型<strong>DTP</strong>（Distributed Transaction Processing Reference Model）。</p>
+<p>DTP模型定义TM和RM之间通讯的接口规范叫<strong>XA</strong>，简单理解为数据库提供的2PC接口协议，<strong>基于数据库的XA协议来实现2PC又称为XA方案</strong>。</p>
+</blockquote>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>XA 分布式协议主要有两个角色：</p>
 <ul>
-<li><p>事务管理器（Transaction Manager 协调者）<br>事务管理器作为全局事务的协调管理者，与每个资源管理器通信，完成分布式事务的管理。</p>
-</li>
-<li><p>资源管理器 （Resource Manager 参与者）<br>资源管理器管理每个参与者的事务资源，其应该具有提交和回滚的能力，如数据库。</p>
-</li>
+<li>事务管理器（Transaction Manager 协调者）<br>事务管理器作为全局事务的协调管理者，与每个资源管理器通信，完成分布式事务的管理。</li>
+<li>资源管理器 （Resource Manager 参与者）<br>资源管理器管理每个参与者的事务资源，其应该具有提交和回滚的能力，如数据库。</li>
 </ul>
+<blockquote>
+<p>XA事务由一个或多个资源管理器（Resource Managers）、一个事务管理器（Transaction Manager）以及一个应用程序（Application Program）组成。</p>
+<ul>
+<li>资源管理器（RM）：参与者。提供访问事务资源的方法。通常一个<a target="_blank" rel="noopener" href="https://cloud.tencent.com/solution/database?from=10680">数据库</a>就是一个资源管理器。</li>
+<li>事务管理器（TM）：协调者。分配标识符，监视事务的进度，并负责事务完成和故障恢复。</li>
+<li>应用程序（AP）：发起者。定义事务的边界，制定全局事务中的操作。</li>
+</ul>
+</blockquote>
 <h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>XA 分布式协议制定的分段提交过程：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-4752702/eetmyegzko.png?imageView2/2/w/1620"></p>
 <ul>
 <li><p>第一阶段（ prepare ）<br>第一阶段<strong>每个参与者准备执行事务并对需要的资源加锁</strong>，<strong>进入 ready 状态，并通知协调者已经准备就绪</strong>。</p>
 </li>
 <li><p>第二阶段（ commit ）<br>第二阶段当协调者确认<strong>每个参与者都 ready 后，通知参与者进行 commit 操作</strong>；</p>
-<p>如果有参与者 fail ，则发送 rollback 命令，各参与者作回滚。</p>
+<p>如果<strong>有参与者 fail ，则发送 rollback 命令，各参与者作回滚。</strong></p>
 </li>
 </ul>
 <blockquote>
@@ -183,6 +194,19 @@
 </ul>
 </li>
 </ul>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7003d58ea182">MySQL XA 介绍</a></p>
+<p>MySQL XA 的命令集合如下：</p>
+<ol>
+<li>XA START xid: 开启一个事务，并将事务置于ACTIVE状态，此后执行的SQL语句都将置于该是事务中。</li>
+<li>XA END xid: 将事务置于IDLE状态，表示事务内的SQL操作完成。</li>
+<li>XA PREPARE xid: 实现事务提交的准备工作，事务状态置于PREPARED状态。事务如果无法完成提交前的准备操作，该语句会执行失败。</li>
+<li>XA COMMIT xid: 事务最终提交，完成持久化。</li>
+<li>XA ROLLBACK xid: 事务回滚终止。</li>
+<li>XA RECOVER: 查看MySQL中存在的PREPARED状态的xa事务。</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/7425654-e3e679d3ee065c4b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1122/format/webp"></p>
 </blockquote>
 <h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>基于以上，可以很容易理解 2PC 的执行过程，同时我们也注意到它存在的缺点：</p>
 <blockquote>
@@ -223,7 +247,42 @@
 </ol>
 </li>
 </ul>
-<h1 id="Seata的AT模式"><a href="#Seata的AT模式" class="headerlink" title="Seata的AT模式"></a>Seata的AT模式</h1><h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><ul>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/270213092">XA与TCC的区别</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903951477768205">TCC与两阶段分布式事务处理的区别</a></p>
+<h1 id="TCC（Try-Confirm-Cancel）"><a href="#TCC（Try-Confirm-Cancel）" class="headerlink" title="TCC（Try-Confirm-Cancel）"></a>TCC（Try-Confirm-Cancel）</h1><blockquote>
+<p><strong>XA 协议在架构上与 TCC 模型相比，最大的不同是 XA 直接作用于资源层，而后者作用于服务层。</strong></p>
+<p><strong>2PC是偏数据库层面的，而TCC是纯业务层面。</strong></p>
+<p>TCC 事务机制相比于上面介绍的XA 事务机制，有以下优点： 性能提升：具体业务来实现控制资源锁的粒度变小，不会锁定整个资源。</p>
+</blockquote>
+<p>TCC 是服务化的二阶段编程模型，采用的补偿机制。（所谓 TCC 模式，是指支持把 <strong>自定义</strong> 的分支事务纳入到全局事务的管理中）</p>
+<p>关于 TCC（Try-Confirm-Cancel）的概念，最早是由 Pat Helland 于 2007 年发表的一篇名为《Life beyond Distributed Transactions:an Apostate’s Opinion》的论文提出。<br>TCC 事务机制相比于上面介绍的 XA，解决了其几个缺点：</p>
+<ol>
+<li>解决了协调者单点，由主业务方发起并完成这个业务活动。业务活动管理器也变成多点，引入集群。</li>
+<li>同步阻塞：引入超时，超时后进行补偿，并且不会锁定整个资源，将资源转换为业务逻辑形式，粒度变小。</li>
+<li>数据一致性，有了补偿机制之后，由业务活动管理器控制一致性</li>
+</ol>
+<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><ol>
+<li>需要实现确认和补偿逻辑</li>
+<li>需要支持幂等</li>
+<li>无需本地数据库事务的支持（所以说它是业务层的）</li>
+</ol>
+<h2 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h2><h3 id="Try-阶段"><a href="#Try-阶段" class="headerlink" title="Try 阶段"></a>Try 阶段</h3><p>try 阶段主要是对业务系统做检测及资源预留。<br>这个阶段主要完成：</p>
+<p>完成所有业务检查( 一致性 ) ;</p>
+<p>预留必须业务资源( 准隔离性 ) ;</p>
+<p>Try 尝试执行业务。</p>
+<h3 id="Confirm-阶段"><a href="#Confirm-阶段" class="headerlink" title="Confirm 阶段"></a>Confirm 阶段</h3><p>确认执行真正执行业务，不作任何业务检查，只使用 Try 阶段预留的业务资源，Confirm 操作满足幂等性。要求具备幂等设计，Confirm 失败后需要进行重试。</p>
+<h3 id="Cancel-阶段"><a href="#Cancel-阶段" class="headerlink" title="Cancel 阶段"></a>Cancel 阶段</h3><p>取消执行，释放 Try 阶段预留的业务资源 Cancel 操作满足幂等性 Cancel 阶段的异常和 Confirm 阶段异常处理方案基本上一致。</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
+<li>性能提升：具体业务来实现控制资源锁的粒度变小，不会锁定整个资源。</li>
+<li>数据最终一致性：基于 Confirm 和 Cancel 的幂等性，保证事务最终完成确认或者取消，保证数据的一致性。</li>
+<li>可靠性：解决了 XA 协议的协调者单点故障问题，由主业务方发起并控制整个业务活动，业务活动管理器也变成多点，引入集群。</li>
+</ul>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>TCC 的 Try、Confirm 和 Cancel 操作功能要按具体业务来实现，业务耦合度较高，提高了开发成本。</p>
+<blockquote>
+<p>关于TCC的诸多落地的变种：<strong>异步确保型 TCC 解决方案</strong>、<strong>补偿型 TCC 解决方案</strong></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/270213092">XA与TCC的区别——精读</a></p>
+</blockquote>
+<h1 id="Seata的AT模式"><a href="#Seata的AT模式" class="headerlink" title="Seata的AT模式"></a>Seata的AT模式</h1><h2 id="前提-1"><a href="#前提-1" class="headerlink" title="前提"></a>前提</h2><ul>
 <li>基于支持本地 ACID 事务的关系型数据库。</li>
 <li>Java 应用，通过 JDBC 访问数据库。</li>
 </ul>
@@ -251,7 +310,7 @@
 <p>如果应用在特定场景下，必需要求全局的 <strong>读已提交</strong> ，目前 Seata 的方式是通过 <strong>SELECT FOR UPDATE</strong> 语句的代理。</p>
 <p>SELECT FOR UPDATE 语句的执行会申请 <strong>全局锁</strong> ，如果 <strong>全局锁</strong> 被其他事务持有，则释放本地锁（回滚 SELECT FOR UPDATE 语句的本地执行）并重试。这个过程中，查询是被 block 住的，直到 <strong>全局锁</strong> 拿到，即读取的相关数据是 <strong>已提交</strong> 的，才返回。</p>
 <p>出于总体性能上的考虑，Seata 目前的方案并没有对所有 SELECT 语句都进行代理，仅针对 FOR UPDATE 的 SELECT 语句。</p>
-<h2 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h2><h3 id="一阶段"><a href="#一阶段" class="headerlink" title="一阶段"></a>一阶段</h3><ol>
+<h2 id="工作机制-1"><a href="#工作机制-1" class="headerlink" title="工作机制"></a>工作机制</h2><h3 id="一阶段"><a href="#一阶段" class="headerlink" title="一阶段"></a>一阶段</h3><ol>
 <li><strong>解析 SQL</strong>：得到 SQL 的类型（UPDATE），表（product），条件（where name = ‘TXC’）等相关的信息。</li>
 <li><strong>查询前镜像</strong>：根据解析得到的条件信息，生成查询语句，定位数据。</li>
 <li><strong>执行业务 SQL</strong>：更新这条记录的 name 为 ‘GTS’。</li>
@@ -279,16 +338,8 @@
 <li>这里会有个专门消费 MQ 的服务，这个服务会消费 MQ 并调用系统 B 的接口；</li>
 <li>要是系统 B 执行成功就 ok 了；要是系统 B 执行失败了，那么最大努力通知服务就定时尝试重新调用系统 B, 反复 N 次，最后还是不行就放弃。</li>
 </ol>
-<h2 id="可靠消息最终一致性"><a href="#可靠消息最终一致性" class="headerlink" title="可靠消息最终一致性"></a>可靠消息最终一致性</h2><ol>
-<li>A 系统先向 mq 发送一条 prepare 消息，如果 prepare 消息发送失败，则直接取消操作</li>
-<li>如果消息发送成功，则执行本地事务</li>
-<li>如果本地事务执行成功，则想 mq 发送一条 confirm 消息，如果发送失败，则发送回滚消息</li>
-<li>B 系统定期消费 mq 中的 confirm 消息，执行本地事务，并发送 ack 消息。如果 B 系统中的本地事务失败，会一直不断重试，如果是<strong>业务上的失败</strong>，会向 A 系统发起回滚请求</li>
-<li>mq 会定期轮询所有 prepared 消息调用系统 A 提供的接口查询消息的处理情况，如果该 prepare 消息本地事务处理成功，则重新发送 confirm 消息，否则直接回滚该消息</li>
-</ol>
-<p>该<strong>方案与本地消息最大的不同是去掉了本地消息表</strong>，其次本地消息表依赖消息表重试写入 mq 这一步由本方案中的轮询 prepare 消息状态来重试或者回滚该消息替代。其实现条件与容错方案基本一致。</p>
-<p>目前市面上实现该方案的只有阿里的 RocketMq。</p>
-<h2 id="本地消息表"><a href="#本地消息表" class="headerlink" title="本地消息表"></a>本地消息表</h2><ol>
+<h2 id="本地消息表"><a href="#本地消息表" class="headerlink" title="本地消息表"></a>本地消息表</h2><p><img src="https://xiaomi-info.github.io/2020/01/02/distributed-transaction/native-message.jpg"></p>
+<ol>
 <li>当系统 A 被其他系统调用发生数据库表更操作，首先会更新数据库的业务表，其次会往相同数据库的消息表中插入一条数据，两个操作发生在同一个事务中</li>
 <li>系统 A 的脚本定期轮询本地消息往 mq 中写入一条消息，如果消息发送失败会进行重试</li>
 <li>系统 B 消费 mq 中的消息，并处理业务逻辑。如果本地事务处理失败，会在继续消费 mq 中的消息进行重试，如果是<strong>业务上的失败</strong>，可以通知系统 A 进行回滚操作</li>
@@ -307,6 +358,41 @@
 </ol>
 <p>此方案的核心是将需要分布式处理的任务通过消息日志的方式来异步执行。</p>
 <p>消息日志可以存储到本地文本、数据库或消息队列，再通过业务规则自动或人工发起重试。人工重试更多的是应用于支付场景，通过对账系统对事后问题的处理。</p>
+<h2 id="可靠消息最终一致性"><a href="#可靠消息最终一致性" class="headerlink" title="可靠消息最终一致性"></a>可靠消息最终一致性</h2><p><img src="https://xiaomi-info.github.io/2020/01/02/distributed-transaction/mq-message.jpg"></p>
+<ol>
+<li>A 系统先向 mq 发送一条 prepare 消息，如果 prepare 消息发送失败，则直接取消操作</li>
+<li>如果消息发送成功，则执行本地事务</li>
+<li>如果本地事务执行成功，则想 mq 发送一条 confirm 消息，如果发送失败，则发送回滚消息</li>
+<li>B 系统消费 mq 中的 confirm 消息，执行本地事务，并发送 ack 消息。如果 B 系统中的本地事务失败，会一直不断重试，如果是<strong>业务上的失败</strong>，会向 A 系统发起回滚请求</li>
+<li><strong>mq 会定期轮询所有 prepared 消息调用系统 A 提供的接口查询消息的处理情况</strong>，如果该 prepare 消息本地事务处理成功，则重新发送 confirm 消息，否则直接回滚该消息</li>
+</ol>
+<p>该<strong>方案与本地消息最大的不同是去掉了本地消息表</strong>，其次本地消息表依赖消息表重试写入 mq 这一步由本方案中的轮询 prepare 消息状态来重试或者回滚该消息替代。其实现条件与容错方案基本一致。</p>
+<p>目前市面上实现该方案的只有阿里的 RocketMq。</p>
+<h2 id="DB与MQ的一致性如何保证？"><a href="#DB与MQ的一致性如何保证？" class="headerlink" title="DB与MQ的一致性如何保证？"></a>DB与MQ的一致性如何保证？</h2><blockquote>
+<p>这里的DB不一定指支持ACID的关系型数据库，甚至不一定指数据库，而是指广义上的’数据源’。</p>
+</blockquote>
+<p>在实际场景中，业务系统对本地DB数据变更后会广播对应的消息，消费者消费消息做自己的业务逻辑，按正常逻辑消息会在数据库变更后发出，<strong>如果消息发送超时且失败那么DB和MQ之间就产生了不一致问题</strong>，如何解决呢？使用可靠消息来解决，核心逻辑保证消息从投递到消费的过程中不会丢失。</p>
+<h3 id="本地消息表-生产者回调确认"><a href="#本地消息表-生产者回调确认" class="headerlink" title="本地消息表+生产者回调确认"></a>本地消息表+生产者回调确认</h3><p>(上面这张图对于本地消息表的实现还是有点不清楚，下面的这张图解释的更清楚一点)</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-4752702/nihz7qk4ej.png?imageView2/2/w/1620"></p>
+<p>工作机制：</p>
+<ol>
+<li>本地事务写业务DB的同时，写消息到消息表（一个事务中），初始消息状态标记为’未投递成功’。</li>
+<li>本地事务执行成功后，向mq发送消息，消息发送成功回调中，将消息表中的消息状态标记为’投递成功’</li>
+<li>本地线程定时轮训消息表中的’未投递成功’的消息，发送到mq，失败不断重试，确保一定到发送到mq。</li>
+</ol>
+<h3 id="RocketMQ的half-message"><a href="#RocketMQ的half-message" class="headerlink" title="RocketMQ的half-message"></a>RocketMQ的half-message</h3><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7051937718892232734">RocketMQ4.9.1源码分析_(事务) Half半消息处理</a></p>
+<p>上面的方式需要业务系统维护消息状态，这部分可以交给中间件来实现，实现逻辑会变得不一样。</p>
+<p>(也就是上面所讲的<strong>可靠消息最终一致性</strong>的那张图，目前市面上只有RocketMQ支持这种功能。阿里内部支持的实际是Notify)</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-4752702/68emv4778q.png?imageView2/2/w/1620"></p>
+<h1 id="对账"><a href="#对账" class="headerlink" title="对账"></a>对账</h1><p>这里简单的说出一种解决思路：</p>
+<p>所有操作之前，发消息；消费消息端查三个分支事务是否满足原子性，不满足则报警或者自动订正。</p>
+<h1 id="推荐文章"><a href="#推荐文章" class="headerlink" title="推荐文章"></a>推荐文章</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://xiaomi-info.github.io/2020/01/02/distributed-transaction/">小米-分布式事务，这一篇就够了</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1763155">分布式系统：数据一致性解决方案</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/270213092">XA与TCC的区别</a></p>
+<p><a target="_blank" rel="noopener" href="https://seata.io/zh-cn/docs/overview/what-is-seata.html">Seata 是什么?</a></p>
+<p><a target="_blank" rel="noopener" href="https://houbb.github.io/2018/09/02/sql-distribute-transaction-mq">本地消息表 （经典的ebay模式）</a></p>
+</blockquote>
  
       <!-- reward -->
       

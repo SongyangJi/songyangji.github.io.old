@@ -65,7 +65,7 @@
   <time datetime="2022-05-07T17:43:28.000Z" itemprop="datePublished">2022-05-08</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Git%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Git的学习笔记</a>
+    <a class="article-category-link" href="/categories/Devops/">Devops</a>
   </div>
   
 <div class="word_count">
@@ -203,7 +203,7 @@
 
 
 <p><strong>切换分支</strong>（这个时候就自动把目标分支在本地仓库里的文件换到工作区里）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout b1</span><br><span class="line"># 打开远程仓库的分支</span><br><span class="line">git checkout -b dev（本地分支名） origin&#x2F;dev（远程分支名）</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git checkout b1</span><br><span class="line"></span><br><span class="line"># &quot;打开&quot;远程仓库的分支</span><br><span class="line"># 如果没有全部拉下来的话</span><br><span class="line"># git fetch -all</span><br><span class="line">git checkout -b dev（本地分支名） origin&#x2F;dev（远程分支名）</span><br></pre></td></tr></table></figure>
 
 <p>两个命令合并到一步：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b dev</span><br></pre></td></tr></table></figure>
@@ -328,6 +328,8 @@
 </div>
 
 <div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
+
     </footer>
   </div>
 

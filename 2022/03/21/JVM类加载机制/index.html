@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-     JsyBlog
+    JVM类加载机制 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -50,11 +50,24 @@
   data-scroll-reveal
 >
   <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  JVM类加载机制
+</h1>
+ 
+
+    </header>
      
     <div class="article-meta">
       <a href="/2022/03/21/JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" class="article-date">
-  <time datetime="2022-03-20T18:53:12.552Z" itemprop="datePublished">2022-03-21</time>
-</a>   
+  <time datetime="2022-03-20T18:53:12.000Z" itemprop="datePublished">2022-03-21</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+  </div>
+  
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
@@ -84,11 +97,7 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>title: JVM类加载机制<br>date: 2022-03-21 02:53:12<br>categories: JVM<br>tags:</p>
-<ul>
-<li>JVM</li>
-</ul>
-<h1 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h1><p>类的加载过程非常复杂，主要有这几个过程：<strong>加载、链接（验证、准备、解析）、初始化</strong>。这些术语很多地方都出现过，我们不需要死记硬背，而应该要了解它背后的原理和要做的事情。</p>
+  <h1 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h1><p>类的加载过程非常复杂，主要有这几个过程：<strong>加载、链接（验证、准备、解析）、初始化</strong>。这些术语很多地方都出现过，我们不需要死记硬背，而应该要了解它背后的原理和要做的事情。</p>
 <p>如图所示。大多数情况下，类会按照图中给出的顺序进行加载。</p>
 <p><img src="/2022/03/21/JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/jvm_load_class.jpg"></p>
 <h2 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h2><p>包含了加载、验证、准备、解析和初始化这 5 个阶段。</p>
@@ -307,6 +316,8 @@
 </div>
 
 <div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
+
     </footer>
   </div>
 
