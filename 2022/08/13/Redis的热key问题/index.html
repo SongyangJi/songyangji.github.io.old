@@ -162,7 +162,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h2><h3 id="增加-Redis-实例复本数量"><a href="#增加-Redis-实例复本数量" class="headerlink" title="增加 Redis 实例复本数量"></a>增加 Redis 实例复本数量</h3><p>对于出现热 <code>Key</code> 的 <code>Redis</code> 实例，我们可以通过水平扩容增加副本数量，将读请求的压力分担到不同副本节点上。</p>
+<h2 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h2><h3 id="增加-Redis-实例副本数量"><a href="#增加-Redis-实例副本数量" class="headerlink" title="增加 Redis 实例副本数量"></a>增加 Redis 实例副本数量</h3><p>对于出现热 <code>Key</code> 的 <code>Redis</code> 实例，我们可以通过水平扩容增加副本数量，将读请求的压力分担到不同副本节点上。</p>
 <p>(通过主从复制-读写分离，将读请求分散多个机器上。)</p>
 <h3 id="二级缓存（本地缓存）"><a href="#二级缓存（本地缓存）" class="headerlink" title="二级缓存（本地缓存）"></a>二级缓存（本地缓存）</h3><p>当出现热 <code>Key</code> 以后，把热 <code>Key</code> 加载到系统的 <code>JVM</code> 中。后续针对这些热 <code>Key</code> 的请求，会直接从 <code>JVM</code> 中获取，而不会走到 <code>Redis</code> 层。这些本地缓存的工具很多，比如 <code>Ehcache</code>，或者 <code>Google Guava</code> 中 <code>Cache</code> 工具，或者直接使用 <code>HashMap</code> 作为本地缓存工具都是可以的。</p>
 <p><strong>使用本地缓存需要注意两个问题：</strong></p>

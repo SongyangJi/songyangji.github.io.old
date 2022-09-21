@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">0</span>
+            <span class="post-count">362</span>
         </span>
     </span>
 
@@ -95,7 +95,56 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-   
+  <p><code>Linux Namespace</code> 是 Linux 提供的一种内核级别环境隔离的方法。用官方的话来说，Linux Namespace 将全局系统资源封装在一个抽象中，从而使 namespace 内的进程认为自己具有独立的资源实例。这项技术本来没有掀起多大的波澜，是容器技术的崛起让他重新引起了大家的注意。</p>
+<p>Linux Namespace 有如下 6 个种类：</p>
+<table>
+<thead>
+<tr>
+<th><strong>分类</strong></th>
+<th><strong>系统调用参数</strong></th>
+<th><strong>相关内核版本</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mount namespaces</td>
+<td>CLONE_NEWNS</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=+UZjUSHsFnVMyxdIRI1AGg==.gjeALggXOGhl4I/K6t/Pu631zlrDabPYtH1Thy9PM6sQrfTxhZC7kHt+ChNg3UwF">Linux 2.4.19</a></td>
+</tr>
+<tr>
+<td>UTS namespaces</td>
+<td>CLONE_NEWUTS</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=UMCIjnpsL9NzRflD2ekSlw==.JUrNrso34Pdfy7WehLf8IbcdnOLCax6hnFPVZTIfm44=">Linux 2.6.19</a></td>
+</tr>
+<tr>
+<td>IPC namespaces</td>
+<td>CLONE_NEWIPC</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=mVHsSGWBKT/8S8FsszpQNg==.eMt8rtHaduUCEFo0KkpSywYvUBa1M0c6L/1vPeVf7Fg=">Linux 2.6.19</a></td>
+</tr>
+<tr>
+<td>PID namespaces</td>
+<td>CLONE_NEWPID</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=jYUd3r2qkaHvuIuS45YcNA==.F+FbhTmnrxXQ9og+jZ6YeUvF4OCSW+lbZh3QRIBW2qE=">Linux 2.6.24</a></td>
+</tr>
+<tr>
+<td>Network namespaces</td>
+<td>CLONE_NEWNET</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=B8NyDjpAtiUsjd4TxzKOFw==.mlMGKdt/sGvRRyFOFDguy/Xwnvgxyz8qGKBfpboNVO4=">始于Linux 2.6.24 完成于 Linux 2.6.29</a></td>
+</tr>
+<tr>
+<td>User namespaces</td>
+<td>CLONE_NEWUSER</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=5AgrP7X98up/uyck268Z9w==.Iem7g4brwXF4ER+OhdjlTQLCWYQSqFcei5K3MT5e9pA=">始于 Linux 2.6.23 完成于 Linux 3.8</a></td>
+</tr>
+</tbody></table>
+<p>namespace 的 API 由三个系统调用和一系列 <code>/proc</code> 文件组成，本文将会详细介绍这些系统调用和 <code>/proc</code> 文件。为了指定要操作的 namespace 类型，需要在系统调用的 flag 中通过常量 <code>CLONE_NEW*</code> 指定（包括 <code>CLONE_NEWIPC</code>，<code>CLONE_NEWNS</code>， <code>CLONE_NEWNET</code>，<code>CLONE_NEWPID</code>，<code>CLONE_NEWUSER</code> 和 `CLONE_NEWUTS），可以指定多个常量，通过 **|**（位或）操作来实现。</p>
+<p>简单描述一下三个系统调用的功能：</p>
+<ul>
+<li><strong>clone()</strong> : 实现线程的系统调用，用来创建一个新的进程，并可以通过设计上述系统调用参数达到隔离的目的。</li>
+<li><strong>unshare()</strong> : 使某进程脱离某个 namespace。</li>
+<li><strong>setns()</strong> : 把某进程加入到某个 namespace。</li>
+</ul>
+<p>具体的实现原理请往下看。</p>
+ 
       <!-- reward -->
       
     </div>
