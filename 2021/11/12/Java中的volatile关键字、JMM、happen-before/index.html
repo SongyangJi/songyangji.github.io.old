@@ -204,7 +204,7 @@
 <p>其中，第2条保证，在volatile读之前，下面的普通读不会执行，直到volatile读执行完，才能执行下面的普通读。</p>
 <p>其中，第3条的保证是自然要有的。</p>
 <p>值得注意的是，第1条、第2条实际上让<strong>volatile写-读</strong>在内存读写顺序上具有<strong>锁的释放-获取</strong>语义。</p>
-<p>volatile写对应锁的释放，volatile读对应锁的获取。</p>
+<p><strong>volatile写对应锁的释放，volatile读对应锁的获取。</strong></p>
 <p>注意一定只有在一个线程在将锁释放之后，另一个线程可以获取锁。</p>
 <p>这让 volatile 具有一定的有序性。</p>
 <blockquote>

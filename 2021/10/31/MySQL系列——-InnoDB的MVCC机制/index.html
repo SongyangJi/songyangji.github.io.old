@@ -192,7 +192,7 @@
 </ol>
 <p>那么具体怎么实现<code>READ COMMITTED</code>和<code>REPEATABLE READ</code>呢？</p>
 <p>实际上二者的区别就在于生成ReadView的时机不同。</p>
-<p><code>READ COMMITTED</code>在每次赌球一条记录前都去生成ReadView，</p>
+<p><code>READ COMMITTED</code>在每次读取一条记录前都去生成ReadView，</p>
 <p><code>REPEATABLE READ</code>则在第一次读取数据的时候生成ReadView（不过可以使用<code>WITH CONSISTENT SANPSHOT</code>指定一开启事务就生成ReadView）。</p>
 <h2 id="二级索引和MVCC"><a href="#二级索引和MVCC" class="headerlink" title="二级索引和MVCC"></a>二级索引和MVCC</h2><p>注意只有聚簇索引记录才有 trx_id和roll_pointer。那么如果使用二级索引查询记录如何判断可见性呢？</p>
 <ol>

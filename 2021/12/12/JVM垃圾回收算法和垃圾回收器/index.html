@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.4k</span>
+            <span class="post-count">6.1k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">15 分钟</span>
+            <span class="post-count">22 分钟</span>
         </span>
     </span>
 </div>
@@ -165,6 +165,7 @@
 <h4 id="新生代（Young-generation）"><a href="#新生代（Young-generation）" class="headerlink" title="新生代（Young generation）"></a>新生代（Young generation）</h4><p>绝大多数最新被创建的对象会被分配到这里，由于<strong>大部分对象</strong>在创建后会很快变得<strong>不可达</strong>，所以很多对象被创建在<strong>新生代</strong>，然后<strong>消失</strong>。对象从这个区域消失的过程我们称之为 <code>minor GC</code>。</p>
 <p><strong>新生代</strong> 中存在一个<code>Eden</code>区和两个<code>Survivor</code>区（Survivor 区里面分为 from 和 to 区），每次只使用Eden和其中的一块Survivor区。新对象会首先分配在<code>Eden</code>中（<strong>如果新对象过大，会直接分配在老年代</strong>中）。在<code>GC</code>中，<code>Eden</code>中的对象会被移动到<code>Survivor</code>中，直至对象满足一定的年纪（定义为熬过<code>GC</code>的次数），会被移动到<strong>老年代</strong>。</p>
 <p>可以设置<strong>新生代</strong>和<strong>老年代</strong>的相对大小。这种方式的优点是新生代大小会随着整个<strong>堆</strong>大小<strong>动态扩展</strong>。参数 <code>-XX:NewRatio</code> 设置<strong>老年代</strong>与<strong>新生代</strong>的比例。例如 <code>-XX:NewRatio=8</code> 指定 <strong>老年代/新生代</strong> 为<code>8/1</code>. <strong>老年代</strong> 占堆大小的 <code>7/8</code> ，<strong>新生代</strong> 占堆大小的 <code>1/8</code>（默认即是 <code>1/8</code>）。</p>
+<p><strong>当Eden区满了的时候，会触发Young GC。</strong></p>
 <h4 id="老年代（Old-generation）"><a href="#老年代（Old-generation）" class="headerlink" title="老年代（Old generation）"></a>老年代（Old generation）</h4><p>对象没有变得不可达，并且从新生代中<strong>存活</strong>下来，会被<strong>拷贝</strong>到这里。其所占用的空间要比新生代多。也正由于其相对<strong>较大的空间</strong>，发生在<strong>老年代</strong>上的<code>GC</code>要比<strong>新生代</strong>要<strong>少得多</strong>。对象从<strong>老年代</strong>中消失的过程，可以称之为<code>major GC</code>（或者<code>full GC</code>）。</p>
 <p><code>JDK8</code>堆内存一般是划分为<strong>年轻代</strong>和<strong>老年代</strong>，<strong>不同年代</strong> 根据自身特性采用<strong>不同的垃圾收集算法</strong>。</p>
 <p>对于<strong>新生代</strong>，每次<code>GC</code>时都有<strong>大量</strong>的对象死亡，只有<strong>少量</strong>对象存活。考虑到复制成本低，适合采用<strong>复制算法</strong>。因此有了<code>From Survivor</code>和<code>To Survivor</code>区域。</p>
@@ -365,6 +366,32 @@
 <p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904148404535309">JVM垃圾回收算法和垃圾回收器</a></p>
 <p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903639794843656">JVM系列(五) - JVM垃圾回收算法</a></p>
 <p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1582661">Full GC 和 Minor GC，傻傻分不清楚</a></p>
+</blockquote>
+<h1 id="FullGC"><a href="#FullGC" class="headerlink" title="FullGC"></a>FullGC</h1><h2 id="什么时候会触发FullGC"><a href="#什么时候会触发FullGC" class="headerlink" title="什么时候会触发FullGC"></a>什么时候会触发FullGC</h2><h3 id="System-gc-方法的调用"><a href="#System-gc-方法的调用" class="headerlink" title="System.gc()方法的调用"></a>System.gc()方法的调用</h3><p>此方法的调用是建议JVM进行Full GC,虽然只是建议而非一定,但很多情况下它会触发 Full GC,从而增加Full GC的频率,也即增加了间歇性停顿的次数。强烈影响系建议能不使用此方法就别使用，让虚拟机自己去管理它的内存，可通过通过<code>-XX:+ DisableExplicitGC</code>来禁止RMI调用System.gc。</p>
+<h3 id="Metaspace区内存达到阈值"><a href="#Metaspace区内存达到阈值" class="headerlink" title="Metaspace区内存达到阈值"></a>Metaspace区内存达到阈值</h3><p>从JDK8开始，永久代(PermGen)的概念被废弃掉了，取而代之的是一个称为Metaspace的存储空间。Metaspace使用的是本地内存，而不是堆内存，也就是说在默认情况下Metaspace的大小只与本地内存大小有关。-XX:MetaspaceSize=21810376B（约为20.8MB）超过这个值就会引发Full GC，这个值不是固定的，是会随着JVM的运行进行动态调整的，与此相关的参数还有多个，详细情况请参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/bolg_hero/article/details/78189621">这篇文章</a></p>
+<h3 id="老年代空间不足"><a href="#老年代空间不足" class="headerlink" title="老年代空间不足"></a>老年代空间不足</h3><blockquote>
+<p><strong>Survivor区域对象晋升到老年代有两种情况</strong>：</p>
+<p>一种是给每个对象定义一个对象计数器，如果对象在Eden区域出生，并且经过了第一次GC，那么就将他的年龄设置为1，在Survivor区域的对象每熬过一次GC，年龄计数器加一，等到到达默认值15时，就会被移动到老年代中，默认值可以通过-XX:MaxTenuringThreshold来设置。<br>另外一种情况是如果JVM发现Survivor区域中的相同年龄的对象占到所有对象的一半以上时，就会将大于这个年龄的对象移动到老年代，在这批对象在统计后发现可以晋升到老年代，但是发现老年代没有足够的空间来放置这些对象，这就会引起Full GC。</p>
+</blockquote>
+<p>老年代空间只有在<strong>新生代对象转入</strong>及<strong>创建大对象、大数组</strong>时才会出现不足的现象，</p>
+<p>当执行Full GC后空间仍然不足，则抛出如下错误：<code>java.lang.OutOfMemoryError: Java heap space</code><br>为避免以上两种状况引起的Full GC，调优时应尽量做到让对象在Minor GC阶段被回收、让对象在新生代多存活一段时间及不要创建过大的对象及数组。</p>
+<h3 id="堆中分配很大的对象"><a href="#堆中分配很大的对象" class="headerlink" title="堆中分配很大的对象"></a>堆中分配很大的对象</h3><p>这个参数可以通过<code>-XX:PretenureSizeThreshold</code>进行设定，大对象或者长期存活的对象进入老年代，典型的大对象就是很长的字符串或者数组，它们在被创建后会直接进入老年代，虽然可能新生代中的Eden区域可以放置这个对象，在要放置的时候JVM如果发现老年代的空间不足时，会触发GC。</p>
+<p>所谓大对象，是指需要大量连续内存空间的java对象，例如很长的数组，<strong>此种对象会直接进入老年代，而老年代虽然有很大的剩余空间，但是无法找到足够大的连续空间来分配给当前对象</strong>，此种情况就会触发JVM进行Full GC。</p>
+<p>为了解决这个问题，CMS垃圾收集器提供了一个可配置的参数，即-XX:+UseCMSCompactAtFullCollection开关参数，用于在“享受”完Full GC服务之后额外免费赠送一个碎片整理的过程，<strong>内存整理的过程无法并发的，空间碎片问题没有了，但提顿时间不得不变长了</strong>，JVM设计者们还提供了另外一个参数 -XX:CMSFullGCsBeforeCompaction,这个参数用于设置在执行多少次不压缩的Full GC后,跟着来一次带压缩的。</p>
+<h3 id="统计得到的Minor-GC晋升到旧生代的平均大小大于老年代的剩余空间"><a href="#统计得到的Minor-GC晋升到旧生代的平均大小大于老年代的剩余空间" class="headerlink" title="统计得到的Minor GC晋升到旧生代的平均大小大于老年代的剩余空间"></a>统计得到的Minor GC晋升到旧生代的平均大小大于老年代的剩余空间</h3><p>这是一个较为复杂的触发情况，Hotspot<strong>为了避免由于新生代对象晋升到旧生代导致旧生代空间不足的现象</strong>，在进行Minor GC时，做了一个判断，<strong>如果之前统计所得到的Minor GC晋升到旧生代的平均大小大于旧生代的剩余空间，那么就直接触发Full GC</strong>。</p>
+<blockquote>
+<p>例如程序第一次触发Minor GC后，有6MB的对象晋升到旧生代，那么当下一次Minor GC发生时，首先检查旧生代的剩余空间是否大于6MB，如果小于6MB，则执行Full GC（相当于，提前进行fullgc，而不是把新生代的对象移动过去之后发现内存不足才fullgc）。</p>
+<p>当新生代采用PS GC时，方式稍有不同，PS GC是在Minor GC后也会检查，例如上面的例子中第一次Minor GC后，PS GC会检查此时旧生代的剩余空间是否大于6MB，如小于，则触发对旧生代的回收。<br>除了以上4种状况外，对于使用RMI来进行RPC或管理的Sun JDK应用而言，默认情况下会一小时执行一次Full GC。可通过在启动时通过- java -Dsun.rmi.dgc.client.gcInterval=3600000来设置Full GC执行的间隔时间或通过-XX:+ DisableExplicitGC来禁止RMI调用System.gc。</p>
+</blockquote>
+<h3 id="CMS-GC时出现promotion-failed和concurrent-mode-failure"><a href="#CMS-GC时出现promotion-failed和concurrent-mode-failure" class="headerlink" title="CMS GC时出现promotion failed和concurrent mode failure"></a>CMS GC时出现promotion failed和concurrent mode failure</h3><p>对于采用CMS进行老年代GC的程序而言，尤其要注意GC日志中是否有<strong>promotion failed</strong>和<strong>concurrent mode failure</strong>两种状况，当这两种状况出现时可能会触发Full GC。</p>
+<p>promotion failed是在进行Minor GC时，survivor space放不下、对象只能放入老年代，而此时老年代也放不下造成的；concurrent mode failure是在</p>
+<p>执行CMS GC的过程中同时有对象要放入老年代，而此时老年代空间不足造成的（有时候“空间不足”是CMS GC时当前的浮动垃圾过多导致暂时性的空间不足触发Full GC）。<br>应对措施为：增大survivor space、老年代空间或调低触发并发GC的比率，但在JDK 5.0+、6.0+的版本中有可能会由于JDK的bug29导致CMS在remark完毕后很久才触发sweeping动作。对于这种状况，可通过设置-XX: CMSMaxAbortablePrecleanTime=5（单位为ms）来避免。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>可以发现其实堆内存的Full GC一般都是<strong>两个原因</strong>引起的，<strong>要么是老年代内存过小，要么是老年代连续内存过小。</strong>无非是这两点，而<strong>元数据区Metaspace引发的Full GC可能是阈值引起的</strong>。</p>
+<h2 id="如何排查"><a href="#如何排查" class="headerlink" title="如何排查"></a>如何排查</h2><p><strong>检测JVM堆的情况</strong></p>
+<p>方法1. 可以使用JDK的bin目录下的jvisualvm.exe工具来进行实时监测，这个是图形化界面，最为直观，这是一个强大的工具。<br>方法2. 采用jps找到进行id，然后使用jstat -gc pid来实时进行检测。<br>方法3. 运行程序前设置-XX:+PrintGCDetails，-XX:+PrintGCDateStamps参数打印GC的详细信息进行分析。</p>
+<blockquote>
+<p>参考博客</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Hollake/article/details/90484027">https://blog.csdn.net/Hollake/article/details/90484027</a></p>
 </blockquote>
  
       <!-- reward -->
