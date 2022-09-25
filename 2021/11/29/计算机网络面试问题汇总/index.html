@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.1k</span>
+            <span class="post-count">2.2k</span>
         </span>
     </span>
 
@@ -138,7 +138,18 @@
 </ul>
 </blockquote>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/SYN_flood">SYN flood Wiki</a></p>
-<h1 id="从浏览器输入域名到显示出网页的过程"><a href="#从浏览器输入域名到显示出网页的过程" class="headerlink" title="从浏览器输入域名到显示出网页的过程"></a>从浏览器输入域名到显示出网页的过程</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lepeCoder/p/15147895.html">https://www.cnblogs.com/lepeCoder/p/15147895.html</a></p>
+<h1 id="从浏览器输入域名到显示出网页的过程"><a href="#从浏览器输入域名到显示出网页的过程" class="headerlink" title="从浏览器输入域名到显示出网页的过程"></a>从浏览器输入域名到显示出网页的过程</h1><ul>
+<li>1、输入地址</li>
+<li>2、浏览器查找域名的 IP 地址</li>
+<li>3、浏览器向 web 服务器发送一个 HTTP 请求</li>
+<li>4、服务器的永久重定向响应</li>
+<li>6、服务器处理请求</li>
+<li>7、服务器返回一个 HTTP 响应</li>
+<li>8、浏览器显示 HTML</li>
+<li>9、浏览器发送请求获取嵌入在 HTML 中的资源（如图片、音频、视频、CSS、JS等等</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lepeCoder/p/15147895.html">https://www.cnblogs.com/lepeCoder/p/15147895.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/133906695">https://zhuanlan.zhihu.com/p/133906695</a></p>
 <h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><h2 id="TCP-粘包问题"><a href="#TCP-粘包问题" class="headerlink" title="TCP 粘包问题"></a>TCP 粘包问题</h2><p><strong>为什么会发生TCP粘包和拆包?</strong></p>
 <p>① 发送方写入的数据大于套接字缓冲区的大小，此时将发生拆包。</p>
 <p>② 发送方写入的数据小于套接字缓冲区大小，由于 TCP 默认使用 Nagle 算法，只有当收到一个确认后，才将分组发送给对端，当发送方收集了多个较小的分组，就会一起发送给对端，这将会发生粘包。</p>
