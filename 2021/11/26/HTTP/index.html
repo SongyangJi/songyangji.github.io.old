@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">9.3k</span>
+            <span class="post-count">9.6k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">33 分钟</span>
+            <span class="post-count">34 分钟</span>
         </span>
     </span>
 </div>
@@ -640,6 +640,18 @@
 <p><strong>要，⽤来供客户端校验</strong>。</p>
 <p>⾄此，整个 SSL/TLS 的握⼿阶段全部结束。接下来，客户端与服务器进⼊加密通信，就完全是使⽤普通的 HTTP</p>
 <p>协议，只不过⽤「会话秘钥」加密内容。</p>
+<blockquote>
+<p>简洁版</p>
+<p>TLS握手协议 </p>
+<ol>
+<li>客户端发出一个 client hello 消息，携带的信息包括：所支持的 SSL/TLS 版本列表；支持的与加密算法；所支持的数据压缩方法；随机数 A。</li>
+<li>服务端响应一个 server hello 消息，携带的信息包括：协商采用的 SSL/TLS 版本号；会话 ID；随机数 B；服务端数字证书 serverCA；由于双向认证需求，服务端需要对客户端进行认证，会同时发送一个 client certificate request，表示请求客户端的证书。</li>
+<li>客户端校验服务端的数字证书；校验通过之后发送随机数 C，该随机数称为 pre-master-key，使用数字证书中的公钥加密后发出；由于服务端发起了 client certificate request，客户端使用私钥加密一个随机数 clientRandom 随客户端的证书 clientCA 一并发出。</li>
+<li>服务端校验客户端的证书，并成功将客户端加密的随机数 clientRandom 解密；根据随机数 A/随机数 B/随机数 C（pre-master-key） 产生动态密钥 master-key，加密一个 finish 消息发至客户端。</li>
+<li>客户端根据同样的随机数和算法生成 master-key，加密一个 finish 消息发送至服务端。</li>
+<li>服务端和客户端分别解密成功，至此握手完成，之后的数据包均采用 master-key 进行加密传输。</li>
+</ol>
+</blockquote>
 <h1 id="HTTP-1-1、HTTP-2、HTTP-3-演变"><a href="#HTTP-1-1、HTTP-2、HTTP-3-演变" class="headerlink" title="HTTP/1.1、HTTP/2、HTTP/3 演变"></a>HTTP/1.1、HTTP/2、HTTP/3 演变</h1><h2 id="HTTP-1-1-和-HTTP-1-0-的区别"><a href="#HTTP-1-1-和-HTTP-1-0-的区别" class="headerlink" title="HTTP/1.1 和 HTTP/1.0 的区别"></a>HTTP/1.1 和 HTTP/1.0 的区别</h2><ol>
 <li><p><strong>缓存处理</strong>：在 HTTP/1.0 中主要使用 header 里的 if-modified-Since, Expries 来做缓存判断的标准。而 HTTP/1.1 请求头中添加了更多与缓存相关的字段，从而支持更为灵活的缓存策略，例如 <code>Entity-tag</code>,<code> If-Unmodified-Since</code>, <code>If-Match</code>,<code> If-None-Match</code> 等可供选择的缓存头来控制缓存策略。</p>
 </li>

@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.1k</span>
+            <span class="post-count">1.5k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">4 分钟</span>
+            <span class="post-count">5 分钟</span>
         </span>
     </span>
 </div>
@@ -97,7 +97,18 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="下载、配置"><a href="#下载、配置" class="headerlink" title="下载、配置"></a>下载、配置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装必要的安装包</span></span><br><span class="line">brew tap mongodb/brew</span><br><span class="line">brew install mongodb-community</span><br></pre></td></tr></table></figure>
+  <h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><h3 id="1-灵活的模型"><a href="#1-灵活的模型" class="headerlink" title="1. 灵活的模型"></a>1. 灵活的模型</h3><p>区别于关系数据库最大的一个特点就是字段灵活变更，这就非常适合一些迭代频繁且数据模型多变的业务场景。例如我们直播的活动业务场景，当前直播活动越来越多，玩的花样也是越来越多，其实就很适合用mongoDB来做活动业务的数据存储。</p>
+<h3 id="2-json数据格式"><a href="#2-json数据格式" class="headerlink" title="2. json数据格式"></a>2. json数据格式</h3><p>mongoDB的数据存储都是json格式，非常适合微服务Restful Api。</p>
+<h3 id="3-横向扩展能力"><a href="#3-横向扩展能力" class="headerlink" title="3. 横向扩展能力"></a>3. 横向扩展能力</h3><p>与mysql的分库分表不同，它可以在业务代码不变更的情况下做自动水平扩展。能够很好的解决上文描述的两个场景<br>① 分表数据不均匀<br>② 分表数据过大要调整原有数据分布。</p>
+<p><strong>与关系型数据库相比，MongoDB的优点：</strong></p>
+<p>①. 弱一致性（最终一致），更能保证用户的访问速度；</p>
+<p>②. 文档结构的存储方式，能够更便捷的获取数据；</p>
+<p>对于一个层级式的数据结构来说，如果要将这样的数据使用扁平式的，表状的结构来保存数据，这无论是在查询还是获取数据时都十分困难。</p>
+<p>③. 内置GridFS，支持大容量的存储；</p>
+<p><strong>与关系型数据库相比，MongoDB的缺点：</strong></p>
+<p>①. mongodb不支持事务操作;</p>
+<p>②. mongodb占用空间过大;</p>
+<h1 id="下载、配置"><a href="#下载、配置" class="headerlink" title="下载、配置"></a>下载、配置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装必要的安装包</span></span><br><span class="line">brew tap mongodb/brew</span><br><span class="line">brew install mongodb-community</span><br></pre></td></tr></table></figure>
 
 <p>配置环境变量</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可能不一样</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/opt/homebrew/Cellar/mongodb-community/4.4.5/bin</span><br></pre></td></tr></table></figure>

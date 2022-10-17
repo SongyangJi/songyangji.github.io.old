@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">934</span>
+            <span class="post-count">1.7k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">6 分钟</span>
         </span>
     </span>
 </div>
@@ -118,6 +118,14 @@
 <li>序列号部分（12bit），自增值支持同一毫秒内同一个节点可以生成4096个ID</li>
 </ul>
 <p>根据这个算法的逻辑，只需要将这个算法用Java语言实现出来，封装为一个工具方法，那么各个业务应用可以直接使用该工具方法来获取分布式ID，只需保证每个业务应用有自己的工作机器id即可，而不需要单独去搭建一个获取分布式ID的应用。</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p><strong>效率高</strong><br>生成id的效率比较快，最高在1ms内可以生成2的12次方，也就是4096个id。<br><strong>不依赖其他组件</strong><br>生成id的过程中，主要是根据时间戳，workID，序列号来进行生成，可以做到不额外依赖其他组件，只依赖于本地系统时间独立地生成id。</p>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p><strong>易造成数据倾斜的问题</strong><br>举例：一个数据库中总共有10个id，分别是</p>
+<p>0，25，26，27，28，29，30，31，32，100</p>
+<p>id的最小值是0，最大值是100，按照id最大值减去最小值，进行范围切分，分成四段的话，范围是以下四个范围：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">[&#96;&#96;0&#96;&#96;,&#96;&#96;25&#96;&#96;), 存在&#96;&#96;1&#96;&#96;个id，值分别是&#96;&#96;0&#96; &#96;[&#96;&#96;25&#96;&#96;,&#96;&#96;50&#96;&#96;) 存在&#96;&#96;8&#96;&#96;个id，值分别是&#96;&#96;25&#96;&#96;，&#96;&#96;26&#96;&#96;，&#96;&#96;27&#96;&#96;，&#96;&#96;28&#96;&#96;，&#96;&#96;29&#96;&#96;，&#96;&#96;30&#96;&#96;，&#96;&#96;31&#96;&#96;，&#96;&#96;32&#96; &#96;[&#96;&#96;50&#96;&#96;,&#96;&#96;75&#96;&#96;),存在&#96;&#96;0&#96;&#96;个id [&#96;&#96;75&#96;&#96;,&#96;&#96;100&#96;&#96;] 存在&#96;&#96;1&#96;&#96;个&#96;&#96;100&#96;&#96;，值是&#96;&#96;100</span><br></pre></td></tr></table></figure>
+
+<p>这样明显就会存在数据倾斜的问题，就是[25,50) 这个区间存在的id数量特别多，而其他区间存在的id数量特别少。如果我们用Sqoop将MySQL中的数据导入到Hive中去时，就是按照这种id最大值减去最小值，进行范围切分实现方法进行数据分片，然后多线程进行数据导入，每个线程负责一个分片的数据，数据不均匀的话，导入的时间就会变长，有些线程分配的数据量少，导入很快，有些线程分配的数据量大导入很慢。总导入时间取决于最慢的那个线程的时间。</p>
+<p>使用Snowflake生成的id，id值的大小因为取决于生成id时的时间戳，如果某一个时间段爬取了大量文章进行入库，在很短的时候内生成了很多id，而其他时间段生成id数量很少，在使用Sqoop导入数据时就会有数据倾斜的问题，需要单独自己进行数据切分，让数据变均匀，然后进行导入。</p>
 <h1 id="号段模式"><a href="#号段模式" class="headerlink" title="号段模式"></a>号段模式</h1><p>号段模式是当下分布式ID生成器的主流实现方式之一，号段模式可以理解为<strong>从数据库批量的获取自增ID</strong>，每次从数据库取出一个号段范围，例如 [0,1000) 代表1000个ID，具体的业务服务将本号段，生成1~1000的自增ID并加载到内存。</p>
 <p>表结构如下：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> id_generator (</span><br><span class="line">  id <span class="type">int</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  max_id <span class="type">bigint</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;当前最大id&#x27;</span>,</span><br><span class="line">  step <span class="type">int</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;号段的布长&#x27;</span>,</span><br><span class="line">  biz_type	<span class="type">int</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;业务类型&#x27;</span>,</span><br><span class="line">  version <span class="type">int</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;版本号&#x27;</span>,</span><br><span class="line">  <span class="keyword">PRIMARY</span> KEY (`id`)</span><br><span class="line">) </span><br></pre></td></tr></table></figure>
@@ -143,6 +151,9 @@
 
 
 <p>由于多业务端可能同时操作，所以采用版本号<code>version</code>乐观锁方式更新，这种<code>分布式ID</code>生成方式不强依赖于数据库，不会频繁的访问数据库，对数据库的压力小很多。</p>
+<h2 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h2><p><strong>效率高</strong><br>生成id的效率取决于step的大小，不会像主键自增生成id那样再受限于数据库的数量。</p>
+<h2 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h2><p><strong>强依赖于数据库</strong><br>还是强依赖于数据库，数据库宕机后，虽然id生成系统靠内存中还未使用完id，可以维持系统正常运行一段时间，但是数据库不可用还是会导致整个系统不可用。</p>
+<p><strong>id是连续的</strong><br>容易造成被爬取，以及被竞争对手猜测出一天的订单量。</p>
 <h1 id="美团（Leaf）"><a href="#美团（Leaf）" class="headerlink" title="美团（Leaf）"></a>美团（Leaf）</h1><p>Leaf同时支持号段模式和snowflake算法模式，可以切换使用。</p>
  
       <!-- reward -->
@@ -218,6 +229,15 @@
 
    
   <nav class="article-nav">
+    
+      <a href="/2022/09/28/Linux%E7%BD%91%E7%BB%9C%E7%9B%91%E6%8E%A7/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Linux网络监控
+          
+        </div>
+      </a>
     
     
       <a href="/2022/09/27/%E9%98%B2%E9%87%8D%E4%B8%8E%E5%B9%82%E7%AD%89/" class="article-nav-link">

@@ -182,7 +182,8 @@
 <blockquote>
 <p>三层都在应用程序内实现，程序间无法共享，合三为一；</p>
 </blockquote>
-<h2 id="数据如何在各层之间传输（数据的封装过程）"><a href="#数据如何在各层之间传输（数据的封装过程）" class="headerlink" title="数据如何在各层之间传输（数据的封装过程）"></a>数据如何在各层之间传输（数据的封装过程）</h2><p>在发送主机端：</p>
+<h2 id="数据如何在各层之间传输（数据的封装过程）"><a href="#数据如何在各层之间传输（数据的封装过程）" class="headerlink" title="数据如何在各层之间传输（数据的封装过程）"></a>数据如何在各层之间传输（数据的封装过程）</h2><p><img src="https://upload-images.jianshu.io/upload_images/16902285-d74d1c1b8d27e037.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/684/format/webp"></p>
+<p>在发送主机端：</p>
 <ol>
 <li><p><strong>应用层</strong>向<strong>传输层</strong>传递应用层的报文：传输层收取到报文并附上附加信息，该首部将被接收端的传输层使用。应用层报文和传输层首部信息一道构成了传输层报文段。附加的信息可能包括：允许接收端传输层向上向适当的应用程序交付<strong>报文的信息</strong>以及<strong>差错检测位</strong>信息,该信息让接收端能够判断报文中的比特是否在途中已被改变。</p>
 </li>
