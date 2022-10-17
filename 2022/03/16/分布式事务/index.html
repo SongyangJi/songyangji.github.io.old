@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">6.1k</span>
+            <span class="post-count">7k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">21 分钟</span>
+            <span class="post-count">24 分钟</span>
         </span>
     </span>
 </div>
@@ -254,6 +254,7 @@
 <p><strong>2PC是偏数据库层面的，而TCC是纯业务层面。</strong></p>
 <p>TCC 事务机制相比于上面介绍的XA 事务机制，有以下优点： 性能提升：具体业务来实现控制资源锁的粒度变小，不会锁定整个资源。</p>
 </blockquote>
+<p>TCC是一种比较成熟的分布式事务解决方案，可用于解决跨库操作的数据一致性问题；<br>TCC是服务化的两阶段编程模型，其Try、Confirm、Cancel 3个方法均由业务编码实现；<br>其中Try操作作为一阶段，负责资源的检查和预留，Confirm操作作为二阶段提交操作，执行真正的业务，Cancel是预留资源的取消；</p>
 <p>TCC 是服务化的二阶段编程模型，采用的补偿机制。（所谓 TCC 模式，是指支持把 <strong>自定义</strong> 的分支事务纳入到全局事务的管理中）</p>
 <p>关于 TCC（Try-Confirm-Cancel）的概念，最早是由 Pat Helland 于 2007 年发表的一篇名为《Life beyond Distributed Transactions:an Apostate’s Opinion》的论文提出。<br>TCC 事务机制相比于上面介绍的 XA，解决了其几个缺点：</p>
 <ol>
@@ -272,6 +273,19 @@
 <p>Try 尝试执行业务。</p>
 <h3 id="Confirm-阶段"><a href="#Confirm-阶段" class="headerlink" title="Confirm 阶段"></a>Confirm 阶段</h3><p>确认执行真正执行业务，不作任何业务检查，只使用 Try 阶段预留的业务资源，Confirm 操作满足幂等性。要求具备幂等设计，Confirm 失败后需要进行重试。</p>
 <h3 id="Cancel-阶段"><a href="#Cancel-阶段" class="headerlink" title="Cancel 阶段"></a>Cancel 阶段</h3><p>取消执行，释放 Try 阶段预留的业务资源 Cancel 操作满足幂等性 Cancel 阶段的异常和 Confirm 阶段异常处理方案基本上一致。</p>
+<h2 id="实现注意事项"><a href="#实现注意事项" class="headerlink" title="实现注意事项"></a>实现注意事项</h2><h3 id="1、业务操作分两阶段完成"><a href="#1、业务操作分两阶段完成" class="headerlink" title="1、业务操作分两阶段完成"></a>1、业务操作分两阶段完成</h3><p>如下图所示，接入TCC前，业务操作只需要一步就能完成，但是在接入TCC之后，需要考虑如何将其分成2阶段完成，把资源的检查和预留放在一阶段的Try操作中进行，把真正的业务操作的执行放在二阶段的Confirm操作中进行；</p>
+<p><img src="https://yqfile.alicdn.com/1d374e0667107a41eea95f7457e87845733d4788.png"></p>
+<p><strong>TCC服务要保证第一阶段Try操作成功之后，二阶段Confirm操作一定能成功。</strong></p>
+<h3 id="2、允许空回滚"><a href="#2、允许空回滚" class="headerlink" title="2、允许空回滚"></a>2、允许空回滚</h3><p>如下图所示，事务协调器在调用TCC服务的一阶段Try操作时，可能会出现因为丢包而导致的网络超时，此时事务协调器会触发二阶段回滚，调用TCC服务的Cancel操作；</p>
+<p>TCC服务在未收到Try请求的情况下收到Cancel请求，这种场景被称为空回滚；TCC服务在实现时应当允许空回滚的执行。（为什么要允许空回滚？分支事务有的confirm过，有的try执行过后可能都没有响应，这个时候全部分支事务都需要回滚，所以就要做到那些未confirm的分支事务的空回滚）</p>
+<p><img src="https://yqfile.alicdn.com/d58efe4a70432198b57381e85e94018ae6999df7.png"></p>
+<h3 id="3、防悬挂控制"><a href="#3、防悬挂控制" class="headerlink" title="3、防悬挂控制"></a>3、防悬挂控制</h3><p>如下图所示，事务协调器在调用TCC服务的一阶段Try操作时，可能会出现因网络拥堵而导致的超时，此时事务协调器会触发二阶段回滚，调用TCC服务的Cancel操作；在此之后，拥堵在网络上的一阶段Try数据包被TCC服务收到，出现了二阶段Cancel请求比一阶段Try请求先执行的情况；</p>
+<p>用户在实现TCC服务时，应当允许空回滚，但是要拒绝执行空回滚之后到来的一阶段Try请求；</p>
+<p><img src="https://yqfile.alicdn.com/591e0fa1ddabafd517d3e3e4a1c1e44c3ef2c8f8.png"></p>
+<h3 id="4、幂等控制"><a href="#4、幂等控制" class="headerlink" title="4、幂等控制"></a>4、幂等控制</h3><p>无论是网络数据包重传，还是异常事务的补偿执行，都会导致TCC服务的Try、Confirm或者Cancel操作被重复执行；用户在实现TCC服务时，需要考虑幂等控制，即Try、Confirm、Cancel 执行一次和执行多次的业务结果是一样的；<br><img src="https://yqfile.alicdn.com/5a9b1eaa651a3bce1b8d4e47f38887bc9935b51d.png"></p>
+<h3 id="5、业务数据可见性控制；"><a href="#5、业务数据可见性控制；" class="headerlink" title="5、业务数据可见性控制；"></a>5、业务数据可见性控制；</h3><p>TCC服务的一阶段Try操作会做资源的预留，在二阶段操作执行之前，如果其他事务需要读取被预留的资源数据，那么处于中间状态的业务数据该如何向用户展示，需要业务在实现时考虑清楚；通常的设计原则是“宁可不展示、少展示，也不多展示、错展示”；</p>
+<h3 id="6、业务数据并发访问控制；"><a href="#6、业务数据并发访问控制；" class="headerlink" title="6、业务数据并发访问控制；"></a>6、业务数据并发访问控制；</h3><p>TCC服务的一阶段Try操作预留资源之后，在二阶段操作执行之前，预留的资源都不会被释放；如果此时其他分布式事务修改这些业务资源，会出现分布式事务的并发问题；</p>
+<p>用户在实现TCC服务时，需要考虑业务数据的并发控制，尽量将逻辑锁粒度降到最低，以最大限度的提高分布式事务的并发性；</p>
 <h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
 <li>性能提升：具体业务来实现控制资源锁的粒度变小，不会锁定整个资源。</li>
 <li>数据最终一致性：基于 Confirm 和 Cancel 的幂等性，保证事务最终完成确认或者取消，保证数据的一致性。</li>
