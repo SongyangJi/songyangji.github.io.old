@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Redis大Key问题 |  JsyBlog
+    Redis的热key问题 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,7 +43,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-Redis大Key问题"
+  id="post-Redis的热key问题"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -54,15 +54,15 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Redis大Key问题
+  Redis的热key问题
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2022/09/21/Redis%E5%A4%A7Key%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2022-09-21T07:14:47.000Z" itemprop="datePublished">2022-09-21</time>
+      <a href="/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2022-08-13T15:50:26.000Z" itemprop="datePublished">2022-08-13</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/Redis/">Redis</a>
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">11</span>
+            <span class="post-count">1.7k</span>
         </span>
     </span>
 
@@ -82,13 +82,15 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">6 分钟</span>
         </span>
     </span>
 </div>
  
     </div>
       
+    <div class="tocbot"></div>
+
 
 
 
@@ -96,8 +98,89 @@
     <div class="article-entry" itemprop="articleBody">
        
   <blockquote>
-<p>参考文章</p>
-<p><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/353223.html">https://help.aliyun.com/document_detail/353223.html</a></p>
+<p>上面提到，所谓热key问题就是，突然有几十万的请求去访问redis上的某个特定key。那么，这样会造成流量过于集中，达到物理网卡上限，从而导致这台redis的服务器宕机。那接下来这个key的请求，就会直接怼到你的数据库上，导致你的服务不可用。</p>
+</blockquote>
+<h2 id="热Key的危害"><a href="#热Key的危害" class="headerlink" title="热Key的危害"></a>热Key的危害</h2><ul>
+<li>流量集中，达到服务器处理上限（<code>CPU</code>、网络 <code>IO</code> 等）；</li>
+<li>会影响在同一个 <code>Redis</code> 实例上其他 <code>Key</code> 的读写请求操作；</li>
+<li>热 <code>Key</code> 请求落到同一个 <code>Redis</code> 实例上，无法通过扩容解决；</li>
+<li>大量 <code>Redis</code> 请求失败，查询操作可能打到数据库，拖垮数据库，导致整个服务不可用。</li>
+</ul>
+<h2 id="如何发现热Key"><a href="#如何发现热Key" class="headerlink" title="如何发现热Key"></a>如何发现热Key</h2><h3 id="凭借业务经验，预估热-Key-出现"><a href="#凭借业务经验，预估热-Key-出现" class="headerlink" title="凭借业务经验，预估热 Key 出现"></a>凭借业务经验，预估热 Key 出现</h3><p>根据业务系统上线的一些活动和功能，我们是可以在某些场景下提前预估热 <code>Key</code> 的出现的，比如业务需要进行一场商品秒杀活动，秒杀商品信息和数量一般都会缓存到 <code>Redis</code> 中，这种场景极有可能出现热 <code>Key</code> 问题的。</p>
+<ul>
+<li>优点：简单，凭经验发现热 <code>Key</code>，提早发现提早处理；</li>
+<li>缺点：没有办法预测所有热 <code>Key</code> 出现，比如某些热点新闻事件，无法提前预测。</li>
+</ul>
+<h3 id="客户端进行收集"><a href="#客户端进行收集" class="headerlink" title="客户端进行收集"></a>客户端进行收集</h3><p>一般我们在连接 <code>Redis</code> 服务器时都要使用专门的 SDK（比如：<code>Java</code> 的客户端工具 <code>Jedis</code>、<code>Redisson</code>），我们可以对客户端工具进行封装，在发送请求前进行收集采集，同时定时把收集到的数据上报到统一的服务进行聚合计算。</p>
+<ul>
+<li>优点：方案简单</li>
+<li>缺点：<ul>
+<li>对客户端代码有一定入侵，或者需要对 <code>SDK</code> 工具进行二次开发；</li>
+<li>没法适应多语言架构，每一种语言的 <code>SDK</code> 都需要进行开发，后期开发维护成本较高。</li>
+</ul>
+</li>
+</ul>
+<h3 id="在代理层进行收集"><a href="#在代理层进行收集" class="headerlink" title="在代理层进行收集"></a>在代理层进行收集</h3><p>如果所有的 <code>Redis</code> 请求都经过 <code>Proxy</code>（代理）的话，可以考虑改动 <code>Proxy</code> 代码进行收集，思路与客户端基本类似。</p>
+<p><img src="https://gitee.com/dongzl/article-images/raw/master/2021/03-Redis-Hot-Key/Redis-Hot-Key-02.png" alt="img"></p>
+<ul>
+<li>优点：对使用方完全透明，能够解决客户端 <code>SDK</code> 的语言异构和版本升级问题；</li>
+<li>缺点：<ul>
+<li>开发成本会比客户端高些；</li>
+<li>并不是所有的 <code>Redis</code> 集群架构中都有 <code>Proxy</code> 代理（使用这种方式必须要部署 <code>Proxy</code>）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用-Redis-自带命令"><a href="#使用-Redis-自带命令" class="headerlink" title="使用 Redis 自带命令"></a>使用 Redis 自带命令</h3><ol>
+<li><strong>hotkeys 参数</strong></li>
+</ol>
+<p><code>Redis</code> 在 <code>4.0.3</code> 版本中添加了 <a target="_blank" rel="noopener" href="https://github.com/redis/redis/pull/4392">hotkeys</a> 查找特性，可以直接利用 <code>redis-cli --hotkeys</code> 获取当前 <code>keyspace</code> 的热点 <code>key</code>，实现上是通过 <code>scan + object freq</code> 完成的。</p>
+<ul>
+<li>优点：无需进行二次开发，能够直接利用现成的工具；</li>
+<li>缺点：<ul>
+<li>由于需要扫描整个 <code>keyspace</code>，实时性上比较差;</li>
+<li>扫描时间与 <code>key</code> 的数量正相关，如果 <code>key</code> 的数量比较多，耗时可能会非常长。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>hotkeys<br><a target="_blank" rel="noopener" href="https://www.zhangbj.com/p/765.html">https://www.zhangbj.com/p/765.html</a></p>
+</blockquote>
+<ol start="2">
+<li><a target="_blank" rel="noopener" href="https://redis.io/commands/monitor">monitor</a> 命令</li>
+</ol>
+<p><code>monitor</code> 命令可以实时抓取出 <code>Redis</code> 服务器接收到的命令，通过 <code>redis-cli monitor</code> 抓取数据，同时结合一些现成的分析工具，比如 <a target="_blank" rel="noopener" href="https://github.com/facebookarchive/redis-faina">redis-faina</a>，统计出热 Key。</p>
+<ul>
+<li>优点：无需进行二次开发，能够直接利用现成的工具；</li>
+<li>缺点：该命令在高并发的条件下，有内存增暴增的隐患，还会降低 <code>Redis</code> 的性能。</li>
+</ul>
+<h3 id="Redis-节点抓包分析"><a href="#Redis-节点抓包分析" class="headerlink" title="Redis 节点抓包分析"></a>Redis 节点抓包分析</h3><p><code>Redis</code> 客户端使用 <code>TCP</code> 协议与服务端进行交互，通信协议采用的是 <code>RESP</code> 协议。自己写程序监听端口，按照 <code>RESP</code> 协议规则解析数据，进行分析。或者我们可以使用一些抓包工具，比如 <code>tcpdump</code> 工具，抓取一段时间内的流量进行解析。</p>
+<ul>
+<li>优点：对 <code>SDK</code> 或者 <code>Proxy</code> 代理层没有入侵；</li>
+<li>缺点：<ul>
+<li>有一定的开发成本；</li>
+<li>热 <code>Key</code> 节点的网络流量和系统负载已经比较高了，抓包可能会导致情况进一步恶化。</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h2><h3 id="增加-Redis-实例副本数量"><a href="#增加-Redis-实例副本数量" class="headerlink" title="增加 Redis 实例副本数量"></a>增加 Redis 实例副本数量</h3><p>对于出现热 <code>Key</code> 的 <code>Redis</code> 实例，我们可以通过水平扩容增加副本数量，将读请求的压力分担到不同副本节点上。</p>
+<p>(通过<strong>主从复制-读写分离</strong>，将读请求分散多个机器上。)</p>
+<h3 id="二级缓存（本地缓存）"><a href="#二级缓存（本地缓存）" class="headerlink" title="二级缓存（本地缓存）"></a>二级缓存（本地缓存）</h3><p>当出现热 <code>Key</code> 以后，把热 <code>Key</code> 加载到系统的 <code>JVM</code> 中。后续针对这些热 <code>Key</code> 的请求，会直接从 <code>JVM</code> 中获取，而不会走到 <code>Redis</code> 层。这些本地缓存的工具很多，比如 <code>Ehcache</code>，或者 <code>Google Guava</code> 中 <code>Cache</code> 工具，或者直接使用 <code>HashMap</code> 作为本地缓存工具都是可以的。</p>
+<p><strong>使用本地缓存需要注意两个问题：</strong></p>
+<ul>
+<li>如果对热 <code>Key</code> 进行本地缓存，需要防止本地缓存过大，影响系统性能；</li>
+<li>需要处理本地缓存和 <code>Redis</code> 集群数据的一致性问题。</li>
+</ul>
+<h3 id="热-Key-备份"><a href="#热-Key-备份" class="headerlink" title="热 Key 备份"></a>热 Key 备份</h3><p>通过前面的分析，我们可以了解到，之所以出现热 <code>Key</code>，是因为有大量的对同一个 <code>Key</code> 的请求落到同一个 <code>Redis</code> 实例上，如果我们可以有办法将这些请求打散到不同的实例上，防止出现流量倾斜的情况，那么热 <code>Key</code> 问题也就不存在了。</p>
+<p>那么如何将对某个热 <code>Key</code> 的请求打散到不同实例上呢？我们就可以通过热 <code>Key</code> 备份的方式，基本的思路就是，我们<strong>可以给热 <code>Key</code> 加上前缀或者后缀，把一个热 <code>Key</code> 的数量变成 <code>Redis</code> 实例个数 <code>N</code> 的倍数 <code>M</code>，从而由访问一个 <code>Redis</code> <code>Key</code> 变成访问 <code>N * M</code> 个 <code>Redis</code> <code>Key</code>。 <code>N * M</code> 个 <code>Redis</code> <code>Key</code> 经过分片分布到不同的实例上，将访问量均摊到所有实例</strong>。</p>
+<p>具体的逻辑：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// N 为 Redis 实例个数，M 为 N 的 <span class="number">2</span>倍</span><br><span class="line">const M = N * <span class="number">2</span></span><br><span class="line">//生成随机数</span><br><span class="line"><span class="built_in">random</span> = GenRandom(<span class="number">0</span>, M)</span><br><span class="line">//构造备份新 Key</span><br><span class="line">bakHotKey = hotKey + <span class="string">&quot;_&quot;</span> + <span class="built_in">random</span></span><br><span class="line">// 先从备份key中取</span><br><span class="line">data = redis.GET(bakHotKey)</span><br><span class="line"><span class="keyword">if</span> data == NULL &#123;</span><br><span class="line">    data = redis.GET(hotKey)</span><br><span class="line">    <span class="keyword">if</span> data == NULL &#123;</span><br><span class="line">        data = GetFromDB()</span><br><span class="line">        // 可以利用原子锁来写入数据保证数据一致性</span><br><span class="line">        redis.SET(hotKey, data, expireTime)</span><br><span class="line">        redis.SET(bakHotKey, data, expireTime + GenRandom(<span class="number">0</span>, <span class="number">5</span>))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        redis.SET(bakHotKey, data, expireTime + GenRandom(<span class="number">0</span>, <span class="number">5</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在这段代码中，通过一个大于等于 <code>1</code> 小于 <code>M</code> 的随机数，得到一个 <code>bakHotKey</code>，程序会优先访问 <code>bakHotKey</code>，在得不到数据的情况下，再访问原来的 <code>hotkey</code>，并将 <code>hotkey</code> 的内容写回 <code>bakHotKey</code>。</p>
+<p>值得注意的是，<code>backHotKey</code> 的过期时间是 <code>hotkey</code> 的过期时间加上一个较小的随机正整数，这是通过坡度过期的方式，保证在 <code>hotkey</code> 过期时，所有 <code>backHotKey</code> 不会同时过期而造成缓存雪崩。</p>
+<blockquote>
+<p>参考博客</p>
 </blockquote>
  
       <!-- reward -->
@@ -163,7 +246,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/09/21/Redis%E5%A4%A7Key%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -176,19 +259,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/" class="article-nav-link">
+      <a href="/2022/08/13/Rabbitmq%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            操作系统——页面置换算法
+            Rabbitmq消息模型
           
         </div>
       </a>
     
     
-      <a href="/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/" class="article-nav-link">
+      <a href="/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Redis的实战小例子</div>
+        <div class="article-nav-title">面试场景算法</div>
       </a>
     
   </nav>
