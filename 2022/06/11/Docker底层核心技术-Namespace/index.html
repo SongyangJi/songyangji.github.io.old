@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">362</span>
+            <span class="post-count">2.5k</span>
         </span>
     </span>
 
@@ -82,20 +82,25 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">10 分钟</span>
         </span>
     </span>
 </div>
  
     </div>
       
+    <div class="tocbot"></div>
+
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p><code>Linux Namespace</code> 是 Linux 提供的一种内核级别环境隔离的方法。用官方的话来说，Linux Namespace 将全局系统资源封装在一个抽象中，从而使 namespace 内的进程认为自己具有独立的资源实例。这项技术本来没有掀起多大的波澜，是容器技术的崛起让他重新引起了大家的注意。</p>
+  <blockquote>
+<p>我们知道， Docker 是使用 Linux 的 Namespace 技术实现各种资源隔离的。那么究竟什么是 Namespace，各种 Namespace 都有什么作用，为什么 Docker 需要 Namespace呢？</p>
+</blockquote>
+<h1 id="什么是-Namespace？"><a href="#什么是-Namespace？" class="headerlink" title="什么是 Namespace？"></a>什么是 Namespace？</h1><p><code>Linux Namespace</code> 是 Linux 提供的一种内核级别环境隔离的方法。用官方的话来说，Linux Namespace 将全局系统资源封装在一个抽象中，从而使 namespace 内的进程认为自己具有独立的资源实例。这项技术本来没有掀起多大的波澜，是容器技术的崛起让他重新引起了大家的注意。</p>
 <p>Linux Namespace 有如下 6 个种类：</p>
 <table>
 <thead>
@@ -136,7 +141,8 @@
 <td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=5AgrP7X98up/uyck268Z9w==.Iem7g4brwXF4ER+OhdjlTQLCWYQSqFcei5K3MT5e9pA=">始于 Linux 2.6.23 完成于 Linux 3.8</a></td>
 </tr>
 </tbody></table>
-<p>namespace 的 API 由三个系统调用和一系列 <code>/proc</code> 文件组成，本文将会详细介绍这些系统调用和 <code>/proc</code> 文件。为了指定要操作的 namespace 类型，需要在系统调用的 flag 中通过常量 <code>CLONE_NEW*</code> 指定（包括 <code>CLONE_NEWIPC</code>，<code>CLONE_NEWNS</code>， <code>CLONE_NEWNET</code>，<code>CLONE_NEWPID</code>，<code>CLONE_NEWUSER</code> 和 `CLONE_NEWUTS），可以指定多个常量，通过 **|**（位或）操作来实现。</p>
+<p><strong>namespace 的 API 由三个系统调用和一系列 <code>/proc</code> 文件组成</strong>。</p>
+<p>本文将会详细介绍这些系统调用和 <code>/proc</code> 文件。为了指定要操作的 namespace 类型，需要在系统调用的 flag 中通过常量 <code>CLONE_NEW*</code> 指定（包括 <code>CLONE_NEWIPC</code>，<code>CLONE_NEWNS</code>， <code>CLONE_NEWNET</code>，<code>CLONE_NEWPID</code>，<code>CLONE_NEWUSER</code> 和 `CLONE_NEWUTS），可以指定多个常量，通过 **|**（位或）操作来实现。</p>
 <p>简单描述一下三个系统调用的功能：</p>
 <ul>
 <li><strong>clone()</strong> : 实现线程的系统调用，用来创建一个新的进程，并可以通过设计上述系统调用参数达到隔离的目的。</li>
@@ -144,6 +150,79 @@
 <li><strong>setns()</strong> : 把某进程加入到某个 namespace。</li>
 </ul>
 <p>具体的实现原理请往下看。</p>
+<h1 id="各种-Namespace-的作用？"><a href="#各种-Namespace-的作用？" class="headerlink" title="各种 Namespace 的作用？"></a>各种 Namespace 的作用？</h1><h2 id="Mount-Namespace"><a href="#Mount-Namespace" class="headerlink" title="Mount Namespace"></a>Mount Namespace</h2><p>Mount Namespace 是 Linux 内核实现的第一个 Namespace，从内核的 2.4.19 版本开始加入。它可以用来隔离不同的进程或进程组看到的挂载点。通俗地说，就是可以实现在不同的进程中看到不同的挂载目录。使用 Mount Namespace 可以实现容器内只能看到自己的挂载信息，在容器内的挂载操作不会影响主机的挂载目录。</p>
+<h2 id="PID-Namespace"><a href="#PID-Namespace" class="headerlink" title="PID Namespace"></a>PID Namespace</h2><p>PID Namespace 的作用是用来隔离进程。在不同的 PID Namespace 中，进程可以拥有相同的 PID 号，利用 PID Namespace 可以实现每个容器的主进程为 1 号进程，而容器内的进程在主机上却拥有不同的PID。例如一个进程在主机上 PID 为 122，使用 PID Namespace 可以实现该进程在容器内看到的 PID 为 1。</p>
+<p>下面我们通过一个实例来演示下 PID Namespace的作用。首先我们使用以下命令创建一个 bash 进程，并且新建一个 PID Namespace：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo unshare --pid --fork --mount-proc &#x2F;bin&#x2F;bash</span><br><span class="line"></span><br><span class="line">[root@centos7 centos]#</span><br></pre></td></tr></table></figure>
+
+<p>执行完上述命令后，我们在主机上创建了一个新的 PID Namespace，并且当前命令行窗口加入了新创建的 PID Namespace。在当前的命令行窗口使用 ps aux 命令查看一下进程信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 centos]# ps aux</span><br><span class="line"></span><br><span class="line">USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND</span><br><span class="line"></span><br><span class="line">root         1  0.0  0.0 115544  2004 pts&#x2F;0    S    10:57   0:00 bash</span><br><span class="line"></span><br><span class="line">root        10  0.0  0.0 155444  1764 pts&#x2F;0    R+   10:59   0:00 ps aux</span><br></pre></td></tr></table></figure>
+
+<p>通过上述命令输出结果可以看到当前 Namespace 下 bash 为 1 号进程，而且我们也看不到主机上的其他进程信息。</p>
+<h2 id="UTS-Namespace"><a href="#UTS-Namespace" class="headerlink" title="UTS Namespace"></a>UTS Namespace</h2><p>UTS Namespace 主要是用来隔离主机名的，它允许每个 UTS Namespace 拥有一个独立的主机名。例如我们的主机名称为 docker，使用 UTS Namespace 可以实现在容器内的主机名称为 lagoudocker 或者其他任意自定义主机名。</p>
+<p>同样我们通过一个实例来验证下 UTS Namespace 的作用，首先我们使用 unshare 命令来创建一个 UTS Namespace：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo unshare --uts --<span class="keyword">fork</span> /bin/bash</span><br><span class="line"></span><br><span class="line">[root@centos7 centos]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>创建好 UTS Namespace 后，当前命令行窗口已经处于一个独立的 UTS Namespace 中，下面我们使用 hostname 命令（hostname 可以用来查看主机名称）设置一下主机名：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@centos7 centos]<span class="comment"># hostname -b lagoudocker</span></span><br></pre></td></tr></table></figure>
+
+<p>然后再查看一下主机名：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">root@centos7 centos</span>]<span class="meta"># hostname</span></span><br><span class="line"></span><br><span class="line">lagoudocker</span><br></pre></td></tr></table></figure>
+
+<p>通过上面命令的输出，我们可以看到当前UTS Namespace 内的主机名已经被修改为 lagoudocker。然后我们新打开一个命令行窗口，使用相同的命令查看一下主机的 hostname：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[centos<span class="variable">@centos7</span> ~]<span class="variable">$ </span>hostname</span><br><span class="line"></span><br><span class="line">centos7</span><br></pre></td></tr></table></figure>
+
+<p>可以看到主机的名称仍然为 centos7，并没有被修改。由此，可以验证 UTS Namespace 可以用来隔离主机名。</p>
+<h2 id="IPC-Namespace"><a href="#IPC-Namespace" class="headerlink" title="IPC Namespace"></a>IPC Namespace</h2><p>IPC Namespace 主要是用来隔离进程间通信的。例如 PID Namespace 和 IPC Namespace 一起使用可以实现同一 IPC Namespace 内的进程彼此可以通信，不同 IPC Namespace 的进程却不能通信。</p>
+<p>同样我们通过一个实例来验证下IPC Namespace的作用，首先我们使用 unshare 命令来创建一个 IPC Namespace：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo unshare --ipc --<span class="keyword">fork</span> /bin/bash</span><br><span class="line"></span><br><span class="line">[root@centos7 centos]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>下面我们需要借助两个命令来实现对 IPC Namespace 的验证。</p>
+<ul>
+<li>ipcs -q 命令：用来查看系统间通信队列列表。</li>
+<li>ipcmk -Q 命令：用来创建系统间通信队列。</li>
+</ul>
+<p>我们首先使用 ipcs -q 命令查看一下当前 IPC Namespace 下的系统通信队列列表：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[centos<span class="variable">@centos7</span> ~]<span class="variable">$ </span>ipcs -q</span><br><span class="line"></span><br><span class="line">------ Message Queues --------</span><br><span class="line"></span><br><span class="line">key        msqid      owner      perms      used-bytes   messages</span><br></pre></td></tr></table></figure>
+
+<p>由上可以看到当前无任何系统通信队列，然后我们使用 ipcmk -Q 命令创建一个系统通信队列：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 centos]<span class="comment"># ipcmk -Q</span></span><br><span class="line"></span><br><span class="line">Message queue id: 0</span><br></pre></td></tr></table></figure>
+
+<p>再次使用 ipcs -q 命令查看当前 IPC Namespace 下的系统通信队列列表：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">root@centos7 centos</span>]<span class="meta"># ipcs -q</span></span><br><span class="line"></span><br><span class="line">------ Message Queues --------</span><br><span class="line"></span><br><span class="line">key        msqid      owner      perms      used-bytes   messages</span><br><span class="line"></span><br><span class="line"><span class="number">0x73682a32</span> <span class="number">0</span>          root       <span class="number">644</span>        <span class="number">0</span>            <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到我们已经成功创建了一个系统通信队列。然后我们新打开一个命令行窗口，使用ipcs -q 命令查看一下主机的系统通信队列：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[centos<span class="variable">@centos7</span> ~]<span class="variable">$ </span>ipcs -q</span><br><span class="line"></span><br><span class="line">------ Message Queues --------</span><br><span class="line"></span><br><span class="line">key        msqid      owner      perms      used-bytes   messages</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的实验，可以发现，在单独的 IPC Namespace 内创建的系统通信队列在主机上无法看到。即 IPC Namespace 实现了系统通信队列的隔离。</p>
+<h2 id="User-Namespace"><a href="#User-Namespace" class="headerlink" title="User Namespace"></a>User Namespace</h2><p>User Namespace 主要是用来隔离用户和用户组的。一个比较典型的应用场景就是在主机上以非 root 用户运行的进程可以在一个单独的 User Namespace 中映射成 root 用户。使用 User Namespace 可以实现进程在容器内拥有 root 权限，而在主机上却只是普通用户。</p>
+<p>User Namesapce 的创建是可以不使用 root 权限的。下面我们以普通用户的身份创建一个 User Namespace，命令如下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[centos<span class="variable">@centos7</span> ~]<span class="variable">$ </span>unshare --user -r /bin/bash</span><br><span class="line"></span><br><span class="line">[root<span class="variable">@centos7</span> ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>CentOS7 默认允许创建的 User Namespace 为 0，如果执行上述命令失败（ unshare 命令返回的错误为 unshare: unshare failed: Invalid argument ），需要使用以下命令修改系统允许创建的 User Namespace 数量，命令为：echo 65535 &gt; /proc/sys/user/max_user_namespaces，然后再次尝试创建 User Namespace。</p>
+</blockquote>
+<p>然后执行 id 命令查看一下当前的用户信息：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[root@centos7 ~]</span><span class="comment"># id</span></span><br><span class="line"></span><br><span class="line"><span class="attr">uid</span>=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root),<span class="number">65534</span>(nfsnobody) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的输出可以看到我们在新的 User Namespace 内已经是 root 用户了。下面我们使用只有主机 root 用户才可以执行的 reboot 命令来验证一下，在当前命令行窗口执行 reboot 命令：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">root@centos7 ~</span>]<span class="meta"># reboot</span></span><br><span class="line"></span><br><span class="line">Failed to open /dev/initctl: Permission denied</span><br><span class="line"></span><br><span class="line">Failed to talk to <span class="keyword">init</span> daemon.</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们在新创建的 User Namespace 内虽然是 root 用户，但是并没有权限执行 reboot 命令。这说明在隔离的 User Namespace 中，并不能获取到主机的 root 权限，也就是说 User Namespace 实现了用户和用户组的隔离。</p>
+<h2 id="Net-Namespace"><a href="#Net-Namespace" class="headerlink" title="Net Namespace"></a>Net Namespace</h2><p>Net Namespace 是用来隔离网络设备、IP 地址和端口等信息的。Net Namespace 可以让每个进程拥有自己独立的 IP 地址，端口和网卡信息。例如主机 IP 地址为 172.16.4.1 ，容器内可以设置独立的 IP 地址为 192.168.1.1。</p>
+<p>同样用实例验证，我们首先使用 ip a 命令查看一下主机上的网络信息：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">$ ip a</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>: lo: <span class="operator">&lt;</span>LOOPBACK,UP,LOWER_UP<span class="operator">&gt;</span> mtu <span class="number">65536</span> qdisc noqueue state <span class="literal">UNKNOWN</span> <span class="keyword">group</span> <span class="keyword">default</span> qlen <span class="number">1000</span></span><br><span class="line"></span><br><span class="line">    link<span class="operator">/</span>loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"></span><br><span class="line">    inet <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="operator">/</span><span class="number">8</span> <span class="keyword">scope</span> host lo</span><br><span class="line"></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line">    inet6 ::<span class="number">1</span><span class="operator">/</span><span class="number">128</span> <span class="keyword">scope</span> host</span><br><span class="line"></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>: eth0: <span class="operator">&lt;</span>BROADCAST,MULTICAST,UP,LOWER_UP<span class="operator">&gt;</span> mtu <span class="number">1500</span> qdisc pfifo_fast state UP <span class="keyword">group</span> <span class="keyword">default</span> qlen <span class="number">1000</span></span><br><span class="line"></span><br><span class="line">    link<span class="operator">/</span>ether <span class="number">02</span>:<span class="number">11</span>:b0:<span class="number">14</span>:<span class="number">01</span>:<span class="number">0</span>c brd ff:ff:ff:ff:ff:ff</span><br><span class="line"></span><br><span class="line">    inet <span class="number">172.20</span><span class="number">.1</span><span class="number">.11</span><span class="operator">/</span><span class="number">24</span> brd <span class="number">172.20</span><span class="number">.1</span><span class="number">.255</span> <span class="keyword">scope</span> <span class="keyword">global</span> <span class="keyword">dynamic</span> eth0</span><br><span class="line"></span><br><span class="line">       valid_lft <span class="number">86063337</span>sec preferred_lft <span class="number">86063337</span>sec</span><br><span class="line"></span><br><span class="line">    inet6 fe80::<span class="number">11</span>:b0ff:fe14:<span class="number">10</span>c<span class="operator">/</span><span class="number">64</span> <span class="keyword">scope</span> link</span><br><span class="line"></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>: docker0: <span class="operator">&lt;</span><span class="keyword">NO</span><span class="operator">-</span>CARRIER,BROADCAST,MULTICAST,UP<span class="operator">&gt;</span> mtu <span class="number">1500</span> qdisc noqueue state DOWN <span class="keyword">group</span> <span class="keyword">default</span></span><br><span class="line"></span><br><span class="line">    link<span class="operator">/</span>ether <span class="number">02</span>:<span class="number">42</span>:<span class="number">82</span>:<span class="number">8</span>d:a0:df brd ff:ff:ff:ff:ff:ff</span><br><span class="line"></span><br><span class="line">    inet <span class="number">172.17</span><span class="number">.0</span><span class="number">.1</span><span class="operator">/</span><span class="number">16</span> <span class="keyword">scope</span> <span class="keyword">global</span> docker0</span><br><span class="line"></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line">    inet6 fe80::<span class="number">42</span>:<span class="number">82</span>ff:fe8d:a0df<span class="operator">/</span><span class="number">64</span> <span class="keyword">scope</span> link</span><br><span class="line"></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<p>然后我们使用以下命令创建一个 Net Namespace：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo unshare --net --<span class="keyword">fork</span> /bin/bash</span><br><span class="line"></span><br><span class="line">[root@centos7 centos]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>同样的我们使用 ip a 命令查看一下网络信息：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">root@centos7 centos</span>]<span class="meta"># ip a</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN <span class="keyword">group</span> <span class="literal">default</span> qlen <span class="number">1000</span></span><br><span class="line"></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，宿主机上有 lo、eth0、docker0 等网络设备，而我们新建的 Net Namespace 内则与主机上的网络设备不同。</p>
+<h1 id="为什么-Docker-需要-Namespace？"><a href="#为什么-Docker-需要-Namespace？" class="headerlink" title="为什么 Docker 需要 Namespace？"></a>为什么 Docker 需要 Namespace？</h1><p>Linux 内核从 2002 年 2.4.19 版本开始加入了 Mount Namespace，而直到内核 3.8 版本加入了 User Namespace 才为容器提供了足够的支持功能。</p>
+<p>当 Docker 新建一个容器时， 它会创建这六种 Namespace，然后将容器中的进程加入这些 Namespace 之中，使得 Docker 容器中的进程只能看到当前 Namespace 中的系统资源。</p>
+<p>正是由于 Docker 使用了 Linux 的这些 Namespace 技术，才实现了 Docker 容器的隔离，可以说没有 Namespace，就没有 Docker 容器。</p>
  
       <!-- reward -->
       
