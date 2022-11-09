@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Linux磁盘与文件系统管理 |  JsyBlog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/images/ayer.png" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Linux磁盘管理"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Linux磁盘与文件系统管理
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/07/Linux%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/" class="article-date">
+  <time datetime="2022-11-07T01:16:07.000Z" itemprop="datePublished">2022-11-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.1k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">5 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h1><h2 id="fdisk"><a href="#fdisk" class="headerlink" title="fdisk"></a>fdisk</h2><blockquote>
+<p>fdisk: 操作磁盘分区表</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br><span class="line">fdisk -l | grep Disk</span><br></pre></td></tr></table></figure>
+
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/# fdisk -l</span><br><span class="line">Disk /dev/vda: 40 GiB, 42949672960 bytes, 83886080 sectors</span><br><span class="line">Units: sectors of 1 * 512 = 512 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br><span class="line">Disklabel type: dos</span><br><span class="line">Disk identifier: 0x13be70fb</span><br><span class="line"></span><br><span class="line">Device     Boot Start      End  Sectors Size Id Type</span><br><span class="line">/dev/vda1  *     2048 83886046 83883999  40G 83 Linux</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="df"><a href="#df" class="headerlink" title="df"></a>df</h2><blockquote>
+<p>df: report file system disk space usage</p>
+<p>usage: df [OPTION]… [FILE]…</p>
+</blockquote>
+<p>df 以<strong>磁盘分区</strong>为单位查看文件系统，可以获取硬盘被占用了多少空间，目前还剩下多少空间等信息。</p>
+<p>例如，我们使用<strong>df -h</strong>命令来查看磁盘信息， <strong>-h</strong> 选项为根据大小适当显示：</p>
+<p>显示内容参数说明：</p>
+<ul>
+<li><strong>Filesystem</strong>：文件系统</li>
+<li><strong>Size</strong>： 分区大小</li>
+<li><strong>Used</strong>： 已使用容量</li>
+<li><strong>Avail</strong>： 还可以使用的容量</li>
+<li>**Use%**： 已用百分比</li>
+<li><strong>Mounted on</strong>： 挂载点　</li>
+</ul>
+<p><strong>相关命令：</strong></p>
+<ul>
+<li><strong>df -hl</strong>：查看磁盘剩余空间</li>
+<li><strong>df -h</strong>：查看每个根路径的分区大小</li>
+</ul>
+<p>实例<code>df -h</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">udev            914M     0  914M   0% /dev</span><br><span class="line">tmpfs           189M   22M  167M  12% /run</span><br><span class="line">/dev/vda1        40G   40G     0 100% /</span><br><span class="line">tmpfs           943M     0  943M   0% /dev/shm</span><br><span class="line">tmpfs           5.0M     0  5.0M   0% /run/lock</span><br><span class="line">tmpfs           943M     0  943M   0% /sys/fs/cgroup</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><strong>-i</strong>: 展示inode</li>
+</ul>
+<h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><blockquote>
+<p>du: estimate file space usage</p>
+</blockquote>
+<p><strong>du</strong> 的英文原义为 <strong>disk usage</strong>，含义为显示磁盘空间的使用情况，用于查看当前目录的总大小。</p>
+<p>例如查看当前目录的大小：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># du -sh</span><br><span class="line">605M    .</span><br></pre></td></tr></table></figure>
+
+<p>显示指定文件所占空间：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># du log2012.log </span><br><span class="line">300     log2012.log</span><br></pre></td></tr></table></figure>
+
+<p>方便阅读的格式显示test目录所占空间情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># du -h test</span><br><span class="line">608K    test&#x2F;test6</span><br><span class="line">308K    test&#x2F;test4</span><br><span class="line">4.0K    test&#x2F;scf&#x2F;lib</span><br><span class="line">4.0K    test&#x2F;scf&#x2F;service&#x2F;deploy&#x2F;product</span><br><span class="line">4.0K    test&#x2F;scf&#x2F;service&#x2F;deploy&#x2F;info</span><br><span class="line">12K     test&#x2F;scf&#x2F;service&#x2F;deploy</span><br><span class="line">16K     test&#x2F;scf&#x2F;service</span><br><span class="line">4.0K    test&#x2F;scf&#x2F;doc</span><br><span class="line">4.0K    test&#x2F;scf&#x2F;bin</span><br><span class="line">32K     test&#x2F;scf</span><br><span class="line">8.0K    test&#x2F;test3</span><br><span class="line">1.3M    test</span><br></pre></td></tr></table></figure>
+
+<p>du 命令用于查看当前目录的总大小：</p>
+<ul>
+<li><strong>-s</strong>：对每个Names参数只给出占用的数据块总数。</li>
+<li><strong>-a</strong>：递归地显示指定目录中各文件及子目录中各文件占用的数据块数。<strong>若既不指定-s，也不指定-a，则只显示Names中的每一个目录及其中的各子目录所占的磁盘块数。</strong></li>
+<li><strong>-b</strong>：以字节为单位列出磁盘空间使用情况（系统默认以k字节为单位）。</li>
+<li><strong>-k</strong>：以1024字节为单位列出磁盘空间使用情况。</li>
+<li><strong>-c</strong>：最后再加上一个总计（系统默认设置）。</li>
+<li><strong>-l</strong>：计算所有的文件大小，对硬链接文件，则计算多次。</li>
+<li><strong>-x</strong>：跳过在不同文件系统上的目录不予统计。</li>
+<li><strong>-h</strong>：以K，M，G为单位，提高信息的可读性。</li>
+<li><strong>–max-depth</strong>: 超过指定层数的目录后，予以忽略。</li>
+</ul>
+<p>常用的</p>
+<ul>
+<li>**du -sh [目录名]**：返回该目录的大小</li>
+<li>**du -sm [文件夹]**：返回该文件夹总M数</li>
+<li>**du -h [目录名]**：查看指定文件夹下的所有文件大小（包含子文件夹）</li>
+</ul>
+<p>实例</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/<span class="comment"># du -sh -c</span></span><br><span class="line">du: cannot access <span class="string">&#x27;./proc/271257/task/271257/fd/4&#x27;</span>: No such file or directory</span><br><span class="line">du: cannot access <span class="string">&#x27;./proc/271257/task/271257/fdinfo/4&#x27;</span>: No such file or directory</span><br><span class="line">du: cannot access <span class="string">&#x27;./proc/271257/fd/3&#x27;</span>: No such file or directory</span><br><span class="line">du: cannot access <span class="string">&#x27;./proc/271257/fdinfo/3&#x27;</span>: No such file or directory</span><br><span class="line">40G	.</span><br><span class="line">40G	total</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果需要排序呢？</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/home/sduoj<span class="comment"># du | sort -n -r -k 1</span></span><br><span class="line">35567408	.</span><br><span class="line">35566168	./testMyJudgeServer</span><br><span class="line">35548224	./testMyJudgeServer/logs</span><br><span class="line">18620304	./testMyJudgeServer/logs/service-log</span><br><span class="line">16927848	./testMyJudgeServer/logs/platform-log</span><br><span class="line">16927808	./testMyJudgeServer/logs/platform-log/2021-11</span><br><span class="line">16881936	./testMyJudgeServer/logs/service-log/2021-11</span><br><span class="line">1738324	./testMyJudgeServer/logs/service-log/2021-10</span><br><span class="line">1132	./sduoj-sandbox</span><br><span class="line">832	./sduoj-sandbox/build</span><br><span class="line">492	./sduoj-sandbox/build/objects</span><br><span class="line">300	./sduoj-sandbox/build/bin</span><br><span class="line">264	./sduoj-sandbox/src</span><br><span class="line">184	./sduoj-sandbox/src/argtable</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="dumpe2fs"><a href="#dumpe2fs" class="headerlink" title="dumpe2fs"></a>dumpe2fs</h2><blockquote>
+<p>dumpe2fs  prints the super block and blocks group information for the filesystem present on device.</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/home<span class="comment"># dumpe2fs /dev/vda1 | head -n 50</span></span><br><span class="line">dumpe2fs 1.45.5 (07-Jan-2020)</span><br><span class="line">Filesystem volume name:   /</span><br><span class="line">Last mounted on:          /</span><br><span class="line">Filesystem UUID:          abf381e7-98ce-491f-85d5-f16aa9b23811</span><br><span class="line">Filesystem magic number:  0xEF53</span><br><span class="line">Filesystem revision <span class="comment">#:    1 (dynamic)</span></span><br><span class="line">Filesystem features:      has_journal ext_attr resize_inode dir_index filetype needs_recovery extent flex_bg sparse_super large_file huge_file dir_nlink extra_isize</span><br><span class="line">Filesystem flags:         signed_directory_hash</span><br><span class="line">Default mount options:    user_xattr acl</span><br><span class="line">Filesystem state:         clean</span><br><span class="line">Errors behavior:          Continue</span><br><span class="line">Filesystem OS <span class="built_in">type</span>:       Linux</span><br><span class="line">Inode count:              2621440</span><br><span class="line">Block count:              10485499</span><br><span class="line">Reserved block count:     471818</span><br><span class="line">Free blocks:              4097</span><br><span class="line">Free inodes:              2458600</span><br><span class="line">First block:              0</span><br><span class="line">Block size:               4096</span><br><span class="line">Fragment size:            4096</span><br><span class="line">Reserved GDT blocks:      1021</span><br><span class="line">Blocks per group:         32768</span><br><span class="line">Fragments per group:      32768</span><br><span class="line">Inodes per group:         8192</span><br><span class="line">Inode blocks per group:   512</span><br><span class="line">Flex block group size:    16</span><br><span class="line">Filesystem created:       Thu Mar 18 14:35:58 2021</span><br><span class="line">Last mount time:          Wed Apr 27 15:48:37 2022</span><br><span class="line">Last write time:          Wed Apr 27 23:48:37 2022</span><br><span class="line">Mount count:              10</span><br><span class="line">Maximum mount count:      -1</span><br><span class="line">Last checked:             Thu Mar 18 14:35:58 2021</span><br><span class="line">Check interval:           0 (&lt;none&gt;)</span><br><span class="line">Lifetime writes:          2705 GB</span><br><span class="line">Reserved blocks uid:      0 (user root)</span><br><span class="line">Reserved blocks gid:      0 (group root)</span><br><span class="line">First inode:              11</span><br><span class="line">Inode size:	          256</span><br><span class="line">Required extra isize:     32</span><br><span class="line">Desired extra isize:      32</span><br><span class="line">Journal inode:            8</span><br><span class="line">Default directory <span class="built_in">hash</span>:   half_md4</span><br><span class="line">Directory Hash Seed:      79fdb20b-e5e8-4438-8721-e0c49cef8222</span><br><span class="line">Journal backup:           inode blocks</span><br><span class="line">Journal features:         journal_incompat_revoke</span><br><span class="line">Journal size:             128M</span><br><span class="line">Journal length:           32768</span><br><span class="line">Journal sequence:         0x003cf420</span><br><span class="line">Journal start:            549</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/11/07/Linux%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2022/11/07/Linux%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3No-space-left-on-device/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Linux磁盘满了解决方案
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2022/10/18/%E7%9F%AD%E9%93%BE%E6%8E%A5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">短链接系统设计</div>
+      </a>
+    
+  </nav>
+
+  
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2022
+        <i class="ri-heart-fill heart_icon"></i> SongyangJi
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
+
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+  </div>
+</body>
+
+</html>

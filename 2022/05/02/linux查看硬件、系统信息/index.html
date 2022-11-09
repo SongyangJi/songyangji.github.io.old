@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    linux查看硬件、系统信息 |  JsyBlog
+    Linux查看硬件、系统信息 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -54,7 +54,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  linux查看硬件、系统信息
+  Linux查看硬件、系统信息
 </h1>
  
 
@@ -144,7 +144,6 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top -l 1 | head -n 10</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h1 id="5-硬盘"><a href="#5-硬盘" class="headerlink" title="5. 硬盘"></a>5. 硬盘</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br><span class="line">fdisk -l |grep Disk</span><br></pre></td></tr></table></figure>
-
 
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> output</span></span><br><span class="line">Disk /dev/sda: 500.1 GB, 500107862016 bytes</span><br><span class="line">255 heads, 63 sectors/track, 60801 cylinders, total 976773168 sectors</span><br><span class="line">Units = sectors of 1 * 512 = 512 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 4096 bytes</span><br><span class="line">I/O size (minimum/optimal): 4096 bytes / 4096 bytes</span><br><span class="line">Disk identifier: 0x00023728</span><br><span class="line"></span><br><span class="line">   Device Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sda1   *        2048     2148351     1073152   83  Linux</span><br><span class="line">/dev/sda2         2148352    21680127     9765888   82  Linux swap / Solaris</span><br><span class="line">/dev/sda3        21680128   177930239    78125056   83  Linux</span><br><span class="line">/dev/sda4       177932286   976771071   399419393    5  Extended/dev/sda5       177932288   412305407   117186560   83  Linux</span><br><span class="line">/dev/sda6       412307456   976771071   282231808   83  Linux</span><br></pre></td></tr></table></figure>
