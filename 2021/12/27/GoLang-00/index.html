@@ -65,7 +65,7 @@
   <time datetime="2021-12-26T16:28:14.000Z" itemprop="datePublished">2021-12-27</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Golang/">Golang</a>
+    <a class="article-category-link" href="/categories/Go/">Go</a>
   </div>
   
 <div class="word_count">
@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">38</span>
+            <span class="post-count">124</span>
         </span>
     </span>
 
@@ -89,16 +89,35 @@
  
     </div>
       
+    <div class="tocbot"></div>
+
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>pkg包安装简单，只需双击+一路next即可，安装路径默认是/usr/local/go/</p>
+  <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>pkg包安装简单，只需双击+一路next即可，安装路径默认是/usr/local/go/</p>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Go">https://zh.wikipedia.org/wiki/Go</a></p>
 <p><a target="_blank" rel="noopener" href="https://go.dev/dl/">https://go.dev/dl/</a></p>
 <p><a target="_blank" rel="noopener" href="https://go.dev/">https://go.dev/</a></p>
+<p><a target="_blank" rel="noopener" href="https://go.dev/doc/install">https://go.dev/doc/install</a></p>
+<p><a target="_blank" rel="noopener" href="https://go.dev/doc/manage-install#installing-multiple">安装多个版本的go</a></p>
+<h1 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h1><p>创建编辑文件<code>vim hello.go</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;Hello World&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>直接运行</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir tmp % <span class="keyword">go</span> run hello.<span class="keyword">go</span></span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure>
+
+
+
+<p>先编译后执行（多一个编译产物）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir tmp % <span class="keyword">go</span> build -o hello hello.<span class="keyword">go</span></span><br><span class="line">jisongyang@SongyangJi-MacBookAir tmp % ls</span><br><span class="line">hello		hello.<span class="keyword">go</span></span><br><span class="line">jisongyang@SongyangJi-MacBookAir tmp % ./hello</span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure>
+
+
+
  
       <!-- reward -->
       
@@ -168,7 +187,7 @@
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li></ul>
 
     </footer>
   </div>
