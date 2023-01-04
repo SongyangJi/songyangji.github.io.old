@@ -73,7 +73,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">9.6k</span>
+            <span class="post-count">9.8k</span>
         </span>
     </span>
 
@@ -82,7 +82,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">34 分钟</span>
+            <span class="post-count">35 分钟</span>
         </span>
     </span>
 </div>
@@ -97,8 +97,12 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h1><p><strong>一个HTTP请求报文由四个部分组成：请求行、请求头部、空行、请求数据。</strong></p>
-<h2 id="HTTP头部"><a href="#HTTP头部" class="headerlink" title="HTTP头部"></a>HTTP头部</h2><p>HTTP 头部本质上是一个传递额外重要信息的键值对。</p>
+  <p>一个不错的网站可以学习：</p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP">https://developer.mozilla.org/zh-CN/docs/Web/HTTP</a></p>
+<h1 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h1><p><strong>一个HTTP请求报文由四个部分组成：请求行、请求头部、空行、请求数据。</strong></p>
+<h2 id="HTTP头部"><a href="#HTTP头部" class="headerlink" title="HTTP头部"></a>HTTP头部</h2><p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers">https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers</a></p>
+<p>HTTP 头部本质上是一个传递额外重要信息的键值对。</p>
 <p>主要分为：通用头部，请求头部，响应头部和实体头部。</p>
 <ol>
 <li>通用头：是客户端和服务器都可以使用的头部，可以在客户端、服务器和其他应用程序之间提供一些非常有用的通用功能，如Date头部。</li>
@@ -353,6 +357,15 @@
 
 
 <p>比较重要的有<code>Content-encoding</code>、<code>Content-Length</code>、<code>Content-Type</code>、<code>Content-MD5</code>、<code>Content-Range</code></p>
+<h2 id="常用头部"><a href="#常用头部" class="headerlink" title="常用头部"></a>常用头部</h2><p>从hertz的<code>pkg/protocol/consts/headers.go</code> 里面列出了bytedancer认为的一些比较常用的header。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	HeaderAuthorization = <span class="string">&quot;Authorization&quot;</span></span><br><span class="line">	HeaderHost          = <span class="string">&quot;Host&quot;</span></span><br><span class="line">	HeaderReferer       = <span class="string">&quot;Referer&quot;</span></span><br><span class="line">	HeaderContentType   = <span class="string">&quot;Content-Type&quot;</span></span><br><span class="line">	HeaderUserAgent     = <span class="string">&quot;User-Agent&quot;</span></span><br><span class="line">	HeaderExpect        = <span class="string">&quot;Expect&quot;</span></span><br><span class="line">	HeaderConnection    = <span class="string">&quot;Connection&quot;</span></span><br><span class="line">	HeaderContentLength = <span class="string">&quot;Content-Length&quot;</span></span><br><span class="line">	HeaderCookie        = <span class="string">&quot;Cookie&quot;</span></span><br><span class="line"></span><br><span class="line">	HeaderServer           = <span class="string">&quot;Server&quot;</span></span><br><span class="line">	HeaderServerLower      = <span class="string">&quot;server&quot;</span></span><br><span class="line">	HeaderSetCookie        = <span class="string">&quot;Set-Cookie&quot;</span></span><br><span class="line">	HeaderSetCookieLower   = <span class="string">&quot;set-cookie&quot;</span></span><br><span class="line">	HeaderTransferEncoding = <span class="string">&quot;Transfer-Encoding&quot;</span></span><br><span class="line">	HeaderDate             = <span class="string">&quot;Date&quot;</span></span><br><span class="line"></span><br><span class="line">	HeaderRange        = <span class="string">&quot;Range&quot;</span></span><br><span class="line">	HeaderAcceptRanges = <span class="string">&quot;Accept-Ranges&quot;</span></span><br><span class="line">	HeaderContentRange = <span class="string">&quot;Content-Range&quot;</span></span><br><span class="line"></span><br><span class="line">	HeaderIfModifiedSince = <span class="string">&quot;If-Modified-Since&quot;</span></span><br><span class="line">	HeaderLastModified    = <span class="string">&quot;Last-Modified&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Message body information</span></span><br><span class="line">	HeaderContentEncoding = <span class="string">&quot;Content-Encoding&quot;</span></span><br><span class="line">	HeaderAcceptEncoding  = <span class="string">&quot;Accept-Encoding&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Redirects</span></span><br><span class="line">	HeaderLocation = <span class="string">&quot;Location&quot;</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// ... </span></span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
 <h2 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h2><p>HTTP 状态码由三个十进制数字组成，第一个数字定义了状态码的类型，后两个并没有起到分类的作用。HTTP 状态码共有 5 种类型：</p>
 <table>
 <thead>
