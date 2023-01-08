@@ -1,37 +1,465 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="我们知道， Docker 是使用 Linux 的 Namespace 技术实现各种资源隔离的。那么究竟什么是 Namespace，各种 Namespace 都有什么作用，为什么 Docker 需要 Namespace呢？  什么是 Namespace？Linux Namespace 是 Linux 提供的一种内核级别环境隔离的方法。用官方的话来说，Linux Namespace 将全局系统资源封">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker底层核心技术-Namespace">
+<meta property="og:url" content="http://example.com/2022/06/11/Docker%E5%BA%95%E5%B1%82%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-Namespace/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="我们知道， Docker 是使用 Linux 的 Namespace 技术实现各种资源隔离的。那么究竟什么是 Namespace，各种 Namespace 都有什么作用，为什么 Docker 需要 Namespace呢？  什么是 Namespace？Linux Namespace 是 Linux 提供的一种内核级别环境隔离的方法。用官方的话来说，Linux Namespace 将全局系统资源封">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-11T07:50:01.000Z">
+<meta property="article:modified_time" content="2022-10-18T11:50:02.195Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2022/06/11/Docker%E5%BA%95%E5%B1%82%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-Namespace/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/06/11/Docker%E5%BA%95%E5%B1%82%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-Namespace/","path":"2022/06/11/Docker底层核心技术-Namespace/","title":"Docker底层核心技术-Namespace"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Docker底层核心技术-Namespace | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-Namespace%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是 Namespace？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%84%E7%A7%8D-Namespace-%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">各种 Namespace 的作用？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mount-Namespace"><span class="nav-number">2.1.</span> <span class="nav-text">Mount Namespace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PID-Namespace"><span class="nav-number">2.2.</span> <span class="nav-text">PID Namespace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UTS-Namespace"><span class="nav-number">2.3.</span> <span class="nav-text">UTS Namespace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPC-Namespace"><span class="nav-number">2.4.</span> <span class="nav-text">IPC Namespace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#User-Namespace"><span class="nav-number">2.5.</span> <span class="nav-text">User Namespace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Net-Namespace"><span class="nav-number">2.6.</span> <span class="nav-text">Net Namespace</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-Docker-%E9%9C%80%E8%A6%81-Namespace%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">为什么 Docker 需要 Namespace？</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/11/Docker%E5%BA%95%E5%B1%82%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-Namespace/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Docker底层核心技术-Namespace | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker底层核心技术-Namespace
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-11 15:50:01" itemprop="dateCreated datePublished" datetime="2022-06-11T15:50:01+08:00">2022-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-18 19:50:02" itemprop="dateModified" datetime="2022-10-18T19:50:02+08:00">2022-10-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>我们知道， Docker 是使用 Linux 的 Namespace 技术实现各种资源隔离的。那么究竟什么是 Namespace，各种 Namespace 都有什么作用，为什么 Docker 需要 Namespace呢？</p>
+</blockquote>
+<h1 id="什么是-Namespace？"><a href="#什么是-Namespace？" class="headerlink" title="什么是 Namespace？"></a>什么是 Namespace？</h1><p><code>Linux Namespace</code> 是 Linux 提供的一种内核级别环境隔离的方法。用官方的话来说，Linux Namespace 将全局系统资源封装在一个抽象中，从而使 namespace 内的进程认为自己具有独立的资源实例。这项技术本来没有掀起多大的波澜，是容器技术的崛起让他重新引起了大家的注意。</p>
+<p>Linux Namespace 有如下 6 个种类：</p>
+<table>
+<thead>
+<tr>
+<th><strong>分类</strong></th>
+<th><strong>系统调用参数</strong></th>
+<th><strong>相关内核版本</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mount namespaces</td>
+<td>CLONE_NEWNS</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=+UZjUSHsFnVMyxdIRI1AGg==.gjeALggXOGhl4I/K6t/Pu631zlrDabPYtH1Thy9PM6sQrfTxhZC7kHt+ChNg3UwF">Linux 2.4.19</a></td>
+</tr>
+<tr>
+<td>UTS namespaces</td>
+<td>CLONE_NEWUTS</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=UMCIjnpsL9NzRflD2ekSlw==.JUrNrso34Pdfy7WehLf8IbcdnOLCax6hnFPVZTIfm44=">Linux 2.6.19</a></td>
+</tr>
+<tr>
+<td>IPC namespaces</td>
+<td>CLONE_NEWIPC</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=mVHsSGWBKT/8S8FsszpQNg==.eMt8rtHaduUCEFo0KkpSywYvUBa1M0c6L/1vPeVf7Fg=">Linux 2.6.19</a></td>
+</tr>
+<tr>
+<td>PID namespaces</td>
+<td>CLONE_NEWPID</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=jYUd3r2qkaHvuIuS45YcNA==.F+FbhTmnrxXQ9og+jZ6YeUvF4OCSW+lbZh3QRIBW2qE=">Linux 2.6.24</a></td>
+</tr>
+<tr>
+<td>Network namespaces</td>
+<td>CLONE_NEWNET</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=B8NyDjpAtiUsjd4TxzKOFw==.mlMGKdt/sGvRRyFOFDguy/Xwnvgxyz8qGKBfpboNVO4=">始于Linux 2.6.24 完成于 Linux 2.6.29</a></td>
+</tr>
+<tr>
+<td>User namespaces</td>
+<td>CLONE_NEWUSER</td>
+<td><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=5AgrP7X98up/uyck268Z9w==.Iem7g4brwXF4ER+OhdjlTQLCWYQSqFcei5K3MT5e9pA=">始于 Linux 2.6.23 完成于 Linux 3.8</a></td>
+</tr>
+</tbody></table>
+<p><strong>namespace 的 API 由三个系统调用和一系列 <code>/proc</code> 文件组成</strong>。</p>
+<p>本文将会详细介绍这些系统调用和 <code>/proc</code> 文件。为了指定要操作的 namespace 类型，需要在系统调用的 flag 中通过常量 <code>CLONE_NEW*</code> 指定（包括 <code>CLONE_NEWIPC</code>，<code>CLONE_NEWNS</code>， <code>CLONE_NEWNET</code>，<code>CLONE_NEWPID</code>，<code>CLONE_NEWUSER</code> 和 &#96;CLONE_NEWUTS），可以指定多个常量，通过 **|**（位或）操作来实现。</p>
+<p>简单描述一下三个系统调用的功能：</p>
+<ul>
+<li><strong>clone()</strong> : 实现线程的系统调用，用来创建一个新的进程，并可以通过设计上述系统调用参数达到隔离的目的。</li>
+<li><strong>unshare()</strong> : 使某进程脱离某个 namespace。</li>
+<li><strong>setns()</strong> : 把某进程加入到某个 namespace。</li>
+</ul>
+<p>具体的实现原理请往下看。</p>
+<h1 id="各种-Namespace-的作用？"><a href="#各种-Namespace-的作用？" class="headerlink" title="各种 Namespace 的作用？"></a>各种 Namespace 的作用？</h1><h2 id="Mount-Namespace"><a href="#Mount-Namespace" class="headerlink" title="Mount Namespace"></a>Mount Namespace</h2><p>Mount Namespace 是 Linux 内核实现的第一个 Namespace，从内核的 2.4.19 版本开始加入。它可以用来隔离不同的进程或进程组看到的挂载点。通俗地说，就是可以实现在不同的进程中看到不同的挂载目录。使用 Mount Namespace 可以实现容器内只能看到自己的挂载信息，在容器内的挂载操作不会影响主机的挂载目录。</p>
+<h2 id="PID-Namespace"><a href="#PID-Namespace" class="headerlink" title="PID Namespace"></a>PID Namespace</h2><p>PID Namespace 的作用是用来隔离进程。在不同的 PID Namespace 中，进程可以拥有相同的 PID 号，利用 PID Namespace 可以实现每个容器的主进程为 1 号进程，而容器内的进程在主机上却拥有不同的PID。例如一个进程在主机上 PID 为 122，使用 PID Namespace 可以实现该进程在容器内看到的 PID 为 1。</p>
+<p>下面我们通过一个实例来演示下 PID Namespace的作用。首先我们使用以下命令创建一个 bash 进程，并且新建一个 PID Namespace：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo unshare --pid --fork --mount-proc /bin/bash</span><br><span class="line"></span><br><span class="line">[root@centos7 centos]#</span><br></pre></td></tr></table></figure>
+
+<p>执行完上述命令后，我们在主机上创建了一个新的 PID Namespace，并且当前命令行窗口加入了新创建的 PID Namespace。在当前的命令行窗口使用 ps aux 命令查看一下进程信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 centos]# ps aux</span><br><span class="line"></span><br><span class="line">USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND</span><br><span class="line"></span><br><span class="line">root         1  0.0  0.0 115544  2004 pts/0    S    10:57   0:00 bash</span><br><span class="line"></span><br><span class="line">root        10  0.0  0.0 155444  1764 pts/0    R+   10:59   0:00 ps aux</span><br></pre></td></tr></table></figure>
+
+<p>通过上述命令输出结果可以看到当前 Namespace 下 bash 为 1 号进程，而且我们也看不到主机上的其他进程信息。</p>
+<h2 id="UTS-Namespace"><a href="#UTS-Namespace" class="headerlink" title="UTS Namespace"></a>UTS Namespace</h2><p>UTS Namespace 主要是用来隔离主机名的，它允许每个 UTS Namespace 拥有一个独立的主机名。例如我们的主机名称为 docker，使用 UTS Namespace 可以实现在容器内的主机名称为 lagoudocker 或者其他任意自定义主机名。</p>
+<p>同样我们通过一个实例来验证下 UTS Namespace 的作用，首先我们使用 unshare 命令来创建一个 UTS Namespace：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo unshare --uts --<span class="keyword">fork</span> /bin/bash</span><br><span class="line"></span><br><span class="line">[root@centos7 centos]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>创建好 UTS Namespace 后，当前命令行窗口已经处于一个独立的 UTS Namespace 中，下面我们使用 hostname 命令（hostname 可以用来查看主机名称）设置一下主机名：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@centos7 centos]<span class="comment"># hostname -b lagoudocker</span></span><br></pre></td></tr></table></figure>
+
+<p>然后再查看一下主机名：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">root@centos7 centos</span>]<span class="meta"># hostname</span></span><br><span class="line"></span><br><span class="line">lagoudocker</span><br></pre></td></tr></table></figure>
+
+<p>通过上面命令的输出，我们可以看到当前UTS Namespace 内的主机名已经被修改为 lagoudocker。然后我们新打开一个命令行窗口，使用相同的命令查看一下主机的 hostname：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[centos<span class="variable">@centos7</span> ~]<span class="variable">$ </span>hostname</span><br><span class="line"></span><br><span class="line">centos7</span><br></pre></td></tr></table></figure>
+
+<p>可以看到主机的名称仍然为 centos7，并没有被修改。由此，可以验证 UTS Namespace 可以用来隔离主机名。</p>
+<h2 id="IPC-Namespace"><a href="#IPC-Namespace" class="headerlink" title="IPC Namespace"></a>IPC Namespace</h2><p>IPC Namespace 主要是用来隔离进程间通信的。例如 PID Namespace 和 IPC Namespace 一起使用可以实现同一 IPC Namespace 内的进程彼此可以通信，不同 IPC Namespace 的进程却不能通信。</p>
+<p>同样我们通过一个实例来验证下IPC Namespace的作用，首先我们使用 unshare 命令来创建一个 IPC Namespace：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo unshare --ipc --<span class="keyword">fork</span> /bin/bash</span><br><span class="line"></span><br><span class="line">[root@centos7 centos]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>下面我们需要借助两个命令来实现对 IPC Namespace 的验证。</p>
+<ul>
+<li>ipcs -q 命令：用来查看系统间通信队列列表。</li>
+<li>ipcmk -Q 命令：用来创建系统间通信队列。</li>
+</ul>
+<p>我们首先使用 ipcs -q 命令查看一下当前 IPC Namespace 下的系统通信队列列表：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[centos<span class="variable">@centos7</span> ~]<span class="variable">$ </span>ipcs -q</span><br><span class="line"></span><br><span class="line">------ <span class="title class_">Message</span> <span class="title class_">Queues</span> --------</span><br><span class="line"></span><br><span class="line">key        msqid      owner      perms      used-bytes   messages</span><br></pre></td></tr></table></figure>
+
+<p>由上可以看到当前无任何系统通信队列，然后我们使用 ipcmk -Q 命令创建一个系统通信队列：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 centos]<span class="comment"># ipcmk -Q</span></span><br><span class="line"></span><br><span class="line">Message queue <span class="built_in">id</span>: 0</span><br></pre></td></tr></table></figure>
+
+<p>再次使用 ipcs -q 命令查看当前 IPC Namespace 下的系统通信队列列表：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">root@centos7 centos</span>]<span class="meta"># ipcs -q</span></span><br><span class="line"></span><br><span class="line">------ Message Queues --------</span><br><span class="line"></span><br><span class="line">key        msqid      owner      perms      used-bytes   messages</span><br><span class="line"></span><br><span class="line"><span class="number">0x73682a32</span> <span class="number">0</span>          root       <span class="number">644</span>        <span class="number">0</span>            <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到我们已经成功创建了一个系统通信队列。然后我们新打开一个命令行窗口，使用ipcs -q 命令查看一下主机的系统通信队列：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[centos<span class="variable">@centos7</span> ~]<span class="variable">$ </span>ipcs -q</span><br><span class="line"></span><br><span class="line">------ <span class="title class_">Message</span> <span class="title class_">Queues</span> --------</span><br><span class="line"></span><br><span class="line">key        msqid      owner      perms      used-bytes   messages</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的实验，可以发现，在单独的 IPC Namespace 内创建的系统通信队列在主机上无法看到。即 IPC Namespace 实现了系统通信队列的隔离。</p>
+<h2 id="User-Namespace"><a href="#User-Namespace" class="headerlink" title="User Namespace"></a>User Namespace</h2><p>User Namespace 主要是用来隔离用户和用户组的。一个比较典型的应用场景就是在主机上以非 root 用户运行的进程可以在一个单独的 User Namespace 中映射成 root 用户。使用 User Namespace 可以实现进程在容器内拥有 root 权限，而在主机上却只是普通用户。</p>
+<p>User Namesapce 的创建是可以不使用 root 权限的。下面我们以普通用户的身份创建一个 User Namespace，命令如下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[centos<span class="variable">@centos7</span> ~]<span class="variable">$ </span>unshare --user -r /bin/bash</span><br><span class="line"></span><br><span class="line">[root<span class="variable">@centos7</span> ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>CentOS7 默认允许创建的 User Namespace 为 0，如果执行上述命令失败（ unshare 命令返回的错误为 unshare: unshare failed: Invalid argument ），需要使用以下命令修改系统允许创建的 User Namespace 数量，命令为：echo 65535 &gt; &#x2F;proc&#x2F;sys&#x2F;user&#x2F;max_user_namespaces，然后再次尝试创建 User Namespace。</p>
+</blockquote>
+<p>然后执行 id 命令查看一下当前的用户信息：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[root@centos7 ~]</span><span class="comment"># id</span></span><br><span class="line"></span><br><span class="line"><span class="attr">uid</span>=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root),<span class="number">65534</span>(nfsnobody) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的输出可以看到我们在新的 User Namespace 内已经是 root 用户了。下面我们使用只有主机 root 用户才可以执行的 reboot 命令来验证一下，在当前命令行窗口执行 reboot 命令：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">root@centos7 ~</span>]<span class="meta"># reboot</span></span><br><span class="line"></span><br><span class="line">Failed to open /dev/initctl: Permission denied</span><br><span class="line"></span><br><span class="line">Failed to talk to <span class="keyword">init</span> daemon.</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们在新创建的 User Namespace 内虽然是 root 用户，但是并没有权限执行 reboot 命令。这说明在隔离的 User Namespace 中，并不能获取到主机的 root 权限，也就是说 User Namespace 实现了用户和用户组的隔离。</p>
+<h2 id="Net-Namespace"><a href="#Net-Namespace" class="headerlink" title="Net Namespace"></a>Net Namespace</h2><p>Net Namespace 是用来隔离网络设备、IP 地址和端口等信息的。Net Namespace 可以让每个进程拥有自己独立的 IP 地址，端口和网卡信息。例如主机 IP 地址为 172.16.4.1 ，容器内可以设置独立的 IP 地址为 192.168.1.1。</p>
+<p>同样用实例验证，我们首先使用 ip a 命令查看一下主机上的网络信息：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">$ ip a</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>: lo: <span class="operator">&lt;</span>LOOPBACK,UP,LOWER_UP<span class="operator">&gt;</span> mtu <span class="number">65536</span> qdisc noqueue state <span class="literal">UNKNOWN</span> <span class="keyword">group</span> <span class="keyword">default</span> qlen <span class="number">1000</span></span><br><span class="line"></span><br><span class="line">    link<span class="operator">/</span>loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"></span><br><span class="line">    inet <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="operator">/</span><span class="number">8</span> <span class="keyword">scope</span> host lo</span><br><span class="line"></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line">    inet6 ::<span class="number">1</span><span class="operator">/</span><span class="number">128</span> <span class="keyword">scope</span> host</span><br><span class="line"></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>: eth0: <span class="operator">&lt;</span>BROADCAST,MULTICAST,UP,LOWER_UP<span class="operator">&gt;</span> mtu <span class="number">1500</span> qdisc pfifo_fast state UP <span class="keyword">group</span> <span class="keyword">default</span> qlen <span class="number">1000</span></span><br><span class="line"></span><br><span class="line">    link<span class="operator">/</span>ether <span class="number">02</span>:<span class="number">11</span>:b0:<span class="number">14</span>:<span class="number">01</span>:<span class="number">0</span>c brd ff:ff:ff:ff:ff:ff</span><br><span class="line"></span><br><span class="line">    inet <span class="number">172.20</span><span class="number">.1</span><span class="number">.11</span><span class="operator">/</span><span class="number">24</span> brd <span class="number">172.20</span><span class="number">.1</span><span class="number">.255</span> <span class="keyword">scope</span> <span class="keyword">global</span> <span class="keyword">dynamic</span> eth0</span><br><span class="line"></span><br><span class="line">       valid_lft <span class="number">86063337</span>sec preferred_lft <span class="number">86063337</span>sec</span><br><span class="line"></span><br><span class="line">    inet6 fe80::<span class="number">11</span>:b0ff:fe14:<span class="number">10</span>c<span class="operator">/</span><span class="number">64</span> <span class="keyword">scope</span> link</span><br><span class="line"></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>: docker0: <span class="operator">&lt;</span><span class="keyword">NO</span><span class="operator">-</span>CARRIER,BROADCAST,MULTICAST,UP<span class="operator">&gt;</span> mtu <span class="number">1500</span> qdisc noqueue state DOWN <span class="keyword">group</span> <span class="keyword">default</span></span><br><span class="line"></span><br><span class="line">    link<span class="operator">/</span>ether <span class="number">02</span>:<span class="number">42</span>:<span class="number">82</span>:<span class="number">8</span>d:a0:df brd ff:ff:ff:ff:ff:ff</span><br><span class="line"></span><br><span class="line">    inet <span class="number">172.17</span><span class="number">.0</span><span class="number">.1</span><span class="operator">/</span><span class="number">16</span> <span class="keyword">scope</span> <span class="keyword">global</span> docker0</span><br><span class="line"></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line">    inet6 fe80::<span class="number">42</span>:<span class="number">82</span>ff:fe8d:a0df<span class="operator">/</span><span class="number">64</span> <span class="keyword">scope</span> link</span><br><span class="line"></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<p>然后我们使用以下命令创建一个 Net Namespace：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo unshare --net --<span class="keyword">fork</span> /bin/bash</span><br><span class="line"></span><br><span class="line">[root@centos7 centos]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>同样的我们使用 ip a 命令查看一下网络信息：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">root@centos7 centos</span>]<span class="meta"># ip a</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span>: lo: &lt;LOOPBACK&gt; mtu <span class="number">65536</span> qdisc noop state DOWN <span class="keyword">group</span> <span class="literal">default</span> qlen <span class="number">1000</span></span><br><span class="line"></span><br><span class="line">    link/loopback <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> brd <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，宿主机上有 lo、eth0、docker0 等网络设备，而我们新建的 Net Namespace 内则与主机上的网络设备不同。</p>
+<h1 id="为什么-Docker-需要-Namespace？"><a href="#为什么-Docker-需要-Namespace？" class="headerlink" title="为什么 Docker 需要 Namespace？"></a>为什么 Docker 需要 Namespace？</h1><p>Linux 内核从 2002 年 2.4.19 版本开始加入了 Mount Namespace，而直到内核 3.8 版本加入了 User Namespace 才为容器提供了足够的支持功能。</p>
+<p>当 Docker 新建一个容器时， 它会创建这六种 Namespace，然后将容器中的进程加入这些 Namespace 之中，使得 Docker 容器中的进程只能看到当前 Namespace 中的系统资源。</p>
+<p>正是由于 Docker 使用了 Linux 的这些 Namespace 技术，才实现了 Docker 容器的隔离，可以说没有 Namespace，就没有 Docker 容器。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/06/11/%E6%9F%A5%E7%9C%8Bdocker%E5%AE%B9%E5%99%A8%E5%9C%A8%E5%AE%BF%E4%B8%BB%E6%9C%BA%E4%B8%AD%E7%9A%84pid/" rel="prev" title="查看docker容器在宿主机中的pid">
+                  <i class="fa fa-chevron-left"></i> 查看docker容器在宿主机中的pid
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/06/20/Go%E8%AF%AD%E8%A8%80%E8%B0%83%E7%94%A8Shell%E4%B8%8E%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/" rel="next" title="Go语言调用Shell与可执行文件">
+                  Go语言调用Shell与可执行文件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

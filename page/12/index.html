@@ -1,23 +1,1744 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
-{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}
-  {% if is_home() %}page-home{% endif -%}
-{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block content %}
-  <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
-  </section>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="website">
+<meta property="og:title" content="JsyBlog">
+<meta property="og:url" content="http://example.com/page/12/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="SongyangJi">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/page/12/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/12/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">JsyBlog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/16/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/16/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" class="post-title-link" itemprop="url">分布式事务</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-16 16:29:42" itemprop="dateCreated datePublished" datetime="2022-03-16T16:29:42+08:00">2022-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-17 14:26:51" itemprop="dateModified" datetime="2022-10-17T14:26:51+08:00">2022-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h1><p>CAP定理：一个分布式系统不可能满足<strong>一致性</strong>，<strong>可用性</strong>和<strong>分区容错性</strong>这三个需求，最多只能同时满足两个。</p>
+<ul>
+<li><p>C: Consistency 一致性</p>
+<p>一致性：在分布式系统完成某写操作后任何读操作，都应该获取到该写操作写入的那个最新的值。相当于要求分布式系统中的各节点时时刻刻保持数据的一致性。</p>
+</li>
+<li><p>A: Availability 可用性</p>
+<p>可用性： 一直可以正常的做读写操作。简单而言就是客户端一直可以正常访问并得到系统的正常响应。用户角度来看就是不会出现系统操作失败或者访问超时等问题。</p>
+</li>
+<li><p>P: Tolerance of network Partition 分区容忍性</p>
+<p>分区容错性：指的分布式系统中的某个节点或者网络分区出现了故障的时候，整个系统仍然能对外提供满足一致性和可用性的服务，也就是说部分故障不影响整体使用。</p>
+</li>
+</ul>
+<h2 id="CP的实现"><a href="#CP的实现" class="headerlink" title="CP的实现"></a>CP的实现</h2><p><img src="/2022/03/16/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/cap-c.png" alt="cap-c"></p>
+<h2 id="AP的实现"><a href="#AP的实现" class="headerlink" title="AP的实现"></a>AP的实现</h2><p><img src="/2022/03/16/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/cap-a.png" alt="cap-a"></p>
+<p>除非两个节点可以互相通信，才能既保证C又保证A，这又会导致丧失P性质。<br>一般来说，跨区域的系统，无法舍弃P性质，那么就只能在数据一致性和可用性上做一个艰难选择。</p>
+<p>CAP三者不可兼得，该如何取舍？</p>
+<ul>
+<li><p>CA: 优先保证一致性和可用性，放弃分区容错。 这也意味着放弃系统的扩展性，系统不再是分布式的，有违设计的初衷。</p>
+<p>如关系型数据库。</p>
+</li>
+<li><p>CP: 优先保证一致性和分区容错性，放弃可用性。在数据一致性要求比较高的场合(譬如:zookeeper，Hbase) 是比较常见的做法，一旦发生网络故障或者消息丢失，就会牺牲用户体验，等恢复之后用户才逐渐能访问。</p>
+<p>如一些分布式数据库的实现。</p>
+</li>
+<li><p>AP: 优先保证可用性和分区容错性，放弃一致性。放弃一致性不是说一致性就不保证了，而是逐渐的变得一致。</p>
+<p>如BASE的要求。</p>
+</li>
+</ul>
+<h1 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h1><ul>
+<li>Basically Availble –基本可用</li>
+<li>Soft-state –软状态&#x2F;柔性事务</li>
+<li>Eventual Consistency –最终一致性</li>
+</ul>
+<h2 id="Basically-Availble（基本可用）"><a href="#Basically-Availble（基本可用）" class="headerlink" title="Basically Availble（基本可用）"></a>Basically Availble（基本可用）</h2><p>基本可用是指分布式系统在出现不可预知故障的时候，允许损失部分可用性——但请注意，这绝不等价于系统不可用。</p>
+<ul>
+<li><strong>响应时间上的损失</strong>：正常情况下，一个在线搜索引擎需要0.5秒内返回给用户相应的查询结果，但由于出现异常（比如系统部分机房发生断电或断网故障），查询结果的响应时间增加到了1~2秒</li>
+<li><strong>功能上的损失</strong>：正常情况下，在一个电子商务网站上进行购物，消费者几乎能够顺利地完成每一笔订单，但是在一些节日大促购物高峰的时候，由于消费者的购物行为激增，为了保护购物系统的稳定性，<strong>部分消费者可能会被引导到一个降级页面</strong>。</li>
+</ul>
+<h2 id="Soft-state（软状态-x2F-柔性事务）"><a href="#Soft-state（软状态-x2F-柔性事务）" class="headerlink" title="Soft-state（软状态&#x2F;柔性事务）"></a>Soft-state（软状态&#x2F;柔性事务）</h2><p>软状态，和硬状态相对，是指<strong>允许系统中的数据存在中间状态</strong>，并认为该中间状态的存在不会影响系统的整体可用性，<strong>即允许系统在不同节点的数据副本之间进行数据同步的过程存在延时</strong>。</p>
+<h2 id="Eventual-Consistency（最终一致性）"><a href="#Eventual-Consistency（最终一致性）" class="headerlink" title="Eventual Consistency（最终一致性）"></a>Eventual Consistency（最终一致性）</h2><p>最终一致性强调的是系统中所有的数据副本，在经过一段时间的同步后，最终能够达到一个一致的状态。</p>
+<p>因此，最终一致性的本质是需要系统保证最终数据能够达到一致，而不需要实时保证系统数据的强一致性。</p>
+<p>最终一致性是一种特殊的弱一致性：系统能够保证在没有其他新的更新操作的情况下，数据最终一定能够达到一致的状态，因此所有客户端对系统的数据访问都能够获取到最新的值。</p>
+<p>在没有发生故障的前提下，数据达到一致状态的时间延迟，取决于网络延迟，系统负载和数据复制方案设计等因素</p>
+<h1 id="NWR模型"><a href="#NWR模型" class="headerlink" title="NWR模型"></a>NWR模型</h1><blockquote>
+<p>NWR模型试图解决多副本的数据一致性问题。</p>
+</blockquote>
+<ul>
+<li>N: 复制的节点数量</li>
+<li>R: 成功读操作的最小节点数</li>
+<li>W: 成功写操作的最小节点数</li>
+</ul>
+<p>只需W + R &gt; N，就可以保证强一致性，<strong>因为读取数据的节点和被同步写入的节点是有重叠的</strong>。</p>
+<p>例如：<br>N&#x3D;3，W&#x3D;2, R&#x3D;2 ，那么表示系统中数据有3个不同的副本，<br>当进行写操作时，需要等待至少有2个副本完成了该写操作系统才会返回执行成功的状态；<br>对于读操作，系统有同样的特性。<br>由于R+ W&gt;N,因此该系统是可以保证强一致性的。</p>
+<p>R+ W &gt; N时，读(写)延迟由最慢的R(W)副本决定，有时为了获得较高的性能和较小的延迟，R和w的和可能小于N,这时系统不能保证读操作能获取最新的数据。</p>
+<p>配置的几种特殊情况</p>
+<ul>
+<li>W &#x3D; 1， R &#x3D; N ，对写操作要求高性能高可用</li>
+<li>R &#x3D; 1 ， W &#x3D; N ，对读操作要求高性能高可用，比如类似cache之类业务</li>
+<li>W &#x3D; Q, R &#x3D; Q where Q &#x3D; N &#x2F; 2 + 1 一般应用适用，读写性能之间取得平衡，如N&#x3D;3 ， W&#x3D;2 ， R&#x3D;2。</li>
+</ul>
+<h1 id="2PC-XA协议"><a href="#2PC-XA协议" class="headerlink" title="2PC-XA协议"></a>2PC-XA协议</h1><blockquote>
+<p>2PC的传统方案是在数据库层面实现的，如Oracle、MySQL都支持2PC协议，为了统一标准减少行业内不必要的对接成本，需要制定标准化的处理模型及接口标准，国际开放标准组织Open Group定义分布式事务处理模型<strong>DTP</strong>（Distributed Transaction Processing Reference Model）。</p>
+<p>DTP模型定义TM和RM之间通讯的接口规范叫<strong>XA</strong>，简单理解为数据库提供的2PC接口协议，<strong>基于数据库的XA协议来实现2PC又称为XA方案</strong>。</p>
+</blockquote>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>XA 分布式协议主要有两个角色：</p>
+<ul>
+<li>事务管理器（Transaction Manager 协调者）<br>事务管理器作为全局事务的协调管理者，与每个资源管理器通信，完成分布式事务的管理。</li>
+<li>资源管理器 （Resource Manager 参与者）<br>资源管理器管理每个参与者的事务资源，其应该具有提交和回滚的能力，如数据库。</li>
+</ul>
+<blockquote>
+<p>XA事务由一个或多个资源管理器（Resource Managers）、一个事务管理器（Transaction Manager）以及一个应用程序（Application Program）组成。</p>
+<ul>
+<li>资源管理器（RM）：参与者。提供访问事务资源的方法。通常一个<a target="_blank" rel="noopener" href="https://cloud.tencent.com/solution/database?from=10680">数据库</a>就是一个资源管理器。</li>
+<li>事务管理器（TM）：协调者。分配标识符，监视事务的进度，并负责事务完成和故障恢复。</li>
+<li>应用程序（AP）：发起者。定义事务的边界，制定全局事务中的操作。</li>
+</ul>
+</blockquote>
+<h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>XA 分布式协议制定的分段提交过程：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-4752702/eetmyegzko.png?imageView2/2/w/1620"></p>
+<ul>
+<li><p>第一阶段（ prepare ）<br>第一阶段<strong>每个参与者准备执行事务并对需要的资源加锁</strong>，<strong>进入 ready 状态，并通知协调者已经准备就绪</strong>。</p>
+</li>
+<li><p>第二阶段（ commit ）<br>第二阶段当协调者确认<strong>每个参与者都 ready 后，通知参与者进行 commit 操作</strong>；</p>
+<p>如果<strong>有参与者 fail ，则发送 rollback 命令，各参与者作回滚。</strong></p>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>投票阶段<ul>
+<li>在请求阶段，协调者将通知事务参与者准备提交或取消事务，然后进入表决过程</li>
+<li>在表决过程中，参与者将告知协调者自己的决策：同意（事务参与者本地作业执行成功）或取消（本地作业执行故障）</li>
+</ul>
+</li>
+<li>提交阶段<ul>
+<li>协调者将基于第一个阶段的投票结果进行决策：提交或取消。当且仅当所有的参与者同意提交事务协调者才通知所有的参与者提交事务，否则协调者将通知所有的参与者取消事务</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7003d58ea182">MySQL XA 介绍</a></p>
+<p>MySQL XA 的命令集合如下：</p>
+<ol>
+<li>XA START xid: 开启一个事务，并将事务置于ACTIVE状态，此后执行的SQL语句都将置于该是事务中。</li>
+<li>XA END xid: 将事务置于IDLE状态，表示事务内的SQL操作完成。</li>
+<li>XA PREPARE xid: 实现事务提交的准备工作，事务状态置于PREPARED状态。事务如果无法完成提交前的准备操作，该语句会执行失败。</li>
+<li>XA COMMIT xid: 事务最终提交，完成持久化。</li>
+<li>XA ROLLBACK xid: 事务回滚终止。</li>
+<li>XA RECOVER: 查看MySQL中存在的PREPARED状态的xa事务。</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/7425654-e3e679d3ee065c4b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1122/format/webp"></p>
+</blockquote>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>基于以上，可以很容易理解 2PC 的执行过程，同时我们也注意到它存在的缺点：</p>
+<blockquote>
+<ol>
+<li>对高并发不友好。<br>在分布式事务的执行过程中，存在多次通信，占用时间长，并且<strong>在这个过程中所有节点处于阻塞状态</strong>，<strong>每个参与者持有的资源始终要加锁</strong>。</li>
+<li>单点故障。由上面可知协调者扮演着非常重要的角色，一旦协调者发生故障，参与者就会一直阻塞下去。尤其在第二阶段，协调者发生故障，那么所有的参与者还都处于锁定事务资源的状态中，而无法继续完成事务操作。</li>
+<li>数据不一致。在第二阶段中，当协调者向参与者发送 commit 请求之后，发生了局部网络异常或者在发送 commit 请求过程中协调者发生了故障，就会导致<strong>只有一部分参与者接受到了commit 请求</strong>。而在这部分参与者接到 commit 请求之后就会执行 commit 操作，但是其他未接到 commit 请求的机器则无法执行事务提交，就导致了数据的不一致。</li>
+<li>二阶段无法解决的问题<br>协调者再发出commit消息之后宕机，而唯一接收到这条消息的参与者同时也宕机了。那么即使协调者通过选举协议产生了新的协调者，这条事务的状态也是不确定的，没人知道事务是否被已经提交。</li>
+</ol>
+</blockquote>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><blockquote>
+<p>某班要组织一个同学聚会，前提条件是所有参与者同意则活动举行，任意一人拒绝则活动取消。</p>
+</blockquote>
+<p><strong>用2PC算法来执行过程如下</strong></p>
+<ul>
+<li><p>Phase 1Prepare: </p>
+<ul>
+<li>组织者(coordinator)打电话给所有参与者(participant) ，同时告知参与者列表</li>
+<li>Proposal: 提出周六2pm-5pm举办活动</li>
+<li>Vote: participant需vote结果给coordinator：accept or reject</li>
+<li>Block: 如果accept, participant锁住周六2pm-5pm的时间，不再接受其他请求（这一步加锁很需要关注）。</li>
+</ul>
+</li>
+<li><p>Phase 2 Commit or Abort</p>
+<ul>
+<li>如果所有参与者都同意，组织者coodinator通知所有参与者commit, 否则通知abort，participant解除锁定。</li>
+</ul>
+</li>
+</ul>
+<p><strong>Failure 典型失败情况分析</strong></p>
+<ul>
+<li>Participant failure: 任一参与者无响应，coordinator直接执行abort</li>
+<li>Coordinator failure:<ol>
+<li>Takeover: 如果participant一段时间没收到cooridnator确认(commit&#x2F;abort)，则认为coordinator不在了。这时候可自动成为Coordinator的备份(watchdog)</li>
+<li>Query: watchdog根据phase 1接收的participant列表发起query</li>
+<li>Vote: 所有participant回复vote结果给watchdog, accept or reject</li>
+<li>Commit: 如果所有都同意，则commit, 否则abort</li>
+</ol>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/270213092">XA与TCC的区别</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903951477768205">TCC与两阶段分布式事务处理的区别</a></p>
+<h1 id="TCC（Try-Confirm-Cancel）"><a href="#TCC（Try-Confirm-Cancel）" class="headerlink" title="TCC（Try-Confirm-Cancel）"></a>TCC（Try-Confirm-Cancel）</h1><blockquote>
+<p><strong>XA 协议在架构上与 TCC 模型相比，最大的不同是 XA 直接作用于资源层，而后者作用于服务层。</strong></p>
+<p><strong>2PC是偏数据库层面的，而TCC是纯业务层面。</strong></p>
+<p>TCC 事务机制相比于上面介绍的XA 事务机制，有以下优点： 性能提升：具体业务来实现控制资源锁的粒度变小，不会锁定整个资源。</p>
+</blockquote>
+<p>TCC是一种比较成熟的分布式事务解决方案，可用于解决跨库操作的数据一致性问题；<br>TCC是服务化的两阶段编程模型，其Try、Confirm、Cancel 3个方法均由业务编码实现；<br>其中Try操作作为一阶段，负责资源的检查和预留，Confirm操作作为二阶段提交操作，执行真正的业务，Cancel是预留资源的取消；</p>
+<p>TCC 是服务化的二阶段编程模型，采用的补偿机制。（所谓 TCC 模式，是指支持把 <strong>自定义</strong> 的分支事务纳入到全局事务的管理中）</p>
+<p>关于 TCC（Try-Confirm-Cancel）的概念，最早是由 Pat Helland 于 2007 年发表的一篇名为《Life beyond Distributed Transactions:an Apostate’s Opinion》的论文提出。<br>TCC 事务机制相比于上面介绍的 XA，解决了其几个缺点：</p>
+<ol>
+<li>解决了协调者单点，由主业务方发起并完成这个业务活动。业务活动管理器也变成多点，引入集群。</li>
+<li>同步阻塞：引入超时，超时后进行补偿，并且不会锁定整个资源，将资源转换为业务逻辑形式，粒度变小。</li>
+<li>数据一致性，有了补偿机制之后，由业务活动管理器控制一致性</li>
+</ol>
+<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><ol>
+<li>需要实现确认和补偿逻辑</li>
+<li>需要支持幂等</li>
+<li>无需本地数据库事务的支持（所以说它是业务层的）</li>
+</ol>
+<h2 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h2><h3 id="Try-阶段"><a href="#Try-阶段" class="headerlink" title="Try 阶段"></a>Try 阶段</h3><p>try 阶段主要是对业务系统做检测及资源预留。<br>这个阶段主要完成：</p>
+<p>完成所有业务检查( 一致性 ) ;</p>
+<p>预留必须业务资源( 准隔离性 ) ;</p>
+<p>Try 尝试执行业务。</p>
+<h3 id="Confirm-阶段"><a href="#Confirm-阶段" class="headerlink" title="Confirm 阶段"></a>Confirm 阶段</h3><p>确认执行真正执行业务，不作任何业务检查，只使用 Try 阶段预留的业务资源，Confirm 操作满足幂等性。要求具备幂等设计，Confirm 失败后需要进行重试。</p>
+<h3 id="Cancel-阶段"><a href="#Cancel-阶段" class="headerlink" title="Cancel 阶段"></a>Cancel 阶段</h3><p>取消执行，释放 Try 阶段预留的业务资源 Cancel 操作满足幂等性 Cancel 阶段的异常和 Confirm 阶段异常处理方案基本上一致。</p>
+<h2 id="实现注意事项"><a href="#实现注意事项" class="headerlink" title="实现注意事项"></a>实现注意事项</h2><h3 id="1、业务操作分两阶段完成"><a href="#1、业务操作分两阶段完成" class="headerlink" title="1、业务操作分两阶段完成"></a>1、业务操作分两阶段完成</h3><p>如下图所示，接入TCC前，业务操作只需要一步就能完成，但是在接入TCC之后，需要考虑如何将其分成2阶段完成，把资源的检查和预留放在一阶段的Try操作中进行，把真正的业务操作的执行放在二阶段的Confirm操作中进行；</p>
+<p><img src="https://yqfile.alicdn.com/1d374e0667107a41eea95f7457e87845733d4788.png"></p>
+<p><strong>TCC服务要保证第一阶段Try操作成功之后，二阶段Confirm操作一定能成功。</strong></p>
+<h3 id="2、允许空回滚"><a href="#2、允许空回滚" class="headerlink" title="2、允许空回滚"></a>2、允许空回滚</h3><p>如下图所示，事务协调器在调用TCC服务的一阶段Try操作时，可能会出现因为丢包而导致的网络超时，此时事务协调器会触发二阶段回滚，调用TCC服务的Cancel操作；</p>
+<p>TCC服务在未收到Try请求的情况下收到Cancel请求，这种场景被称为空回滚；TCC服务在实现时应当允许空回滚的执行。（为什么要允许空回滚？分支事务有的confirm过，有的try执行过后可能都没有响应，这个时候全部分支事务都需要回滚，所以就要做到那些未confirm的分支事务的空回滚）</p>
+<p><img src="https://yqfile.alicdn.com/d58efe4a70432198b57381e85e94018ae6999df7.png"></p>
+<h3 id="3、防悬挂控制"><a href="#3、防悬挂控制" class="headerlink" title="3、防悬挂控制"></a>3、防悬挂控制</h3><p>如下图所示，事务协调器在调用TCC服务的一阶段Try操作时，可能会出现因网络拥堵而导致的超时，此时事务协调器会触发二阶段回滚，调用TCC服务的Cancel操作；在此之后，拥堵在网络上的一阶段Try数据包被TCC服务收到，出现了二阶段Cancel请求比一阶段Try请求先执行的情况；</p>
+<p>用户在实现TCC服务时，应当允许空回滚，但是要拒绝执行空回滚之后到来的一阶段Try请求；</p>
+<p><img src="https://yqfile.alicdn.com/591e0fa1ddabafd517d3e3e4a1c1e44c3ef2c8f8.png"></p>
+<h3 id="4、幂等控制"><a href="#4、幂等控制" class="headerlink" title="4、幂等控制"></a>4、幂等控制</h3><p>无论是网络数据包重传，还是异常事务的补偿执行，都会导致TCC服务的Try、Confirm或者Cancel操作被重复执行；用户在实现TCC服务时，需要考虑幂等控制，即Try、Confirm、Cancel 执行一次和执行多次的业务结果是一样的；<br><img src="https://yqfile.alicdn.com/5a9b1eaa651a3bce1b8d4e47f38887bc9935b51d.png"></p>
+<h3 id="5、业务数据可见性控制；"><a href="#5、业务数据可见性控制；" class="headerlink" title="5、业务数据可见性控制；"></a>5、业务数据可见性控制；</h3><p>TCC服务的一阶段Try操作会做资源的预留，在二阶段操作执行之前，如果其他事务需要读取被预留的资源数据，那么处于中间状态的业务数据该如何向用户展示，需要业务在实现时考虑清楚；通常的设计原则是“宁可不展示、少展示，也不多展示、错展示”；</p>
+<h3 id="6、业务数据并发访问控制；"><a href="#6、业务数据并发访问控制；" class="headerlink" title="6、业务数据并发访问控制；"></a>6、业务数据并发访问控制；</h3><p>TCC服务的一阶段Try操作预留资源之后，在二阶段操作执行之前，预留的资源都不会被释放；如果此时其他分布式事务修改这些业务资源，会出现分布式事务的并发问题；</p>
+<p>用户在实现TCC服务时，需要考虑业务数据的并发控制，尽量将逻辑锁粒度降到最低，以最大限度的提高分布式事务的并发性；</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
+<li>性能提升：具体业务来实现控制资源锁的粒度变小，不会锁定整个资源。</li>
+<li>数据最终一致性：基于 Confirm 和 Cancel 的幂等性，保证事务最终完成确认或者取消，保证数据的一致性。</li>
+<li>可靠性：解决了 XA 协议的协调者单点故障问题，由主业务方发起并控制整个业务活动，业务活动管理器也变成多点，引入集群。</li>
+</ul>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>TCC 的 Try、Confirm 和 Cancel 操作功能要按具体业务来实现，业务耦合度较高，提高了开发成本。</p>
+<blockquote>
+<p>关于TCC的诸多落地的变种：<strong>异步确保型 TCC 解决方案</strong>、<strong>补偿型 TCC 解决方案</strong></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/270213092">XA与TCC的区别——精读</a></p>
+</blockquote>
+<h1 id="Seata的AT模式"><a href="#Seata的AT模式" class="headerlink" title="Seata的AT模式"></a>Seata的AT模式</h1><h2 id="前提-1"><a href="#前提-1" class="headerlink" title="前提"></a>前提</h2><ul>
+<li>基于支持本地 ACID 事务的关系型数据库。</li>
+<li>Java 应用，通过 JDBC 访问数据库。</li>
+</ul>
+<h2 id="整体机制"><a href="#整体机制" class="headerlink" title="整体机制"></a>整体机制</h2><p>两阶段提交协议的演变：</p>
+<ul>
+<li>一阶段：<strong>业务数据和回滚日志记录在同一个本地事务中提交，释放本地锁和连接资源</strong>。</li>
+<li>二阶段：<ul>
+<li>提交异步化，非常快速地完成（如果是commit）。</li>
+<li>回滚通过<strong>一阶段的回滚日志</strong>进行反向补偿（如果是rollback）。</li>
+</ul>
+</li>
+</ul>
+<h2 id="隔离性"><a href="#隔离性" class="headerlink" title="隔离性"></a>隔离性</h2><h3 id="写隔离"><a href="#写隔离" class="headerlink" title="写隔离"></a>写隔离</h3><ul>
+<li><p>一阶段<strong>本地事务提交前</strong>，需要确保先拿到 <strong>全局锁</strong> 。</p>
+</li>
+<li><p>拿不到 <strong>全局锁</strong> ，不能提交本地事务。</p>
+</li>
+<li><p>拿 <strong>全局锁</strong> 的尝试被限制在一定范围内，超出范围将放弃，并回滚本地事务，释放本地锁。</p>
+</li>
+<li><p>如果tx1 二阶段全局提交，释放 <strong>全局锁</strong> 。tx2 拿到 <strong>全局锁</strong> 提交本地事务。</p>
+</li>
+<li><p>如果 tx1 的二阶段全局回滚，则 tx1 需要重新获取该数据的本地锁，进行反向补偿的更新操作，实现分支的回滚。此时，如果 tx2 仍在等待该数据的 <strong>全局锁</strong>，同时持有本地锁，则 tx1 的分支回滚会失败。分支的回滚会一直重试，直到 tx2 的 <strong>全局锁</strong> 等锁超时，放弃 <strong>全局锁</strong> 并回滚本地事务释放本地锁，tx1 的分支回滚最终成功。因为整个过程 <strong>全局锁</strong> 在 tx1 结束前一直是被 tx1 持有的，所以不会发生 <strong>脏写</strong> 的问题。</p>
+</li>
+</ul>
+<h3 id="读隔离"><a href="#读隔离" class="headerlink" title="读隔离"></a>读隔离</h3><p>在数据库本地事务隔离级别 <strong>读已提交（Read Committed）</strong> 或以上的基础上，Seata（AT 模式）的默认全局隔离级别是 <strong>读未提交（Read Uncommitted）</strong> 。</p>
+<p>如果应用在特定场景下，必需要求全局的 <strong>读已提交</strong> ，目前 Seata 的方式是通过 <strong>SELECT FOR UPDATE</strong> 语句的代理。</p>
+<p>SELECT FOR UPDATE 语句的执行会申请 <strong>全局锁</strong> ，如果 <strong>全局锁</strong> 被其他事务持有，则释放本地锁（回滚 SELECT FOR UPDATE 语句的本地执行）并重试。这个过程中，查询是被 block 住的，直到 <strong>全局锁</strong> 拿到，即读取的相关数据是 <strong>已提交</strong> 的，才返回。</p>
+<p>出于总体性能上的考虑，Seata 目前的方案并没有对所有 SELECT 语句都进行代理，仅针对 FOR UPDATE 的 SELECT 语句。</p>
+<h2 id="工作机制-1"><a href="#工作机制-1" class="headerlink" title="工作机制"></a>工作机制</h2><h3 id="一阶段"><a href="#一阶段" class="headerlink" title="一阶段"></a>一阶段</h3><ol>
+<li><strong>解析 SQL</strong>：得到 SQL 的类型（UPDATE），表（product），条件（where name &#x3D; ‘TXC’）等相关的信息。</li>
+<li><strong>查询前镜像</strong>：根据解析得到的条件信息，生成查询语句，定位数据。</li>
+<li><strong>执行业务 SQL</strong>：更新这条记录的 name 为 ‘GTS’。</li>
+<li><strong>查询后镜像</strong>：根据前镜像的结果，通过 <strong>主键</strong> 定位数据。</li>
+<li><strong>插入回滚日志</strong>：把前后镜像数据以及业务 SQL 相关的信息组成一条回滚日志记录，插入到 <code>UNDO_LOG</code> 表中。</li>
+<li>提交前，<strong>向 TC 注册分支</strong>：<strong>申请记录的全局锁</strong> 。</li>
+<li><strong>本地事务提交</strong>：<strong>业务数据的更新和前面步骤中生成的 UNDO LOG 一并提交</strong>。</li>
+<li><strong>将本地事务提交的结果上报给 TC</strong>。</li>
+</ol>
+<h3 id="二阶段"><a href="#二阶段" class="headerlink" title="二阶段"></a>二阶段</h3><h4 id="二阶段-回滚"><a href="#二阶段-回滚" class="headerlink" title="二阶段-回滚"></a>二阶段-回滚</h4><ol>
+<li>收到 TC 的分支回滚请求，开启一个本地事务，执行如下操作。</li>
+<li>通过 <strong>XID 和 Branch ID</strong> <strong>查找到相应的 UNDO LOG 记录</strong>。</li>
+<li><strong>数据校验</strong>：拿 UNDO LOG 中的后镜与当前数据进行比较，如果有不同，说明数据被当前全局事务之外的动作做了修改。这种情况，需要根据配置策略来做处理，详细的说明在另外的文档中介绍。</li>
+<li>根据 UNDO LOG 中的前镜像和业务 SQL 的相关信息<strong>生成并执行回滚的语句</strong>；</li>
+<li><strong>提交本地的补偿事务</strong>，并把本地事务的执行结果（即分支事务回滚的结果）上报给 TC。</li>
+</ol>
+<h4 id="二阶段-提交"><a href="#二阶段-提交" class="headerlink" title="二阶段-提交"></a>二阶段-提交</h4><ol>
+<li>收到 TC 的分支提交请求，把请求放入一个异步任务的队列中，马上返回提交成功的结果给 TC。</li>
+<li>异步任务阶段的分支提交请求将<strong>异步和批量地删除相应 UNDO LOG 记录</strong>。</li>
+</ol>
+<h1 id="消息队列的分布式事务解决方案"><a href="#消息队列的分布式事务解决方案" class="headerlink" title="消息队列的分布式事务解决方案"></a>消息队列的分布式事务解决方案</h1><h2 id="最大努力通知"><a href="#最大努力通知" class="headerlink" title="最大努力通知"></a>最大努力通知</h2><p><strong>最大努力通知是最简单的一种柔性事务</strong>，适用于一些最终一致性时间敏感度低的业务，且被动方处理结果 不影响主动方的处理结果。</p>
+<p>这个方案的大致意思就是：</p>
+<ol>
+<li>系统 A 本地事务执行完之后，发送个消息到 MQ；</li>
+<li>这里会有个专门消费 MQ 的服务，这个服务会消费 MQ 并调用系统 B 的接口；</li>
+<li>要是系统 B 执行成功就 ok 了；要是系统 B 执行失败了，那么最大努力通知服务就定时尝试重新调用系统 B, 反复 N 次，最后还是不行就放弃。</li>
+</ol>
+<h2 id="本地消息表"><a href="#本地消息表" class="headerlink" title="本地消息表"></a>本地消息表</h2><p><img src="https://xiaomi-info.github.io/2020/01/02/distributed-transaction/native-message.jpg"></p>
+<ol>
+<li>当系统 A 被其他系统调用发生数据库表更操作，首先会更新数据库的业务表，其次会往相同数据库的消息表中插入一条数据，两个操作发生在同一个事务中</li>
+<li>系统 A 的脚本定期轮询本地消息往 mq 中写入一条消息，如果消息发送失败会进行重试</li>
+<li>系统 B 消费 mq 中的消息，并处理业务逻辑。如果本地事务处理失败，会在继续消费 mq 中的消息进行重试，如果是<strong>业务上的失败</strong>，可以通知系统 A 进行回滚操作</li>
+</ol>
+<p>本地消息表实现的条件：</p>
+<ol>
+<li><strong>消费者与生成者的接口都要支持幂等</strong>；</li>
+<li><strong>生产者需要额外的创建消息表</strong>；</li>
+<li>需要提供<strong>补偿逻辑</strong>，<strong>如果消费者业务失败，需要生产者支持回滚操作</strong> ？；</li>
+</ol>
+<p>容错机制：</p>
+<ol>
+<li>步骤 1 失败时，事务直接回滚；</li>
+<li>步骤 2、3 写 mq 与消费 mq 失败会进行重试；</li>
+<li>步骤 3 业务失败系统 B 向<strong>系统 A 发起事务回滚操作</strong>？；</li>
+</ol>
+<p>此方案的核心是将需要分布式处理的任务通过消息日志的方式来异步执行。</p>
+<p>消息日志可以存储到本地文本、数据库或消息队列，再通过业务规则自动或人工发起重试。人工重试更多的是应用于支付场景，通过对账系统对事后问题的处理。</p>
+<h2 id="可靠消息最终一致性"><a href="#可靠消息最终一致性" class="headerlink" title="可靠消息最终一致性"></a>可靠消息最终一致性</h2><p><img src="https://xiaomi-info.github.io/2020/01/02/distributed-transaction/mq-message.jpg"></p>
+<ol>
+<li>A 系统先向 mq 发送一条 prepare 消息，如果 prepare 消息发送失败，则直接取消操作</li>
+<li>如果消息发送成功，则执行本地事务</li>
+<li>如果本地事务执行成功，则想 mq 发送一条 confirm 消息，如果发送失败，则发送回滚消息</li>
+<li>B 系统消费 mq 中的 confirm 消息，执行本地事务，并发送 ack 消息。如果 B 系统中的本地事务失败，会一直不断重试，如果是<strong>业务上的失败</strong>，会向 A 系统发起回滚请求</li>
+<li><strong>mq 会定期轮询所有 prepared 消息调用系统 A 提供的接口查询消息的处理情况</strong>，如果该 prepare 消息本地事务处理成功，则重新发送 confirm 消息，否则直接回滚该消息</li>
+</ol>
+<p>该<strong>方案与本地消息最大的不同是去掉了本地消息表</strong>，其次本地消息表依赖消息表重试写入 mq 这一步由本方案中的轮询 prepare 消息状态来重试或者回滚该消息替代。其实现条件与容错方案基本一致。</p>
+<p>目前市面上实现该方案的只有阿里的 RocketMq。</p>
+<h2 id="DB与MQ的一致性如何保证？"><a href="#DB与MQ的一致性如何保证？" class="headerlink" title="DB与MQ的一致性如何保证？"></a>DB与MQ的一致性如何保证？</h2><blockquote>
+<p>这里的DB不一定指支持ACID的关系型数据库，甚至不一定指数据库，而是指广义上的’数据源’。</p>
+</blockquote>
+<p>在实际场景中，业务系统对本地DB数据变更后会广播对应的消息，消费者消费消息做自己的业务逻辑，按正常逻辑消息会在数据库变更后发出，<strong>如果消息发送超时且失败那么DB和MQ之间就产生了不一致问题</strong>，如何解决呢？使用可靠消息来解决，核心逻辑保证消息从投递到消费的过程中不会丢失。</p>
+<h3 id="本地消息表-生产者回调确认"><a href="#本地消息表-生产者回调确认" class="headerlink" title="本地消息表+生产者回调确认"></a>本地消息表+生产者回调确认</h3><p>(上面这张图对于本地消息表的实现还是有点不清楚，下面的这张图解释的更清楚一点)</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-4752702/nihz7qk4ej.png?imageView2/2/w/1620"></p>
+<p>工作机制：</p>
+<ol>
+<li>本地事务写业务DB的同时，写消息到消息表（一个事务中），初始消息状态标记为’未投递成功’。</li>
+<li>本地事务执行成功后，向mq发送消息，消息发送成功回调中，将消息表中的消息状态标记为’投递成功’</li>
+<li>本地线程定时轮训消息表中的’未投递成功’的消息，发送到mq，失败不断重试，确保一定到发送到mq。</li>
+</ol>
+<h3 id="RocketMQ的half-message"><a href="#RocketMQ的half-message" class="headerlink" title="RocketMQ的half-message"></a>RocketMQ的half-message</h3><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7051937718892232734">RocketMQ4.9.1源码分析_(事务) Half半消息处理</a></p>
+<p>上面的方式需要业务系统维护消息状态，这部分可以交给中间件来实现，实现逻辑会变得不一样。</p>
+<p>(也就是上面所讲的<strong>可靠消息最终一致性</strong>的那张图，目前市面上只有RocketMQ支持这种功能。阿里内部支持的实际是Notify)</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-4752702/68emv4778q.png?imageView2/2/w/1620"></p>
+<h1 id="对账"><a href="#对账" class="headerlink" title="对账"></a>对账</h1><p>这里简单的说出一种解决思路：</p>
+<p>所有操作之前，发消息；消费消息端查三个分支事务是否满足原子性，不满足则报警或者自动订正。</p>
+<h1 id="推荐文章"><a href="#推荐文章" class="headerlink" title="推荐文章"></a>推荐文章</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://xiaomi-info.github.io/2020/01/02/distributed-transaction/">小米-分布式事务，这一篇就够了</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1763155">分布式系统：数据一致性解决方案</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/270213092">XA与TCC的区别</a></p>
+<p><a target="_blank" rel="noopener" href="https://seata.io/zh-cn/docs/overview/what-is-seata.html">Seata 是什么?</a></p>
+<p><a target="_blank" rel="noopener" href="https://houbb.github.io/2018/09/02/sql-distribute-transaction-mq">本地消息表 （经典的ebay模式）</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/16/Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/16/Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5/" class="post-title-link" itemprop="url">Nginx负载均衡策略</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-03-16 16:19:46 / 修改时间：16:40:22" itemprop="dateCreated datePublished" datetime="2022-03-16T16:19:46+08:00">2022-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Nginx/" itemprop="url" rel="index"><span itemprop="name">Nginx</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="负载均衡的5种策略"><a href="#负载均衡的5种策略" class="headerlink" title="负载均衡的5种策略"></a>负载均衡的5种策略</h1><p>要理解负载均衡，必须先搞清楚正向代理和反向代理。</p>
+<p><strong>负载均衡的几种常用方式</strong></p>
+<h2 id="1、轮询（默认）"><a href="#1、轮询（默认）" class="headerlink" title="1、轮询（默认）"></a>1、轮询（默认）</h2><p>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">upstream</span> backserver &#123;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.0.14</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.0.15</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、weight"><a href="#2、weight" class="headerlink" title="2、weight"></a>2、weight</h2><p>指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的<br>情况。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">upstream backserver &#123;</span><br><span class="line">   <span class="built_in"> server </span>192.168.0.14 <span class="attribute">weight</span>=3;</span><br><span class="line">   <span class="built_in"> server </span>192.168.0.15 <span class="attribute">weight</span>=7;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>权重越高，在被访问的概率越大，如上例，分别是30%，70%。</p>
+<h2 id="3、ip-hash"><a href="#3、ip-hash" class="headerlink" title="3、ip_hash"></a>3、ip_hash</h2><p>上述方式存在一个问题就是说，在负载均衡系统中，假如用户在某台服务器上登录了，那么该用户第二次请求的时候，因为我们是负载均衡系统，每次请求都会重新定位到服务器集群中的某一个，那么<strong>已经登录某一个服务器的用户再重新定位到另一个服务器，其登录信息将会丢失，这样显然是不妥的</strong>。<br>我们可以采用<strong>ip_hash</strong>指令解决这个问题，如果客户已经访问了某个服务器，当用户再次访问时，会将该请求通过<strong>哈希算法，自动定位到该服务器</strong>。<br>每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决<strong>session的问题</strong>。</p>
+<figure class="highlight roboconf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream backserver &#123;</span><br><span class="line">    <span class="attribute">ip_hash;</span></span><br><span class="line"><span class="attribute">    server 192.168.0.14</span>:88;</span><br><span class="line">    <span class="attribute">server 192.168.0.15</span>:80;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、fair（第三方）"><a href="#4、fair（第三方）" class="headerlink" title="4、fair（第三方）"></a>4、fair（第三方）</h2><p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream backserver &#123;</span><br><span class="line">    server server1<span class="comment">;</span></span><br><span class="line">    server server2<span class="comment">;</span></span><br><span class="line">    fair<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、url-hash（第三方）"><a href="#5、url-hash（第三方）" class="headerlink" title="5、url_hash（第三方）"></a>5、url_hash（第三方）</h2><p>按访问url的hash结果来分配请求，使每个url定向到同一个（对应的）后端服务器，后端服务器为缓存时比较有效。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">upstream</span> backserver &#123;</span><br><span class="line">    <span class="attribute">server</span> squid1:<span class="number">3128</span>;</span><br><span class="line">    <span class="attribute">server</span> squid2:<span class="number">3128</span>;</span><br><span class="line">    <span class="attribute">hash</span> <span class="variable">$request_uri</span>;</span><br><span class="line">    <span class="attribute">hash_method</span> crc32;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="配置实践"><a href="#配置实践" class="headerlink" title="配置实践"></a>配置实践</h1><p>在需要使用负载均衡的server中增加</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">proxy_pass http://backserver/; </span><br><span class="line">upstream backserver&#123; </span><br><span class="line">    ip_hash; </span><br><span class="line">    server <span class="number">127.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span>:<span class="number">9090</span> down; (down 表示单前的server暂时不参与负载) </span><br><span class="line">    server <span class="number">127.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span>:<span class="number">8080</span> weight=<span class="number">2</span>; (weight 默认为<span class="number">1</span>; weight越大，负载的权重就越大) </span><br><span class="line">    server <span class="number">127.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span>:<span class="number">6060</span>; </span><br><span class="line">    server <span class="number">127.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span>:<span class="number">7070</span> backup; (其它所有的非backup机器down或者忙的时候，请求backup机器) </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p>max_fails：允许请求失败的次数默认为1.当超过最大次数时，返回proxy_next_upstream 模块定义的错误;</p>
+<p>fail_timeout: max_fails次失败后，暂停的时间;</p>
+<p>配置实例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">user  nobody;</span></span><br><span class="line"></span><br><span class="line">worker_processes  4;</span><br><span class="line">events &#123;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">最大并发数</span></span><br><span class="line">worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line">http&#123;</span><br><span class="line">    # 待选服务器列表</span><br><span class="line">    upstream myproject&#123;</span><br><span class="line">        # ip_hash指令，将同一用户引入同一服务器。</span><br><span class="line">        ip_hash;</span><br><span class="line">        server 125.219.42.4 fail_timeout=60s;</span><br><span class="line">        server 172.31.2.183;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server&#123;</span><br><span class="line">        # 监听端口</span><br><span class="line">        listen 80;</span><br><span class="line">        # 根目录下</span><br><span class="line">        location / &#123;</span><br><span class="line">        # 选择哪个服务器列表</span><br><span class="line">            proxy_pass http://myproject;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>参考链接<br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000014483200">nginx负载均衡的5种策略</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/16/CGLIB%E4%BB%A3%E7%90%86%E5%92%8CJDK%E4%BB%A3%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/16/CGLIB%E4%BB%A3%E7%90%86%E5%92%8CJDK%E4%BB%A3%E7%90%86/" class="post-title-link" itemprop="url">CGLIB代理和JDK代理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-16 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-16T00:00:00+08:00">2022-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-13 15:15:31" itemprop="dateModified" datetime="2022-09-13T15:15:31+08:00">2022-09-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="CGLIB"><a href="#CGLIB" class="headerlink" title="CGLIB"></a>CGLIB</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CGLIB动态代理</span></span><br><span class="line"><span class="comment">// 1. 首先实现一个MethodInterceptor，方法调用会被转发到该类的intercept()方法。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyMethodInterceptor</span> <span class="keyword">implements</span> <span class="title class_">MethodInterceptor</span>&#123;</span><br><span class="line">  ...</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> Object <span class="title function_">intercept</span><span class="params">(Object obj, Method method, Object[] args, MethodProxy proxy)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">		logger.info(<span class="string">&quot;You said: &quot;</span> + Arrays.toString(args));</span><br><span class="line">		<span class="keyword">return</span> proxy.invokeSuper(obj, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 2. 然后在需要使用HelloConcrete的时候，通过CGLIB动态代理获取代理对象。</span></span><br><span class="line"><span class="type">Enhancer</span> <span class="variable">enhancer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Enhancer</span>();</span><br><span class="line">enhancer.setSuperclass(HelloConcrete.class);</span><br><span class="line">enhancer.setCallback(<span class="keyword">new</span> <span class="title class_">MyMethodInterceptor</span>());</span><br><span class="line"></span><br><span class="line"><span class="type">HelloConcrete</span> <span class="variable">hello</span> <span class="operator">=</span> (HelloConcrete)enhancer.create();</span><br><span class="line">System.out.println(hello.sayHello(<span class="string">&quot;I love you!&quot;</span>));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="优缺点比较"><a href="#优缺点比较" class="headerlink" title="优缺点比较"></a>优缺点比较</h2><p>JDK</p>
+<ol>
+<li><p>根据ClassLoader和Interface来获取接口类（前面已经讲了，类是由ClassLoader加载到JVM的，所以通过ClassLoader和Interface可以找到接口类）</p>
+</li>
+<li><p>获取构造对象；</p>
+</li>
+<li><p>通过构造对象和InvocationHandler生成实例，并返回，就是我们要的代理类。</p>
+</li>
+</ol>
+<p>Java动态代理优缺点：</p>
+<p>优点：</p>
+<ol>
+<li><p>Java本身支持，不用担心依赖问题，随着版本稳定升级；</p>
+</li>
+<li><p>代码实现简单；</p>
+</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li><p>目标类必须实现某个接口，换言之，没有实现接口的类是不能生成代理对象的；</p>
+</li>
+<li><p>代理的方法必须都声明在接口中，否则，无法代理；</p>
+</li>
+<li><p>执行速度性能相对cglib较低；</p>
+</li>
+</ol>
+<p>Cglib原理：</p>
+<p>1.通过字节码增强技术动态的创建代理对象；</p>
+<p>2.代理的是代理对象的引用；</p>
+<p>Cglib优缺点：</p>
+<p>优点：</p>
+<p>1.代理的类无需实现接口；</p>
+<p>2.执行速度相对JDK动态代理较高；</p>
+<p>缺点：</p>
+<p>1.字节码库需要进行更新以保证在新版java上能运行；</p>
+<p>2.动态创建代理对象的代价相对JDK动态代理较高；</p>
+<p>Tips：</p>
+<p>1.代理的对象不能是final关键字修饰的</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/carpenterlee/p/8241042.html">https://www.cnblogs.com/carpenterlee/p/8241042.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/brithToSpring/p/13356626.html">https://www.cnblogs.com/brithToSpring/p/13356626.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000023514746">https://segmentfault.com/a/1190000023514746</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/15/DelayQueue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/15/DelayQueue/" class="post-title-link" itemprop="url">DelayQueue</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-03-15 18:16:48 / 修改时间：19:41:02" itemprop="dateCreated datePublished" datetime="2022-03-15T18:16:48+08:00">2022-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JUC/" itemprop="url" rel="index"><span itemprop="name">JUC</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>Delayed元素</strong>的<strong>无界</strong>阻塞队列，其中的<strong>元素只能在其延迟到期时被获取</strong>。 </p>
+<p>队列的头部是延迟过期最早的那个Delayed元素。</p>
+<p>如果没有延迟到期，则没有 head 并且poll将返回null 。</p>
+<p>当元素的<code>getDelay(TimeUnit.NANOSECONDS)</code>方法返回小于或等于零的值时，就会发生过期。</p>
+<p>尽管无法使用take或poll删除未过期的元素，它们仍被视为普通元素。 例如， size方法返回过期和未过期元素的计数。</p>
+<p>此队列不允许空元素。</p>
+<h1 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h1><p>实现了一个延时获取的元素类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jsy.threadPool;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.Duration;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.DelayQueue;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Delayed;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: SongyangJi</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span>: 2021/10/31</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestQueue</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">DelayedItem</span>&lt;T&gt; <span class="keyword">implements</span> <span class="title class_">Delayed</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> T element;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> delaySeconds;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">long</span> expireNanoTime;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">DelayedItem</span><span class="params">(T element, <span class="type">int</span> delaySeconds)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.element = element;</span><br><span class="line">            <span class="built_in">this</span>.delaySeconds = delaySeconds;</span><br><span class="line">            expireNanoTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert(Duration.ofSeconds(delaySeconds));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 剩余的阻塞的时间</span></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">long</span> <span class="title function_">getDelay</span><span class="params">(TimeUnit unit)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> expireNanoTime - System.nanoTime();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(Delayed o)</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (o == <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (o == <span class="built_in">this</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            <span class="type">long</span> <span class="variable">diff</span> <span class="operator">=</span> getDelay(TimeUnit.NANOSECONDS) - o.getDelay(TimeUnit.NANOSECONDS);</span><br><span class="line">            <span class="keyword">return</span> diff &gt; <span class="number">0</span> ? <span class="number">1</span> : diff == <span class="number">0</span> ? <span class="number">0</span> : -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;DelayedItem&#123;&quot;</span> +</span><br><span class="line">                    <span class="string">&quot;element=&quot;</span> + element +</span><br><span class="line">                    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> T <span class="title function_">getElement</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> element;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setElement</span><span class="params">(T element)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.element = element;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getDelaySeconds</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> delaySeconds;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        DelayQueue&lt;DelayedItem&lt;Integer&gt;&gt; delayQueue = <span class="keyword">new</span> <span class="title class_">DelayQueue</span>&lt;&gt;();</span><br><span class="line">        delayQueue.offer(<span class="keyword">new</span> <span class="title class_">DelayedItem</span>&lt;&gt;(<span class="number">1</span>, <span class="number">1</span>));</span><br><span class="line">        delayQueue.offer(<span class="keyword">new</span> <span class="title class_">DelayedItem</span>&lt;&gt;(<span class="number">1</span>, <span class="number">3</span>));</span><br><span class="line">        delayQueue.offer(<span class="keyword">new</span> <span class="title class_">DelayedItem</span>&lt;&gt;(<span class="number">1</span>, <span class="number">5</span>));</span><br><span class="line">        delayQueue.offer(<span class="keyword">new</span> <span class="title class_">DelayedItem</span>&lt;&gt;(<span class="number">1</span>, <span class="number">7</span>));</span><br><span class="line">        <span class="type">long</span> <span class="variable">s1</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            DelayedItem&lt;Integer&gt; item = delayQueue.take();</span><br><span class="line">            <span class="type">long</span> <span class="variable">s2</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">            System.out.println(<span class="string">&quot;to begin &quot;</span>+(s2 - s1)  + <span class="string">&quot; ms&quot;</span>);</span><br><span class="line">            System.out.println(item);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.util.concurrent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DelayQueue</span>&lt;E <span class="keyword">extends</span> <span class="title class_">Delayed</span>&gt; <span class="keyword">extends</span> <span class="title class_">AbstractQueue</span>&lt;E&gt;</span><br><span class="line">    <span class="keyword">implements</span> <span class="title class_">BlockingQueue</span>&lt;E&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">transient</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line">   </span><br><span class="line">    <span class="comment">// 以”剩余的阻塞的时间“为优先级，也就是说队首的是最早到达延迟时间点的</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> PriorityQueue&lt;E&gt; q = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;E&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用于等待首部元素的线程</span></span><br><span class="line">    <span class="keyword">private</span> Thread leader;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当新元素在队列头部可用或新线程可能需要成为领导者时发出条件信号</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Condition</span> <span class="variable">available</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">DelayQueue</span><span class="params">()</span> &#123;&#125;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offer</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            q.offer(e);</span><br><span class="line">            <span class="keyword">if</span> (q.peek() == e) &#123;</span><br><span class="line">                leader = <span class="literal">null</span>;</span><br><span class="line">                available.signal(); <span class="comment">// 新元素在队列头部可用</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">poll</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">E</span> <span class="variable">first</span> <span class="operator">=</span> q.peek();</span><br><span class="line">            <span class="comment">// 如果队列为空，或者所有元素都没有到期，返回 null,返回第一个过期的元素</span></span><br><span class="line">            <span class="keyword">return</span> (first == <span class="literal">null</span> || first.getDelay(NANOSECONDS) &gt; <span class="number">0</span>)</span><br><span class="line">                ? <span class="literal">null</span></span><br><span class="line">                : q.poll();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">take</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;</span><br><span class="line">        lock.lockInterruptibly();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">                <span class="type">E</span> <span class="variable">first</span> <span class="operator">=</span> q.peek();</span><br><span class="line">                <span class="keyword">if</span> (first == <span class="literal">null</span>)</span><br><span class="line">                    available.await();</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="type">long</span> <span class="variable">delay</span> <span class="operator">=</span> first.getDelay(NANOSECONDS);</span><br><span class="line">                    <span class="keyword">if</span> (delay &lt;= <span class="number">0L</span>)</span><br><span class="line">                        <span class="keyword">return</span> q.poll(); <span class="comment">// 已经到时间了，可以出队</span></span><br><span class="line">                    first = <span class="literal">null</span>; <span class="comment">// don&#x27;t retain ref while waiting</span></span><br><span class="line">                  </span><br><span class="line">                    <span class="comment">// 第一个元素时间没到，take()方法的所在线程必须阻塞</span></span><br><span class="line">                  </span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">if</span> (leader != <span class="literal">null</span>)    <span class="comment">// 现在已经有其他线程在等待了</span></span><br><span class="line">                        available.await(); <span class="comment">// 于是这个它自己无限等待，等待其他线程唤醒它，见 #1 处</span></span><br><span class="line">                    <span class="keyword">else</span> &#123; <span class="comment">// #2</span></span><br><span class="line">                        <span class="type">Thread</span> <span class="variable">thisThread</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">                        leader = thisThread;</span><br><span class="line">                        <span class="keyword">try</span> &#123;</span><br><span class="line">                            available.awaitNanos(delay);  <span class="comment">// 等待delay时间段</span></span><br><span class="line">                        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                            <span class="keyword">if</span> (leader == thisThread)</span><br><span class="line">                                leader = <span class="literal">null</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (leader == <span class="literal">null</span> &amp;&amp; q.peek() != <span class="literal">null</span>) <span class="comment">// 队列有元素，且没有leader，发出信号（leade r线程自己处理等待，获取元素，见 #2 处的代码段）</span></span><br><span class="line">                available.signal(); <span class="comment">// #1</span></span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不管有没有到时间，都返回第一个元素</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">peek</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> q.peek();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回所有元素的数量</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> q.size();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/Redis%E7%9A%84%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/01/Redis%E7%9A%84%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" class="post-title-link" itemprop="url">Redis的常见使用场景</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-01 11:22:31" itemprop="dateCreated datePublished" datetime="2022-03-01T11:22:31+08:00">2022-03-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-26 21:40:42" itemprop="dateModified" datetime="2022-04-26T21:40:42+08:00">2022-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li>[1、缓存]</li>
+</ul>
+<p>String类型</p>
+<p>例如：热点数据缓存（例如报表、头条排行榜、对象缓存、全页缓存等等可以提升为热点数据的访问数据。</p>
+<ul>
+<li>[2、数据共享分布式]</li>
+</ul>
+<p>举一个典型例子：分布式 session 的共享。</p>
+<blockquote>
+<p>spring session在 redis 里面保存的数据包括：</p>
+<ul>
+<li><p>SET 类型的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring:session:expireations:[min]</span><br></pre></td></tr></table></figure>
+
+<p>min 表示从 1970 年 1 月 1 日 0 点 0 分经过的分钟数， SET 集合的 member 为 expires:[sessionId] ,表示这一分钟应该过期的键。</p>
+</li>
+<li><p>String 类型的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring:session:sessions:expires:[sessionId]</span><br></pre></td></tr></table></figure>
+
+<p>该数据对应一个空值，表示 sessionId 过期的剩余时间，即 maxInactiveInterval。</p>
+</li>
+<li><p>Hash 类型的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring:session:sessions:[sessionId]</span><br></pre></td></tr></table></figure>
+
+<p>session 保存的数据，记录了 creationTime，maxInactiveInterval，lastAccessedTime，attribute。前两个数据是用于 session 过期管理的辅助数据结构。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;lastAccessedTime&quot;</span><span class="punctuation">:</span> <span class="number">1523933008926</span><span class="punctuation">,</span><span class="comment">/*2018/4/17 10:43:28*/</span></span><br><span class="line">    <span class="attr">&quot;creationTime&quot;</span><span class="punctuation">:</span> <span class="number">1523933008926</span><span class="punctuation">,</span> <span class="comment">/*2018/4/17 10:43:28*/</span></span><br><span class="line">    <span class="attr">&quot;maxInactiveInterval&quot;</span><span class="punctuation">:</span> <span class="number">1800</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sessionAttr:name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xu&quot;</span> <span class="comment">// 用户数据</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</blockquote>
+<p>基于 spring-session 解决分布式 session 共享问题:<a target="_blank" rel="noopener" href="https://spring.io/projects/spring-session-data-redis">https://spring.io/projects/spring-session-data-redis</a></p>
+<p>Spring Session 数据结构解读:<a target="_blank" rel="noopener" href="https://blog.didispace.com/spring-session-source-learning-xjf/">https://blog.didispace.com/spring-session-source-learning-xjf/</a></p>
+<p><a target="_blank" rel="noopener" href="https://spring.io/projects/spring-session-data-redis">https://spring.io/projects/spring-session-data-redis</a></p>
+<ul>
+<li>[3、分布式锁]</li>
+</ul>
+<p>基本原理就是 setnx+expire</p>
+<ul>
+<li>[4、全局ID]</li>
+</ul>
+<p>int类型，incrby，利用原子性</p>
+<p>incrby userid 1000</p>
+<p>分库分表的场景，一次性拿一段</p>
+<ul>
+<li>[5、计数器]</li>
+</ul>
+<p>int类型，incr方法</p>
+<p>例如：文章的阅读量、微博点赞数、允许一定的延迟，先写入Redis再定时同步到数据库</p>
+<ul>
+<li>[6、限流]</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/jT0WYISuSoi_hkTmELb7PQ">https://mp.weixin.qq.com/s/jT0WYISuSoi_hkTmELb7PQ</a></p>
+<ul>
+<li>[7、位统计]</li>
+</ul>
+<p>这个可以用来做</p>
+<ul>
+<li>[8、购物车]</li>
+<li>[9、用户消息时间线timeline]</li>
+<li>[10、消息队列]</li>
+<li>[11、抽奖]</li>
+<li>[12、点赞、签到、打卡]</li>
+<li>[13、商品标签]</li>
+<li>[14、商品筛选]</li>
+<li>[15、用户关注、推荐模型]</li>
+<li>[16、排行榜]</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/Goroutine%E3%80%81Channel%E3%80%81sync/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/01/Goroutine%E3%80%81Channel%E3%80%81sync/" class="post-title-link" itemprop="url">Go并发编程——goroutine、channel、sync</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-01 10:35:00" itemprop="dateCreated datePublished" datetime="2022-03-01T10:35:00+08:00">2022-03-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-15 19:45:58" itemprop="dateModified" datetime="2022-03-15T19:45:58+08:00">2022-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 它的调度也是不规律的</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(id <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	cnt := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		time.Sleep(time.Duration(rand.Intn(<span class="number">1000</span>)) * time.Millisecond)</span><br><span class="line">		cnt++</span><br><span class="line">		fmt.Printf(<span class="string">&quot;%d says %d\n&quot;</span>, id, cnt)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">go</span> f(<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">go</span> f(<span class="number">2</span>)</span><br><span class="line">	<span class="keyword">go</span> f(<span class="number">3</span>)</span><br><span class="line">  <span class="comment">// 仅仅让主任务不退出而已</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">(i <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> wg.Done() <span class="comment">// goroutine结束就登记-1</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;Hello Goroutine!&quot;</span>, i)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		wg.Add(<span class="number">1</span>) <span class="comment">// 启动一个goroutine就登记+1</span></span><br><span class="line">		<span class="keyword">go</span> hello(i) <span class="comment">// 10个goroutine是并发执行的</span></span><br><span class="line">	&#125;</span><br><span class="line">	wg.Wait() <span class="comment">// 等待所有登记的goroutine都结束</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/04/Hbase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/01/04/Hbase/" class="post-title-link" itemprop="url">Hbase</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-04 02:17:39" itemprop="dateCreated datePublished" datetime="2022-01-04T02:17:39+08:00">2022-01-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-09 02:39:05" itemprop="dateModified" datetime="2022-10-09T02:39:05+08:00">2022-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NoSQL/" itemprop="url" rel="index"><span itemprop="name">NoSQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew install hbase</span><br><span class="line">brew install jruby</span><br><span class="line">brew install asciidoctor</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew services start hbase</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a target="_blank" rel="noopener" href="http://localhost:16010/">http://localhost:16010</a></p>
+<h1 id="应用实例"><a href="#应用实例" class="headerlink" title="应用实例"></a>应用实例</h1><h2 id="手机数据"><a href="#手机数据" class="headerlink" title="手机数据"></a>手机数据</h2><ul>
+<li>需求</li>
+</ul>
+<p>有一张数据表，其中包含手机号码字段</p>
+<ol>
+<li>查询一段时间内固定号码的所有数据 </li>
+<li>查询一段时间内所有数据</li>
+</ol>
+<ul>
+<li><p>分析</p>
+<p>HBase要想查询快速，只能从rowKey上下手rowKey&#x3D;phoneNum+时间 可以实现目标1，但是目标2很难实现rowKey&#x3D;时间+phoneNum 可以实现目标2，但是目标1很难实现，且数据量越来越大可能导致热点问题 。</p>
+</li>
+<li><p>解决思路1：牺牲空间换时间，写数据时同时写入两张表，内容一样，只是一张表rowKey&#x3D;phoneNum+时间，另一张表rowKey&#x3D;时间+phoneNum</p>
+</li>
+<li><p>解决思路2：牺牲部分空间部分时间，两张表，一张全量表，rowKey&#x3D;phoneNum+时间，另一张索引表只存rowKey&#x3D;时间+phoneNum，目标1通过scan全量表就可以实现，目标2先scan索引表然后批量get全量表。</p>
+</li>
+</ul>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/scuwangjun/p/11555291.html">https://www.cnblogs.com/scuwangjun/p/11555291.html</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Chaser-Eagle/p/12008510.html">https://www.cnblogs.com/Chaser-Eagle/p/12008510.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903753271754759">一文讲清HBase存储结构</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/03/Neo4j/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/01/03/Neo4j/" class="post-title-link" itemprop="url">Neo4j</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-03 23:47:45" itemprop="dateCreated datePublished" datetime="2022-01-03T23:47:45+08:00">2022-01-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-01-04 16:27:37" itemprop="dateModified" datetime="2022-01-04T16:27:37+08:00">2022-01-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NoSQL/" itemprop="url" rel="index"><span itemprop="name">NoSQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p><a target="_blank" rel="noopener" href="https://neo4j.com/download-center/#community">https://neo4j.com/download-center/#community</a></p>
+<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><h2 id="Create"><a href="#Create" class="headerlink" title="Create"></a>Create</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br></pre></td><td class="code"><pre><span class="line">CREATE (TheMatrix:Movie &#123;title:&#x27;The Matrix&#x27;, released:1999, tagline:&#x27;Welcome to the Real World&#x27;&#125;)</span><br><span class="line">      CREATE (Keanu:Person &#123;name:&#x27;Keanu Reeves&#x27;, born:1964&#125;)</span><br><span class="line">      CREATE (Carrie:Person &#123;name:&#x27;Carrie-Anne Moss&#x27;, born:1967&#125;)</span><br><span class="line">      CREATE (Laurence:Person &#123;name:&#x27;Laurence Fishburne&#x27;, born:1961&#125;)</span><br><span class="line">      CREATE (Hugo:Person &#123;name:&#x27;Hugo Weaving&#x27;, born:1960&#125;)</span><br><span class="line">      CREATE (LillyW:Person &#123;name:&#x27;Lilly Wachowski&#x27;, born:1967&#125;)</span><br><span class="line">      CREATE (LanaW:Person &#123;name:&#x27;Lana Wachowski&#x27;, born:1965&#125;)</span><br><span class="line">      CREATE (JoelS:Person &#123;name:&#x27;Joel Silver&#x27;, born:1952&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Keanu)-[:ACTED_IN &#123;roles:[&#x27;Neo&#x27;]&#125;]-&gt;(TheMatrix),</span><br><span class="line">      (Carrie)-[:ACTED_IN &#123;roles:[&#x27;Trinity&#x27;]&#125;]-&gt;(TheMatrix),</span><br><span class="line">      (Laurence)-[:ACTED_IN &#123;roles:[&#x27;Morpheus&#x27;]&#125;]-&gt;(TheMatrix),</span><br><span class="line">      (Hugo)-[:ACTED_IN &#123;roles:[&#x27;Agent Smith&#x27;]&#125;]-&gt;(TheMatrix),</span><br><span class="line">      (LillyW)-[:DIRECTED]-&gt;(TheMatrix),</span><br><span class="line">      (LanaW)-[:DIRECTED]-&gt;(TheMatrix),</span><br><span class="line">      (JoelS)-[:PRODUCED]-&gt;(TheMatrix)</span><br><span class="line"></span><br><span class="line">      CREATE (Emil:Person &#123;name:&quot;Emil Eifrem&quot;, born:1978&#125;)</span><br><span class="line">      CREATE (Emil)-[:ACTED_IN &#123;roles:[&quot;Emil&quot;]&#125;]-&gt;(TheMatrix)</span><br><span class="line"></span><br><span class="line">      CREATE (TheMatrixReloaded:Movie &#123;title:&#x27;The Matrix Reloaded&#x27;, released:2003, tagline:&#x27;Free your mind&#x27;&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Keanu)-[:ACTED_IN &#123;roles:[&#x27;Neo&#x27;]&#125;]-&gt;(TheMatrixReloaded),</span><br><span class="line">      (Carrie)-[:ACTED_IN &#123;roles:[&#x27;Trinity&#x27;]&#125;]-&gt;(TheMatrixReloaded),</span><br><span class="line">      (Laurence)-[:ACTED_IN &#123;roles:[&#x27;Morpheus&#x27;]&#125;]-&gt;(TheMatrixReloaded),</span><br><span class="line">      (Hugo)-[:ACTED_IN &#123;roles:[&#x27;Agent Smith&#x27;]&#125;]-&gt;(TheMatrixReloaded),</span><br><span class="line">      (LillyW)-[:DIRECTED]-&gt;(TheMatrixReloaded),</span><br><span class="line">      (LanaW)-[:DIRECTED]-&gt;(TheMatrixReloaded),</span><br><span class="line">      (JoelS)-[:PRODUCED]-&gt;(TheMatrixReloaded)</span><br><span class="line"></span><br><span class="line">      CREATE (TheMatrixRevolutions:Movie &#123;title:&#x27;The Matrix Revolutions&#x27;, released:2003, tagline:&#x27;Everything that has a beginning has an end&#x27;&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Keanu)-[:ACTED_IN &#123;roles:[&#x27;Neo&#x27;]&#125;]-&gt;(TheMatrixRevolutions),</span><br><span class="line">      (Carrie)-[:ACTED_IN &#123;roles:[&#x27;Trinity&#x27;]&#125;]-&gt;(TheMatrixRevolutions),</span><br><span class="line">      (Laurence)-[:ACTED_IN &#123;roles:[&#x27;Morpheus&#x27;]&#125;]-&gt;(TheMatrixRevolutions),</span><br><span class="line">      (Hugo)-[:ACTED_IN &#123;roles:[&#x27;Agent Smith&#x27;]&#125;]-&gt;(TheMatrixRevolutions),</span><br><span class="line">      (LillyW)-[:DIRECTED]-&gt;(TheMatrixRevolutions),</span><br><span class="line">      (LanaW)-[:DIRECTED]-&gt;(TheMatrixRevolutions),</span><br><span class="line">      (JoelS)-[:PRODUCED]-&gt;(TheMatrixRevolutions)</span><br><span class="line"></span><br><span class="line">      CREATE (TheDevilsAdvocate:Movie &#123;title:&quot;The Devil&#x27;s Advocate&quot;, released:1997, tagline:&#x27;Evil has its winning ways&#x27;&#125;)</span><br><span class="line">      CREATE (Charlize:Person &#123;name:&#x27;Charlize Theron&#x27;, born:1975&#125;)</span><br><span class="line">      CREATE (Al:Person &#123;name:&#x27;Al Pacino&#x27;, born:1940&#125;)</span><br><span class="line">      CREATE (Taylor:Person &#123;name:&#x27;Taylor Hackford&#x27;, born:1944&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Keanu)-[:ACTED_IN &#123;roles:[&#x27;Kevin Lomax&#x27;]&#125;]-&gt;(TheDevilsAdvocate),</span><br><span class="line">      (Charlize)-[:ACTED_IN &#123;roles:[&#x27;Mary Ann Lomax&#x27;]&#125;]-&gt;(TheDevilsAdvocate),</span><br><span class="line">      (Al)-[:ACTED_IN &#123;roles:[&#x27;John Milton&#x27;]&#125;]-&gt;(TheDevilsAdvocate),</span><br><span class="line">      (Taylor)-[:DIRECTED]-&gt;(TheDevilsAdvocate)</span><br><span class="line"></span><br><span class="line">      CREATE (AFewGoodMen:Movie &#123;title:&quot;A Few Good Men&quot;, released:1992, tagline:&quot;In the heart of the nation&#x27;s capital, in a courthouse of the U.S. government, one man will stop at nothing to keep his honor, and one will stop at nothing to find the truth.&quot;&#125;)</span><br><span class="line">      CREATE (TomC:Person &#123;name:&#x27;Tom Cruise&#x27;, born:1962&#125;)</span><br><span class="line">      CREATE (JackN:Person &#123;name:&#x27;Jack Nicholson&#x27;, born:1937&#125;)</span><br><span class="line">      CREATE (DemiM:Person &#123;name:&#x27;Demi Moore&#x27;, born:1962&#125;)</span><br><span class="line">      CREATE (KevinB:Person &#123;name:&#x27;Kevin Bacon&#x27;, born:1958&#125;)</span><br><span class="line">      CREATE (KieferS:Person &#123;name:&#x27;Kiefer Sutherland&#x27;, born:1966&#125;)</span><br><span class="line">      CREATE (NoahW:Person &#123;name:&#x27;Noah Wyle&#x27;, born:1971&#125;)</span><br><span class="line">      CREATE (CubaG:Person &#123;name:&#x27;Cuba Gooding Jr.&#x27;, born:1968&#125;)</span><br><span class="line">      CREATE (KevinP:Person &#123;name:&#x27;Kevin Pollak&#x27;, born:1957&#125;)</span><br><span class="line">      CREATE (JTW:Person &#123;name:&#x27;J.T. Walsh&#x27;, born:1943&#125;)</span><br><span class="line">      CREATE (JamesM:Person &#123;name:&#x27;James Marshall&#x27;, born:1967&#125;)</span><br><span class="line">      CREATE (ChristopherG:Person &#123;name:&#x27;Christopher Guest&#x27;, born:1948&#125;)</span><br><span class="line">      CREATE (RobR:Person &#123;name:&#x27;Rob Reiner&#x27;, born:1947&#125;)</span><br><span class="line">      CREATE (AaronS:Person &#123;name:&#x27;Aaron Sorkin&#x27;, born:1961&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomC)-[:ACTED_IN &#123;roles:[&#x27;Lt. Daniel Kaffee&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (JackN)-[:ACTED_IN &#123;roles:[&#x27;Col. Nathan R. Jessup&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (DemiM)-[:ACTED_IN &#123;roles:[&#x27;Lt. Cdr. JoAnne Galloway&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (KevinB)-[:ACTED_IN &#123;roles:[&#x27;Capt. Jack Ross&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (KieferS)-[:ACTED_IN &#123;roles:[&#x27;Lt. Jonathan Kendrick&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (NoahW)-[:ACTED_IN &#123;roles:[&#x27;Cpl. Jeffrey Barnes&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (CubaG)-[:ACTED_IN &#123;roles:[&#x27;Cpl. Carl Hammaker&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (KevinP)-[:ACTED_IN &#123;roles:[&#x27;Lt. Sam Weinberg&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (JTW)-[:ACTED_IN &#123;roles:[&#x27;Lt. Col. Matthew Andrew Markinson&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (JamesM)-[:ACTED_IN &#123;roles:[&#x27;Pfc. Louden Downey&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (ChristopherG)-[:ACTED_IN &#123;roles:[&#x27;Dr. Stone&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (AaronS)-[:ACTED_IN &#123;roles:[&#x27;Man in Bar&#x27;]&#125;]-&gt;(AFewGoodMen),</span><br><span class="line">      (RobR)-[:DIRECTED]-&gt;(AFewGoodMen),</span><br><span class="line">      (AaronS)-[:WROTE]-&gt;(AFewGoodMen)</span><br><span class="line"></span><br><span class="line">      CREATE (TopGun:Movie &#123;title:&quot;Top Gun&quot;, released:1986, tagline:&#x27;I feel the need, the need for speed.&#x27;&#125;)</span><br><span class="line">      CREATE (KellyM:Person &#123;name:&#x27;Kelly McGillis&#x27;, born:1957&#125;)</span><br><span class="line">      CREATE (ValK:Person &#123;name:&#x27;Val Kilmer&#x27;, born:1959&#125;)</span><br><span class="line">      CREATE (AnthonyE:Person &#123;name:&#x27;Anthony Edwards&#x27;, born:1962&#125;)</span><br><span class="line">      CREATE (TomS:Person &#123;name:&#x27;Tom Skerritt&#x27;, born:1933&#125;)</span><br><span class="line">      CREATE (MegR:Person &#123;name:&#x27;Meg Ryan&#x27;, born:1961&#125;)</span><br><span class="line">      CREATE (TonyS:Person &#123;name:&#x27;Tony Scott&#x27;, born:1944&#125;)</span><br><span class="line">      CREATE (JimC:Person &#123;name:&#x27;Jim Cash&#x27;, born:1941&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomC)-[:ACTED_IN &#123;roles:[&#x27;Maverick&#x27;]&#125;]-&gt;(TopGun),</span><br><span class="line">      (KellyM)-[:ACTED_IN &#123;roles:[&#x27;Charlie&#x27;]&#125;]-&gt;(TopGun),</span><br><span class="line">      (ValK)-[:ACTED_IN &#123;roles:[&#x27;Iceman&#x27;]&#125;]-&gt;(TopGun),</span><br><span class="line">      (AnthonyE)-[:ACTED_IN &#123;roles:[&#x27;Goose&#x27;]&#125;]-&gt;(TopGun),</span><br><span class="line">      (TomS)-[:ACTED_IN &#123;roles:[&#x27;Viper&#x27;]&#125;]-&gt;(TopGun),</span><br><span class="line">      (MegR)-[:ACTED_IN &#123;roles:[&#x27;Carole&#x27;]&#125;]-&gt;(TopGun),</span><br><span class="line">      (TonyS)-[:DIRECTED]-&gt;(TopGun),</span><br><span class="line">      (JimC)-[:WROTE]-&gt;(TopGun)</span><br><span class="line"></span><br><span class="line">      CREATE (JerryMaguire:Movie &#123;title:&#x27;Jerry Maguire&#x27;, released:2000, tagline:&#x27;The rest of his life begins now.&#x27;&#125;)</span><br><span class="line">      CREATE (ReneeZ:Person &#123;name:&#x27;Renee Zellweger&#x27;, born:1969&#125;)</span><br><span class="line">      CREATE (KellyP:Person &#123;name:&#x27;Kelly Preston&#x27;, born:1962&#125;)</span><br><span class="line">      CREATE (JerryO:Person &#123;name:&quot;Jerry O&#x27;Connell&quot;, born:1974&#125;)</span><br><span class="line">      CREATE (JayM:Person &#123;name:&#x27;Jay Mohr&#x27;, born:1970&#125;)</span><br><span class="line">      CREATE (BonnieH:Person &#123;name:&#x27;Bonnie Hunt&#x27;, born:1961&#125;)</span><br><span class="line">      CREATE (ReginaK:Person &#123;name:&#x27;Regina King&#x27;, born:1971&#125;)</span><br><span class="line">      CREATE (JonathanL:Person &#123;name:&#x27;Jonathan Lipnicki&#x27;, born:1996&#125;)</span><br><span class="line">      CREATE (CameronC:Person &#123;name:&#x27;Cameron Crowe&#x27;, born:1957&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomC)-[:ACTED_IN &#123;roles:[&#x27;Jerry Maguire&#x27;]&#125;]-&gt;(JerryMaguire),</span><br><span class="line">      (CubaG)-[:ACTED_IN &#123;roles:[&#x27;Rod Tidwell&#x27;]&#125;]-&gt;(JerryMaguire),</span><br><span class="line">      (ReneeZ)-[:ACTED_IN &#123;roles:[&#x27;Dorothy Boyd&#x27;]&#125;]-&gt;(JerryMaguire),</span><br><span class="line">      (KellyP)-[:ACTED_IN &#123;roles:[&#x27;Avery Bishop&#x27;]&#125;]-&gt;(JerryMaguire),</span><br><span class="line">      (JerryO)-[:ACTED_IN &#123;roles:[&#x27;Frank Cushman&#x27;]&#125;]-&gt;(JerryMaguire),</span><br><span class="line">      (JayM)-[:ACTED_IN &#123;roles:[&#x27;Bob Sugar&#x27;]&#125;]-&gt;(JerryMaguire),</span><br><span class="line">      (BonnieH)-[:ACTED_IN &#123;roles:[&#x27;Laurel Boyd&#x27;]&#125;]-&gt;(JerryMaguire),</span><br><span class="line">      (ReginaK)-[:ACTED_IN &#123;roles:[&#x27;Marcee Tidwell&#x27;]&#125;]-&gt;(JerryMaguire),</span><br><span class="line">      (JonathanL)-[:ACTED_IN &#123;roles:[&#x27;Ray Boyd&#x27;]&#125;]-&gt;(JerryMaguire),</span><br><span class="line">      (CameronC)-[:DIRECTED]-&gt;(JerryMaguire),</span><br><span class="line">      (CameronC)-[:PRODUCED]-&gt;(JerryMaguire),</span><br><span class="line">      (CameronC)-[:WROTE]-&gt;(JerryMaguire)</span><br><span class="line"></span><br><span class="line">      CREATE (StandByMe:Movie &#123;title:&quot;Stand By Me&quot;, released:1986, tagline:&quot;For some, it&#x27;s the last real taste of innocence, and the first real taste of life. But for everyone, it&#x27;s the time that memories are made of.&quot;&#125;)</span><br><span class="line">      CREATE (RiverP:Person &#123;name:&#x27;River Phoenix&#x27;, born:1970&#125;)</span><br><span class="line">      CREATE (CoreyF:Person &#123;name:&#x27;Corey Feldman&#x27;, born:1971&#125;)</span><br><span class="line">      CREATE (WilW:Person &#123;name:&#x27;Wil Wheaton&#x27;, born:1972&#125;)</span><br><span class="line">      CREATE (JohnC:Person &#123;name:&#x27;John Cusack&#x27;, born:1966&#125;)</span><br><span class="line">      CREATE (MarshallB:Person &#123;name:&#x27;Marshall Bell&#x27;, born:1942&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (WilW)-[:ACTED_IN &#123;roles:[&#x27;Gordie Lachance&#x27;]&#125;]-&gt;(StandByMe),</span><br><span class="line">      (RiverP)-[:ACTED_IN &#123;roles:[&#x27;Chris Chambers&#x27;]&#125;]-&gt;(StandByMe),</span><br><span class="line">      (JerryO)-[:ACTED_IN &#123;roles:[&#x27;Vern Tessio&#x27;]&#125;]-&gt;(StandByMe),</span><br><span class="line">      (CoreyF)-[:ACTED_IN &#123;roles:[&#x27;Teddy Duchamp&#x27;]&#125;]-&gt;(StandByMe),</span><br><span class="line">      (JohnC)-[:ACTED_IN &#123;roles:[&#x27;Denny Lachance&#x27;]&#125;]-&gt;(StandByMe),</span><br><span class="line">      (KieferS)-[:ACTED_IN &#123;roles:[&#x27;Ace Merrill&#x27;]&#125;]-&gt;(StandByMe),</span><br><span class="line">      (MarshallB)-[:ACTED_IN &#123;roles:[&#x27;Mr. Lachance&#x27;]&#125;]-&gt;(StandByMe),</span><br><span class="line">      (RobR)-[:DIRECTED]-&gt;(StandByMe)</span><br><span class="line"></span><br><span class="line">      CREATE (AsGoodAsItGets:Movie &#123;title:&#x27;As Good as It Gets&#x27;, released:1997, tagline:&#x27;A comedy from the heart that goes for the throat.&#x27;&#125;)</span><br><span class="line">      CREATE (HelenH:Person &#123;name:&#x27;Helen Hunt&#x27;, born:1963&#125;)</span><br><span class="line">      CREATE (GregK:Person &#123;name:&#x27;Greg Kinnear&#x27;, born:1963&#125;)</span><br><span class="line">      CREATE (JamesB:Person &#123;name:&#x27;James L. Brooks&#x27;, born:1940&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (JackN)-[:ACTED_IN &#123;roles:[&#x27;Melvin Udall&#x27;]&#125;]-&gt;(AsGoodAsItGets),</span><br><span class="line">      (HelenH)-[:ACTED_IN &#123;roles:[&#x27;Carol Connelly&#x27;]&#125;]-&gt;(AsGoodAsItGets),</span><br><span class="line">      (GregK)-[:ACTED_IN &#123;roles:[&#x27;Simon Bishop&#x27;]&#125;]-&gt;(AsGoodAsItGets),</span><br><span class="line">      (CubaG)-[:ACTED_IN &#123;roles:[&#x27;Frank Sachs&#x27;]&#125;]-&gt;(AsGoodAsItGets),</span><br><span class="line">      (JamesB)-[:DIRECTED]-&gt;(AsGoodAsItGets)</span><br><span class="line"></span><br><span class="line">      CREATE (WhatDreamsMayCome:Movie &#123;title:&#x27;What Dreams May Come&#x27;, released:1998, tagline:&#x27;After life there is more. The end is just the beginning.&#x27;&#125;)</span><br><span class="line">      CREATE (AnnabellaS:Person &#123;name:&#x27;Annabella Sciorra&#x27;, born:1960&#125;)</span><br><span class="line">      CREATE (MaxS:Person &#123;name:&#x27;Max von Sydow&#x27;, born:1929&#125;)</span><br><span class="line">      CREATE (WernerH:Person &#123;name:&#x27;Werner Herzog&#x27;, born:1942&#125;)</span><br><span class="line">      CREATE (Robin:Person &#123;name:&#x27;Robin Williams&#x27;, born:1951&#125;)</span><br><span class="line">      CREATE (VincentW:Person &#123;name:&#x27;Vincent Ward&#x27;, born:1956&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Robin)-[:ACTED_IN &#123;roles:[&#x27;Chris Nielsen&#x27;]&#125;]-&gt;(WhatDreamsMayCome),</span><br><span class="line">      (CubaG)-[:ACTED_IN &#123;roles:[&#x27;Albert Lewis&#x27;]&#125;]-&gt;(WhatDreamsMayCome),</span><br><span class="line">      (AnnabellaS)-[:ACTED_IN &#123;roles:[&#x27;Annie Collins-Nielsen&#x27;]&#125;]-&gt;(WhatDreamsMayCome),</span><br><span class="line">      (MaxS)-[:ACTED_IN &#123;roles:[&#x27;The Tracker&#x27;]&#125;]-&gt;(WhatDreamsMayCome),</span><br><span class="line">      (WernerH)-[:ACTED_IN &#123;roles:[&#x27;The Face&#x27;]&#125;]-&gt;(WhatDreamsMayCome),</span><br><span class="line">      (VincentW)-[:DIRECTED]-&gt;(WhatDreamsMayCome)</span><br><span class="line"></span><br><span class="line">      CREATE (SnowFallingonCedars:Movie &#123;title:&#x27;Snow Falling on Cedars&#x27;, released:1999, tagline:&#x27;First loves last. Forever.&#x27;&#125;)</span><br><span class="line">      CREATE (EthanH:Person &#123;name:&#x27;Ethan Hawke&#x27;, born:1970&#125;)</span><br><span class="line">      CREATE (RickY:Person &#123;name:&#x27;Rick Yune&#x27;, born:1971&#125;)</span><br><span class="line">      CREATE (JamesC:Person &#123;name:&#x27;James Cromwell&#x27;, born:1940&#125;)</span><br><span class="line">      CREATE (ScottH:Person &#123;name:&#x27;Scott Hicks&#x27;, born:1953&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (EthanH)-[:ACTED_IN &#123;roles:[&#x27;Ishmael Chambers&#x27;]&#125;]-&gt;(SnowFallingonCedars),</span><br><span class="line">      (RickY)-[:ACTED_IN &#123;roles:[&#x27;Kazuo Miyamoto&#x27;]&#125;]-&gt;(SnowFallingonCedars),</span><br><span class="line">      (MaxS)-[:ACTED_IN &#123;roles:[&#x27;Nels Gudmundsson&#x27;]&#125;]-&gt;(SnowFallingonCedars),</span><br><span class="line">      (JamesC)-[:ACTED_IN &#123;roles:[&#x27;Judge Fielding&#x27;]&#125;]-&gt;(SnowFallingonCedars),</span><br><span class="line">      (ScottH)-[:DIRECTED]-&gt;(SnowFallingonCedars)</span><br><span class="line"></span><br><span class="line">      CREATE (YouveGotMail:Movie &#123;title:&quot;You&#x27;ve Got Mail&quot;, released:1998, tagline:&#x27;At odds in life... in love on-line.&#x27;&#125;)</span><br><span class="line">      CREATE (ParkerP:Person &#123;name:&#x27;Parker Posey&#x27;, born:1968&#125;)</span><br><span class="line">      CREATE (DaveC:Person &#123;name:&#x27;Dave Chappelle&#x27;, born:1973&#125;)</span><br><span class="line">      CREATE (SteveZ:Person &#123;name:&#x27;Steve Zahn&#x27;, born:1967&#125;)</span><br><span class="line">      CREATE (TomH:Person &#123;name:&#x27;Tom Hanks&#x27;, born:1956&#125;)</span><br><span class="line">      CREATE (NoraE:Person &#123;name:&#x27;Nora Ephron&#x27;, born:1941&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Joe Fox&#x27;]&#125;]-&gt;(YouveGotMail),</span><br><span class="line">      (MegR)-[:ACTED_IN &#123;roles:[&#x27;Kathleen Kelly&#x27;]&#125;]-&gt;(YouveGotMail),</span><br><span class="line">      (GregK)-[:ACTED_IN &#123;roles:[&#x27;Frank Navasky&#x27;]&#125;]-&gt;(YouveGotMail),</span><br><span class="line">      (ParkerP)-[:ACTED_IN &#123;roles:[&#x27;Patricia Eden&#x27;]&#125;]-&gt;(YouveGotMail),</span><br><span class="line">      (DaveC)-[:ACTED_IN &#123;roles:[&#x27;Kevin Jackson&#x27;]&#125;]-&gt;(YouveGotMail),</span><br><span class="line">      (SteveZ)-[:ACTED_IN &#123;roles:[&#x27;George Pappas&#x27;]&#125;]-&gt;(YouveGotMail),</span><br><span class="line">      (NoraE)-[:DIRECTED]-&gt;(YouveGotMail)</span><br><span class="line"></span><br><span class="line">      CREATE (SleeplessInSeattle:Movie &#123;title:&#x27;Sleepless in Seattle&#x27;, released:1993, tagline:&#x27;What if someone you never met, someone you never saw, someone you never knew was the only someone for you?&#x27;&#125;)</span><br><span class="line">      CREATE (RitaW:Person &#123;name:&#x27;Rita Wilson&#x27;, born:1956&#125;)</span><br><span class="line">      CREATE (BillPull:Person &#123;name:&#x27;Bill Pullman&#x27;, born:1953&#125;)</span><br><span class="line">      CREATE (VictorG:Person &#123;name:&#x27;Victor Garber&#x27;, born:1949&#125;)</span><br><span class="line">      CREATE (RosieO:Person &#123;name:&quot;Rosie O&#x27;Donnell&quot;, born:1962&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Sam Baldwin&#x27;]&#125;]-&gt;(SleeplessInSeattle),</span><br><span class="line">      (MegR)-[:ACTED_IN &#123;roles:[&#x27;Annie Reed&#x27;]&#125;]-&gt;(SleeplessInSeattle),</span><br><span class="line">      (RitaW)-[:ACTED_IN &#123;roles:[&#x27;Suzy&#x27;]&#125;]-&gt;(SleeplessInSeattle),</span><br><span class="line">      (BillPull)-[:ACTED_IN &#123;roles:[&#x27;Walter&#x27;]&#125;]-&gt;(SleeplessInSeattle),</span><br><span class="line">      (VictorG)-[:ACTED_IN &#123;roles:[&#x27;Greg&#x27;]&#125;]-&gt;(SleeplessInSeattle),</span><br><span class="line">      (RosieO)-[:ACTED_IN &#123;roles:[&#x27;Becky&#x27;]&#125;]-&gt;(SleeplessInSeattle),</span><br><span class="line">      (NoraE)-[:DIRECTED]-&gt;(SleeplessInSeattle)</span><br><span class="line"></span><br><span class="line">      CREATE (JoeVersustheVolcano:Movie &#123;title:&#x27;Joe Versus the Volcano&#x27;, released:1990, tagline:&#x27;A story of love, lava and burning desire.&#x27;&#125;)</span><br><span class="line">      CREATE (JohnS:Person &#123;name:&#x27;John Patrick Stanley&#x27;, born:1950&#125;)</span><br><span class="line">      CREATE (Nathan:Person &#123;name:&#x27;Nathan Lane&#x27;, born:1956&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Joe Banks&#x27;]&#125;]-&gt;(JoeVersustheVolcano),</span><br><span class="line">      (MegR)-[:ACTED_IN &#123;roles:[&#x27;DeDe&#x27;, &#x27;Angelica Graynamore&#x27;, &#x27;Patricia Graynamore&#x27;]&#125;]-&gt;(JoeVersustheVolcano),</span><br><span class="line">      (Nathan)-[:ACTED_IN &#123;roles:[&#x27;Baw&#x27;]&#125;]-&gt;(JoeVersustheVolcano),</span><br><span class="line">      (JohnS)-[:DIRECTED]-&gt;(JoeVersustheVolcano)</span><br><span class="line"></span><br><span class="line">      CREATE (WhenHarryMetSally:Movie &#123;title:&#x27;When Harry Met Sally&#x27;, released:1998, tagline:&#x27;Can two friends sleep together and still love each other in the morning?&#x27;&#125;)</span><br><span class="line">      CREATE (BillyC:Person &#123;name:&#x27;Billy Crystal&#x27;, born:1948&#125;)</span><br><span class="line">      CREATE (CarrieF:Person &#123;name:&#x27;Carrie Fisher&#x27;, born:1956&#125;)</span><br><span class="line">      CREATE (BrunoK:Person &#123;name:&#x27;Bruno Kirby&#x27;, born:1949&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (BillyC)-[:ACTED_IN &#123;roles:[&#x27;Harry Burns&#x27;]&#125;]-&gt;(WhenHarryMetSally),</span><br><span class="line">      (MegR)-[:ACTED_IN &#123;roles:[&#x27;Sally Albright&#x27;]&#125;]-&gt;(WhenHarryMetSally),</span><br><span class="line">      (CarrieF)-[:ACTED_IN &#123;roles:[&#x27;Marie&#x27;]&#125;]-&gt;(WhenHarryMetSally),</span><br><span class="line">      (BrunoK)-[:ACTED_IN &#123;roles:[&#x27;Jess&#x27;]&#125;]-&gt;(WhenHarryMetSally),</span><br><span class="line">      (RobR)-[:DIRECTED]-&gt;(WhenHarryMetSally),</span><br><span class="line">      (RobR)-[:PRODUCED]-&gt;(WhenHarryMetSally),</span><br><span class="line">      (NoraE)-[:PRODUCED]-&gt;(WhenHarryMetSally),</span><br><span class="line">      (NoraE)-[:WROTE]-&gt;(WhenHarryMetSally)</span><br><span class="line"></span><br><span class="line">      CREATE (ThatThingYouDo:Movie &#123;title:&#x27;That Thing You Do&#x27;, released:1996, tagline:&#x27;In every life there comes a time when that thing you dream becomes that thing you do&#x27;&#125;)</span><br><span class="line">      CREATE (LivT:Person &#123;name:&#x27;Liv Tyler&#x27;, born:1977&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Mr. White&#x27;]&#125;]-&gt;(ThatThingYouDo),</span><br><span class="line">      (LivT)-[:ACTED_IN &#123;roles:[&#x27;Faye Dolan&#x27;]&#125;]-&gt;(ThatThingYouDo),</span><br><span class="line">      (Charlize)-[:ACTED_IN &#123;roles:[&#x27;Tina&#x27;]&#125;]-&gt;(ThatThingYouDo),</span><br><span class="line">      (TomH)-[:DIRECTED]-&gt;(ThatThingYouDo)</span><br><span class="line"></span><br><span class="line">      CREATE (TheReplacements:Movie &#123;title:&#x27;The Replacements&#x27;, released:2000, tagline:&#x27;Pain heals, Chicks dig scars... Glory lasts forever&#x27;&#125;)</span><br><span class="line">      CREATE (Brooke:Person &#123;name:&#x27;Brooke Langton&#x27;, born:1970&#125;)</span><br><span class="line">      CREATE (Gene:Person &#123;name:&#x27;Gene Hackman&#x27;, born:1930&#125;)</span><br><span class="line">      CREATE (Orlando:Person &#123;name:&#x27;Orlando Jones&#x27;, born:1968&#125;)</span><br><span class="line">      CREATE (Howard:Person &#123;name:&#x27;Howard Deutch&#x27;, born:1950&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Keanu)-[:ACTED_IN &#123;roles:[&#x27;Shane Falco&#x27;]&#125;]-&gt;(TheReplacements),</span><br><span class="line">      (Brooke)-[:ACTED_IN &#123;roles:[&#x27;Annabelle Farrell&#x27;]&#125;]-&gt;(TheReplacements),</span><br><span class="line">      (Gene)-[:ACTED_IN &#123;roles:[&#x27;Jimmy McGinty&#x27;]&#125;]-&gt;(TheReplacements),</span><br><span class="line">      (Orlando)-[:ACTED_IN &#123;roles:[&#x27;Clifford Franklin&#x27;]&#125;]-&gt;(TheReplacements),</span><br><span class="line">      (Howard)-[:DIRECTED]-&gt;(TheReplacements)</span><br><span class="line"></span><br><span class="line">      CREATE (RescueDawn:Movie &#123;title:&#x27;RescueDawn&#x27;, released:2006, tagline:&quot;Based on the extraordinary true story of one man&#x27;s fight for freedom&quot;&#125;)</span><br><span class="line">      CREATE (ChristianB:Person &#123;name:&#x27;Christian Bale&#x27;, born:1974&#125;)</span><br><span class="line">      CREATE (ZachG:Person &#123;name:&#x27;Zach Grenier&#x27;, born:1954&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (MarshallB)-[:ACTED_IN &#123;roles:[&#x27;Admiral&#x27;]&#125;]-&gt;(RescueDawn),</span><br><span class="line">      (ChristianB)-[:ACTED_IN &#123;roles:[&#x27;Dieter Dengler&#x27;]&#125;]-&gt;(RescueDawn),</span><br><span class="line">      (ZachG)-[:ACTED_IN &#123;roles:[&#x27;Squad Leader&#x27;]&#125;]-&gt;(RescueDawn),</span><br><span class="line">      (SteveZ)-[:ACTED_IN &#123;roles:[&#x27;Duane&#x27;]&#125;]-&gt;(RescueDawn),</span><br><span class="line">      (WernerH)-[:DIRECTED]-&gt;(RescueDawn)</span><br><span class="line"></span><br><span class="line">      CREATE (TheBirdcage:Movie &#123;title:&#x27;The Birdcage&#x27;, released:1996, tagline:&#x27;Come as you are&#x27;&#125;)</span><br><span class="line">      CREATE (MikeN:Person &#123;name:&#x27;Mike Nichols&#x27;, born:1931&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Robin)-[:ACTED_IN &#123;roles:[&#x27;Armand Goldman&#x27;]&#125;]-&gt;(TheBirdcage),</span><br><span class="line">      (Nathan)-[:ACTED_IN &#123;roles:[&#x27;Albert Goldman&#x27;]&#125;]-&gt;(TheBirdcage),</span><br><span class="line">      (Gene)-[:ACTED_IN &#123;roles:[&#x27;Sen. Kevin Keeley&#x27;]&#125;]-&gt;(TheBirdcage),</span><br><span class="line">      (MikeN)-[:DIRECTED]-&gt;(TheBirdcage)</span><br><span class="line"></span><br><span class="line">      CREATE (Unforgiven:Movie &#123;title:&#x27;Unforgiven&#x27;, released:1992, tagline:&quot;It&#x27;s a hell of a thing, killing a man&quot;&#125;)</span><br><span class="line">      CREATE (RichardH:Person &#123;name:&#x27;Richard Harris&#x27;, born:1930&#125;)</span><br><span class="line">      CREATE (ClintE:Person &#123;name:&#x27;Clint Eastwood&#x27;, born:1930&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (RichardH)-[:ACTED_IN &#123;roles:[&#x27;English Bob&#x27;]&#125;]-&gt;(Unforgiven),</span><br><span class="line">      (ClintE)-[:ACTED_IN &#123;roles:[&#x27;Bill Munny&#x27;]&#125;]-&gt;(Unforgiven),</span><br><span class="line">      (Gene)-[:ACTED_IN &#123;roles:[&#x27;Little Bill Daggett&#x27;]&#125;]-&gt;(Unforgiven),</span><br><span class="line">      (ClintE)-[:DIRECTED]-&gt;(Unforgiven)</span><br><span class="line"></span><br><span class="line">      CREATE (JohnnyMnemonic:Movie &#123;title:&#x27;Johnny Mnemonic&#x27;, released:1995, tagline:&#x27;The hottest data on earth. In the coolest head in town&#x27;&#125;)</span><br><span class="line">      CREATE (Takeshi:Person &#123;name:&#x27;Takeshi Kitano&#x27;, born:1947&#125;)</span><br><span class="line">      CREATE (Dina:Person &#123;name:&#x27;Dina Meyer&#x27;, born:1968&#125;)</span><br><span class="line">      CREATE (IceT:Person &#123;name:&#x27;Ice-T&#x27;, born:1958&#125;)</span><br><span class="line">      CREATE (RobertL:Person &#123;name:&#x27;Robert Longo&#x27;, born:1953&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Keanu)-[:ACTED_IN &#123;roles:[&#x27;Johnny Mnemonic&#x27;]&#125;]-&gt;(JohnnyMnemonic),</span><br><span class="line">      (Takeshi)-[:ACTED_IN &#123;roles:[&#x27;Takahashi&#x27;]&#125;]-&gt;(JohnnyMnemonic),</span><br><span class="line">      (Dina)-[:ACTED_IN &#123;roles:[&#x27;Jane&#x27;]&#125;]-&gt;(JohnnyMnemonic),</span><br><span class="line">      (IceT)-[:ACTED_IN &#123;roles:[&#x27;J-Bone&#x27;]&#125;]-&gt;(JohnnyMnemonic),</span><br><span class="line">      (RobertL)-[:DIRECTED]-&gt;(JohnnyMnemonic)</span><br><span class="line"></span><br><span class="line">      CREATE (CloudAtlas:Movie &#123;title:&#x27;Cloud Atlas&#x27;, released:2012, tagline:&#x27;Everything is connected&#x27;&#125;)</span><br><span class="line">      CREATE (HalleB:Person &#123;name:&#x27;Halle Berry&#x27;, born:1966&#125;)</span><br><span class="line">      CREATE (JimB:Person &#123;name:&#x27;Jim Broadbent&#x27;, born:1949&#125;)</span><br><span class="line">      CREATE (TomT:Person &#123;name:&#x27;Tom Tykwer&#x27;, born:1965&#125;)</span><br><span class="line">      CREATE (DavidMitchell:Person &#123;name:&#x27;David Mitchell&#x27;, born:1969&#125;)</span><br><span class="line">      CREATE (StefanArndt:Person &#123;name:&#x27;Stefan Arndt&#x27;, born:1961&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Zachry&#x27;, &#x27;Dr. Henry Goose&#x27;, &#x27;Isaac Sachs&#x27;, &#x27;Dermot Hoggins&#x27;]&#125;]-&gt;(CloudAtlas),</span><br><span class="line">      (Hugo)-[:ACTED_IN &#123;roles:[&#x27;Bill Smoke&#x27;, &#x27;Haskell Moore&#x27;, &#x27;Tadeusz Kesselring&#x27;, &#x27;Nurse Noakes&#x27;, &#x27;Boardman Mephi&#x27;, &#x27;Old Georgie&#x27;]&#125;]-&gt;(CloudAtlas),</span><br><span class="line">      (HalleB)-[:ACTED_IN &#123;roles:[&#x27;Luisa Rey&#x27;, &#x27;Jocasta Ayrs&#x27;, &#x27;Ovid&#x27;, &#x27;Meronym&#x27;]&#125;]-&gt;(CloudAtlas),</span><br><span class="line">      (JimB)-[:ACTED_IN &#123;roles:[&#x27;Vyvyan Ayrs&#x27;, &#x27;Captain Molyneux&#x27;, &#x27;Timothy Cavendish&#x27;]&#125;]-&gt;(CloudAtlas),</span><br><span class="line">      (TomT)-[:DIRECTED]-&gt;(CloudAtlas),</span><br><span class="line">      (LillyW)-[:DIRECTED]-&gt;(CloudAtlas),</span><br><span class="line">      (LanaW)-[:DIRECTED]-&gt;(CloudAtlas),</span><br><span class="line">      (DavidMitchell)-[:WROTE]-&gt;(CloudAtlas),</span><br><span class="line">      (StefanArndt)-[:PRODUCED]-&gt;(CloudAtlas)</span><br><span class="line"></span><br><span class="line">      CREATE (TheDaVinciCode:Movie &#123;title:&#x27;The Da Vinci Code&#x27;, released:2006, tagline:&#x27;Break The Codes&#x27;&#125;)</span><br><span class="line">      CREATE (IanM:Person &#123;name:&#x27;Ian McKellen&#x27;, born:1939&#125;)</span><br><span class="line">      CREATE (AudreyT:Person &#123;name:&#x27;Audrey Tautou&#x27;, born:1976&#125;)</span><br><span class="line">      CREATE (PaulB:Person &#123;name:&#x27;Paul Bettany&#x27;, born:1971&#125;)</span><br><span class="line">      CREATE (RonH:Person &#123;name:&#x27;Ron Howard&#x27;, born:1954&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Dr. Robert Langdon&#x27;]&#125;]-&gt;(TheDaVinciCode),</span><br><span class="line">      (IanM)-[:ACTED_IN &#123;roles:[&#x27;Sir Leight Teabing&#x27;]&#125;]-&gt;(TheDaVinciCode),</span><br><span class="line">      (AudreyT)-[:ACTED_IN &#123;roles:[&#x27;Sophie Neveu&#x27;]&#125;]-&gt;(TheDaVinciCode),</span><br><span class="line">      (PaulB)-[:ACTED_IN &#123;roles:[&#x27;Silas&#x27;]&#125;]-&gt;(TheDaVinciCode),</span><br><span class="line">      (RonH)-[:DIRECTED]-&gt;(TheDaVinciCode)</span><br><span class="line"></span><br><span class="line">      CREATE (VforVendetta:Movie &#123;title:&#x27;V for Vendetta&#x27;, released:2006, tagline:&#x27;Freedom! Forever!&#x27;&#125;)</span><br><span class="line">      CREATE (NatalieP:Person &#123;name:&#x27;Natalie Portman&#x27;, born:1981&#125;)</span><br><span class="line">      CREATE (StephenR:Person &#123;name:&#x27;Stephen Rea&#x27;, born:1946&#125;)</span><br><span class="line">      CREATE (JohnH:Person &#123;name:&#x27;John Hurt&#x27;, born:1940&#125;)</span><br><span class="line">      CREATE (BenM:Person &#123;name: &#x27;Ben Miles&#x27;, born:1967&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Hugo)-[:ACTED_IN &#123;roles:[&#x27;V&#x27;]&#125;]-&gt;(VforVendetta),</span><br><span class="line">      (NatalieP)-[:ACTED_IN &#123;roles:[&#x27;Evey Hammond&#x27;]&#125;]-&gt;(VforVendetta),</span><br><span class="line">      (StephenR)-[:ACTED_IN &#123;roles:[&#x27;Eric Finch&#x27;]&#125;]-&gt;(VforVendetta),</span><br><span class="line">      (JohnH)-[:ACTED_IN &#123;roles:[&#x27;High Chancellor Adam Sutler&#x27;]&#125;]-&gt;(VforVendetta),</span><br><span class="line">      (BenM)-[:ACTED_IN &#123;roles:[&#x27;Dascomb&#x27;]&#125;]-&gt;(VforVendetta),</span><br><span class="line">      (JamesM)-[:DIRECTED]-&gt;(VforVendetta),</span><br><span class="line">      (LillyW)-[:PRODUCED]-&gt;(VforVendetta),</span><br><span class="line">      (LanaW)-[:PRODUCED]-&gt;(VforVendetta),</span><br><span class="line">      (JoelS)-[:PRODUCED]-&gt;(VforVendetta),</span><br><span class="line">      (LillyW)-[:WROTE]-&gt;(VforVendetta),</span><br><span class="line">      (LanaW)-[:WROTE]-&gt;(VforVendetta)</span><br><span class="line"></span><br><span class="line">      CREATE (SpeedRacer:Movie &#123;title:&#x27;Speed Racer&#x27;, released:2008, tagline:&#x27;Speed has no limits&#x27;&#125;)</span><br><span class="line">      CREATE (EmileH:Person &#123;name:&#x27;Emile Hirsch&#x27;, born:1985&#125;)</span><br><span class="line">      CREATE (JohnG:Person &#123;name:&#x27;John Goodman&#x27;, born:1960&#125;)</span><br><span class="line">      CREATE (SusanS:Person &#123;name:&#x27;Susan Sarandon&#x27;, born:1946&#125;)</span><br><span class="line">      CREATE (MatthewF:Person &#123;name:&#x27;Matthew Fox&#x27;, born:1966&#125;)</span><br><span class="line">      CREATE (ChristinaR:Person &#123;name:&#x27;Christina Ricci&#x27;, born:1980&#125;)</span><br><span class="line">      CREATE (Rain:Person &#123;name:&#x27;Rain&#x27;, born:1982&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (EmileH)-[:ACTED_IN &#123;roles:[&#x27;Speed Racer&#x27;]&#125;]-&gt;(SpeedRacer),</span><br><span class="line">      (JohnG)-[:ACTED_IN &#123;roles:[&#x27;Pops&#x27;]&#125;]-&gt;(SpeedRacer),</span><br><span class="line">      (SusanS)-[:ACTED_IN &#123;roles:[&#x27;Mom&#x27;]&#125;]-&gt;(SpeedRacer),</span><br><span class="line">      (MatthewF)-[:ACTED_IN &#123;roles:[&#x27;Racer X&#x27;]&#125;]-&gt;(SpeedRacer),</span><br><span class="line">      (ChristinaR)-[:ACTED_IN &#123;roles:[&#x27;Trixie&#x27;]&#125;]-&gt;(SpeedRacer),</span><br><span class="line">      (Rain)-[:ACTED_IN &#123;roles:[&#x27;Taejo Togokahn&#x27;]&#125;]-&gt;(SpeedRacer),</span><br><span class="line">      (BenM)-[:ACTED_IN &#123;roles:[&#x27;Cass Jones&#x27;]&#125;]-&gt;(SpeedRacer),</span><br><span class="line">      (LillyW)-[:DIRECTED]-&gt;(SpeedRacer),</span><br><span class="line">      (LanaW)-[:DIRECTED]-&gt;(SpeedRacer),</span><br><span class="line">      (LillyW)-[:WROTE]-&gt;(SpeedRacer),</span><br><span class="line">      (LanaW)-[:WROTE]-&gt;(SpeedRacer),</span><br><span class="line">      (JoelS)-[:PRODUCED]-&gt;(SpeedRacer)</span><br><span class="line"></span><br><span class="line">      CREATE (NinjaAssassin:Movie &#123;title:&#x27;Ninja Assassin&#x27;, released:2009, tagline:&#x27;Prepare to enter a secret world of assassins&#x27;&#125;)</span><br><span class="line">      CREATE (NaomieH:Person &#123;name:&#x27;Naomie Harris&#x27;&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Rain)-[:ACTED_IN &#123;roles:[&#x27;Raizo&#x27;]&#125;]-&gt;(NinjaAssassin),</span><br><span class="line">      (NaomieH)-[:ACTED_IN &#123;roles:[&#x27;Mika Coretti&#x27;]&#125;]-&gt;(NinjaAssassin),</span><br><span class="line">      (RickY)-[:ACTED_IN &#123;roles:[&#x27;Takeshi&#x27;]&#125;]-&gt;(NinjaAssassin),</span><br><span class="line">      (BenM)-[:ACTED_IN &#123;roles:[&#x27;Ryan Maslow&#x27;]&#125;]-&gt;(NinjaAssassin),</span><br><span class="line">      (JamesM)-[:DIRECTED]-&gt;(NinjaAssassin),</span><br><span class="line">      (LillyW)-[:PRODUCED]-&gt;(NinjaAssassin),</span><br><span class="line">      (LanaW)-[:PRODUCED]-&gt;(NinjaAssassin),</span><br><span class="line">      (JoelS)-[:PRODUCED]-&gt;(NinjaAssassin)</span><br><span class="line"></span><br><span class="line">      CREATE (TheGreenMile:Movie &#123;title:&#x27;The Green Mile&#x27;, released:1999, tagline:&quot;Walk a mile you&#x27;ll never forget.&quot;&#125;)</span><br><span class="line">      CREATE (MichaelD:Person &#123;name:&#x27;Michael Clarke Duncan&#x27;, born:1957&#125;)</span><br><span class="line">      CREATE (DavidM:Person &#123;name:&#x27;David Morse&#x27;, born:1953&#125;)</span><br><span class="line">      CREATE (SamR:Person &#123;name:&#x27;Sam Rockwell&#x27;, born:1968&#125;)</span><br><span class="line">      CREATE (GaryS:Person &#123;name:&#x27;Gary Sinise&#x27;, born:1955&#125;)</span><br><span class="line">      CREATE (PatriciaC:Person &#123;name:&#x27;Patricia Clarkson&#x27;, born:1959&#125;)</span><br><span class="line">      CREATE (FrankD:Person &#123;name:&#x27;Frank Darabont&#x27;, born:1959&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Paul Edgecomb&#x27;]&#125;]-&gt;(TheGreenMile),</span><br><span class="line">      (MichaelD)-[:ACTED_IN &#123;roles:[&#x27;John Coffey&#x27;]&#125;]-&gt;(TheGreenMile),</span><br><span class="line">      (DavidM)-[:ACTED_IN &#123;roles:[&#x27;Brutus &quot;Brutal&quot; Howell&#x27;]&#125;]-&gt;(TheGreenMile),</span><br><span class="line">      (BonnieH)-[:ACTED_IN &#123;roles:[&#x27;Jan Edgecomb&#x27;]&#125;]-&gt;(TheGreenMile),</span><br><span class="line">      (JamesC)-[:ACTED_IN &#123;roles:[&#x27;Warden Hal Moores&#x27;]&#125;]-&gt;(TheGreenMile),</span><br><span class="line">      (SamR)-[:ACTED_IN &#123;roles:[&#x27;&quot;Wild Bill&quot; Wharton&#x27;]&#125;]-&gt;(TheGreenMile),</span><br><span class="line">      (GaryS)-[:ACTED_IN &#123;roles:[&#x27;Burt Hammersmith&#x27;]&#125;]-&gt;(TheGreenMile),</span><br><span class="line">      (PatriciaC)-[:ACTED_IN &#123;roles:[&#x27;Melinda Moores&#x27;]&#125;]-&gt;(TheGreenMile),</span><br><span class="line">      (FrankD)-[:DIRECTED]-&gt;(TheGreenMile)</span><br><span class="line"></span><br><span class="line">      CREATE (FrostNixon:Movie &#123;title:&#x27;Frost/Nixon&#x27;, released:2008, tagline:&#x27;400 million people were waiting for the truth.&#x27;&#125;)</span><br><span class="line">      CREATE (FrankL:Person &#123;name:&#x27;Frank Langella&#x27;, born:1938&#125;)</span><br><span class="line">      CREATE (MichaelS:Person &#123;name:&#x27;Michael Sheen&#x27;, born:1969&#125;)</span><br><span class="line">      CREATE (OliverP:Person &#123;name:&#x27;Oliver Platt&#x27;, born:1960&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (FrankL)-[:ACTED_IN &#123;roles:[&#x27;Richard Nixon&#x27;]&#125;]-&gt;(FrostNixon),</span><br><span class="line">      (MichaelS)-[:ACTED_IN &#123;roles:[&#x27;David Frost&#x27;]&#125;]-&gt;(FrostNixon),</span><br><span class="line">      (KevinB)-[:ACTED_IN &#123;roles:[&#x27;Jack Brennan&#x27;]&#125;]-&gt;(FrostNixon),</span><br><span class="line">      (OliverP)-[:ACTED_IN &#123;roles:[&#x27;Bob Zelnick&#x27;]&#125;]-&gt;(FrostNixon),</span><br><span class="line">      (SamR)-[:ACTED_IN &#123;roles:[&#x27;James Reston, Jr.&#x27;]&#125;]-&gt;(FrostNixon),</span><br><span class="line">      (RonH)-[:DIRECTED]-&gt;(FrostNixon)</span><br><span class="line"></span><br><span class="line">      CREATE (Hoffa:Movie &#123;title:&#x27;Hoffa&#x27;, released:1992, tagline:&quot;He didn&#x27;t want law. He wanted justice.&quot;&#125;)</span><br><span class="line">      CREATE (DannyD:Person &#123;name:&#x27;Danny DeVito&#x27;, born:1944&#125;)</span><br><span class="line">      CREATE (JohnR:Person &#123;name:&#x27;John C. Reilly&#x27;, born:1965&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (JackN)-[:ACTED_IN &#123;roles:[&#x27;Hoffa&#x27;]&#125;]-&gt;(Hoffa),</span><br><span class="line">      (DannyD)-[:ACTED_IN &#123;roles:[&#x27;Robert &quot;Bobby&quot; Ciaro&#x27;]&#125;]-&gt;(Hoffa),</span><br><span class="line">      (JTW)-[:ACTED_IN &#123;roles:[&#x27;Frank Fitzsimmons&#x27;]&#125;]-&gt;(Hoffa),</span><br><span class="line">      (JohnR)-[:ACTED_IN &#123;roles:[&#x27;Peter &quot;Pete&quot; Connelly&#x27;]&#125;]-&gt;(Hoffa),</span><br><span class="line">      (DannyD)-[:DIRECTED]-&gt;(Hoffa)</span><br><span class="line"></span><br><span class="line">      CREATE (Apollo13:Movie &#123;title:&#x27;Apollo 13&#x27;, released:1995, tagline:&#x27;Houston, we have a problem.&#x27;&#125;)</span><br><span class="line">      CREATE (EdH:Person &#123;name:&#x27;Ed Harris&#x27;, born:1950&#125;)</span><br><span class="line">      CREATE (BillPax:Person &#123;name:&#x27;Bill Paxton&#x27;, born:1955&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Jim Lovell&#x27;]&#125;]-&gt;(Apollo13),</span><br><span class="line">      (KevinB)-[:ACTED_IN &#123;roles:[&#x27;Jack Swigert&#x27;]&#125;]-&gt;(Apollo13),</span><br><span class="line">      (EdH)-[:ACTED_IN &#123;roles:[&#x27;Gene Kranz&#x27;]&#125;]-&gt;(Apollo13),</span><br><span class="line">      (BillPax)-[:ACTED_IN &#123;roles:[&#x27;Fred Haise&#x27;]&#125;]-&gt;(Apollo13),</span><br><span class="line">      (GaryS)-[:ACTED_IN &#123;roles:[&#x27;Ken Mattingly&#x27;]&#125;]-&gt;(Apollo13),</span><br><span class="line">      (RonH)-[:DIRECTED]-&gt;(Apollo13)</span><br><span class="line"></span><br><span class="line">      CREATE (Twister:Movie &#123;title:&#x27;Twister&#x27;, released:1996, tagline:&quot;Don&#x27;t Breathe. Don&#x27;t Look Back.&quot;&#125;)</span><br><span class="line">      CREATE (PhilipH:Person &#123;name:&#x27;Philip Seymour Hoffman&#x27;, born:1967&#125;)</span><br><span class="line">      CREATE (JanB:Person &#123;name:&#x27;Jan de Bont&#x27;, born:1943&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (BillPax)-[:ACTED_IN &#123;roles:[&#x27;Bill Harding&#x27;]&#125;]-&gt;(Twister),</span><br><span class="line">      (HelenH)-[:ACTED_IN &#123;roles:[&#x27;Dr. Jo Harding&#x27;]&#125;]-&gt;(Twister),</span><br><span class="line">      (ZachG)-[:ACTED_IN &#123;roles:[&#x27;Eddie&#x27;]&#125;]-&gt;(Twister),</span><br><span class="line">      (PhilipH)-[:ACTED_IN &#123;roles:[&#x27;Dustin &quot;Dusty&quot; Davis&#x27;]&#125;]-&gt;(Twister),</span><br><span class="line">      (JanB)-[:DIRECTED]-&gt;(Twister)</span><br><span class="line"></span><br><span class="line">      CREATE (CastAway:Movie &#123;title:&#x27;Cast Away&#x27;, released:2000, tagline:&#x27;At the edge of the world, his journey begins.&#x27;&#125;)</span><br><span class="line">      CREATE (RobertZ:Person &#123;name:&#x27;Robert Zemeckis&#x27;, born:1951&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Chuck Noland&#x27;]&#125;]-&gt;(CastAway),</span><br><span class="line">      (HelenH)-[:ACTED_IN &#123;roles:[&#x27;Kelly Frears&#x27;]&#125;]-&gt;(CastAway),</span><br><span class="line">      (RobertZ)-[:DIRECTED]-&gt;(CastAway)</span><br><span class="line"></span><br><span class="line">      CREATE (OneFlewOvertheCuckoosNest:Movie &#123;title:&quot;One Flew Over the Cuckoo&#x27;s Nest&quot;, released:1975, tagline:&quot;If he&#x27;s crazy, what does that make you?&quot;&#125;)</span><br><span class="line">      CREATE (MilosF:Person &#123;name:&#x27;Milos Forman&#x27;, born:1932&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (JackN)-[:ACTED_IN &#123;roles:[&#x27;Randle McMurphy&#x27;]&#125;]-&gt;(OneFlewOvertheCuckoosNest),</span><br><span class="line">      (DannyD)-[:ACTED_IN &#123;roles:[&#x27;Martini&#x27;]&#125;]-&gt;(OneFlewOvertheCuckoosNest),</span><br><span class="line">      (MilosF)-[:DIRECTED]-&gt;(OneFlewOvertheCuckoosNest)</span><br><span class="line"></span><br><span class="line">      CREATE (SomethingsGottaGive:Movie &#123;title:&quot;Something&#x27;s Gotta Give&quot;, released:2003&#125;)</span><br><span class="line">      CREATE (DianeK:Person &#123;name:&#x27;Diane Keaton&#x27;, born:1946&#125;)</span><br><span class="line">      CREATE (NancyM:Person &#123;name:&#x27;Nancy Meyers&#x27;, born:1949&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (JackN)-[:ACTED_IN &#123;roles:[&#x27;Harry Sanborn&#x27;]&#125;]-&gt;(SomethingsGottaGive),</span><br><span class="line">      (DianeK)-[:ACTED_IN &#123;roles:[&#x27;Erica Barry&#x27;]&#125;]-&gt;(SomethingsGottaGive),</span><br><span class="line">      (Keanu)-[:ACTED_IN &#123;roles:[&#x27;Julian Mercer&#x27;]&#125;]-&gt;(SomethingsGottaGive),</span><br><span class="line">      (NancyM)-[:DIRECTED]-&gt;(SomethingsGottaGive),</span><br><span class="line">      (NancyM)-[:PRODUCED]-&gt;(SomethingsGottaGive),</span><br><span class="line">      (NancyM)-[:WROTE]-&gt;(SomethingsGottaGive)</span><br><span class="line"></span><br><span class="line">      CREATE (BicentennialMan:Movie &#123;title:&#x27;Bicentennial Man&#x27;, released:1999, tagline:&quot;One robot&#x27;s 200 year journey to become an ordinary man.&quot;&#125;)</span><br><span class="line">      CREATE (ChrisC:Person &#123;name:&#x27;Chris Columbus&#x27;, born:1958&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (Robin)-[:ACTED_IN &#123;roles:[&#x27;Andrew Marin&#x27;]&#125;]-&gt;(BicentennialMan),</span><br><span class="line">      (OliverP)-[:ACTED_IN &#123;roles:[&#x27;Rupert Burns&#x27;]&#125;]-&gt;(BicentennialMan),</span><br><span class="line">      (ChrisC)-[:DIRECTED]-&gt;(BicentennialMan)</span><br><span class="line"></span><br><span class="line">      CREATE (CharlieWilsonsWar:Movie &#123;title:&quot;Charlie Wilson&#x27;s War&quot;, released:2007, tagline:&quot;A stiff drink. A little mascara. A lot of nerve. Who said they couldn&#x27;t bring down the Soviet empire.&quot;&#125;)</span><br><span class="line">      CREATE (JuliaR:Person &#123;name:&#x27;Julia Roberts&#x27;, born:1967&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Rep. Charlie Wilson&#x27;]&#125;]-&gt;(CharlieWilsonsWar),</span><br><span class="line">      (JuliaR)-[:ACTED_IN &#123;roles:[&#x27;Joanne Herring&#x27;]&#125;]-&gt;(CharlieWilsonsWar),</span><br><span class="line">      (PhilipH)-[:ACTED_IN &#123;roles:[&#x27;Gust Avrakotos&#x27;]&#125;]-&gt;(CharlieWilsonsWar),</span><br><span class="line">      (MikeN)-[:DIRECTED]-&gt;(CharlieWilsonsWar)</span><br><span class="line"></span><br><span class="line">      CREATE (ThePolarExpress:Movie &#123;title:&#x27;The Polar Express&#x27;, released:2004, tagline:&#x27;This Holiday Season... Believe&#x27;&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Hero Boy&#x27;, &#x27;Father&#x27;, &#x27;Conductor&#x27;, &#x27;Hobo&#x27;, &#x27;Scrooge&#x27;, &#x27;Santa Claus&#x27;]&#125;]-&gt;(ThePolarExpress),</span><br><span class="line">      (RobertZ)-[:DIRECTED]-&gt;(ThePolarExpress)</span><br><span class="line"></span><br><span class="line">      CREATE (ALeagueofTheirOwn:Movie &#123;title:&#x27;A League of Their Own&#x27;, released:1992, tagline:&#x27;Once in a lifetime you get a chance to do something different.&#x27;&#125;)</span><br><span class="line">      CREATE (Madonna:Person &#123;name:&#x27;Madonna&#x27;, born:1954&#125;)</span><br><span class="line">      CREATE (GeenaD:Person &#123;name:&#x27;Geena Davis&#x27;, born:1956&#125;)</span><br><span class="line">      CREATE (LoriP:Person &#123;name:&#x27;Lori Petty&#x27;, born:1963&#125;)</span><br><span class="line">      CREATE (PennyM:Person &#123;name:&#x27;Penny Marshall&#x27;, born:1943&#125;)</span><br><span class="line">      CREATE</span><br><span class="line">      (TomH)-[:ACTED_IN &#123;roles:[&#x27;Jimmy Dugan&#x27;]&#125;]-&gt;(ALeagueofTheirOwn),</span><br><span class="line">      (GeenaD)-[:ACTED_IN &#123;roles:[&#x27;Dottie Hinson&#x27;]&#125;]-&gt;(ALeagueofTheirOwn),</span><br><span class="line">      (LoriP)-[:ACTED_IN &#123;roles:[&#x27;Kit Keller&#x27;]&#125;]-&gt;(ALeagueofTheirOwn),</span><br><span class="line">      (RosieO)-[:ACTED_IN &#123;roles:[&#x27;Doris Murphy&#x27;]&#125;]-&gt;(ALeagueofTheirOwn),</span><br><span class="line">      (Madonna)-[:ACTED_IN &#123;roles:[&#x27;&quot;All the Way&quot; Mae Mordabito&#x27;]&#125;]-&gt;(ALeagueofTheirOwn),</span><br><span class="line">      (BillPax)-[:ACTED_IN &#123;roles:[&#x27;Bob Hinson&#x27;]&#125;]-&gt;(ALeagueofTheirOwn),</span><br><span class="line">      (PennyM)-[:DIRECTED]-&gt;(ALeagueofTheirOwn)</span><br><span class="line"></span><br><span class="line">      CREATE (PaulBlythe:Person &#123;name:&#x27;Paul Blythe&#x27;&#125;)</span><br><span class="line">      CREATE (AngelaScope:Person &#123;name:&#x27;Angela Scope&#x27;&#125;)</span><br><span class="line">      CREATE (JessicaThompson:Person &#123;name:&#x27;Jessica Thompson&#x27;&#125;)</span><br><span class="line">      CREATE (JamesThompson:Person &#123;name:&#x27;James Thompson&#x27;&#125;)</span><br><span class="line"></span><br><span class="line">      CREATE</span><br><span class="line">      (JamesThompson)-[:FOLLOWS]-&gt;(JessicaThompson),</span><br><span class="line">      (AngelaScope)-[:FOLLOWS]-&gt;(JessicaThompson),</span><br><span class="line">      (PaulBlythe)-[:FOLLOWS]-&gt;(AngelaScope)</span><br><span class="line"></span><br><span class="line">      CREATE</span><br><span class="line">      (JessicaThompson)-[:REVIEWED &#123;summary:&#x27;An amazing journey&#x27;, rating:95&#125;]-&gt;(CloudAtlas),</span><br><span class="line">      (JessicaThompson)-[:REVIEWED &#123;summary:&#x27;Silly, but fun&#x27;, rating:65&#125;]-&gt;(TheReplacements),</span><br><span class="line">      (JamesThompson)-[:REVIEWED &#123;summary:&#x27;The coolest football movie ever&#x27;, rating:100&#125;]-&gt;(TheReplacements),</span><br><span class="line">      (AngelaScope)-[:REVIEWED &#123;summary:&#x27;Pretty funny at times&#x27;, rating:62&#125;]-&gt;(TheReplacements),</span><br><span class="line">      (JessicaThompson)-[:REVIEWED &#123;summary:&#x27;Dark, but compelling&#x27;, rating:85&#125;]-&gt;(Unforgiven),</span><br><span class="line">      (JessicaThompson)-[:REVIEWED &#123;summary:&quot;Slapstick redeemed only by the Robin Williams and Gene Hackman&#x27;s stellar performances&quot;, rating:45&#125;]-&gt;(TheBirdcage),</span><br><span class="line">      (JessicaThompson)-[:REVIEWED &#123;summary:&#x27;A solid romp&#x27;, rating:68&#125;]-&gt;(TheDaVinciCode),</span><br><span class="line">      (JamesThompson)-[:REVIEWED &#123;summary:&#x27;Fun, but a little far fetched&#x27;, rating:65&#125;]-&gt;(TheDaVinciCode),</span><br><span class="line">      (JessicaThompson)-[:REVIEWED &#123;summary:&#x27;You had me at Jerry&#x27;, rating:92&#125;]-&gt;(JerryMaguire)</span><br><span class="line"></span><br><span class="line">      WITH TomH as a</span><br><span class="line">      MATCH (a)-[:ACTED_IN]-&gt;(m)&lt;-[:DIRECTED]-(d) RETURN a,m,d LIMIT 10;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Create-constraints"><a href="#Create-constraints" class="headerlink" title="Create constraints"></a>Create constraints</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE CONSTRAINT ON (n:Movie) ASSERT (n.title) IS UNIQUE</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE CONSTRAINT ON (n:Person) ASSERT (n.name) IS UNIQUE</span><br></pre></td></tr></table></figure>
+
+<h2 id="Index-nodes"><a href="#Index-nodes" class="headerlink" title="Index nodes"></a>Index nodes</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE INDEX FOR (m:Movie) ON (m.released)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Find"><a href="#Find" class="headerlink" title="Find"></a>Find</h2><p>Find the actor named “Tom Hanks”:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MATCH (tom:Person &#123;name: &quot;Tom Hanks&quot;&#125;) RETURN tom</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Find the movie with title “Cloud Atlas”:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MATCH (cloudAtlas:Movie &#123;title: &quot;Cloud Atlas&quot;&#125;) RETURN cloudAtlas</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Find 10 people and return their names:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MATCH (people:Person) RETURN people.name LIMIT 10</span><br></pre></td></tr></table></figure>
+
+
+
+<p>result</p>
+<table>
+<thead>
+<tr>
+<th>people.name</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>“Keanu Reeves”</td>
+</tr>
+<tr>
+<td>2</td>
+<td>“Carrie-Anne Moss”</td>
+</tr>
+<tr>
+<td>3</td>
+<td>“Laurence Fishburne”</td>
+</tr>
+<tr>
+<td>4</td>
+<td>“Hugo Weaving”</td>
+</tr>
+<tr>
+<td>5</td>
+<td>“Lilly Wachowski”</td>
+</tr>
+<tr>
+<td>6</td>
+<td>“Lana Wachowski”</td>
+</tr>
+<tr>
+<td>7</td>
+<td>“Joel Silver”</td>
+</tr>
+<tr>
+<td>8</td>
+<td>“Emil Eifrem”</td>
+</tr>
+<tr>
+<td>9</td>
+<td>“Charlize Theron”</td>
+</tr>
+<tr>
+<td>10</td>
+<td>“Al Pacino”</td>
+</tr>
+</tbody></table>
+<p>Find movies released in the 1990s and return their titles.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MATCH (nineties:Movie) WHERE nineties.released &gt;= 1990 AND nineties.released &lt; 2000 RETURN nineties.title</span><br></pre></td></tr></table></figure>
+
+<p>result</p>
+<table>
+<thead>
+<tr>
+<th>nineties.title</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>“Joe Versus the Volcano”</td>
+</tr>
+<tr>
+<td>2</td>
+<td>“A Few Good Men”</td>
+</tr>
+<tr>
+<td>3</td>
+<td>“Unforgiven”</td>
+</tr>
+<tr>
+<td>4</td>
+<td>“Hoffa”</td>
+</tr>
+<tr>
+<td>5</td>
+<td>“A League of Their Own”</td>
+</tr>
+<tr>
+<td>6</td>
+<td>“Sleepless in Seattle”</td>
+</tr>
+<tr>
+<td>7</td>
+<td>“Johnny Mnemonic”</td>
+</tr>
+<tr>
+<td>8</td>
+<td>“Apollo 13”</td>
+</tr>
+<tr>
+<td>9</td>
+<td>“That Thing You Do”</td>
+</tr>
+<tr>
+<td>10</td>
+<td>“The Birdcage”</td>
+</tr>
+<tr>
+<td>11</td>
+<td>“Twister”</td>
+</tr>
+<tr>
+<td>12</td>
+<td>“The Devil’s Advocate”</td>
+</tr>
+<tr>
+<td>13</td>
+<td>“As Good as It Gets”</td>
+</tr>
+<tr>
+<td>14</td>
+<td>“What Dreams May Come”</td>
+</tr>
+<tr>
+<td>15</td>
+<td>“You’ve Got Mail”</td>
+</tr>
+<tr>
+<td>16</td>
+<td>“When Harry Met Sally”</td>
+</tr>
+<tr>
+<td>17</td>
+<td>“The Matrix”</td>
+</tr>
+<tr>
+<td>18</td>
+<td>“Snow Falling on Cedars”</td>
+</tr>
+<tr>
+<td>19</td>
+<td>“The Green Mile”</td>
+</tr>
+<tr>
+<td>20</td>
+<td>“Bicentennial Man”</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/30/Nachos-VM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/30/Nachos-VM/" class="post-title-link" itemprop="url">Nachos-VM</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-12-30 03:11:03 / 修改时间：03:16:38" itemprop="dateCreated datePublished" datetime="2021-12-30T03:11:03+08:00">2021-12-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/28/%E6%96%87%E4%BB%B6%E5%88%86%E7%89%87%E4%B8%8E%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/28/%E6%96%87%E4%BB%B6%E5%88%86%E7%89%87%E4%B8%8E%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/" class="post-title-link" itemprop="url">文件分片与断点续传</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-12-28 00:04:18 / 修改时间：01:54:31" itemprop="dateCreated datePublished" datetime="2021-12-28T00:04:18+08:00">2021-12-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="断点续传"><a href="#断点续传" class="headerlink" title="断点续传"></a>断点续传</h1><p>基于http协议实现断点续传。</p>
+<p>请求部分，需要在请求头里加入Range头，表示本次请求的byte数组的开始和结束位置。</p>
+<p>格式为：Bytes&#x3D;开始-结束。如果不填表示0或者最后。</p>
+<blockquote>
+<p>对于要支持断点续传的服务器，需要处理这个请求头，如果发现有Range头部，需要对响应特殊处理。</p>
+</blockquote>
+<ul>
+<li><p>code：返回206；</p>
+</li>
+<li><p>header：需要返回如下几个header：</p>
+<ul>
+<li>Content-Range: 格式为bytes 开始-结束&#x2F;全部，如 bytes 0-10&#x2F;3103</li>
+<li>Content-Type，对于二进制数据是application&#x2F;octet-stream</li>
+<li>Content-Length: 如1024，本次内容的大小</li>
+<li>Accept-Ranges：bytes，表示支持Range请求</li>
+</ul>
+</li>
+<li><p>body：返回Range范围内的字节；</p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011748319/article/details/118680680">https://blog.csdn.net/u011748319/article/details/118680680</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.iteye.com/blog/rensanning-2248760">https://www.iteye.com/blog/rensanning-2248760</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_29009501/article/details/114543338?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_title~default-0.highlightwordscore&spm=1001.2101.3001.4242.1">https://blog.csdn.net/weixin_29009501/article/details/114543338?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_title~default-0.highlightwordscore&amp;spm=1001.2101.3001.4242.1</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/13/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,37 +1,437 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="thrift入门安装1brew install thrift  编写thrift文件thrift语法 Goland 插件：Thrift Support User.thrift 123456789101112131415namespace go Sample &#x2F;&#x2F; Sample对应go的module名struct User &amp;#123;    1:required i32 id;    2:requ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kitex入门">
+<meta property="og:url" content="http://example.com/2022/12/03/Kitex01/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="thrift入门安装1brew install thrift  编写thrift文件thrift语法 Goland 插件：Thrift Support User.thrift 123456789101112131415namespace go Sample &#x2F;&#x2F; Sample对应go的module名struct User &amp;#123;    1:required i32 id;    2:requ">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-03T15:59:15.000Z">
+<meta property="article:modified_time" content="2022-12-08T18:24:24.483Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="RPC">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2022/12/03/Kitex01/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/12/03/Kitex01/","path":"2022/12/03/Kitex01/","title":"Kitex入门"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Kitex入门 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#thrift%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">thrift入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E5%86%99thrift%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">编写thrift文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8thrift%E8%84%9A%E6%89%8B%E6%9E%B6"><span class="nav-number">1.3.</span> <span class="nav-text">使用thrift脚手架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#server%E7%AB%AF%E5%AE%9E%E7%8E%B0interface"><span class="nav-number">1.4.</span> <span class="nav-text">server端实现interface</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#client%E7%AB%AF"><span class="nav-number">1.5.</span> <span class="nav-text">client端</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kitex"><span class="nav-number">2.</span> <span class="nav-text">Kitex</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-1"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E5%86%99IDL"><span class="nav-number">2.2.</span> <span class="nav-text">编写IDL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90-echo-%E6%9C%8D%E5%8A%A1%E4%BB%A3%E7%A0%81"><span class="nav-number">2.3.</span> <span class="nav-text">生成 echo 服务代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AAbug%E2%80%94%E2%80%94not-enough-arguments-in-call-to-t-tProt-xxx"><span class="nav-number">2.3.1.</span> <span class="nav-text">一个bug——not enough arguments in call to t.tProt.xxx</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#client%E7%AB%AF-1"><span class="nav-number">2.4.</span> <span class="nav-text">client端</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/03/Kitex01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Kitex入门 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kitex入门
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-03 23:59:15" itemprop="dateCreated datePublished" datetime="2022-12-03T23:59:15+08:00">2022-12-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-09 02:24:24" itemprop="dateModified" datetime="2022-12-09T02:24:24+08:00">2022-12-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="thrift入门"><a href="#thrift入门" class="headerlink" title="thrift入门"></a>thrift入门</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install thrift</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写thrift文件"><a href="#编写thrift文件" class="headerlink" title="编写thrift文件"></a>编写thrift文件</h2><p><a target="_blank" rel="noopener" href="https://thrift.apache.org/docs/idl">thrift语法</a></p>
+<p>Goland 插件：Thrift Support</p>
+<p><code>User.thrift</code></p>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> go Sample <span class="comment">// Sample对应go的module名</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>:<span class="keyword">required</span> <span class="type">i32</span> id;</span><br><span class="line">    <span class="number">2</span>:<span class="keyword">required</span> <span class="type">string</span> name;</span><br><span class="line">    <span class="number">3</span>:<span class="keyword">required</span> <span class="type">string</span> avatar;</span><br><span class="line">    <span class="number">4</span>:<span class="keyword">required</span> <span class="type">string</span> address;</span><br><span class="line">    <span class="number">5</span>:<span class="keyword">required</span> <span class="type">string</span> mobile;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">UserList</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>:<span class="keyword">required</span> <span class="type">list</span>&lt;User&gt; userList;</span><br><span class="line">    <span class="number">2</span>:<span class="keyword">required</span> <span class="type">i32</span> page;</span><br><span class="line">    <span class="number">3</span>:<span class="keyword">required</span> <span class="type">i32</span> limit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>Service.thrift</code></p>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">include <span class="string">&quot;User.thrift&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> go Sample</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">map</span>&lt;<span class="type">string</span>, <span class="type">string</span>&gt; Data</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Response</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>:<span class="keyword">required</span> <span class="type">i32</span> errCode; <span class="comment">// 错误码</span></span><br><span class="line">    <span class="number">2</span>:<span class="keyword">required</span> <span class="type">string</span> errMsg; <span class="comment">// 错误信息</span></span><br><span class="line">    <span class="number">3</span>:<span class="keyword">required</span> Data data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义服务</span></span><br><span class="line"><span class="class"><span class="keyword">service</span> <span class="title">Greeter</span> </span>&#123;</span><br><span class="line">    Response SayHello(</span><br><span class="line">        <span class="number">1</span>:<span class="keyword">required</span> User.User user</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    Response GetUser(</span><br><span class="line">        <span class="number">1</span>:<span class="keyword">required</span> <span class="type">i32</span> uid</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="使用thrift脚手架"><a href="#使用thrift脚手架" class="headerlink" title="使用thrift脚手架"></a>使用thrift脚手架</h2><p>使用<code>thrift -r -v --gen go idl/Service.thrift</code>根据idl文件生成go代码。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir thrift_sample % thrift -r -v --gen go idl/Service.thrift</span><br><span class="line">Scanning /Users/jisongyang/GolandProjects/thrift_sample/idl/Service.thrift <span class="keyword">for</span> includes</span><br><span class="line">Scanning /Users/jisongyang/GolandProjects/thrift_sample/idl/User.thrift <span class="keyword">for</span> includes</span><br><span class="line">Parsing /Users/jisongyang/GolandProjects/thrift_sample/idl/User.thrift <span class="keyword">for</span> types</span><br><span class="line">Parsing /Users/jisongyang/GolandProjects/thrift_sample/idl/Service.thrift <span class="keyword">for</span> types</span><br><span class="line">Program: /Users/jisongyang/GolandProjects/thrift_sample/idl/User.thrift</span><br><span class="line">Generating <span class="string">&quot;go&quot;</span></span><br><span class="line">Program: /Users/jisongyang/GolandProjects/thrift_sample/idl/Service.thrift</span><br><span class="line">Generating <span class="string">&quot;go&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>目录结构</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── client_test.go</span><br><span class="line">├── gen-go  # thrift脚手架生成的目录</span><br><span class="line">│   └── Sample</span><br><span class="line">│       ├── GoUnusedProtection__.go</span><br><span class="line">│       ├── Service-consts.go</span><br><span class="line">│       ├── Service.go</span><br><span class="line">│       ├── User-consts.go</span><br><span class="line">│       ├── User.go</span><br><span class="line">│       └── greeter-remote</span><br><span class="line">│           └── greeter-remote.go</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── idl # 自己编写的idl文件</span><br><span class="line">│   ├── Service.thrift</span><br><span class="line">│   └── User.thrift</span><br><span class="line">└── main.go</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="server端实现interface"><a href="#server端实现interface" class="headerlink" title="server端实现interface"></a>server端实现interface</h2><p>这是thrift生成的</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Greeter <span class="keyword">interface</span> &#123;</span><br><span class="line">  <span class="comment">// Parameters:</span></span><br><span class="line">  <span class="comment">//  - User</span></span><br><span class="line">  SayHello(ctx context.Context, user *User) (_r *Response, _err <span class="type">error</span>)</span><br><span class="line">  <span class="comment">// Parameters:</span></span><br><span class="line">  <span class="comment">//  - UID</span></span><br><span class="line">  GetUser(ctx context.Context, uid <span class="type">int32</span>) (_r *Response, _err <span class="type">error</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>server端里去实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义服务</span></span><br><span class="line"><span class="keyword">type</span> Greeter <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现IDL里定义的接口</span></span><br><span class="line"><span class="comment">//SayHello</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Greeter)</span></span> SayHello(ctx context.Context, u *Sample.User) (r *Sample.Response, err <span class="type">error</span>) &#123;</span><br><span class="line">    strJson, _ := json.Marshal(u)</span><br><span class="line">    <span class="keyword">return</span> &amp;Sample.Response&#123;ErrCode: <span class="number">0</span>, ErrMsg: <span class="string">&quot;success&quot;</span>, Data: <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>&#123;<span class="string">&quot;User&quot;</span>: <span class="type">string</span>(strJson)&#125;&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//GetUser</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Greeter)</span></span> GetUser(ctx context.Context, uid <span class="type">int32</span>) (r *Sample.Response, err <span class="type">error</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;Sample.Response&#123;ErrCode: <span class="number">1</span>, ErrMsg: <span class="string">&quot;user not exist.&quot;</span>&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">   </span><br><span class="line"><span class="comment">//buffered</span></span><br><span class="line"><span class="keyword">var</span> transportFactory thrift.TTransportFactory</span><br><span class="line"><span class="keyword">if</span> *buffered &#123;</span><br><span class="line">    transportFactory = thrift.NewTBufferedTransportFactory(<span class="number">8192</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    transportFactory = thrift.NewTTransportFactory()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//framed</span></span><br><span class="line"><span class="keyword">if</span> *framed &#123;</span><br><span class="line">    transportFactory = thrift.NewTFramedTransportFactory(transportFactory)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//handler</span></span><br><span class="line">handler := &amp;Greeter&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//transport,no secure</span></span><br><span class="line"><span class="keyword">var</span> err <span class="type">error</span></span><br><span class="line"><span class="keyword">var</span> transport thrift.TServerTransport</span><br><span class="line">transport, err = thrift.NewTServerSocket(*addr)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;error running server:&quot;</span>, err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//processor</span></span><br><span class="line">processor := Sample.NewGreeterProcessor(handler) <span class="comment">// 关键</span></span><br><span class="line"></span><br><span class="line">fmt.Println(<span class="string">&quot;Starting the simple server... on &quot;</span>, *addr)</span><br><span class="line"></span><br><span class="line"><span class="comment">//start tcp server</span></span><br><span class="line">server := thrift.NewTSimpleServer4(processor, transport, transportFactory, protocolFactory)</span><br><span class="line">err = server.Serve()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;error running server:&quot;</span>, err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="client端"><a href="#client端" class="headerlink" title="client端"></a>client端</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ctx = context.Background()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetClient</span><span class="params">()</span></span> *Sample.GreeterClient &#123;</span><br><span class="line">    addr := <span class="string">&quot;:9090&quot;</span></span><br><span class="line">    <span class="keyword">var</span> transport thrift.TTransport</span><br><span class="line">    <span class="keyword">var</span> err <span class="type">error</span></span><br><span class="line">    transport, err = thrift.NewTSocket(addr)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;Error opening socket:&quot;</span>, err)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//protocol</span></span><br><span class="line">    <span class="keyword">var</span> protocolFactory thrift.TProtocolFactory</span><br><span class="line">    protocolFactory = thrift.NewTBinaryProtocolFactoryDefault()</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//no buffered</span></span><br><span class="line">    <span class="keyword">var</span> transportFactory thrift.TTransportFactory</span><br><span class="line">    transportFactory = thrift.NewTTransportFactory()</span><br><span class="line">    </span><br><span class="line">    transport, err = transportFactory.GetTransport(transport)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;error running client:&quot;</span>, err)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> err := transport.Open(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;error running client:&quot;</span>, err)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    iprot := protocolFactory.GetProtocol(transport)</span><br><span class="line">    oprot := protocolFactory.GetProtocol(transport)</span><br><span class="line">    </span><br><span class="line">    client := Sample.NewGreeterClient(thrift.NewTStandardClient(iprot, oprot)) <span class="comment">// 关键</span></span><br><span class="line">    <span class="keyword">return</span> client</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//GetUser</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestGetUser</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">    client := GetClient()</span><br><span class="line">    rep, err := client.GetUser(ctx, <span class="number">100</span>)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        t.Errorf(<span class="string">&quot;thrift err: %v\n&quot;</span>, err)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        t.Logf(<span class="string">&quot;Recevied: %v\n&quot;</span>, rep)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<blockquote>
+<p>Reference</p>
+<p><a target="_blank" rel="noopener" href="https://thrift.apache.org/">https://thrift.apache.org/</a></p>
+<p><a target="_blank" rel="noopener" href="https://thrift.apache.org/docs/idl">thrift语法</a></p>
+</blockquote>
+<h1 id="Kitex"><a href="#Kitex" class="headerlink" title="Kitex"></a>Kitex</h1><p>关于kite的介绍和微服务rpc的基本概念就不写了，直接上操作。</p>
+<h2 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h2><ol>
+<li>安装 kitex：<code>go install github.com/cloudwego/kitex/tool/cmd/kitex@latest</code></li>
+<li>安装 thriftgo：<code>go install github.com/cloudwego/thriftgo@latest</code></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir kitex_echo % kitex --version</span><br><span class="line">v0.4.3</span><br><span class="line">jisongyang@SongyangJi-MacBookAir kitex_echo % thriftgo --version</span><br><span class="line">thriftgo 0.2.4</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>有了thriftgo无需安装thrift了。</p>
+</blockquote>
+<blockquote>
+<p>这里可以直接创建目录，用kitex生成项目，也可以先创建go项目再进去编写idl。</p>
+</blockquote>
+<h2 id="编写IDL"><a href="#编写IDL" class="headerlink" title="编写IDL"></a>编写IDL</h2><p>echo.thrift</p>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> go api</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Request</span> </span>&#123;</span><br><span class="line">  <span class="number">1</span>: <span class="type">string</span> message</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Response</span> </span>&#123;</span><br><span class="line">  <span class="number">1</span>: <span class="type">string</span> message</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">service</span> <span class="title">Echo</span> </span>&#123;</span><br><span class="line">    Response echo(<span class="number">1</span>: Request req)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="生成-echo-服务代码"><a href="#生成-echo-服务代码" class="headerlink" title="生成 echo 服务代码"></a>生成 echo 服务代码</h2><p>命令：<code>kitex -module kitex_echo -service p.s.m echo.thrift</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir kitex_echo % kitex -module kitex_echo -service p.s.m echo.thrift</span><br><span class="line">jisongyang@SongyangJi-MacBookAir kitex_echo % tree</span><br><span class="line">.</span><br><span class="line">├── build.sh</span><br><span class="line">├── echo.thrift</span><br><span class="line">├── go.mod</span><br><span class="line">├── handler.go</span><br><span class="line">├── kitex_gen</span><br><span class="line">│   └── api # idl中go的namespace</span><br><span class="line">│       ├── echo # idl的文件名</span><br><span class="line">│       │   ├── client.go</span><br><span class="line">│       │   ├── echo.go</span><br><span class="line">│       │   ├── invoker.go</span><br><span class="line">│       │   └── server.go</span><br><span class="line">│       ├── echo.go</span><br><span class="line">│       ├── k-consts.go</span><br><span class="line">│       └── k-echo.go</span><br><span class="line">├── main.go</span><br><span class="line">└── script</span><br><span class="line">    └── bootstrap.sh</span><br><span class="line"></span><br><span class="line">4 directories, 13 files</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/">代码生成</a></p>
+<ul>
+<li>-service service_name<br>使用该选项时，kitex 会生成构建一个服务的脚手架代码，参数 <code>service_name</code> 给出启动时服务自身的名字，通常其值取决于使用 Kitex 框架时搭配的服务注册和服务发现功能。</li>
+</ul>
+<p>如果不指定 -service 参数，那么生成的只有 kitex_gen 目录。</p>
+<ul>
+<li>-module module_name<br>该参数用于指定生成代码所属的 Go 模块，会影响生成代码里的 import path。<br>如果当前目录是在 $GOPATH&#x2F;src 下的一个目录，那么可以不指定该参数；kitex 会使用 $GOPATH&#x2F;src 开始的相对路径作为 import path 前缀。例如，在$GOPATH&#x2F;src&#x2F;example.com&#x2F;hello&#x2F;world 下执行 kitex，那么 kitex_gen&#x2F;example_package&#x2F;example_package.go 在其他代码代码里的 import path 会是 example.com&#x2F;hello&#x2F;world&#x2F;kitex_gen&#x2F;example_package。<br>如果当前目录不在 $GOPATH&#x2F;src 下，那么必须指定该参数。<br>如果指定了 -module 参数，那么 kitex 会从当前目录开始往上层搜索 go.mod 文件<br>如果不存在 go.mod 文件，那么 kitex 会调用 go mod init 生成 go.mod；<br>如果存在 go.mod 文件，那么 kitex 会检查 -module 的参数和 go.mod 里的模块名字是否一致，如果不一致则会报错退出；<br>最后，go.mod 的位置及其模块名字会决定生成代码里的 import path。</li>
+</ul>
+<blockquote>
+<p>Another example</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── build.sh                     // 服务的构建脚本，会创建一个名为 output 的目录并生成启动服务所需的文件到里面</span><br><span class="line">├── handler.go                   // 用户在该文件里实现 IDL service 定义的方法</span><br><span class="line">├── kitex_gen                    // IDL 内容相关的生成代码</span><br><span class="line">│   ├── base                     // base.thrift 的生成代码</span><br><span class="line">│   │   ├── base.go              // thriftgo 的产物，包含 base.thrift 定义的内容的 go 代码</span><br><span class="line">│   │   └── k-base.go            // kitex 在 thriftgo 的产物之外生成的代码</span><br><span class="line">│   └── demo                     // demo.thrift 的生成代码</span><br><span class="line">│       ├── demo.go              // thriftgo 的产物，包含 demo.thrift 定义的内容的 go 代码</span><br><span class="line">│       ├── k-demo.go            // kitex 在 thriftgo 的产物之外生成的代码</span><br><span class="line">│       └── demoservice          // kitex 为 demo.thrift 里定义的 demo service 生成的代码</span><br><span class="line">│           ├── demoservice.go   // 提供了 client.go 和 server.go 共用的一些定义</span><br><span class="line">│           ├── client.go        // 提供了 NewClient API</span><br><span class="line">│           └── server.go        // 提供了 NewServer API</span><br><span class="line">├── main.go                      // 程序入口</span><br><span class="line">└── script                       // 构建脚本</span><br><span class="line">    └── bootstrap.sh             // 服务的启动脚本，会被 build.sh 拷贝至 output 下</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="一个bug——not-enough-arguments-in-call-to-t-tProt-xxx"><a href="#一个bug——not-enough-arguments-in-call-to-t-tProt-xxx" class="headerlink" title="一个bug——not enough arguments in call to t.tProt.xxx"></a>一个bug——not enough arguments in call to t.tProt.xxx</h3><p>根本原因是thrift在git上的go包更新了增加对go 1.7中的http.request + context的用法，部分函数中增加了context参数；但是thriftgo生成的go代码是版本较低的。</p>
+<p>所以解决方案就是要么使用最新的thriftgo（目前好像develop版本可以），要么降低<code>github.com/apache/thrif</code>的版本。</p>
+<p>亲测，将版本降低到v0.13.0是可以的。</p>
+<h2 id="client端-1"><a href="#client端-1" class="headerlink" title="client端"></a>client端</h2><p>值得一提的是，这里直接使用了服务端生成的go代码，这是可以的也是应该的。</p>
+<p>如果如果是其他语言的话，就必须要在generate code一下了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;context&quot;</span></span><br><span class="line">    <span class="string">&quot;log&quot;</span></span><br><span class="line">    <span class="string">&quot;time&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="string">&quot;github.com/cloudwego/kitex/client&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/cloudwego/kitex/client/callopt&quot;</span></span><br><span class="line">    <span class="string">&quot;kitex_echo/kitex_gen/api&quot;</span></span><br><span class="line">    <span class="string">&quot;kitex_echo/kitex_gen/api/echo&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    c, err := echo.NewClient(<span class="string">&quot;p.s.m&quot;</span>, client.WithHostPorts(<span class="string">&quot;0.0.0.0:8888&quot;</span>))</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    req := &amp;api.Request&#123;Message: <span class="string">&quot;helloworld from jsy&quot;</span>&#125;</span><br><span class="line">    resp, err := c.Echo(context.Background(), req, callopt.WithRPCTimeout(<span class="number">3</span>*time.Second))</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    log.Println(resp)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Go.mod</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">module kite_echo_client</span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> <span class="number">1.18</span></span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">	github.com/cloudwego/kitex v0<span class="number">.4</span><span class="number">.3</span></span><br><span class="line">	kitex_echo v0<span class="number">.0</span><span class="number">.0</span><span class="number">-00010101000000</span><span class="number">-000000000000</span> <span class="comment">// 这个服务端的module还没推送到git remote</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">	github.com/apache/thrift v0<span class="number">.13</span><span class="number">.0</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/bytedance/gopkg v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20220531084716</span><span class="number">-665</span>b4f21126f <span class="comment">// indirect</span></span><br><span class="line">	github.com/chenzhuoyu/iasm v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20220818063314</span><span class="number">-28</span>c361dae733 <span class="comment">// indirect</span></span><br><span class="line">	github.com/choleraehyq/pid v0<span class="number">.0</span><span class="number">.15</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/cloudwego/fastpb v0<span class="number">.0</span><span class="number">.2</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/cloudwego/frugal v0<span class="number">.1</span><span class="number">.3</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/cloudwego/netpoll v0<span class="number">.2</span><span class="number">.6</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/cloudwego/thriftgo v0<span class="number">.2</span><span class="number">.1</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/golang/protobuf v1<span class="number">.5</span><span class="number">.2</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/google/pprof v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20220608213341</span>-c488b8fa1db3 <span class="comment">// indirect</span></span><br><span class="line">	github.com/jhump/protoreflect v1<span class="number">.8</span><span class="number">.2</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/json-iterator/<span class="keyword">go</span> v1<span class="number">.1</span><span class="number">.12</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/modern-<span class="keyword">go</span>/concurrent v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20180228061459</span>-e0a39a4cb421 <span class="comment">// indirect</span></span><br><span class="line">	github.com/modern-<span class="keyword">go</span>/reflect2 v1<span class="number">.0</span><span class="number">.2</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/oleiade/lane v1<span class="number">.0</span><span class="number">.1</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/tidwall/gjson v1<span class="number">.9</span><span class="number">.3</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/tidwall/match v1<span class="number">.1</span><span class="number">.1</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/tidwall/pretty v1<span class="number">.2</span><span class="number">.0</span> <span class="comment">// indirect</span></span><br><span class="line">	golang.org/x/arch v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20220722155209</span><span class="number">-00200</span>b7164a7 <span class="comment">// indirect</span></span><br><span class="line">	golang.org/x/net v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20210614182718</span><span class="number">-04</span>defd469f4e <span class="comment">// indirect</span></span><br><span class="line">	golang.org/x/sync v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20210220032951</span><span class="number">-036812</span>b2e83c <span class="comment">// indirect</span></span><br><span class="line">	golang.org/x/sys v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20220817070843</span><span class="number">-5</span>a390386f1f2 <span class="comment">// indirect</span></span><br><span class="line">	golang.org/x/text v0<span class="number">.3</span><span class="number">.6</span> <span class="comment">// indirect</span></span><br><span class="line">	google.golang.org/genproto v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20210513213006</span>-bf773b8c8384 <span class="comment">// indirect</span></span><br><span class="line">	google.golang.org/protobuf v1<span class="number">.28</span><span class="number">.0</span> <span class="comment">// indirect</span></span><br><span class="line">	gopkg.in/yaml.v3 v3<span class="number">.0</span><span class="number">.1</span> <span class="comment">// indirect</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">replace kitex_echo =&gt; ../kitex_echo <span class="comment">// 直接替换为本地目录</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p><a target="_blank" rel="noopener" href="https://www.cloudwego.io/zh/docs/kitex/">https://www.cloudwego.io/zh/docs/kitex/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+              <a href="/tags/RPC/" rel="tag"># RPC</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/12/03/GoLang-%E6%B5%8B%E8%AF%95/" rel="prev" title="GoLang-测试">
+                  <i class="fa fa-chevron-left"></i> GoLang-测试
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/12/06/Go%E5%88%B7%E9%A2%98/" rel="next" title="Go刷题">
+                  Go刷题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

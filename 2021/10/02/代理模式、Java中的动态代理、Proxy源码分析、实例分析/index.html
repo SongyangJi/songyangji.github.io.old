@@ -1,37 +1,379 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="代理代理模式 目的：为其他对象提供一种代理以控制对这个对象的访问，可以增强、可以削弱。 应用实例：Spring中的AOP 代理的分类：静态代理、动态代理其中静态代理、动态代理的区别在于代理的生成时期不同 —— 前者在编译前就已经编写好代理类，后者在运行时动态生成代理类。 Java中代理的具体实现，依赖于接口实现(JDK实现的代理)、依赖于继承实现(CGLIB实现的代理)。  Java中的动态代理A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代理模式、Java中的动态代理、Proxy源码分析、实例分析">
+<meta property="og:url" content="http://example.com/2021/10/02/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E3%80%81Java%E4%B8%AD%E7%9A%84%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E3%80%81Proxy%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E3%80%81%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="代理代理模式 目的：为其他对象提供一种代理以控制对这个对象的访问，可以增强、可以削弱。 应用实例：Spring中的AOP 代理的分类：静态代理、动态代理其中静态代理、动态代理的区别在于代理的生成时期不同 —— 前者在编译前就已经编写好代理类，后者在运行时动态生成代理类。 Java中代理的具体实现，依赖于接口实现(JDK实现的代理)、依赖于继承实现(CGLIB实现的代理)。  Java中的动态代理A">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-09-13T07:17:31.545Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Java语言基础">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/10/02/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E3%80%81Java%E4%B8%AD%E7%9A%84%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E3%80%81Proxy%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E3%80%81%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/10/02/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E3%80%81Java%E4%B8%AD%E7%9A%84%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E3%80%81Proxy%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E3%80%81%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90/","path":"2021/10/02/代理模式、Java中的动态代理、Proxy源码分析、实例分析/","title":"代理模式、Java中的动态代理、Proxy源码分析、实例分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>代理模式、Java中的动态代理、Proxy源码分析、实例分析 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">代理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">代理模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E4%B8%AD%E7%9A%84%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">Java中的动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#API"><span class="nav-number">1.2.1.</span> <span class="nav-text">API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">使用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E7%B1%BB%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">代理类的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">1.4.</span> <span class="nav-text">源码分析</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/02/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E3%80%81Java%E4%B8%AD%E7%9A%84%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E3%80%81Proxy%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E3%80%81%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="代理模式、Java中的动态代理、Proxy源码分析、实例分析 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          代理模式、Java中的动态代理、Proxy源码分析、实例分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-02 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-02T00:00:00+08:00">2021-10-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-13 15:17:31" itemprop="dateModified" datetime="2022-09-13T15:17:31+08:00">2022-09-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h1><h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><ul>
+<li>目的：为其他对象提供一种代理以控制对这个对象的访问，可以增强、可以削弱。</li>
+<li>应用实例：Spring中的<strong>AOP</strong></li>
+<li>代理的分类：<strong>静态代理</strong>、<strong>动态代理</strong><br>其中静态代理、动态代理的区别在于代理的生成时期不同 —— 前者在编译前就已经编写好代理类，后者在运行时动态生成代理类。</li>
+<li>Java中代理的具体实现，依赖于接口实现(JDK实现的代理)、依赖于继承实现(CGLIB实现的代理)。</li>
+</ul>
+<h2 id="Java中的动态代理"><a href="#Java中的动态代理" class="headerlink" title="Java中的动态代理"></a>Java中的动态代理</h2><h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>JDK原生支持的代理依靠一个InvocationHandler接口和一个类Proxy。<br>先把API放出来。</p>
+<ul>
+<li><code>java.lang.reflect.InvocationHandler</code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object <span class="title function_">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span>;</span><br></pre></td></tr></table></figure>
+使用method句柄调用<strong>被代理对象</strong>的方法，方法参数是args,返回值 Object<br>(需要强转，但是不需要我们自己强转)。<br>注意，这里的<code>proxy</code>是生成的代理对象，不是我们希望被代理的真实的对象，而真实的对象需要在<code>InvocationHandler</code>接口的实现里，将它传进去。</li>
+</ul>
+<p><strong>这个接口也就是我们在实现代理的时候关注最多的方法，对它的实现，决定了我们究竟完成了对目标对象怎样的控制。</strong></p>
+<ul>
+<li><code>java.lang.reflect.Proxy</code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回代理类的类类型（不过已被废弃，不建议使用）</span></span><br><span class="line"><span class="keyword">static</span> Class&lt;?&gt; getProxyClass(ClassLoader loader, Class&lt;?&gt;... interfaces);</span><br><span class="line"><span class="comment">// 通过类加载器(这个参数暂时可以忽略)，代理类需要实现的接口、调用处理器生成代理类的实例</span></span><br><span class="line"><span class="keyword">static</span> Object <span class="title function_">newProxyInstance</span><span class="params">(ClassLoader loader,Class&lt;?&gt;[] interfaces ,InvocationHandler handler)</span></span><br><span class="line"><span class="comment">// 判断类类型是否是代理类</span></span><br><span class="line"><span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">isProxyClass</span><span class="params">(Class&lt;?&gt; cl)</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>在前面的叙述中，我们知道想要生成一个代理类需要提供三样东西，</p>
+<ol>
+<li>类加载器</li>
+<li>接口组</li>
+<li>调用处理</li>
+</ol>
+<p>下面实操一下。<br>（例子来源于《Java核心技术卷1》）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> about_proxy;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Song yang Ji</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ProjectName</span>: learnJavaSE</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 使用代理完成对Comparable方法调用的跟踪</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TraceUsingProxy</span> &#123;</span><br><span class="line">		</span><br><span class="line">	<span class="comment">// 调用处理器	</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">TraceHandler</span> <span class="keyword">implements</span> <span class="title class_">InvocationHandler</span> &#123;</span><br><span class="line">        <span class="comment">// 被代理的对象</span></span><br><span class="line">        <span class="keyword">private</span> Object target;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">TraceHandler</span><span class="params">(Object target)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.target = target;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> proxy  代理的对象</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> method 方法句柄</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> args   方法参数</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span> method方法的返回值</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> Object <span class="title function_">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">            <span class="comment">// 输出方法的调用信息</span></span><br><span class="line">            System.out.print(target + <span class="string">&quot;.&quot;</span> + method.getName() + <span class="string">&quot;(&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (args != <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; args.length; i++) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (i &gt; <span class="number">0</span>) System.out.print(<span class="string">&quot;, &quot;</span>);</span><br><span class="line">                    System.out.print(args[i]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(<span class="string">&quot;)&quot;</span>);</span><br><span class="line">            <span class="comment">// 调用 target 对象的 method 方法，参数是 args</span></span><br><span class="line">            <span class="keyword">return</span> method.invoke(target, args);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.getProperties().put(<span class="string">&quot;jdk.proxy.ProxyGenerator.saveGeneratedFiles&quot;</span>, <span class="string">&quot;true&quot;</span>);</span><br><span class="line">        <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> <span class="number">1000</span>;</span><br><span class="line">        Object[] proxyInteger = <span class="keyword">new</span> <span class="title class_">Object</span>[N];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">            proxyInteger[i] = Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;</span><br><span class="line">                    Comparable.class</span><br><span class="line">            &#125;, <span class="keyword">new</span> <span class="title class_">TraceHandler</span>(i));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">key</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>().nextInt(N);</span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> Arrays.binarySearch(proxyInteger, key);</span><br><span class="line">        System.out.printf(<span class="string">&quot;key %d is at %d\n&quot;</span>, key, res);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="代理类的特性"><a href="#代理类的特性" class="headerlink" title="代理类的特性"></a>代理类的特性</h2><ol>
+<li>代理类是在运行时动态生成的，但是一旦生成，就是个普通类，在jvm眼里和其他类没有任何不同。</li>
+<li>所有的代理类都继承自<code>Proxy</code>。</li>
+<li>生成的代理类的名字往往是$Proxy开头的，但默认不可见，运行后即销毁。</li>
+<li>代理类Proxy及具体的代理类都只有一个实例字段，就是<code>InvocationHandler</code>的实例，所有对被代理对象的控制都在这里完成。</li>
+<li>生成代理类除了会override掉你指定的接口，还会覆盖Object里的<code>toString</code>、<code>equals</code>,<code>hashCode</code>方法。（后面会用代码说明）</li>
+<li>对于一个特定的类加载器和预设的一组接口来说，只会生成一个代理类。<br>也就是通过<code>getProxyClass(ClassLoader loader, Class&lt;?&gt;... interfaces)</code>;获得的代理类。</li>
+</ol>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>想要看到动态生成的代理类。你可以在代码的开头加上：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.getProperties().put(<span class="string">&quot;jdk.proxy.ProxyGenerator.saveGeneratedFiles&quot;</span>, <span class="string">&quot;true&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> about_proxy;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.getProperties().put(<span class="string">&quot;jdk.proxy.ProxyGenerator.saveGeneratedFiles&quot;</span>, <span class="string">&quot;true&quot;</span>);</span><br><span class="line">		<span class="comment">// 实现了众多接口的一个代理类</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">proxy</span> <span class="operator">=</span> Proxy.newProxyInstance(Test.class.getClassLoader(), <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;</span><br><span class="line">                Serializable.class, Comparable.class, List.class, Runnable.class</span><br><span class="line">        &#125;, (proxy1, method, args1) -&gt; <span class="literal">null</span>);</span><br><span class="line">        System.out.println(proxy.getClass().getName());</span><br><span class="line">		<span class="comment">// 没有实现任何接口的代理类</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">proxy2</span> <span class="operator">=</span> Proxy.newProxyInstance(Test.class.getClassLoader(), <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;</span><br><span class="line">        &#125;, (proxy1, method, args1) -&gt; <span class="literal">null</span>);</span><br><span class="line">        System.out.println(proxy2.getClass().getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行它，看一下生成的类的代码，分析一下内在机制。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">$Proxy0</span> <span class="keyword">extends</span> <span class="title class_">Proxy</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span>, Comparable, List, Runnable  &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Method m1;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Method m2;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Method m0;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Method m4;</span><br><span class="line">    <span class="comment">// ...... 还有其他Method句柄</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Method mxx;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 调用父类的构造函数，传入唯一的实例字段</span></span><br><span class="line">    <span class="keyword">public</span> $Proxy1(InvocationHandler var1) <span class="keyword">throws</span>  &#123;</span><br><span class="line">        <span class="built_in">super</span>(var1);</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 下面三个是覆盖Object的三个方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object var1)</span> <span class="keyword">throws</span>  &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> String <span class="title function_">toString</span><span class="params">()</span> <span class="keyword">throws</span>  &#123;</span><br><span class="line">     <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> <span class="keyword">throws</span>  &#123;</span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 这个是覆盖List接口里的add方法，具体方法的调用就要到InvocationHandler去实现</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> var1, Object var2)</span> <span class="keyword">throws</span>  &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="built_in">super</span>.h.invoke(<span class="built_in">this</span>, m4, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;var1, var2&#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RuntimeException | Error var4) &#123;</span><br><span class="line">            <span class="keyword">throw</span> var4;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable var5) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">UndeclaredThrowableException</span>(var5);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">// 还有其他方法的override</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 静态代码段，初始化所有的Method对象。</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">        	<span class="comment">// </span></span><br><span class="line">            m1 = Class.forName(<span class="string">&quot;java.lang.Object&quot;</span>).getMethod(<span class="string">&quot;equals&quot;</span>, Class.forName(<span class="string">&quot;java.lang.Object&quot;</span>));</span><br><span class="line">            m2 = Class.forName(<span class="string">&quot;java.lang.Object&quot;</span>).getMethod(<span class="string">&quot;toString&quot;</span>);</span><br><span class="line">            m0 = Class.forName(<span class="string">&quot;java.lang.Object&quot;</span>).getMethod(<span class="string">&quot;hashCode&quot;</span>);</span><br><span class="line">            m4 = Class.forName(<span class="string">&quot;java.util.List&quot;</span>).getMethod(<span class="string">&quot;add&quot;</span>, Integer.TYPE, Class.forName(<span class="string">&quot;java.lang.Object&quot;</span>));</span><br><span class="line">            <span class="comment">// ... </span></span><br><span class="line">            <span class="comment">// 下面还有其他Method对象的生成，方法与上面的类似</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException var2) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchMethodError</span>(var2.getMessage());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException var3) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoClassDefFoundError</span>(var3.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" rel="tag"># Java语言基础</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/28/SpringBoot%E9%9B%86%E6%88%90Redis-%E2%80%94%E2%80%94%E2%80%94%E2%80%94-%E5%BA%8F%E5%88%97%E5%8C%96%E9%85%8D%E7%BD%AE%E3%80%81%E5%B8%B8%E8%A7%81%E5%B7%A5%E5%85%B7%E7%B1%BB%E3%80%81%E5%9F%BA%E6%9C%AC%E7%9A%84CRUD/" rel="prev" title="SpringBoot集成Redis ———— 序列化配置、常见工具类、基本的CRUD">
+                  <i class="fa fa-chevron-left"></i> SpringBoot集成Redis ———— 序列化配置、常见工具类、基本的CRUD
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/02/Apache-Commons-pool2%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/" rel="next" title="Apache Commons-pool2使用入门">
+                  Apache Commons-pool2使用入门 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

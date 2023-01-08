@@ -1,37 +1,441 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Docker的HTTP-API开启远程访问端口2375修改&#x2F;etc&#x2F;default&#x2F;docker（失败）1sudo vim &#x2F;etc&#x2F;default&#x2F;docker  加上 DOCKER_OPTS&#x3D;”-H tcp:&#x2F;&#x2F;0.0.0.0:2375” 再 1sudo systemctl restart docker      修改&#x2F;et">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Docker的API及SDK">
+<meta property="og:url" content="http://example.com/2022/05/08/%E4%BD%BF%E7%94%A8Docker%E7%9A%84API%E5%8F%8ASDK/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="Docker的HTTP-API开启远程访问端口2375修改&#x2F;etc&#x2F;default&#x2F;docker（失败）1sudo vim &#x2F;etc&#x2F;default&#x2F;docker  加上 DOCKER_OPTS&#x3D;”-H tcp:&#x2F;&#x2F;0.0.0.0:2375” 再 1sudo systemctl restart docker      修改&#x2F;et">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-07T18:20:39.000Z">
+<meta property="article:modified_time" content="2022-06-03T04:46:35.021Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="云原生">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2022/05/08/%E4%BD%BF%E7%94%A8Docker%E7%9A%84API%E5%8F%8ASDK/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/05/08/%E4%BD%BF%E7%94%A8Docker%E7%9A%84API%E5%8F%8ASDK/","path":"2022/05/08/使用Docker的API及SDK/","title":"使用Docker的API及SDK"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用Docker的API及SDK | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker%E7%9A%84HTTP-API"><span class="nav-number">1.</span> <span class="nav-text">Docker的HTTP-API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE%E7%AB%AF%E5%8F%A32375"><span class="nav-number">1.1.</span> <span class="nav-text">开启远程访问端口2375</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-x2F-etc-x2F-default-x2F-docker%EF%BC%88%E5%A4%B1%E8%B4%A5%EF%BC%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">修改&#x2F;etc&#x2F;default&#x2F;docker（失败）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-x2F-etc-x2F-docker-x2F-daemon-json%EF%BC%88%E5%A4%B1%E8%B4%A5%EF%BC%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">修改&#x2F;etc&#x2F;docker&#x2F;daemon.json（失败）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-x2F-usr-x2F-lib-x2F-systemd-x2F-system-x2F-docker-service%EF%BC%88%E6%88%90%E5%8A%9F%EF%BC%89"><span class="nav-number">1.1.3.</span> <span class="nav-text">修改&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service（成功）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Remote-cocker-daemon"><span class="nav-number">1.2.</span> <span class="nav-text">使用Remote cocker daemon</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shell%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.2.1.</span> <span class="nav-text">shell远程连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RestAPI"><span class="nav-number">1.2.2.</span> <span class="nav-text">RestAPI</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker-SDK-Go"><span class="nav-number">2.</span> <span class="nav-text">Docker-SDK-Go</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A5%E9%97%A8"><span class="nav-number">2.1.</span> <span class="nav-text">入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">构造客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BB%E5%BD%95Registry%E7%A7%81%E6%9C%8D%E5%B9%B6%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F"><span class="nav-number">2.1.2.</span> <span class="nav-text">登录Registry私服并拉取镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%A6%82%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84"><span class="nav-number">2.1.3.</span> <span class="nav-text">查看容器的详细信息，如端口映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%EF%BC%88%E8%8E%B7%E5%8F%96%E5%85%B6%E4%B8%80%E5%8D%B3%E5%8F%AF%EF%BC%89"><span class="nav-number">2.1.4.</span> <span class="nav-text">获取端口映射（获取其一即可）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%AE%B9%E5%99%A8"><span class="nav-number">2.1.5.</span> <span class="nav-text">创建容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%97%A5%E5%BF%97"><span class="nav-number">2.1.6.</span> <span class="nav-text">读取日志</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/08/%E4%BD%BF%E7%94%A8Docker%E7%9A%84API%E5%8F%8ASDK/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用Docker的API及SDK | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用Docker的API及SDK
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-08 02:20:39" itemprop="dateCreated datePublished" datetime="2022-05-08T02:20:39+08:00">2022-05-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-06-03 12:46:35" itemprop="dateModified" datetime="2022-06-03T12:46:35+08:00">2022-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Docker的HTTP-API"><a href="#Docker的HTTP-API" class="headerlink" title="Docker的HTTP-API"></a>Docker的HTTP-API</h1><h2 id="开启远程访问端口2375"><a href="#开启远程访问端口2375" class="headerlink" title="开启远程访问端口2375"></a>开启远程访问端口2375</h2><h3 id="修改-x2F-etc-x2F-default-x2F-docker（失败）"><a href="#修改-x2F-etc-x2F-default-x2F-docker（失败）" class="headerlink" title="修改&#x2F;etc&#x2F;default&#x2F;docker（失败）"></a><del>修改&#x2F;etc&#x2F;default&#x2F;docker（失败）</del></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/default/docker</span><br></pre></td></tr></table></figure>
+
+<p>加上</p>
+<p>DOCKER_OPTS&#x3D;”-H tcp:&#x2F;&#x2F;0.0.0.0:2375”</p>
+<p>再</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="修改-x2F-etc-x2F-docker-x2F-daemon-json（失败）"><a href="#修改-x2F-etc-x2F-docker-x2F-daemon-json（失败）" class="headerlink" title="修改&#x2F;etc&#x2F;docker&#x2F;daemon.json（失败）"></a><del>修改&#x2F;etc&#x2F;docker&#x2F;daemon.json（失败）</del></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
+
+<p>加入</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;hosts&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;tcp://0.0.0.0:2375&quot;</span><span class="punctuation">,</span> <span class="string">&quot;unix:///var/run/docker.sock&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>“unix:&#x2F;&#x2F;&#x2F;var&#x2F;run&#x2F;docker.sock”：unix socket，本地客户端将通过这个来连接 Docker Daemon。</li>
+<li>“tcp:&#x2F;&#x2F;0.0.0.0:2375”：tcp socket，表示允许任何远程客户端通过 2375 端口连接 Docker Daemon。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p>查看docker进程：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep docker</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">root      44221      1  1 18:16 ?        00:00:06 /usr/bin/dockerd -H tcp://0.0.0.0:2375 -H <span class="comment">#unix://var/run/docker.sock</span></span></span><br></pre></td></tr></table></figure>
+<p>Docker守护进程打开一个HTTP Socket,这样才能实现远程通信</p>
+<h3 id="修改-x2F-usr-x2F-lib-x2F-systemd-x2F-system-x2F-docker-service（成功）"><a href="#修改-x2F-usr-x2F-lib-x2F-systemd-x2F-system-x2F-docker-service（成功）" class="headerlink" title="修改&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service（成功）"></a>修改&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service（成功）</h3><p>在&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service，配置远程访问。</p>
+<p>主要是在[Service]这个部分，加上两个参数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">vim /usr/lib/systemd/system/docker.service</span></span><br><span class="line">[Service]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock</span></span><br><span class="line">ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock</span><br></pre></td></tr></table></figure>
+
+<p>重启</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这次检查我们看到了这个tcp进程:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root      117236       1  1 02:52 ?        00:00:05 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://0.0.0.0:2375 -H unix://var/run/docker.soc</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="使用Remote-cocker-daemon"><a href="#使用Remote-cocker-daemon" class="headerlink" title="使用Remote cocker daemon"></a>使用Remote cocker daemon</h2><h3 id="shell远程连接"><a href="#shell远程连接" class="headerlink" title="shell远程连接"></a>shell远程连接</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">加上请求主机即可</span></span><br><span class="line">docker -H tcp://211.87.224.233:2375 version</span><br><span class="line">docker -H tcp://ip:port ps</span><br><span class="line">docker -H tcp://ip:port images</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="RestAPI"><a href="#RestAPI" class="headerlink" title="RestAPI"></a>RestAPI</h3><p>浏览器访问：</p>
+<p>比如想要查看版本 <a href="http://ip:port/version">http://ip:port/version</a></p>
+<p>其他的操作入口，请参考</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/api/v1.41/#tag/Container">Docker API Reference</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hongdada/p/11512901.html">Docker开启Remote API 访问 2375端口 </a></p>
+</blockquote>
+<h1 id="Docker-SDK-Go"><a href="#Docker-SDK-Go" class="headerlink" title="Docker-SDK-Go"></a>Docker-SDK-Go</h1><h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><h3 id="构造客户端"><a href="#构造客户端" class="headerlink" title="构造客户端"></a>构造客户端</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/docker/docker/client&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx := context.Background()</span><br><span class="line">	<span class="comment">// cli, err := client.NewClientWithOpts(client.FromEnv)</span></span><br><span class="line">	<span class="comment">// remoteDockerDaemonAddress := &quot;211.87.224.233:2375&quot;</span></span><br><span class="line">	<span class="comment">// cli, err := client.NewClientWithOpts(client.FromEnv, client.WithHost(&quot;tcp://&quot; + remoteDockerDaemonAddress))</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>既可以连接本地，也可以连接远程的docker。</p>
+<h3 id="登录Registry私服并拉取镜像"><a href="#登录Registry私服并拉取镜像" class="headerlink" title="登录Registry私服并拉取镜像"></a>登录Registry私服并拉取镜像</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/docker/docker/api/types&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/docker/docker/client&quot;</span></span><br><span class="line">	<span class="string">&quot;io&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx := context.Background()</span><br><span class="line">	cli, err := client.NewClientWithOpts(client.FromEnv)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	harborUrl := <span class="string">&quot;http://211.87.224.233:8930/&quot;</span></span><br><span class="line">	_, err = cli.RegistryLogin(ctx, types.AuthConfig&#123;</span><br><span class="line">		Username:      <span class="string">&quot;admin&quot;</span>,</span><br><span class="line">		Password:      <span class="string">&quot;admin&quot;</span>,</span><br><span class="line">		ServerAddress: harborUrl,</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="literal">nil</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	imageName := <span class="string">&quot;211.87.224.233:8930/sdu-weblab/hello-world&quot;</span></span><br><span class="line">  <span class="comment">// out 是响应输出流，可以不输出</span></span><br><span class="line">	out, err := cli.ImagePull(ctx, imageName, types.ImagePullOptions&#123;&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> out.Close()</span><br><span class="line">	io.Copy(os.Stdout, out)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看容器的详细信息，如端口映射"><a href="#查看容器的详细信息，如端口映射" class="headerlink" title="查看容器的详细信息，如端口映射"></a><del>查看容器的详细信息，如端口映射</del></h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line">	<span class="string">&quot;errors&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/docker/docker/client&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/docker/go-connections/nat&quot;</span></span><br><span class="line">	<span class="string">&quot;os/exec&quot;</span></span><br><span class="line">	<span class="string">&quot;strings&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//ip, port, err := getHostIpAndPortOfContainerPort(&quot;8af85dfb4659&quot;, &quot;80&quot;)</span></span><br><span class="line">	ip, port, err := getHostIpAndPortOfContainerPortFromConfig(<span class="string">&quot;8bfb9b8e2692&quot;</span>, <span class="string">&quot;80&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;ip:port = %s:%s&quot;</span>, ip, port)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getHostIpAndPortOfContainerPortFromConfig</span><span class="params">(containerId <span class="type">string</span>, containerPort <span class="type">string</span>)</span></span> (ip <span class="type">string</span>, port <span class="type">string</span>, err <span class="type">error</span>) &#123;</span><br><span class="line">	cli, err := client.NewClientWithOpts(client.FromEnv)</span><br><span class="line">	containerJSON, err := cli.ContainerInspect(context.Background(), containerId)</span><br><span class="line">	<span class="keyword">if</span> !containerJSON.HostConfig.PublishAllPorts &#123; <span class="comment">// -p hostPort:containerPort</span></span><br><span class="line">		_port, err := nat.NewPort(nat.SplitProtoPort(containerPort))</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, err</span><br><span class="line">		&#125;</span><br><span class="line">		portBindMap := containerJSON.HostConfig.PortBindings</span><br><span class="line">		bindings := portBindMap[_port]</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(bindings) == <span class="number">0</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, errors.New(fmt.Sprintf(<span class="string">&quot;%s has no bindings&quot;</span>, containerPort))</span><br><span class="line">		&#125;</span><br><span class="line">		ip = bindings[<span class="number">0</span>].HostIP</span><br><span class="line">		port = bindings[<span class="number">0</span>].HostPort</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(ip) == <span class="number">0</span> &#123;</span><br><span class="line">			ip = <span class="string">&quot;0.0.0.0&quot;</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> ip, port, <span class="literal">nil</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123; <span class="comment">// -P containerPort</span></span><br><span class="line">		<span class="keyword">return</span> getHostIpAndPortOfContainerPort(containerId, containerPort)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// todo </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getHostIpAndPortOfContainerPort</span><span class="params">(containerId <span class="type">string</span>, containerPort <span class="type">string</span>)</span></span> (ip <span class="type">string</span>, port <span class="type">string</span>, err <span class="type">error</span>) &#123;</span><br><span class="line">	shell := <span class="string">&quot;docker port &quot;</span> + containerId + <span class="string">&quot; | grep &quot;</span> + containerPort + <span class="string">&quot; | awk &#x27;&#123;print $3&#125;&#x27;&quot;</span></span><br><span class="line">	fmt.Println(shell)</span><br><span class="line">	output, err := exec.Command(<span class="string">&quot;bash&quot;</span>, <span class="string">&quot;-c&quot;</span>, shell).Output()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ipPort := <span class="type">string</span>(output)</span><br><span class="line">	<span class="comment">//fmt.Println(ipPort)</span></span><br><span class="line">	splits := strings.Split(ipPort, <span class="string">&quot;:&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(splits) != <span class="number">2</span> &#123;</span><br><span class="line">		err = errors.New(<span class="string">&quot;invalid format&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ip = splits[<span class="number">0</span>]</span><br><span class="line">	port = splits[<span class="number">1</span>]</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果端口是用<code>-P</code>的方式随机映射的话就不能用<code>ContainerInspect</code>这个API了。</p>
+<h3 id="获取端口映射（获取其一即可）"><a href="#获取端口映射（获取其一即可）" class="headerlink" title="获取端口映射（获取其一即可）"></a>获取端口映射（获取其一即可）</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getHostPortOfContainerPort</span><span class="params">(containerId <span class="type">string</span>, containerPort <span class="type">string</span>)</span></span> (port <span class="type">string</span>, err <span class="type">error</span>) &#123;</span><br><span class="line">	shell := <span class="string">&quot;docker port &quot;</span> + containerId + <span class="string">&quot; | grep &quot;</span> + containerPort + <span class="string">&quot; | awk &#x27;&#123;print $3&#125;&#x27;&quot;</span></span><br><span class="line">	output, err := exec.Command(<span class="string">&quot;bash&quot;</span>, <span class="string">&quot;-c&quot;</span>, shell).Output()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	shellOut := <span class="type">string</span>(output)</span><br><span class="line">	shellOut = <span class="string">&quot;0.0.0.0:49155\n:::49155&quot;</span></span><br><span class="line">	parts := strings.Split(shellOut, <span class="string">&quot;\n&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(parts) == <span class="number">0</span> &#123;</span><br><span class="line">		err = fmt.Errorf(<span class="string">&quot;containerPort=%s has no bindings&quot;</span>, containerPort)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ipPort := parts[<span class="number">0</span>]</span><br><span class="line">	splits := strings.Split(ipPort, <span class="string">&quot;:&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(splits) != <span class="number">2</span> &#123;</span><br><span class="line">		err = errors.New(<span class="string">&quot;invalid format&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	port = splits[<span class="number">1</span>]</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<h3 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    imageName     <span class="type">string</span>   = <span class="string">&quot;my-gin:latest&quot;</span>                      <span class="comment">//镜像名称</span></span><br><span class="line">    containerName <span class="type">string</span>   = <span class="string">&quot;mygin-latest&quot;</span>                       <span class="comment">//容器名称</span></span><br><span class="line">    indexName     <span class="type">string</span>   = <span class="string">&quot;/&quot;</span> + containerName                  <span class="comment">//容器索引名称，用于检查该容器是否存在是使用</span></span><br><span class="line">    cmd           <span class="type">string</span>   = <span class="string">&quot;./ginDocker2&quot;</span>                       <span class="comment">//运行的cmd命令，用于启动container中的程序</span></span><br><span class="line">    workDir       <span class="type">string</span>   = <span class="string">&quot;/go/src/ginDocker2&quot;</span>                 <span class="comment">//container工作目录</span></span><br><span class="line">    openPort      nat.Port = <span class="string">&quot;7070&quot;</span>                               <span class="comment">//container开放端口</span></span><br><span class="line">    hostPort      <span class="type">string</span>   = <span class="string">&quot;7070&quot;</span>                               <span class="comment">//container映射到宿主机的端口</span></span><br><span class="line">    containerDir  <span class="type">string</span>   = <span class="string">&quot;/go/src/ginDocker2&quot;</span>                 <span class="comment">//容器挂载目录</span></span><br><span class="line">    hostDir       <span class="type">string</span>   = <span class="string">&quot;/home/youngblood/Go/src/ginDocker2&quot;</span> <span class="comment">//容器挂在载宿主机的目录</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//创建容器</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">createContainer</span><span class="params">(ctx context.Context, cli *client.Client)</span></span> &#123;</span><br><span class="line">    <span class="comment">//创建容器</span></span><br><span class="line">    cont, err := cli.ContainerCreate(ctx, &amp;container.Config&#123;</span><br><span class="line">        Image:      imageName,     <span class="comment">//镜像名称</span></span><br><span class="line">        Tty:        <span class="literal">true</span>,          <span class="comment">//docker run命令中的-t选项</span></span><br><span class="line">        OpenStdin:  <span class="literal">true</span>,          <span class="comment">//docker run命令中的-i选项</span></span><br><span class="line">        Cmd:        []<span class="type">string</span>&#123;cmd&#125;, <span class="comment">//docker 容器中执行的命令</span></span><br><span class="line">        WorkingDir: workDir,       <span class="comment">//docker容器中的工作目录</span></span><br><span class="line">        ExposedPorts: nat.PortSet&#123;</span><br><span class="line">            openPort: <span class="keyword">struct</span>&#123;&#125;&#123;&#125;, <span class="comment">//docker容器对外开放的端口</span></span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;, &amp;container.HostConfig&#123;</span><br><span class="line">        PortBindings: nat.PortMap&#123;</span><br><span class="line">            <span class="comment">// 一个容器端口可以”一对多“地映射到多个宿主机端口</span></span><br><span class="line">            openPort: []nat.PortBinding&#123;nat.PortBinding&#123;</span><br><span class="line">                HostIP:   <span class="string">&quot;0.0.0.0&quot;</span>, <span class="comment">//docker容器映射的宿主机的ip, 0.0.0.0 表示服务器的所有可监听的ip</span></span><br><span class="line">                HostPort: hostPort,  <span class="comment">//docker 容器映射到宿主机的端口;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        Mounts: []mount.Mount&#123; <span class="comment">//docker 容器目录挂在到宿主机目录</span></span><br><span class="line">            mount.Mount&#123;</span><br><span class="line">                Type:   mount.TypeBind,</span><br><span class="line">                Source: hostDir,</span><br><span class="line">                Target: containerDir,</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;, <span class="literal">nil</span>, containerName)</span><br><span class="line">    <span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Printf(<span class="string">&quot;success create container:%s\n&quot;</span>, cont.ID)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        log.Println(<span class="string">&quot;failed to create container!!!!!!!!!!!!!&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果要实现-P（随机映射端口的话）的话：使用</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&amp;container.HostConfig&#123;</span><br><span class="line">   PublishAllPorts: <span class="literal">true</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>举例</strong></p>
+<p>将<code>docker run -d -p 9000:80 --name docker.getting-started.latest docker/getting-started:latest</code>改写为docker程序：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/docker/docker/api/types&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/docker/docker/api/types/container&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/docker/docker/client&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/docker/go-connections/nat&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx := context.Background()</span><br><span class="line">	cli, err := client.NewClientWithOpts(client.FromEnv)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	imageName := <span class="string">&quot;docker/getting-started:latest&quot;</span></span><br><span class="line">	containerName := <span class="string">&quot;docker.getting-started.latest&quot;</span></span><br><span class="line">	containerPort := nat.Port(<span class="string">&quot;80&quot;</span>)</span><br><span class="line">	hostPort := <span class="string">&quot;9000&quot;</span></span><br><span class="line">	resp, err := cli.ContainerCreate(ctx,</span><br><span class="line">		&amp;container.Config&#123;</span><br><span class="line">			Image: imageName,</span><br><span class="line">			ExposedPorts: nat.PortSet&#123;</span><br><span class="line">				containerPort: <span class="keyword">struct</span>&#123;&#125;&#123;&#125;,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;, &amp;container.HostConfig&#123;</span><br><span class="line">			PortBindings: nat.PortMap&#123;</span><br><span class="line">				containerPort: []nat.PortBinding&#123; <span class="comment">//</span></span><br><span class="line">					&#123;</span><br><span class="line">						HostIP:   <span class="string">&quot;0.0.0.0&quot;</span>,</span><br><span class="line">						HostPort: hostPort,</span><br><span class="line">					&#125;,</span><br><span class="line">				&#125;,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;, <span class="literal">nil</span>, <span class="literal">nil</span>, containerName)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions&#123;&#125;); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;containerID = %s\n&quot;</span>, resp.ID)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="读取日志"><a href="#读取日志" class="headerlink" title="读取日志"></a>读取日志</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">&quot;context&quot;</span></span><br><span class="line">   <span class="string">&quot;io&quot;</span></span><br><span class="line">   <span class="string">&quot;os&quot;</span></span><br><span class="line"></span><br><span class="line">   <span class="string">&quot;github.com/docker/docker/api/types&quot;</span></span><br><span class="line">   <span class="string">&quot;github.com/docker/docker/client&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   ctx := context.Background()</span><br><span class="line">   cli, err := client.NewClientWithOpts(client.FromEnv)</span><br><span class="line">   <span class="comment">//remoteDockerDaemonAddress := &quot;211.87.224.233:2375&quot;</span></span><br><span class="line">   <span class="comment">//cli, err := client.NewClientWithOpts(client.FromEnv, client.WithHost(&quot;tcp://&quot;+remoteDockerDaemonAddress))</span></span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="built_in">panic</span>(err)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   options := types.ContainerLogsOptions&#123;</span><br><span class="line">      ShowStdout: <span class="literal">true</span>,</span><br><span class="line">      ShowStderr: <span class="literal">true</span>,</span><br><span class="line">      Follow:     <span class="literal">true</span>,</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// Replace this ID with a container that really exists</span></span><br><span class="line">   out, err := cli.ContainerLogs(ctx, <span class="string">&quot;87f42c0ab7f5&quot;</span>, options)</span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="built_in">panic</span>(err)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   io.Copy(os.Stdout, out)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果将日志实时输出到websocket呢？如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;bufio&quot;</span></span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line">	<span class="string">&quot;io&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;github.com/docker/docker/api/types&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/docker/docker/client&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gorilla/websocket&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> DefaultBufferSize = <span class="number">4</span> * <span class="number">1024</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	out      io.ReadCloser</span><br><span class="line">	upgrader = websocket.Upgrader&#123;</span><br><span class="line">		CheckOrigin: <span class="function"><span class="keyword">func</span><span class="params">(r *http.Request)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">		&#125;,</span><br><span class="line">	&#125; <span class="comment">// use default options</span></span><br><span class="line">	conn *websocket.Conn</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx := context.Background()</span><br><span class="line">	<span class="comment">//cli, err := client.NewClientWithOpts(client.FromEnv)</span></span><br><span class="line">	remoteDockerDaemonAddress := <span class="string">&quot;211.87.224.233:2375&quot;</span></span><br><span class="line">	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithHost(<span class="string">&quot;tcp://&quot;</span>+remoteDockerDaemonAddress))</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	options := types.ContainerLogsOptions&#123;</span><br><span class="line">		ShowStdout: <span class="literal">true</span>,</span><br><span class="line">		ShowStderr: <span class="literal">true</span>,</span><br><span class="line">		Follow:     <span class="literal">true</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// Replace this ID with a container that really exists</span></span><br><span class="line">	<span class="comment">//out, err = cli.ContainerLogs(ctx, &quot;8bfb9b8e2692&quot;, options) // local</span></span><br><span class="line">	out, err = cli.ContainerLogs(ctx, <span class="string">&quot;87f42c0ab7f5&quot;</span>, options) <span class="comment">// remote</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/logs&quot;</span>, socketHandler)</span><br><span class="line">	log.Fatal(http.ListenAndServe(<span class="string">&quot;localhost:8081&quot;</span>, <span class="literal">nil</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">socketHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	<span class="comment">// Upgrade our raw HTTP connection to a websocket based one</span></span><br><span class="line">	_conn, err := upgrader.Upgrade(w, r, <span class="literal">nil</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Print(<span class="string">&quot;Error during connection upgradation:&quot;</span>, err)</span><br><span class="line">		os.Exit(<span class="number">3</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	conn = _conn</span><br><span class="line">	<span class="keyword">defer</span> conn.Close()</span><br><span class="line"></span><br><span class="line">	reader := bufio.NewReader(out)</span><br><span class="line">	<span class="comment">// The event loop</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		message, err := reader.ReadString(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">				exitAndNotifyPeer(message, <span class="number">0</span>)</span><br><span class="line">			&#125;</span><br><span class="line">			exitAndNotifyPeer(<span class="string">&quot;\n&quot;</span>, <span class="number">1</span>)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// todo delete</span></span><br><span class="line">		log.Printf(<span class="string">&quot;Log read is: %s&quot;</span>, message)</span><br><span class="line"></span><br><span class="line">		err = conn.WriteMessage(websocket.TextMessage, []<span class="type">byte</span>(message))</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Println(<span class="string">&quot;Error during message writing: &quot;</span>, err)</span><br><span class="line">			os.Exit(<span class="number">2</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">exitAndNotifyPeer</span><span class="params">(msg <span class="type">string</span>, exitCode <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	conn.WriteMessage(websocket.CloseMessage, []<span class="type">byte</span>(msg))</span><br><span class="line">	os.Exit(exitCode)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<blockquote>
+<p>参考文档</p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/api/sdk/examples/">一些小例子</a></p>
+<p><a target="_blank" rel="noopener" href="https://pkg.go.dev/github.com/docker/docker/client">Reference</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+              <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/" rel="tag"># 云原生</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/08/Git%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev" title="Git的学习笔记">
+                  <i class="fa fa-chevron-left"></i> Git的学习笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/09/IP%E5%9C%B0%E5%9D%800.0.0.0%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F/" rel="next" title="IP地址0.0.0.0是什么意思？">
+                  IP地址0.0.0.0是什么意思？ <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

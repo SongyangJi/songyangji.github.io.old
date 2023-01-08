@@ -1,37 +1,454 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="JVM内存结构图《深入理解Java虚拟机（第2版）》  Java8内存结构介绍  虚拟机内存与本地内存的区别Java虚拟机在执行的时候会把管理的内存分配成不同的区域，这些区域被称为虚拟机内存，同时，对于虚拟机没有直接管理的物理内存，也有一定的利用，这些被利用却不在虚拟机内存数据区的内存，我们称它为本地内存，这两种内存有一定的区别：  JVM内存受虚拟机内存大小的参数控制，当大小超过参数设置的大小时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM内存结构">
+<meta property="og:url" content="http://example.com/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="JVM内存结构图《深入理解Java虚拟机（第2版）》  Java8内存结构介绍  虚拟机内存与本地内存的区别Java虚拟机在执行的时候会把管理的内存分配成不同的区域，这些区域被称为虚拟机内存，同时，对于虚拟机没有直接管理的物理内存，也有一定的利用，这些被利用却不在虚拟机内存数据区的内存，我们称它为本地内存，这两种内存有一定的区别：  JVM内存受虚拟机内存大小的参数控制，当大小超过参数设置的大小时">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-memory.jpg">
+<meta property="og:image" content="http://example.com/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-memory2.png">
+<meta property="article:published_time" content="2021-12-12T10:31:40.000Z">
+<meta property="article:modified_time" content="2022-09-12T15:05:29.607Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-memory.jpg">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/","path":"2021/12/12/JVM内存结构/","title":"JVM内存结构"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JVM内存结构 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text">JVM内存结构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E4%B8%8E%E6%9C%AC%E5%9C%B0%E5%86%85%E5%AD%98%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">虚拟机内存与本地内存的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E4%B8%AA%E5%8C%BA%E5%9F%9F%E7%9A%84%E5%85%B7%E4%BD%93%E4%BD%9C%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">各个区域的具体作用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%EF%BC%88Program-Counter-Register%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">程序计数器（Program Counter Register）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%EF%BC%88JVM-Stacks%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">虚拟机栈（JVM Stacks）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%EF%BC%88Native-Method-Stacks%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">本地方法栈（Native Method Stacks）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E5%A0%86%EF%BC%88Java-Heap%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">Java堆（Java Heap）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA%EF%BC%88Method-Area%EF%BC%89"><span class="nav-number">3.5.</span> <span class="nav-text">方法区（Method Area）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98"><span class="nav-number">4.</span> <span class="nav-text">直接内存</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number"></span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%B8%B8%E9%87%8F%E6%B1%A0%E3%80%81%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E3%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0%E6%9C%89%E4%BB%80%E4%B9%88%E5%85%B3%E7%B3%BB%EF%BC%9F%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E9%9D%A2%E9%87%8F%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AF%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">什么是字面量？什么是符号引用？</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JVM内存结构 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM内存结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-12 18:31:40" itemprop="dateCreated datePublished" datetime="2021-12-12T18:31:40+08:00">2021-12-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-12 23:05:29" itemprop="dateModified" datetime="2022-09-12T23:05:29+08:00">2022-09-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="JVM内存结构图"><a href="#JVM内存结构图" class="headerlink" title="JVM内存结构图"></a>JVM内存结构图</h2><p>《深入理解Java虚拟机（第2版）》</p>
+<p><img src="/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-memory.jpg"></p>
+<p><strong>Java8内存结构介绍</strong></p>
+<p><img src="/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-memory2.png" alt="图片"></p>
+<h2 id="虚拟机内存与本地内存的区别"><a href="#虚拟机内存与本地内存的区别" class="headerlink" title="虚拟机内存与本地内存的区别"></a>虚拟机内存与本地内存的区别</h2><p>Java虚拟机在执行的时候会把管理的内存分配成不同的区域，这些区域被称为虚拟机内存，同时，对于虚拟机没有直接管理的物理内存，也有一定的利用，这些被利用却不在虚拟机内存数据区的内存，我们称它为<code>本地内存</code>，这两种内存有一定的区别：</p>
+<ul>
+<li><p>JVM内存<br>受虚拟机内存大小的参数控制，当大小超过参数设置的大小时就会报OOM</p>
+</li>
+<li><p>本地内存<br>本地内存不受虚拟机内存参数的限制，只受物理内存容量的限制<br>虽然不受参数的限制，但是如果内存的占用超出物理内存的大小，同样也会报OOM</p>
+</li>
+</ul>
+<h2 id="各个区域的具体作用"><a href="#各个区域的具体作用" class="headerlink" title="各个区域的具体作用"></a>各个区域的具体作用</h2><h3 id="程序计数器（Program-Counter-Register）"><a href="#程序计数器（Program-Counter-Register）" class="headerlink" title="程序计数器（Program Counter Register）"></a>程序计数器（Program Counter Register）</h3><p><strong>程序计数器就是当前线程所执行的字节码的行号指示器</strong>，<strong>通过改变计数器的值，来选取下一行指令</strong>，通过他来实现跳转、循环、恢复线程等功能。</p>
+<ul>
+<li>在任何时刻，一个处理器内核只能运行一个线程，多线程是通过线程轮流切换，分配时间来完成的，这就需要有一个标志来记住每个线程执行到了哪里，这里便需要到了程序计数器。</li>
+<li>所以，<strong>程序计数器是线程私有的</strong>，每个线程都已自己的程序计数器。</li>
+</ul>
+<h3 id="虚拟机栈（JVM-Stacks）"><a href="#虚拟机栈（JVM-Stacks）" class="headerlink" title="虚拟机栈（JVM Stacks）"></a>虚拟机栈（JVM Stacks）</h3><p>虚拟机栈是线程私有的，随线程生灭。虚拟机栈描述的是线程中的方法的内存模型：</p>
+<p>每个方法被执行的时候，都会在虚拟机栈中同步创建一个<strong>栈帧</strong>（stack frame）。</p>
+<ul>
+<li>每个栈帧的包含如下的内容<ul>
+<li>Java基本数据类型（byte&#x2F;boolean&#x2F;char&#x2F;int&#x2F;long&#x2F;double&#x2F;float&#x2F;short）以及对象的引用 （注：这里的基本数据类型指的是方法内的局部变量）</li>
+<li>局部变量表</li>
+<li>操作数栈</li>
+<li>动态连接</li>
+<li>方法返回地址</li>
+</ul>
+</li>
+</ul>
+<p>方法被执行时入栈，执行完后出栈<br>虚拟机栈可能会抛出两种异常：</p>
+<ul>
+<li>如果线程请求的栈深度大于虚拟机所规定的栈深度，则会抛出<code>StackOverFlowError</code>即栈溢出</li>
+<li>如果虚拟机的栈容量可以动态扩展，那么当虚拟机栈申请不到内存时会抛出<code>OutOfMemoryError</code>即OOM内存溢出</li>
+</ul>
+<h3 id="本地方法栈（Native-Method-Stacks）"><a href="#本地方法栈（Native-Method-Stacks）" class="headerlink" title="本地方法栈（Native Method Stacks）"></a>本地方法栈（Native Method Stacks）</h3><p>本地方法栈与虚拟机栈的作用是相似的,都会抛出<code>OutOfMemoryError</code>和<code>StackOverFlowError</code>，都是<code>线程私有</code>的，主要的区别在于：</p>
+<ul>
+<li>虚拟机栈执行的是java方法</li>
+<li>本地方法栈执行的是native方法</li>
+</ul>
+<h3 id="Java堆（Java-Heap）"><a href="#Java堆（Java-Heap）" class="headerlink" title="Java堆（Java Heap）"></a>Java堆（Java Heap）</h3><p>java堆是JVM内存中最大的一块，由所有<strong>线程共享</strong>,是<strong>由垃圾收集器管理</strong>的内存区域，<strong>主要存放对象实例</strong>，当然由于java虚拟机的发展，堆中也多了许多东西，现在主要有：</p>
+<ul>
+<li><p>对象实例</p>
+<ul>
+<li>类初始化生成的对象；</li>
+<li>基本数据类型的数组也是对象实例。</li>
+</ul>
+</li>
+<li><p>字符串常量池</p>
+<ul>
+<li>字符串常量池原本存放于方法区，jdk7开始放置于堆中；</li>
+<li>字符串常量池存储的是string对象的直接引用，而不是直接存放的对象，是一张<code>string table</code>。</li>
+</ul>
+</li>
+<li><p>静态变量<br>静态变量是有static修饰的变量，jdk7时从方法区迁移至堆中。</p>
+</li>
+<li><p>线程分配缓冲区（Thread Local Allocation Buffer）</p>
+<ul>
+<li>线程私有，但是不影响java堆的共性；</li>
+<li>增加线程分配缓冲区是为了提升对象分配时的效率。</li>
+</ul>
+</li>
+</ul>
+<p>java堆既可以是固定大小的，也可以是可扩展的（通过参数<code>-Xmx</code>和<code>-Xms</code>设定），如果堆无法扩展或者无法分配内存时也会报OOM。</p>
+<blockquote>
+<p>静态变量 存储位置：JDK8之前，静态成员变量确实存放在方法区；但JDK8之后就取消了“永久代”，取而代之的是“元空间”，永久代中的数据也进行了迁移，静态成员变量迁移到了堆中（方法区是JVM的规范，永久代是方法区的具体实现）。</p>
+</blockquote>
+<h3 id="方法区（Method-Area）"><a href="#方法区（Method-Area）" class="headerlink" title="方法区（Method Area）"></a>方法区（Method Area）</h3><p>方法区绝对是网上所有关于java内存结构文章争论的焦点，因为方法区的实现在java8做了一次大革新，现在我们来讨论一下：</p>
+<p><strong>方法区是所有线程共享的内存</strong>，</p>
+<p>在java8以前是放在JVM内存中的，<strong>由永久代实现，受JVM内存大小参数的限制</strong>;</p>
+<p>在java8中移除了永久代的内容，<strong>方法区由元空间(Meta Space)实现，并直接放到了本地内存中</strong>，不受JVM参数的限制（当然，如果物理内存被占满了，方法区也会报OOM）。</p>
+<p>并且将原来放在方法区的<strong>字符串常量池</strong>和<strong>静态变量</strong>都转移到了Java堆中，方法区与其他区域不同的地方在于，方法区在编译期间和类加载完成后的内容有少许不同，不过总的来说分为这两部分：</p>
+<ul>
+<li><p>类元信息（Klass）</p>
+<ul>
+<li>类元信息在类编译期间放入方法区，里面放置了类的基本信息，包括类的<code>版本</code>、<code>字段</code>、<code>方法</code>、<code>接口</code>以及<code>常量池表（Constant Pool Table）</code></li>
+<li><code>常量池表（Constant Pool Table）</code>存储了类在编译期间生成的<code>字面量</code>、<code>符号引用</code>这些信息在类加载完后会被解析到运行时常量池中</li>
+</ul>
+</li>
+<li><p>运行时常量池（Runtime Constant Pool）</p>
+<ul>
+<li><strong>运行时常量池主要存放在类加载后被解析的字面量与符号引用</strong>，但不止这些；</li>
+<li>运行时常量池具备动态性，可以添加数据，比较多的使用就是String类的intern()方法</li>
+</ul>
+</li>
+</ul>
+<h2 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h2><p><strong>直接内存位于本地内存，不属于JVM内存</strong>，但是也会在物理内存耗尽的时候报OOM。</p>
+<p>在jdk1.4中加入了NIO（New Input&#x2F;Putput）类，引入了一种基于通道（channel）与缓冲区（buffer）的新IO方式，它可以使用native函数直接分配堆外内存，然后通过存储在java堆中的DirectByteBuffer对象作为这块内存的引用进行操作，这样可以在一些场景下大大提高IO性能，<strong>避免了在java堆和native堆来回复制数据</strong>。</p>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><h2 id="类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？"><a href="#类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？" class="headerlink" title="类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？"></a>类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？</h2><p>类常量池与运行时常量池都存储在方法区，而<strong>字符串常量池在jdk7时就已经从方法区迁移到了java堆中</strong>。</p>
+<p>在类编译过程中，会把类元信息放到方法区，类元信息的其中一部分便是<strong>类常量池，主要存放字面量和符号引用</strong>，<strong>而字面量的一部分便是文本字符</strong>，在类加载时将字面量和符号引用解析为直接引用存储在运行时常量池；</p>
+<p>对于文本字符来说，它们会在解析时查找字符串常量池，查出这个文本字符对应的字符串对象的直接引用，将直接引用存储在运行时常量池；</p>
+<p><strong>字符串常量池存储的是字符串对象的引用，而不是字符串本身</strong>。</p>
+<h2 id="什么是字面量？什么是符号引用？"><a href="#什么是字面量？什么是符号引用？" class="headerlink" title="什么是字面量？什么是符号引用？"></a>什么是字面量？什么是符号引用？</h2><ul>
+<li><p>字面量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>;<span class="comment">//这个1便是字面量</span></span><br><span class="line">String b=<span class="string">&quot;iloveu&quot;</span>;<span class="comment">//iloveu便是字面量</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><ul>
+<li>java代码在编译过程中是无法构建引用的，字面量就是在编译时对于数据的一种表示:</li>
+</ul>
+</li>
+<li><p>符号引用</p>
+</li>
+<li><ul>
+<li>由于在编译过程中并不知道每个类的地址，因为可能这个类还没有加载，所以如果你在一个类中引用了另一个类，那么你完全无法知道他的内存地址，那怎么办，我们只能用他的类名作为符号引用，在类加载完后用这个符号引用去获取他的内存地址。</li>
+<li>例子：我在com.demo.Solution类中引用了com.test.Quest，那么我会把<code>com.test.Quest</code>作为符号引用存到类常量池，等类加载完后，拿着这个引用去方法区找这个类的内存地址。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>参考</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ityouknow/p/5610232.html">jvm系列(二):JVM内存结构</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/" rel="prev" title="JVM垃圾回收算法和垃圾回收器">
+                  <i class="fa fa-chevron-left"></i> JVM垃圾回收算法和垃圾回收器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/15/BlockingQueue/" rel="next" title="JDK的BlockingQueue">
+                  JDK的BlockingQueue <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

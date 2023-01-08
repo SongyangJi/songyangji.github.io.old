@@ -1,37 +1,409 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="简单的介绍一下反射的概念。为框架的学习打下基础。  反射概念反射可以在运行时动态分析类，解析一个类的构造器、字段、方法、接口等等。反射有何作用，或者说为什么要学习反射？作为应用程序员，一般情况下，并不直接使用反射，它更多在构建系统级程序时发挥用处，如实现Java的Spring框架、持久层框架Mybatis时，反射的使用处处可见。Java的其他特性或技术也依赖于反射，如代理（Proxy）等等。 所">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反射的基础、Class、Field、Method、Constructor类">
+<meta property="og:url" content="http://example.com/2021/09/25/%E5%8F%8D%E5%B0%84%E7%9A%84%E5%9F%BA%E7%A1%80%E3%80%81Class%E3%80%81Field%E3%80%81Method%E3%80%81Constructor%E7%B1%BB/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="简单的介绍一下反射的概念。为框架的学习打下基础。  反射概念反射可以在运行时动态分析类，解析一个类的构造器、字段、方法、接口等等。反射有何作用，或者说为什么要学习反射？作为应用程序员，一般情况下，并不直接使用反射，它更多在构建系统级程序时发挥用处，如实现Java的Spring框架、持久层框架Mybatis时，反射的使用处处可见。Java的其他特性或技术也依赖于反射，如代理（Proxy）等等。 所">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/09/25/%E5%8F%8D%E5%B0%84%E7%9A%84%E5%9F%BA%E7%A1%80%E3%80%81Class%E3%80%81Field%E3%80%81Method%E3%80%81Constructor%E7%B1%BB/extends.png">
+<meta property="article:published_time" content="2021-09-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-01-04T14:52:19.566Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Java语言基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/09/25/%E5%8F%8D%E5%B0%84%E7%9A%84%E5%9F%BA%E7%A1%80%E3%80%81Class%E3%80%81Field%E3%80%81Method%E3%80%81Constructor%E7%B1%BB/extends.png">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/09/25/%E5%8F%8D%E5%B0%84%E7%9A%84%E5%9F%BA%E7%A1%80%E3%80%81Class%E3%80%81Field%E3%80%81Method%E3%80%81Constructor%E7%B1%BB/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/09/25/%E5%8F%8D%E5%B0%84%E7%9A%84%E5%9F%BA%E7%A1%80%E3%80%81Class%E3%80%81Field%E3%80%81Method%E3%80%81Constructor%E7%B1%BB/","path":"2021/09/25/反射的基础、Class、Field、Method、Constructor类/","title":"反射的基础、Class、Field、Method、Constructor类"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>反射的基础、Class、Field、Method、Constructor类 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">反射概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Class-%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">Class 类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Field-%E7%B1%BB"><span class="nav-number">2.1.</span> <span class="nav-text">Field 类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method-%E7%B1%BB"><span class="nav-number">2.2.</span> <span class="nav-text">Method 类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Constructor-%E7%B1%BB"><span class="nav-number">2.3.</span> <span class="nav-text">Constructor 类</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/25/%E5%8F%8D%E5%B0%84%E7%9A%84%E5%9F%BA%E7%A1%80%E3%80%81Class%E3%80%81Field%E3%80%81Method%E3%80%81Constructor%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="反射的基础、Class、Field、Method、Constructor类 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          反射的基础、Class、Field、Method、Constructor类
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-25 00:00:00" itemprop="dateCreated datePublished" datetime="2021-09-25T00:00:00+08:00">2021-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-04 22:52:19" itemprop="dateModified" datetime="2023-01-04T22:52:19+08:00">2023-01-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>简单的介绍一下反射的概念。为框架的学习打下基础。</p>
+</blockquote>
+<h1 id="反射概念"><a href="#反射概念" class="headerlink" title="反射概念"></a>反射概念</h1><p>反射可以在运行时动态分析类，解析一个类的构造器、字段、方法、接口等等。<br>反射有何作用，或者说为什么要学习反射？<br>作为应用程序员，一般情况下，并不直接使用反射，它更多在构建系统级程序时发挥用处，如实现Java的Spring框架、持久层框架Mybatis时，反射的使用处处可见。Java的其他特性或技术也依赖于反射，如代理（Proxy）等等。</p>
+<p>所以，学习反射，很大程度上并不是让我们直接使用反射，而是更好地理解框架的实现，更好地操纵框架。</p>
+<blockquote>
+<p> Java反射的应用很多，如，JSON的序列化&#x2F;反序列化，JDK动态代理，AOP等等</p>
+</blockquote>
+<h1 id="Class-类"><a href="#Class-类" class="headerlink" title="Class 类"></a>Class 类</h1><p>我们知道一个类有一些基本要素构成，如<br><strong>构造器、成员变量（字段）、成员方法</strong>等等。<br>那么这些信息如何描述呢？或者说，一个类本身的信息用什么类去描述呢？</p>
+<p><strong>Class类就是用来描述类本身的信息的</strong>。</p>
+<p>因为一个类的信息有很多，这里就不把Class类完整的分析一下了。<br>这里这分析最易理解，也是类的最基本的元素信息。</p>
+<p>源码分析。</p>
+<p>下面是<code>Class</code>类中的一些方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回类的名字</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> ;</span><br><span class="line"><span class="comment">// 获取类及超类的公共字段、方法、构造器</span></span><br><span class="line"><span class="keyword">public</span> Field[] getFields();</span><br><span class="line"><span class="keyword">public</span> Method[] getMethods();</span><br><span class="line"><span class="keyword">public</span> Constructor[] getConstructors();</span><br><span class="line"><span class="comment">// 返回特定的字段、方法、构造器</span></span><br><span class="line"><span class="keyword">public</span> Field <span class="title function_">getField</span><span class="params">(String name)</span>;</span><br><span class="line"><span class="keyword">public</span> Method <span class="title function_">getMethod</span><span class="params">(String name, Class&lt;?&gt;... parameterTypes)</span>;</span><br><span class="line"><span class="keyword">public</span> Constructor&lt;T&gt; <span class="title function_">getConstructor</span><span class="params">(Class&lt;?&gt;... parameterTypes)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>既然Class是一个类，如何获得它的实例对象。</p>
+<ol>
+<li><p>object.getClass()</p>
+</li>
+<li><p>T.class</p>
+</li>
+<li><p>Class.forName(className)</p>
+</li>
+</ol>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Student student;</span><br><span class="line"><span class="type">Class</span> <span class="variable">studentClass1</span> <span class="operator">=</span> student.getClass();</span><br><span class="line"><span class="type">Class</span> <span class="variable">studentClass2</span> <span class="operator">=</span> Student.class;</span><br><span class="line"><span class="type">Class</span> <span class="variable">studentClass3</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;Student&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p>在<code>java.lang.reflect</code>包里，有三个类值得关注，就Class描述类本身信息类似，也许有特定的三个类去描述<strong>构造器、字段、方法</strong>。</p>
+<p>而且这三个类具有共性,因为其实都是类的成员。<br>所以类中的方法都类似。</p>
+<p><img src="/2021/09/25/%E5%8F%8D%E5%B0%84%E7%9A%84%E5%9F%BA%E7%A1%80%E3%80%81Class%E3%80%81Field%E3%80%81Method%E3%80%81Constructor%E7%B1%BB/extends.png" alt="类图"></p>
+<p>实现的<code>Member</code>接口中的部分方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回声明这个字段、构造器、方法的类</span></span><br><span class="line"><span class="keyword">public</span> Class&lt;?&gt; getDeclaringClass();</span><br><span class="line"><span class="comment">// 返回这个字段、构造器、方法的名字</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">// 返回这个字段、构造器、方法的修饰符</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getModifiers</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Field-类"><a href="#Field-类" class="headerlink" title="Field 类"></a>Field 类</h2><p>三个很重要的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回字段类型</span></span><br><span class="line">Class <span class="title function_">getType</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">// 返回字段名字（标识符）</span></span><br><span class="line">String <span class="title function_">getName</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">// 返回某个对象的这个字段的值。</span></span><br><span class="line">Object <span class="title function_">get</span><span class="params">(obj)</span>;</span><br><span class="line"><span class="comment">// 给对象赋值</span></span><br><span class="line">set(Object obj,Object value);</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">	<span class="comment">// 这里必须是public,否则是不可达的（当然也可以强制设置为accessible）</span></span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Student</span><span class="params">(String name, <span class="type">int</span> age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test2</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Student</span> <span class="variable">student</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&quot;Mike&quot;</span>, <span class="number">18</span>);</span><br><span class="line">        <span class="type">Class</span> <span class="variable">cl</span> <span class="operator">=</span> Student.class;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">Field</span> <span class="variable">nameField</span> <span class="operator">=</span> cl.getField(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">            System.out.println(<span class="string">&quot;字段名字: &quot;</span> + nameField.getName());</span><br><span class="line">            <span class="type">Class</span> <span class="variable">fieldType</span> <span class="operator">=</span> nameField.getType();</span><br><span class="line">            System.out.println(<span class="string">&quot;字段类型: &quot;</span> + fieldType);</span><br><span class="line">            <span class="type">Object</span> <span class="variable">filedValue</span> <span class="operator">=</span> nameField.get(student);</span><br><span class="line">            System.out.println(<span class="string">&quot;字段的值: &quot;</span> + filedValue);</span><br><span class="line">            nameField.set(student,<span class="string">&quot;Jack&quot;</span>);</span><br><span class="line">            System.out.println(student.name);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>在c&#x2F;c++语言中，有方法指针（其实就是函数的入口地址）传给函数做参数。<br>但是Java的设计者认为这是不安全的，所以没有显示的方法指针。</p>
+<p>Java提供的解决方案是接口和lambda表达式。</p>
+<p>但是这里的Method对象，也可以提供像函数指针的效果。</p>
+<h2 id="Method-类"><a href="#Method-类" class="headerlink" title="Method 类"></a>Method 类</h2><p>与上面类似，有几个关键的方法值得注意。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据方法名和参数列表获得方法句柄</span></span><br><span class="line">Method <span class="title function_">getMethod</span><span class="params">(String name,Class... parameterTypes)</span>;</span><br><span class="line"><span class="comment">// 第一个参数为隐式参数，后面的方法的显示参数</span></span><br><span class="line"><span class="comment">// 如果是静态方法，第一个参数为null即可</span></span><br><span class="line">invoke(Object obj,Object... args);</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Student</span><span class="params">(String name, <span class="type">int</span> age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(<span class="type">int</span> age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">show</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;show information&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test2</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Student</span> <span class="variable">student</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&quot;Mike&quot;</span>, <span class="number">18</span>);</span><br><span class="line">        <span class="type">Class</span> <span class="variable">cl</span> <span class="operator">=</span> Student.class;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 实例有参方法</span></span><br><span class="line">            <span class="type">Method</span> <span class="variable">setAgeMethod</span> <span class="operator">=</span> cl.getMethod(<span class="string">&quot;setAge&quot;</span>, <span class="type">int</span>.class) ;</span><br><span class="line">            setAgeMethod.invoke(student,<span class="number">28</span>);</span><br><span class="line">            System.out.println(student.age);</span><br><span class="line">            <span class="comment">// 静态无参方法</span></span><br><span class="line">            <span class="type">Method</span> <span class="variable">showMethod</span> <span class="operator">=</span> cl.getMethod(<span class="string">&quot;show&quot;</span>);</span><br><span class="line">            showMethod.invoke(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方法调用的缺点是明显的。<br>一是，参数和返回值都是Object，需要来回强制转换。<br>二是，这样调用方法本身就是兜了个圈子，很耗时。</p>
+<p>与Method对象类似，Constructor不过是一种特殊的方法。</p>
+<h2 id="Constructor-类"><a href="#Constructor-类" class="headerlink" title="Constructor 类"></a>Constructor 类</h2><p>几个重要的方法原型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取构造器</span></span><br><span class="line"><span class="keyword">public</span> Constructor&lt;T&gt; <span class="title function_">getConstructor</span><span class="params">(Class&lt;?&gt;... parameterTypes)</span>;</span><br><span class="line"><span class="comment">// 根据构造器生成实例</span></span><br><span class="line"><span class="keyword">public</span> T <span class="title function_">newInstance</span><span class="params">(Object ... initargs)</span></span><br></pre></td></tr></table></figure>
+<p>举例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Student</span><span class="params">(String name, <span class="type">int</span> age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Student&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test2</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Class</span> <span class="variable">cl</span> <span class="operator">=</span> Student.class;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">Constructor</span> <span class="variable">constructor</span> <span class="operator">=</span> cl.getConstructor(String.class,<span class="type">int</span>.class);</span><br><span class="line">            <span class="type">Student</span> <span class="variable">student</span> <span class="operator">=</span> (Student) constructor.newInstance(<span class="string">&quot;Jack&quot;</span>,<span class="number">18</span>);</span><br><span class="line">            System.out.println(student);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>附：《Java核心技术卷》书上的源代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> about_reflect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Modifier;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ClassAnalyzer</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Class cl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ClassAnalyzer</span><span class="params">(Class clazz)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.cl = clazz;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 输出所有的构造器（包括 private 、 protected）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printConstructors</span><span class="params">()</span> &#123;</span><br><span class="line">        Constructor[] constructors = cl.getDeclaredConstructors();</span><br><span class="line">        <span class="keyword">for</span>(Constructor c:constructors)&#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> c.getName();</span><br><span class="line">            System.out.print(<span class="string">&quot;    &quot;</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">modifiers</span> <span class="operator">=</span> Modifier.toString(c.getModifiers());</span><br><span class="line">            <span class="keyword">if</span>(modifiers.length()&gt;<span class="number">0</span>) System.out.print(modifiers+<span class="string">&quot; &quot;</span>);</span><br><span class="line">            System.out.print(name+<span class="string">&quot;(&quot;</span>);</span><br><span class="line"></span><br><span class="line">            Class[] paramTypes = c.getParameterTypes();</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;paramTypes.length;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(j&gt;<span class="number">0</span>) System.out.print(<span class="string">&quot;, &quot;</span>);</span><br><span class="line">                System.out.print(paramTypes[j].getName());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="string">&quot;);&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出在这个类中的所有的方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printMethods</span><span class="params">()</span> &#123;</span><br><span class="line">        Method[] methods = cl.getDeclaredMethods();</span><br><span class="line">        <span class="keyword">for</span>(Method m:methods)&#123;</span><br><span class="line">            <span class="type">Class</span> <span class="variable">retype</span> <span class="operator">=</span> m.getReturnType();</span><br><span class="line">            <span class="type">String</span> <span class="variable">methodName</span> <span class="operator">=</span> m.getName();</span><br><span class="line">            System.out.print(<span class="string">&quot;    &quot;</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">modifiers</span> <span class="operator">=</span> Modifier.toString(m.getModifiers());</span><br><span class="line">            <span class="keyword">if</span>(modifiers.length()&gt;<span class="number">0</span>)&#123;</span><br><span class="line">                System.out.print(modifiers+<span class="string">&quot; &quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.print(retype.getName()+<span class="string">&quot; &quot;</span>+methodName+<span class="string">&quot;(&quot;</span>);</span><br><span class="line">            Class[] params = m.getParameterTypes();</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;params.length;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(j&gt;<span class="number">0</span>) System.out.print(<span class="string">&quot;, &quot;</span>);</span><br><span class="line">                System.out.print(params[j].getName());</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(<span class="string">&quot;);&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出在这个类中的所有的字段</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printFields</span><span class="params">()</span> &#123;</span><br><span class="line">        Field[] fields = cl.getDeclaredFields();</span><br><span class="line">        <span class="keyword">for</span>(Field field:fields) &#123;</span><br><span class="line">            System.out.print(<span class="string">&quot;    &quot;</span>);</span><br><span class="line">            <span class="type">Class</span> <span class="variable">type</span> <span class="operator">=</span> field.getType();</span><br><span class="line">            <span class="type">String</span> <span class="variable">modifiers</span> <span class="operator">=</span> Modifier.toString(field.getModifiers());</span><br><span class="line">            <span class="keyword">if</span>(modifiers.length()&gt;<span class="number">0</span>) System.out.print(modifiers+<span class="string">&quot; &quot;</span>);</span><br><span class="line">            System.out.println(type.getName()+<span class="string">&quot; &quot;</span>+field.getName()+<span class="string">&quot;;&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">display</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Class</span> <span class="variable">supercl</span> <span class="operator">=</span> cl.getSuperclass();</span><br><span class="line">        <span class="type">String</span> <span class="variable">modifiers</span> <span class="operator">=</span> Modifier.toString(cl.getModifiers());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(modifiers.length()&gt;<span class="number">0</span>) System.out.print(modifiers+<span class="string">&quot; &quot;</span>);</span><br><span class="line">        System.out.print(<span class="string">&quot;class &quot;</span>+cl.getName());</span><br><span class="line">        <span class="keyword">if</span>(supercl != <span class="literal">null</span> &amp;&amp; supercl != Object.class)&#123;</span><br><span class="line">            System.out.print(<span class="string">&quot; extends &quot;</span>+supercl.getName());</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot; &#123;\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">        printFields();</span><br><span class="line"></span><br><span class="line">        printConstructors();</span><br><span class="line"></span><br><span class="line">        printMethods();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;&#125;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> about_reflect.ClassAnalyzer;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span>(<span class="type">var</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Scanner</span>(System.in))&#123;</span><br><span class="line">            ClassAnalyzer classAnalyzer;</span><br><span class="line">            <span class="type">String</span> <span class="variable">classname</span> <span class="operator">=</span> in.next();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                classAnalyzer = <span class="keyword">new</span> <span class="title class_">ClassAnalyzer</span>(Class.forName(classname));</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;此类未找到&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            classAnalyzer.display();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 运行结果为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line">java.lang.String</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">java</span>.lang.String &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> [B value;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">byte</span> coder;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> hash;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> serialVersionUID;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">boolean</span> COMPACT_STRINGS;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> [Ljava.io.ObjectStreamField; serialPersistentFields;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> java.util.Comparator CASE_INSENSITIVE_ORDER;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">byte</span> LATIN1;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">byte</span> UTF16;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> java.lang.String([B);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String([B, <span class="type">int</span>, <span class="type">int</span>);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String([B, java.nio.charset.Charset);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String([B, java.lang.String);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String([B, <span class="type">int</span>, <span class="type">int</span>, java.nio.charset.Charset);</span><br><span class="line">    java.lang.String([C, <span class="type">int</span>, <span class="type">int</span>, java.lang.Void);</span><br><span class="line">    java.lang.String(java.lang.AbstractStringBuilder, java.lang.Void);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String(java.lang.StringBuilder);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String(java.lang.StringBuffer);</span><br><span class="line">    java.lang.String([B, <span class="type">byte</span>);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String([C, <span class="type">int</span>, <span class="type">int</span>);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String([C);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String(java.lang.String);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String();</span><br><span class="line">    <span class="keyword">public</span> java.lang.String([B, <span class="type">int</span>, <span class="type">int</span>, java.lang.String);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String([B, <span class="type">int</span>);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String([B, <span class="type">int</span>, <span class="type">int</span>, <span class="type">int</span>);</span><br><span class="line">    <span class="keyword">public</span> java.lang.String([I, <span class="type">int</span>, <span class="type">int</span>);</span><br><span class="line"></span><br><span class="line">    [B <span class="title function_">value</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(java.lang.Object)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">length</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">toString</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">getChars</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>, [C, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">volatile</span> <span class="type">int</span> <span class="title function_">compareTo</span><span class="params">(java.lang.Object)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">indexOf</span><span class="params">(java.lang.String, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">indexOf</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">indexOf</span><span class="params">([B, <span class="type">byte</span>, <span class="type">int</span>, java.lang.String, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">indexOf</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">indexOf</span><span class="params">(java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">checkIndex</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">valueOf</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">valueOf</span><span class="params">(<span class="type">float</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">valueOf</span><span class="params">(<span class="type">boolean</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">valueOf</span><span class="params">(<span class="type">long</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">valueOf</span><span class="params">(<span class="type">double</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">valueOf</span><span class="params">(java.lang.Object)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">valueOf</span><span class="params">(<span class="type">char</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">valueOf</span><span class="params">([C)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">valueOf</span><span class="params">([C, <span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="type">byte</span> <span class="title function_">coder</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> java.lang.Void <span class="title function_">rangeCheck</span><span class="params">([C, <span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.util.stream.IntStream <span class="title function_">codePoints</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">char</span> <span class="title function_">charAt</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">codePointAt</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">codePointBefore</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">codePointCount</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">offsetByCodePoints</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> [B <span class="title function_">getBytes</span><span class="params">(java.nio.charset.Charset)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">getBytes</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>, [B, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> [B <span class="title function_">getBytes</span><span class="params">(java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> [B <span class="title function_">getBytes</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">getBytes</span><span class="params">([B, <span class="type">int</span>, <span class="type">byte</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contentEquals</span><span class="params">(java.lang.StringBuffer)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contentEquals</span><span class="params">(java.lang.CharSequence)</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">nonSyncContentEquals</span><span class="params">(java.lang.AbstractStringBuilder)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equalsIgnoreCase</span><span class="params">(java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compareToIgnoreCase</span><span class="params">(java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">regionMatches</span><span class="params">(<span class="type">boolean</span>, <span class="type">int</span>, java.lang.String, <span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">regionMatches</span><span class="params">(<span class="type">int</span>, java.lang.String, <span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">startsWith</span><span class="params">(java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">startsWith</span><span class="params">(java.lang.String, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">endsWith</span><span class="params">(java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">lastIndexOf</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">lastIndexOf</span><span class="params">([B, <span class="type">byte</span>, <span class="type">int</span>, java.lang.String, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">lastIndexOf</span><span class="params">(java.lang.String, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">lastIndexOf</span><span class="params">(java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">lastIndexOf</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">substring</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">substring</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.CharSequence <span class="title function_">subSequence</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">concat</span><span class="params">(java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">replace</span><span class="params">(java.lang.CharSequence, java.lang.CharSequence)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">replace</span><span class="params">(<span class="type">char</span>, <span class="type">char</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">matches</span><span class="params">(java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(java.lang.CharSequence)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">replaceFirst</span><span class="params">(java.lang.String, java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">replaceAll</span><span class="params">(java.lang.String, java.lang.String)</span>;</span><br><span class="line">    <span class="keyword">public</span> [Ljava.lang.String; split(java.lang.String);</span><br><span class="line">    <span class="keyword">public</span> [Ljava.lang.String; split(java.lang.String, <span class="type">int</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">transient</span> java.lang.String <span class="title function_">join</span><span class="params">(java.lang.CharSequence, [Ljava.lang.CharSequence;)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">join</span><span class="params">(java.lang.CharSequence, java.lang.Iterable)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">toLowerCase</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">toLowerCase</span><span class="params">(java.util.Locale)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">toUpperCase</span><span class="params">(java.util.Locale)</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">toUpperCase</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">trim</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">strip</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">stripLeading</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">stripTrailing</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isBlank</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">indexOfNonWhitespace</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> java.util.stream.Stream <span class="title function_">lines</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> java.util.stream.IntStream <span class="title function_">chars</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> [C <span class="title function_">toCharArray</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">transient</span> java.lang.String <span class="title function_">format</span><span class="params">(java.lang.String, [Ljava.lang.Object;)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">transient</span> java.lang.String <span class="title function_">format</span><span class="params">(java.util.Locale, java.lang.String, [Ljava.lang.Object;)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">copyValueOf</span><span class="params">([C, <span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> java.lang.String <span class="title function_">copyValueOf</span><span class="params">([C)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">native</span> java.lang.String <span class="title function_">intern</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> java.lang.String <span class="title function_">repeat</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isLatin1</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">checkOffset</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">checkBoundsOffCount</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">checkBoundsBeginEnd</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line">    <span class="keyword">static</span> java.lang.String <span class="title function_">valueOfCodePoint</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+
+<p>先介绍这么多，以后再补。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" rel="tag"># Java语言基础</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/23/%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90c%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0%EF%BC%9F%E2%80%94%E2%80%94-Argtable3%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" rel="prev" title="如何解析c语言程序的命令行参数？—— Argtable3使用教程">
+                  <i class="fa fa-chevron-left"></i> 如何解析c语言程序的命令行参数？—— Argtable3使用教程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/28/SpringBoot%E9%9B%86%E6%88%90Redis-%E2%80%94%E2%80%94%E2%80%94%E2%80%94-%E5%BA%8F%E5%88%97%E5%8C%96%E9%85%8D%E7%BD%AE%E3%80%81%E5%B8%B8%E8%A7%81%E5%B7%A5%E5%85%B7%E7%B1%BB%E3%80%81%E5%9F%BA%E6%9C%AC%E7%9A%84CRUD/" rel="next" title="SpringBoot集成Redis ———— 序列化配置、常见工具类、基本的CRUD">
+                  SpringBoot集成Redis ———— 序列化配置、常见工具类、基本的CRUD <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

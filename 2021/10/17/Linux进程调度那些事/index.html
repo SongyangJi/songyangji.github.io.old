@@ -1,37 +1,475 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Linux进程调度的顶层设计进程的调度有多种算法。常见的有：  先来先服务（FIFO） 最短作业优先调度（Shortest-Job-First SJF） 优先级调度（Priority-Scheduling） 轮转调度（Round-Robin RR）  上述的调度算法在一般的操作系统教科书中都有讲解，不再赘述。 如何合理组织调度算法和调度类呢？ Linux 的进程调度器是以模块化的方式来提供的，这种">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux进程调度那些事">
+<meta property="og:url" content="http://example.com/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="Linux进程调度的顶层设计进程的调度有多种算法。常见的有：  先来先服务（FIFO） 最短作业优先调度（Shortest-Job-First SJF） 优先级调度（Priority-Scheduling） 轮转调度（Round-Robin RR）  上述的调度算法在一般的操作系统教科书中都有讲解，不再赘述。 如何合理组织调度算法和调度类呢？ Linux 的进程调度器是以模块化的方式来提供的，这种">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/scheding_class.png">
+<meta property="og:image" content="http://example.com/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/rb-tree.png">
+<meta property="article:published_time" content="2021-10-16T17:00:12.000Z">
+<meta property="article:modified_time" content="2021-10-20T02:50:27.293Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="进程&#x2F;线程">
+<meta property="article:tag" content="Linux内核">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/scheding_class.png">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/","path":"2021/10/17/Linux进程调度那些事/","title":"Linux进程调度那些事"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux进程调度那些事 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%9A%84%E9%A1%B6%E5%B1%82%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">Linux进程调度的顶层设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E5%BA%A6%E7%B1%BB%E4%B8%8E%E8%B0%83%E5%BA%A6%E7%AD%96%E7%95%A5-Scheduling-classes-and-policies"><span class="nav-number">1.1.</span> <span class="nav-text">调度类与调度策略 (Scheduling classes and policies)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CFS%EF%BC%88%E6%99%AE%E9%80%9A%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6%E7%B1%BB%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">CFS（普通进程的调度类）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">设计理念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text">关键问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E6%97%B6%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">实时进程的调度类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8E%E8%B0%83%E5%BA%A6%E7%9B%B8%E5%85%B3%E7%9A%84%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">与调度相关的系统调用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#chrt"><span class="nav-number">4.1.</span> <span class="nav-text">chrt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#taskset"><span class="nav-number">4.2.</span> <span class="nav-text">taskset</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux进程调度那些事 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux进程调度那些事
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-17 01:00:12" itemprop="dateCreated datePublished" datetime="2021-10-17T01:00:12+08:00">2021-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-10-20 10:50:27" itemprop="dateModified" datetime="2021-10-20T10:50:27+08:00">2021-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Linux进程调度的顶层设计"><a href="#Linux进程调度的顶层设计" class="headerlink" title="Linux进程调度的顶层设计"></a>Linux进程调度的顶层设计</h1><p>进程的调度有多种算法。常见的有：</p>
+<ul>
+<li>先来先服务（FIFO）</li>
+<li>最短作业优先调度（Shortest-Job-First SJF）</li>
+<li>优先级调度（Priority-Scheduling）</li>
+<li>轮转调度（Round-Robin RR）</li>
+</ul>
+<p>上述的调度算法在一般的操作系统教科书中都有讲解，不再赘述。</p>
+<p>如何合理组织调度算法和调度类呢？</p>
+<p>Linux 的进程调度器是以模块化的方式来提供的，这种模块化的结构称之为<strong>调度器类</strong></p>
+<h2 id="调度类与调度策略-Scheduling-classes-and-policies"><a href="#调度类与调度策略-Scheduling-classes-and-policies" class="headerlink" title="调度类与调度策略 (Scheduling classes and policies)"></a>调度类与调度策略 (Scheduling classes and policies)</h2><p><strong>每一个调度器类都有一个优先级别，调度器会依次从最高的优先级别的调度器类中选择一个进程去执行。</strong></p>
+<p><strong>不同优先级的调度器类中的进程的调度互不干扰，依次属于不同的调度梯队。</strong></p>
+<p>进程调度的入口是函数<code>schedule()</code>,定义在<code>kernel/sched.c</code>中，其中它有一个关键的函数<code>pick_next_task()</code></p>
+<p>也就是挑选下一个可以执行的进程（task）。</p>
+<p>伪代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pick_next_task &#123;</span><br><span class="line">   scheduling_class = sched_class_highest; <span class="comment">// 这是用链表组织起来的 调度器类，优先级别从高到低</span></span><br><span class="line">   <span class="keyword">for</span>(;;) &#123;</span><br><span class="line">       p = scheduling_class-&gt;pick_next_task; <span class="comment">// 从当前最高级别的调度器类中选择一个任务执行，</span></span><br><span class="line">       <span class="keyword">if</span>(p) &#123; <span class="comment">// 如果不为空，直接返回</span></span><br><span class="line">           <span class="keyword">return</span> p;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">// 如果为空，说明此级别的调度器类已经没有可执行的任务了，那就去看次优先的调度器类</span></span><br><span class="line">       scheduling_class = scheduling_class-&gt;next;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Linux kernel每当需要挑选一个新的task在某个local CPU上运行的时候，就会调用schedule()函数，进而调到pick_next_task()来找到合适的next task。pick_next_task()会利用for_each_class()宏来遍历调度类别链表，先找到有task想要运行的最高优先级的调度类别。等找到task之后，就会返回给函数调用者，让这个task在local CPU上运行。在Idle class里面总是会有一个task的，所以如果没有任何其他task要运行了，就直接执行Idle class里的这个task即可。</p>
+</blockquote>
+<p><strong>linux实现了很多种”scheduling class”（调度类别），每个class都可以包含一些调度策略。</strong></p>
+<p>调度类以及其拥有的调度策略如下，优先级别从低到高：</p>
+<ol>
+<li><p><strong>Stop</strong> schedulding class</p>
+<ul>
+<li>无实现的调度策略</li>
+</ul>
+</li>
+<li><p><strong>Deadline</strong> scheduling class</p>
+<ul>
+<li>SCHED_DEADLINE</li>
+</ul>
+</li>
+<li><p><strong>Realtime</strong> scheduling class</p>
+<ul>
+<li>SCHED_FIFO</li>
+<li>SCHED_RR</li>
+</ul>
+</li>
+<li><p><strong>Completely fair</strong> scheduling class</p>
+<ul>
+<li>SCHED_NORMAL</li>
+<li>SCHEDULE_BATCH</li>
+<li>SCHED_IDLE</li>
+</ul>
+</li>
+<li><p><strong>Idle</strong> scheduling class</p>
+<ul>
+<li>无实现的调度策略</li>
+</ul>
+</li>
+</ol>
+<p>下面做一点详细讲解。</p>
+<ul>
+<li><p><strong>Stop</strong> schedulding class是一个特殊的类别，只在kernel内部使用。其实并没有实现任何针对它的调度策略，也不会有任何用户进程采用这种调度类别。Stop class其实是用作一种强制CPU把手头其他任何工作都停下来从而执行某种特殊任务的机制。因为这是最高优先级的class，因此可以抢占任何其他类别，却不会被任何其他任务抢占。一般是一个CPU想要把另一个CPU停下来执行某些特定功能的时候使用，因此只有SMP系统里才有。Stop class会创建一个per-CPU的内核线程（kthread），名为migration&#x2F;N，这里N就是CPU编号。这个类别主要用在kernel的task migration, CPU hotplug, RCU, ftrace, clock event等场景。</p>
+</li>
+<li><p><strong>Deadline</strong> scheduling class只制定了唯一一条调度策略，名为SCHED_DEADLINE，它用在系统里最高优先级的用户进程上。主要是针对那些有明确截止时间的任务，例如视频编码、解码任务。在这种调度策略之下，截止时间最近的任务拥有最高优先级。可以使用sched_setattr()系统调用来把某个进程设置为SCHED_DEADLINE调度策略，同时需要传递三个参数进去：运行时间，截止时间，周期。</p>
+</li>
+<li><p><strong>Realtime (简称RT) scheduling class</strong>，<strong>主要用在一些耗时很短、对延迟很敏感的task之上</strong>，例如IRQ thread。这是一个拥有固定优先级的类别，高优先级的task都会在低优先级的task之前调度。这个类别里实现了两种调度策略：SCHED_FIFO和SCHED_RR。SCHED_FIFO策略会让一个task持续运行直到它放弃占用CPU，例如它block在某个资源上，或者完成了执行。而SCHED_RR（round robin）策略则会对task持续执行的一个时间片限制最大值，如果task持续占用CPU超过这个时长，仍然没有block住（也就是仍然期望继续占用CPU），调度器就会把它放到拥有相同优先级的round-robin队列的尾部，并换一个task进来执行。这些采用实时策略的task可以使用1（最低）到99（最高）的优先级。</p>
+</li>
+<li><p><strong>CFS</strong> （completely fair scheduling）class则<strong>包含了绝大多数的用户进程</strong>。CFS实现了三类调度策略：SCHED_NORMAL，SCHEDULE_BATCH，SCHED_IDLE。采用这三者之中任意一种策略的话，进程就只有在没有任何deadline和realtime class的进程在等待执行的情况下才有机会被调度到（当然缺省来说调度器其实保留了5%的CPU时间专用于CFS task）。scheduler会跟踪各个task的vruntime (virtual runtime)，包括那些runnable和blocked状态下的task。一个task的vrtuntime越小，它就越应该优先占用处理器的时间。相应地，CFS会把这些vruntime很低的进程向调度队列的前端移动。<br><strong>这也是本篇文章的重点。</strong></p>
+<p><strong>SCHED_NORMAL调度策略（在user space的名字叫做SCHED_OTHER）是用在Linux环境里运行的绝大多数task上的</strong>，例如shell。SCHED_BATCH调度策略则主要用在那些非交互式的任务所需要的批量处理上面，通常这些任务执行中需要一段时间不被打断，因此通常都会在完成所有SCHED_NORMAL工作之后再进行调度切换。SCHED_IDLE调度策略则专用于系统里的低优先级task，他们仅在系统里没有什么需要运行的时候才会执行。尽管实际上说哪怕有其他一些SCHED_NORMAL task，其实SCHED_IDLE task还是会分到一些时间运行的（对于一个nice值为0的task来说大概会有1.4%的时间）。这个调度策略目前用到的很少，有人在试着改进它的工作方式。</p>
+</li>
+<li><p><strong>Idle</strong> scheduling class（不要跟SCHED_IDLE的调度策略弄混了）。这是最低优先级的调度类别。就跟Stop class类似，Idle class其实不会用在任何用户进程之上，因此并没有实现什么调度策略。它其实仅仅是用在名为swapper&#x2F;N（N是CPU序号）的一系列per-CPU kthread上。这些kthreads也被称为”idle thread”，用户空间是看不到的。这些线程负责让系统更加省电，主要是通过在没什么事情要做的时候把CPU放到一些deep idle状态来做到的。</p>
+</li>
+</ul>
+<p>在kernel代码里面，scheduling class是用struct sched_class来代表的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sched_class</span> &#123;</span></span><br><span class="line"><span class="type">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">sched_class</span> *<span class="title">next</span>;</span></span><br><span class="line"><span class="type">void</span> (*enqueue_task) (<span class="keyword">struct</span> rq *rq, <span class="keyword">struct</span> task_struct *p, <span class="type">int</span> flags);</span><br><span class="line"><span class="type">void</span> (*dequeue_task) (<span class="keyword">struct</span> rq *rq, <span class="keyword">struct</span> task_struct *p, <span class="type">int</span> flags);</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *(*<span class="title">pick_next_task</span>) (<span class="keyword">struct</span> <span class="title">rq</span> *<span class="title">rq</span>, <span class="keyword">struct</span> <span class="title">task_struct</span> *<span class="title">prev</span>, </span></span><br><span class="line"><span class="class">		    <span class="keyword">struct</span> <span class="title">rq_flags</span> *<span class="title">rf</span>);</span></span><br><span class="line"><span class="comment">/* many fields omitted */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这个结构里主要放了一些指向class相关实现的函数指针（回调函数），供scheduler core调用，从而能让scheduler核心代码不用包含任何class相关的代码。这些调度类别放在一个按照优先级排序的单项链表里面，第一项是Stop scheduling class（最高优先级），最后一项是Idle class（最低优先级）。</p>
+<p><img src="/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/scheding_class.png" alt="scheding_class"></p>
+<h1 id="CFS（普通进程的调度类）"><a href="#CFS（普通进程的调度类）" class="headerlink" title="CFS（普通进程的调度类）"></a>CFS（普通进程的调度类）</h1><h2 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h2><p>CFS——完全公平调度，关于的详细的解析这里就不展开来讲了，可以参看《Linux Kernel Development》这本书，这里只调出关于它的一些设计的关键之处，优秀的调度理念来讲。</p>
+<p>CFS的出发点基于一个简单的理念：进程调度的效果应该如果系统具备一个理想的完美多任务处理器。在这种系统中，<strong>每个进程都能获得 1&#x2F;n 的处理器时间</strong>，n 指可运行的进程数。<br>同时，在任何可度量时间内，每个进程都可以得到相同多的运行时间。<br>当然上述的是理想的模型，实现中当然有贴合实际的处理。</p>
+<p>CFS的做法是: <strong>允许每个进程运行一段时间，循环轮转，选择运行最少时间（实际上是虚拟的运行时间）的进程</strong>。</p>
+<h2 id="关键问题"><a href="#关键问题" class="headerlink" title="关键问题"></a>关键问题</h2><ol>
+<li><p><strong>时间片的长度如何分配？</strong><br> <strong>CFS并没有像RR一样固定的分配一个时间片，也不是根据进程的优先级分配长度不一的时间片。而是根据系统当时的负载情况，为每一个任务分配一个比例的CPU处理时间。</strong>具体的，CFS没有使用离散的时间片，而是采用<strong>目标延迟</strong>（target latency），这是每个可执行任务应当运行一次的时间间隔。</p>
+<p> <strong>根据目标延迟，按比例分配CPU时间。</strong></p>
+<p> 当然，这个目标延迟有一个默认值、最小值，当然随着系统负载的提高，这个目标延迟还可以延长。</p>
+</li>
+<li><p><strong>优先级如何影响调度？</strong></p>
+<p> CFS没有直接分配优先级（对于普通进程而言）。它通过每个任务的<strong>虚拟运行时间（vruntime）</strong>，进而每个任务运行多久，虚拟运行时间和基于<strong>优先级（nice值）</strong>的衰减因子有关。</p>
+<p> 进程的优先级是通过对它的nice值（取值范围-20到+19）加上120而得到的。</p>
+<p> 进程的优先级主要是用来调整进程的权重（weight，会影响vruntime增加速率）的，进而会影响到进程的vruntime。<strong>nice值越低，优先级就越高</strong>。task的权重因此也会更加高一些，相应的vruntime则会在task执行时增长得更加缓慢。</p>
+</li>
+<li><p><strong>如何调度IO密集型、CPU密集型任务？</strong></p>
+<p>首先，IO密集型任务需要更频繁的调度，但是每次需要的CPU时间片很短；而CPU密集型任务需要相对更长的时间片，但是调度频率可以较低。</p>
+<p>如何解决？显然IO型任务的<strong>vruntime</strong>是比较低的（假定nice值都相同），所以它因为vruntime很小，很快可以得到再次调度，而CPU密集型任务只要得到处理器资源，就可以用完分配给它的时间片。</p>
+<p>所以，IO型任务的vruntime总是偏小，所以”优先级“比CPU型任务更高，总是可以得到及时调度。</p>
+<p><strong>不过，精妙的是，这样的优先级既不是用户显式指定的，也不是os通过某种方式动态调整，完全是根据进程的自身的行为动态调整的。</strong></p>
+</li>
+<li><p><strong>可运行的进程以何种数据结构组织？</strong><br>在CFS调度类中，所有可执行的任务都放置在红黑树中，键值正是 <strong>vruntime</strong>，如下图。<br><img src="/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/rb-tree.png" alt="红黑树"></p>
+</li>
+</ol>
+<p>当进程从可执态到阻塞态时，会从红黑树中删除，当再次可调度的时候，又会加入红黑树。</p>
+<h1 id="实时进程的调度类"><a href="#实时进程的调度类" class="headerlink" title="实时进程的调度类"></a>实时进程的调度类</h1><p>实时进程的调度类优先级比CFS调度类要高。</p>
+<p>Linux提供两种实时调度策略，FIFO和RR。关于这两种调度策略比较简单，教科书上也都有就不讲了。</p>
+<h1 id="与调度相关的系统调用"><a href="#与调度相关的系统调用" class="headerlink" title="与调度相关的系统调用"></a>与调度相关的系统调用</h1><h2 id="chrt"><a href="#chrt" class="headerlink" title="chrt"></a>chrt</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chrt --help</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ chrt --help</span><br><span class="line">显示或更改某个进程的实时调度属性。</span><br><span class="line"></span><br><span class="line">设置策略：</span><br><span class="line"> chrt [选项] &lt;优先级&gt; &lt;命令&gt; [&lt;参数&gt;...]</span><br><span class="line"> chrt [选项] --pid &lt;优先级&gt; &lt;pid&gt;</span><br><span class="line"></span><br><span class="line">获取策略</span><br><span class="line"> chrt [选项] -p &lt;pid&gt;</span><br><span class="line"></span><br><span class="line">策略选项：</span><br><span class="line"> -b, --batch          将策略设置为 SCHED_BATCH</span><br><span class="line"> -d, --deadline       将策略设置为 SCHED_DEADLINE</span><br><span class="line"> -f, --fifo           将策略设置为 SCHED_FIFO</span><br><span class="line"> -i, --idle           将策略设置为 SCHED_IDLE</span><br><span class="line"> -o, --other          将策略设置为 SCHED_OTHER</span><br><span class="line"> -r, --rr             将策略设置为 SCHED_RR (默认)</span><br><span class="line"></span><br><span class="line">调度选项：</span><br><span class="line"> -R, --reset-on-fork       为 FIFO 或 RR 设置 SCHED_RESET_ON_FORK</span><br><span class="line"> -T, --sched-runtime &lt;ns&gt;  DEADLINE 的运行时参数</span><br><span class="line"> -P, --sched-period &lt;ns&gt;  DEADLINE 的周期参数</span><br><span class="line"> -D, --sched-deadline &lt;ns&gt; DEADLINE 的截止时间参数</span><br><span class="line"></span><br><span class="line">其他选项：</span><br><span class="line"> -a, --all-tasks      对指定 pid 的所有任务(线程) 操作</span><br><span class="line"> -m, --max            显示最小和最大有效优先级</span><br><span class="line"> -p, --pid            对指定且存在的 pid 操作</span><br><span class="line"> -v, --verbose        显示状态信息</span><br><span class="line"></span><br><span class="line"> -h, --help           display this help</span><br><span class="line"> -V, --version        display version</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>查询各调度策略的优先级：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ chrt -m</span><br><span class="line">SCHED_OTHER 最小/最大优先级	: 0/0</span><br><span class="line">SCHED_FIFO 最小/最大优先级	: 1/99</span><br><span class="line">SCHED_RR 最小/最大优先级	: 1/99</span><br><span class="line">SCHED_BATCH 最小/最大优先级	: 0/0</span><br><span class="line">SCHED_IDLE 最小/最大优先级	: 0/0</span><br><span class="line">SCHED_DEADLINE 最小/最大优先级	: 0/0</span><br><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ </span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="taskset"><a href="#taskset" class="headerlink" title="taskset"></a>taskset</h2><p><strong>CPU 亲和性</strong>是一个调度程序属性，它将进程“绑定”到系统上的一组给定 CPU。</p>
+<p>通过 <code>taskset</code> 命令可将某个进程与某个CPU核心绑定，使得其仅在与之绑定的CPU核心上运行。</p>
+<p>不过需要注意的是，这只能此进程绑定到某个cpu核心上，但不是说这个cpu核心只能被这个进程使用，其他进程可以正常使用。(<code>cpuset</code>可以，不过我们可以在自己的程序中控制cpu核心池的调度)</p>
+<p>功能:显示或更改某个进程的 CPU 亲和力。</p>
+<p>用法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskset [选项] [掩码 | cpu列表] [pid|命令 [参数...]]</span><br></pre></td></tr></table></figure>
+
+
+
+<p>例如，指定某个进程在cpu核心号为0、1上运行:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskset -c 0,1 &#123;shell_cmd&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《Operating System Concepts》</p>
+<p>《Linux Kernel Development》</p>
+<p><a target="_blank" rel="noopener" href="https://lwn.net/Articles/805317/">Fixing SCHED_IDLE</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B/" rel="tag"># 进程/线程</a>
+              <a href="/tags/Linux%E5%86%85%E6%A0%B8/" rel="tag"># Linux内核</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/15/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BD%BF%E7%94%A8/" rel="prev" title="Java线程池原理与使用">
+                  <i class="fa fa-chevron-left"></i> Java线程池原理与使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/19/MongoDB-%E8%BF%9B%E9%98%B6(%E8%81%9A%E5%90%88)/" rel="next" title="MongoDB 进阶(聚合)">
+                  MongoDB 进阶(聚合) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

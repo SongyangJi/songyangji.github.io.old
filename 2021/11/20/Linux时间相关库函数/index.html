@@ -1,37 +1,410 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="时间相关time 头文件:1#include &lt;time.h&gt; 函数说明:C 库函数: 返回自纪元 Epoch（1970-01-01 00:00:00 UTC）起经过的时间，以秒为单位。如果 seconds 不为空，则返回值也存储在变量 seconds 中。 函数定义1time_t time(time_t *seconds) 返回值以 time_t 对象返回当前日历时间。  local">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux时间相关库函数">
+<meta property="og:url" content="http://example.com/2021/11/20/Linux%E6%97%B6%E9%97%B4%E7%9B%B8%E5%85%B3%E5%BA%93%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="时间相关time 头文件:1#include &lt;time.h&gt; 函数说明:C 库函数: 返回自纪元 Epoch（1970-01-01 00:00:00 UTC）起经过的时间，以秒为单位。如果 seconds 不为空，则返回值也存储在变量 seconds 中。 函数定义1time_t time(time_t *seconds) 返回值以 time_t 对象返回当前日历时间。  local">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-20T14:10:55.000Z">
+<meta property="article:modified_time" content="2022-03-28T07:28:34.159Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/11/20/Linux%E6%97%B6%E9%97%B4%E7%9B%B8%E5%85%B3%E5%BA%93%E5%87%BD%E6%95%B0/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/11/20/Linux%E6%97%B6%E9%97%B4%E7%9B%B8%E5%85%B3%E5%BA%93%E5%87%BD%E6%95%B0/","path":"2021/11/20/Linux时间相关库函数/","title":"Linux时间相关库函数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux时间相关库函数 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E7%9B%B8%E5%85%B3"><span class="nav-number">1.</span> <span class="nav-text">时间相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#time"><span class="nav-number">1.1.</span> <span class="nav-text">time</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#localtime"><span class="nav-number">1.2.</span> <span class="nav-text">localtime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#strftime"><span class="nav-number">1.3.</span> <span class="nav-text">strftime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gettimeofday"><span class="nav-number">1.4.</span> <span class="nav-text">gettimeofday</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clock-gettime"><span class="nav-number">1.5.</span> <span class="nav-text">clock_gettime</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/20/Linux%E6%97%B6%E9%97%B4%E7%9B%B8%E5%85%B3%E5%BA%93%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux时间相关库函数 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux时间相关库函数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-20 22:10:55" itemprop="dateCreated datePublished" datetime="2021-11-20T22:10:55+08:00">2021-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-28 15:28:34" itemprop="dateModified" datetime="2022-03-28T15:28:34+08:00">2022-03-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="时间相关"><a href="#时间相关" class="headerlink" title="时间相关"></a>时间相关</h2><h3 id="time"><a href="#time" class="headerlink" title="time"></a>time</h3><ul>
+<li>头文件:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li>函数说明:<br>C 库函数: 返回自纪元 Epoch（1970-01-01 00:00:00 UTC）起经过的时间，以秒为单位。<br>如果 seconds 不为空，则返回值也存储在变量 seconds 中。</li>
+<li>函数定义<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">time_t</span> <span class="title function_">time</span><span class="params">(<span class="type">time_t</span> *seconds)</span></span><br></pre></td></tr></table></figure></li>
+<li>返回值<br>以 time_t 对象返回当前日历时间。</li>
+</ul>
+<h3 id="localtime"><a href="#localtime" class="headerlink" title="localtime"></a>localtime</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>C 库函数  使用 timer 的值来填充 tm 结构。<br>timer 的值被分解为 tm 结构，并用本地时区表示。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> tm *<span class="title function_">localtime</span><span class="params">(<span class="type">const</span> <span class="type">time_t</span> *timer)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回值<br>该函数返回指向 tm 结构的指针，该结构带有被填充的时间信息。下面是 tm 结构的细节:</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tm</span> &#123;</span></span><br><span class="line"><span class="type">int</span> tm_sec;         <span class="comment">/* 秒，范围从 0 到 59                */</span></span><br><span class="line"><span class="type">int</span> tm_min;         <span class="comment">/* 分，范围从 0 到 59                */</span></span><br><span class="line"><span class="type">int</span> tm_hour;        <span class="comment">/* 小时，范围从 0 到 23                */</span></span><br><span class="line"><span class="type">int</span> tm_mday;        <span class="comment">/* 一月中的第几天，范围从 1 到 31                    */</span></span><br><span class="line"><span class="type">int</span> tm_mon;         <span class="comment">/* 月份，范围从 0 到 11                */</span></span><br><span class="line"><span class="type">int</span> tm_year;        <span class="comment">/* 自 1900 起的年数                */</span></span><br><span class="line"><span class="type">int</span> tm_wday;        <span class="comment">/* 一周中的第几天，范围从 0 到 6                */</span></span><br><span class="line"><span class="type">int</span> tm_yday;        <span class="comment">/* 一年中的第几天，范围从 0 到 365                    */</span></span><br><span class="line"><span class="type">int</span> tm_isdst;       <span class="comment">/* 夏令时                        */</span>    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="strftime"><a href="#strftime" class="headerlink" title="strftime"></a>strftime</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>C 库函数,根据 format 中定义的格式化规则，格式化结构 timeptr 表示的时间，并把它存储在 str 中。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">size_t</span> <span class="title function_">strftime</span><span class="params">(<span class="type">char</span> *str, <span class="type">size_t</span> maxsize, <span class="type">const</span> <span class="type">char</span> *format, <span class="type">const</span> <span class="keyword">struct</span> tm *timeptr)</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>str – 这是指向目标数组的指针，用来复制产生的 C 字符串。</li>
+<li>maxsize – 这是被复制到 str 的最大字符数。</li>
+<li>format – 这是 C 字符串，包含了普通字符和特殊格式说明符的任何组合。这些格式说明符由函数替换为表示 tm 中所指定时间的相对应值。<br>具体格式详见：<br><a target="_blank" rel="noopener" href="https://www.runoob.com/cprogramming/c-function-strftime.html">参考链接</a></li>
+</ul>
+<ul>
+<li>返回值<br>如果产生的 C 字符串小于 size 个字符（包括空结束字符），则会返回复制到 str 中的字符总数（不包括空结束字符），否则返回零。</li>
+</ul>
+<h3 id="gettimeofday"><a href="#gettimeofday" class="headerlink" title="gettimeofday"></a>gettimeofday</h3><ul>
+<li>头文件:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li>函数说明:<br>返回当前距离1970年的秒数和微妙数，后面的tz是时区，一般不用（传 NULL 即可）。</li>
+<li>函数定义<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">gettimeofday</span><span class="params">(<span class="keyword">struct</span> timeval *tv, <span class="keyword">struct</span> timezone *tz)</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="clock-gettime"><a href="#clock-gettime" class="headerlink" title="clock_gettime"></a>clock_gettime</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>根据时钟模式，获取多种时间。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">clock_gettime</span><span class="params">(<span class="type">clockid_t</span> clock_id, <span class="keyword">struct</span> timespec * tp )</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CLOCK_REALTIME       0<br>Systemwide realtime clock. 系统实时时间,随系统实时时间改变而改变。<br>即从UTC1970-1-1 0:0:0开始计时,中间时刻如果系统时间被用户该成其他,则对应的时间相应改变</p>
+</li>
+<li><p>CLOCK_MONOTONIC     1<br>Represents monotonic time. Cannot be set. 从系统启动这一刻起开始计时,不受系统时间被用户改变的影响<br>用的是相对时间，它的时间是通过jiffies值来计算的。该时钟不受系统时钟源的影响，只受jiffies值的影响。<br>也就是说它获得的时间戳是单调的。</p>
+</li>
+<li><p>CLOCK_PROCESS_CPUTIME_ID    2<br>High resolution per-process timer. 本进程到当前代码系统CPU花费的时间</p>
+</li>
+<li><p>CLOCK_THREAD_CPUTIME_ID      3<br>Thread-specific timer. 本线程到当前代码系统CPU花费的时间</p>
+</li>
+<li><p>CLOCK_REALTIME_HR                4<br>High resolution version of CLOCK_REALTIME. 0<br>CLOCK_REALTIME 的 高精度版本</p>
+</li>
+<li><p>CLOCK_MONOTONIC_HR            5<br>High resolution version of CLOCK_MONOTONIC.<br>CLOCK_MONOTONIC 的高精度版本</p>
+</li>
+<li><p>返回值<br>时间结构<code>struct timespec</code></p>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">tv</span>;</span></span><br><span class="line">    gettimeofday(&amp;tv, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;gettimeofday : %ld, %d\n&quot;</span>, tv.tv_sec,tv.tv_usec);</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timespec</span> <span class="title">ts</span>;</span></span><br><span class="line">    clock_gettime(CLOCK_REALTIME, &amp;ts);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;CLOCK_REALTIME: %ld, %ld\n&quot;</span>, ts.tv_sec, ts.tv_nsec);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//打印出来的时间跟 cat /proc/uptime 第一个参数一样</span></span><br><span class="line">    clock_gettime(CLOCK_MONOTONIC, &amp;ts);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;CLOCK_MONOTONIC: %ld, %ld\n&quot;</span>, ts.tv_sec, ts.tv_nsec);</span><br><span class="line"></span><br><span class="line">    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &amp;ts);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;CLOCK_PROCESS_CPUTIME_ID: %ld, %ld\n&quot;</span>, ts.tv_sec, ts.tv_nsec);</span><br><span class="line"></span><br><span class="line">    clock_gettime(CLOCK_THREAD_CPUTIME_ID, &amp;ts);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;CLOCK_THREAD_CPUTIME_ID: %ld, %ld\n&quot;</span>, ts.tv_sec, ts.tv_nsec);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n%ld\n&quot;</span>, time(<span class="literal">NULL</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>值得一提的是，本项目使用的计时工具不能使用 time 以及 gettimeofday，否则有小概率发生”时间回溯现象”，<br>具体可以参考 <a target="_blank" rel="noopener" href="https://song-yang-ji.blog.csdn.net/article/details/115837363">Linux的timedatectl —— 关闭或开启时间同步</a>.<br>必须使用 <code>clock_gettime(CLOCK_MONOTONIC, *timespec);</code> 才可以先后两次拿到的时间戳是递增的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/20/Linux%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3%E5%BA%93%E5%87%BD%E6%95%B0/" rel="prev" title="Linux读写文件相关库函数">
+                  <i class="fa fa-chevron-left"></i> Linux读写文件相关库函数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/20/Linux%E5%A4%9A%E8%BF%9B%E7%A8%8B%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/" rel="next" title="Linux多进程、多线程编程">
+                  Linux多进程、多线程编程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

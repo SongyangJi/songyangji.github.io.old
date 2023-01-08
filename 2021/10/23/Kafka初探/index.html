@@ -1,37 +1,453 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一些网站官网 Kafka核心技术与实战 http:&#x2F;&#x2F;www.jasongj.com&#x2F;tags&#x2F;Kafka&#x2F; 安装、测试https:&#x2F;&#x2F;kafka.apache.org&#x2F;quickstart 安装下载地址 配置相关环境。 测试1cd $KAFKA_HOME    kafka依赖zookeeper，所以要先启动它。(客户端默认连接端口2181) 1sudo bin&#x2F;zookeeper-server-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka初探">
+<meta property="og:url" content="http://example.com/2021/10/23/Kafka%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="一些网站官网 Kafka核心技术与实战 http:&#x2F;&#x2F;www.jasongj.com&#x2F;tags&#x2F;Kafka&#x2F; 安装、测试https:&#x2F;&#x2F;kafka.apache.org&#x2F;quickstart 安装下载地址 配置相关环境。 测试1cd $KAFKA_HOME    kafka依赖zookeeper，所以要先启动它。(客户端默认连接端口2181) 1sudo bin&#x2F;zookeeper-server-">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-23T01:58:57.000Z">
+<meta property="article:modified_time" content="2023-01-08T18:13:50.748Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Message Queue">
+<meta property="article:tag" content="Kafka">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/10/23/Kafka%E5%88%9D%E6%8E%A2/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/10/23/Kafka%E5%88%9D%E6%8E%A2/","path":"2021/10/23/Kafka初探/","title":"Kafka初探"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Kafka初探 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E7%BD%91%E7%AB%99"><span class="nav-number">1.</span> <span class="nav-text">一些网站</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E3%80%81%E6%B5%8B%E8%AF%95"><span class="nav-number">2.</span> <span class="nav-text">安装、测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">2.2.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot-Quick-Start"><span class="nav-number">2.3.</span> <span class="nav-text">SpringBoot Quick Start</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka-Eagle"><span class="nav-number">3.</span> <span class="nav-text">Kafka-Eagle</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/23/Kafka%E5%88%9D%E6%8E%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Kafka初探 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka初探
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-23 09:58:57" itemprop="dateCreated datePublished" datetime="2021-10-23T09:58:57+08:00">2021-10-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-09 02:13:50" itemprop="dateModified" datetime="2023-01-09T02:13:50+08:00">2023-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="一些网站"><a href="#一些网站" class="headerlink" title="一些网站"></a>一些网站</h1><p><a target="_blank" rel="noopener" href="https://kafka.apache.org/">官网</a></p>
+<p><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/Kafka%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98/">Kafka核心技术与实战</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.jasongj.com/tags/Kafka/">http://www.jasongj.com/tags/Kafka/</a></p>
+<h1 id="安装、测试"><a href="#安装、测试" class="headerlink" title="安装、测试"></a>安装、测试</h1><p><a target="_blank" rel="noopener" href="https://kafka.apache.org/quickstart">https://kafka.apache.org/quickstart</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a target="_blank" rel="noopener" href="https://www.apache.org/dyn/closer.cgi?path=/kafka/3.0.0/kafka_2.13-3.0.0.tgz">下载地址</a></p>
+<p>配置相关环境。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$KAFKA_HOME</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>kafka依赖zookeeper，所以要先启动它。(客户端默认连接端口2181)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo bin/zookeeper-server-start.sh config/zookeeper.properties</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>启动服务器</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># front start</span></span><br><span class="line">sudo bin/kafka-server-start.sh config/server.properties</span><br><span class="line">sudo bin/kafka-server-start.sh -daemon config/server.properties</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>重启服务器</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo bin/kafka-server-stop.sh</span><br><span class="line">sudo bin/kafka-server-start.sh -daemon config/server.properties</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<ul>
+<li>创建topic</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>列出topic</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --list --bootstrap-server localhost:9092</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>查看某个 topic</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --describe --topic <span class="built_in">test</span> --bootstrap-server localhost:9092</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>发布消息</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-producer.sh --topic <span class="built_in">test</span> --bootstrap-server localhost:9092</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>消费消息</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-consumer.sh --topic <span class="built_in">test</span> --from-beginning --bootstrap-server localhost:9092</span><br></pre></td></tr></table></figure>
+
+
+
+<p>能够呈现出来的效果就是，在<strong>发布消息的console</strong>中发布一条消息（enter分割），在<strong>消费消息的console</strong>中就会输出一条消息。</p>
+<h2 id="SpringBoot-Quick-Start"><a href="#SpringBoot-Quick-Start" class="headerlink" title="SpringBoot Quick Start"></a>SpringBoot Quick Start</h2><ul>
+<li>yml配置</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">kafka:</span></span><br><span class="line">    <span class="attr">bootstrap-servers:</span> <span class="string">localhost:9092</span></span><br><span class="line">    <span class="attr">consumer:</span></span><br><span class="line">      <span class="attr">group-id:</span> <span class="string">foo</span></span><br><span class="line">      <span class="attr">auto-offset-reset:</span> <span class="string">earliest</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> KafkaTemplate&lt;String, String&gt; template;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Demo</span><span class="params">(KafkaTemplate&lt;String, String&gt; template)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.template = template;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="type">String</span> <span class="variable">topicName</span> <span class="operator">=</span> <span class="string">&quot;myTopic&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Scheduled(fixedRate = 1000)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">publish</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (idx++ &gt; <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        template.send(topicName, String.valueOf(idx));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@KafkaListener(topics = topicName)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">listen</span><span class="params">(ConsumerRecord&lt;String, String&gt; cr)</span> &#123;</span><br><span class="line">        System.out.println(cr);</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>输出:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ConsumerRecord(topic = myTopic, partition = 0, leaderEpoch = 0, offset = 2, CreateTime = 1635125751646, serialized key size = -1, serialized value size = 1, headers = RecordHeaders(headers = [], isReadOnly = false), key = null, value = 1)</span><br><span class="line"></span><br><span class="line">ConsumerRecord(topic = myTopic, partition = 0, leaderEpoch = 0, offset = 3, CreateTime = 1635125752304, serialized key size = -1, serialized value size = 1, headers = RecordHeaders(headers = [], isReadOnly = false), key = null, value = 2)</span><br><span class="line"></span><br><span class="line">ConsumerRecord(topic = myTopic, partition = 0, leaderEpoch = 0, offset = 4, CreateTime = 1635125753302, serialized key size = -1, serialized value size = 1, headers = RecordHeaders(headers = [], isReadOnly = false), key = null, value = 3)</span><br><span class="line"></span><br><span class="line">ConsumerRecord(topic = myTopic, partition = 0, leaderEpoch = 0, offset = 5, CreateTime = 1635125754303, serialized key size = -1, serialized value size = 1, headers = RecordHeaders(headers = [], isReadOnly = false), key = null, value = 4)</span><br><span class="line"></span><br><span class="line">ConsumerRecord(topic = myTopic, partition = 0, leaderEpoch = 0, offset = 6, CreateTime = 1635125755300, serialize</span><br></pre></td></tr></table></figure>
+
+
+
+<p>可以看到消息的各种属性，如主题、分区、偏移量、时间戳、键、值等等。</p>
+<h1 id="Kafka-Eagle"><a href="#Kafka-Eagle" class="headerlink" title="Kafka-Eagle"></a>Kafka-Eagle</h1><p>必须配置好</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ln -s &quot;xxx&quot; /usr/local/jdk8</span><br><span class="line">export JAVA_HOME=/usr/local/jdk8</span><br><span class="line">export KE_HOME=/usr/local/kafka-eagle-bin-3.0.0/efak-web-3.0.0</span><br></pre></td></tr></table></figure>
+
+
+
+<p>修改<code>system-config.properties</code></p>
+<p>主要修改了<code>efak.zk.cluster.alias=cluster1 cluster1.zk.list=127.0.0.1:2181</code> 还有<code>kafka mysql jdbc driver address</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line">######################################</span><br><span class="line"># multi zookeeper &amp; kafka cluster list</span><br><span class="line"># Settings prefixed with &#x27;kafka.eagle.&#x27; will be deprecated, use &#x27;efak.&#x27; instead</span><br><span class="line">######################################</span><br><span class="line">#efak.zk.cluster.alias=cluster1,cluster2</span><br><span class="line">#cluster1.zk.list=tdn1:2181,tdn2:2181,tdn3:2181</span><br><span class="line">#cluster2.zk.list=xdn10:2181,xdn11:2181,xdn12:2181</span><br><span class="line"></span><br><span class="line">efak.zk.cluster.alias=cluster1</span><br><span class="line">cluster1.zk.list=127.0.0.1:2181</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># zookeeper enable acl</span><br><span class="line">######################################</span><br><span class="line">cluster1.zk.acl.enable=false</span><br><span class="line">cluster1.zk.acl.schema=digest</span><br><span class="line">cluster1.zk.acl.username=test</span><br><span class="line">cluster1.zk.acl.password=test123</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># broker size online list</span><br><span class="line">######################################</span><br><span class="line">cluster1.efak.broker.size=20</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># zk client thread limit</span><br><span class="line">######################################</span><br><span class="line">kafka.zk.limit.size=16</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># EFAK webui port</span><br><span class="line">######################################</span><br><span class="line">efak.webui.port=8048</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># EFAK enable distributed</span><br><span class="line">######################################</span><br><span class="line">efak.distributed.enable=false</span><br><span class="line">efak.cluster.mode.status=master</span><br><span class="line">efak.worknode.master.host=localhost</span><br><span class="line">efak.worknode.port=8085</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># kafka jmx acl and ssl authenticate</span><br><span class="line">######################################</span><br><span class="line">cluster1.efak.jmx.acl=false</span><br><span class="line">cluster1.efak.jmx.user=keadmin</span><br><span class="line">cluster1.efak.jmx.password=keadmin123</span><br><span class="line">cluster1.efak.jmx.ssl=false</span><br><span class="line">cluster1.efak.jmx.truststore.location=/data/ssl/certificates/kafka.truststore</span><br><span class="line">cluster1.efak.jmx.truststore.password=ke123456</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># kafka offset storage</span><br><span class="line">######################################</span><br><span class="line">cluster1.efak.offset.storage=kafka</span><br><span class="line">cluster2.efak.offset.storage=zk</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># kafka jmx uri</span><br><span class="line">######################################</span><br><span class="line">cluster1.efak.jmx.uri=service:jmx:rmi:///jndi/rmi://%s/jmxrmi</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># kafka metrics, 15 days by default</span><br><span class="line">######################################</span><br><span class="line">efak.metrics.charts=true</span><br><span class="line">efak.metrics.retain=15</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># kafka sql topic records max</span><br><span class="line">######################################</span><br><span class="line">efak.sql.topic.records.max=5000</span><br><span class="line">efak.sql.topic.preview.records.max=10</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># delete kafka topic token</span><br><span class="line">######################################</span><br><span class="line">efak.topic.token=keadmin</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># kafka sasl authenticate</span><br><span class="line">######################################</span><br><span class="line">cluster1.efak.sasl.enable=false</span><br><span class="line">cluster1.efak.sasl.protocol=SASL_PLAINTEXT</span><br><span class="line">cluster1.efak.sasl.mechanism=SCRAM-SHA-256</span><br><span class="line">cluster1.efak.sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username=&quot;kafka&quot; password=&quot;kafka-eagle&quot;;</span><br><span class="line">cluster1.efak.sasl.client.id=</span><br><span class="line">cluster1.efak.blacklist.topics=</span><br><span class="line">cluster1.efak.sasl.cgroup.enable=false</span><br><span class="line">cluster1.efak.sasl.cgroup.topics=</span><br><span class="line">cluster2.efak.sasl.enable=false</span><br><span class="line">cluster2.efak.sasl.protocol=SASL_PLAINTEXT</span><br><span class="line">cluster2.efak.sasl.mechanism=PLAIN</span><br><span class="line">cluster2.efak.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username=&quot;kafka&quot; password=&quot;kafka-eagle&quot;;</span><br><span class="line">cluster2.efak.sasl.client.id=</span><br><span class="line">cluster2.efak.blacklist.topics=</span><br><span class="line">cluster2.efak.sasl.cgroup.enable=false</span><br><span class="line">cluster2.efak.sasl.cgroup.topics=</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># kafka ssl authenticate</span><br><span class="line">######################################</span><br><span class="line">cluster3.efak.ssl.enable=false</span><br><span class="line">cluster3.efak.ssl.protocol=SSL</span><br><span class="line">cluster3.efak.ssl.truststore.location=</span><br><span class="line">cluster3.efak.ssl.truststore.password=</span><br><span class="line">cluster3.efak.ssl.keystore.location=</span><br><span class="line">cluster3.efak.ssl.keystore.password=</span><br><span class="line">cluster3.efak.ssl.key.password=</span><br><span class="line">cluster3.efak.ssl.endpoint.identification.algorithm=https</span><br><span class="line">cluster3.efak.blacklist.topics=</span><br><span class="line">cluster3.efak.ssl.cgroup.enable=false</span><br><span class="line">cluster3.efak.ssl.cgroup.topics=</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># kafka sqlite jdbc driver address</span><br><span class="line">######################################</span><br><span class="line">#efak.driver=org.sqlite.JDBC</span><br><span class="line">#efak.url=jdbc:sqlite:/hadoop/kafka-eagle/db/ke.db</span><br><span class="line">#efak.username=root</span><br><span class="line">#efak.password=www.kafka-eagle.org</span><br><span class="line"></span><br><span class="line">######################################</span><br><span class="line"># kafka mysql jdbc driver address</span><br><span class="line">######################################</span><br><span class="line">efak.driver=com.mysql.cj.jdbc.Driver</span><br><span class="line">efak.url=jdbc:mysql://127.0.0.1:3306/ke?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</span><br><span class="line">efak.username=root</span><br><span class="line">efak.password=root</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $KE_HOME</span><br><span class="line">bin/ke.sh start</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Welcome to</span><br><span class="line">    ______    ______    ___     __ __</span><br><span class="line">   / ____/   / ____/   /   |   / //_/</span><br><span class="line">  / __/     / /_      / /| |  / ,&lt;</span><br><span class="line"> / /___    / __/     / ___ | / /| |</span><br><span class="line">/_____/   /_/       /_/  |_|/_/ |_|</span><br><span class="line">( Eagle For Apache Kafka® )</span><br><span class="line"></span><br><span class="line">Version v3.0.0 -- Copyright 2016-2022</span><br><span class="line">*******************************************************************</span><br><span class="line">* EFAK Service has started success.</span><br><span class="line">* Welcome, Now you can visit &#x27;http://192.168.0.100:8048&#x27;</span><br><span class="line">* Account:admin ,Password:123456</span><br><span class="line">*******************************************************************</span><br><span class="line">* &lt;Usage&gt; ke.sh [start|status|stop|restart|stats] &lt;/Usage&gt;</span><br><span class="line">* &lt;Usage&gt; https://www.kafka-eagle.org/ &lt;/Usage&gt;</span><br><span class="line">*******************************************************************</span><br></pre></td></tr></table></figure>
+
+
+
+<p>介绍 <a target="_blank" rel="noopener" href="https://juejin.cn/post/6971224791793532941">https://juejin.cn/post/6971224791793532941</a></p>
+<p>官网 <a target="_blank" rel="noopener" href="http://www.kafka-eagle.org/">http://www.kafka-eagle.org/</a></p>
+<p>下载 <a target="_blank" rel="noopener" href="https://github.com/smartloli/kafka-eagle-bin/tags">https://github.com/smartloli/kafka-eagle-bin/tags</a></p>
+<p>安装 <a target="_blank" rel="noopener" href="http://www.kafka-eagle.org/articles/docs/installation/linux-macos.html">http://www.kafka-eagle.org/articles/docs/installation/linux-macos.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Message-Queue/" rel="tag"># Message Queue</a>
+              <a href="/tags/Kafka/" rel="tag"># Kafka</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/19/Hadoop%E5%85%A5%E9%97%A8/" rel="prev" title="Hadoop入门">
+                  <i class="fa fa-chevron-left"></i> Hadoop入门
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/23/Elasticsearch%E5%85%A5%E9%97%A8/" rel="next" title="Elasticsearch入门">
+                  Elasticsearch入门 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

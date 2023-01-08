@@ -1,37 +1,351 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="SP1 某云ES倒排索引https:&#x2F;&#x2F;www.nowcoder.com&#x2F;practice&#x2F;7ba676741a3c4920b7846476be520779?tpId&#x3D;332&amp;tags&#x3D;&amp;title&#x3D;&amp;difficulty&#x3D;0&amp;judgeStatus&#x3D;0&amp;rp&#x3D;0&amp;sourceUrl&#x3D;%2Fexam%2Foj%3Fpage%3D1%26tab%3D%">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试场景算法">
+<meta property="og:url" content="http://example.com/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="SP1 某云ES倒排索引https:&#x2F;&#x2F;www.nowcoder.com&#x2F;practice&#x2F;7ba676741a3c4920b7846476be520779?tpId&#x3D;332&amp;tags&#x3D;&amp;title&#x3D;&amp;difficulty&#x3D;0&amp;judgeStatus&#x3D;0&amp;rp&#x3D;0&amp;sourceUrl&#x3D;%2Fexam%2Foj%3Fpage%3D1%26tab%3D%">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-12T02:47:21.000Z">
+<meta property="article:modified_time" content="2023-01-08T16:18:03.195Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/","path":"2022/08/12/面试场景算法题/","title":"面试场景算法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>面试场景算法 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SP1-%E6%9F%90%E4%BA%91ES%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95"><span class="nav-number">1.</span> <span class="nav-text">SP1 某云ES倒排索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SP4-%E6%9F%90%E9%9F%B3%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C"><span class="nav-number">2.</span> <span class="nav-text">SP4 某音一致性哈希</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="面试场景算法 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面试场景算法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-12 10:47:21" itemprop="dateCreated datePublished" datetime="2022-08-12T10:47:21+08:00">2022-08-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-09 00:18:03" itemprop="dateModified" datetime="2023-01-09T00:18:03+08:00">2023-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">工程向算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="SP1-某云ES倒排索引"><a href="#SP1-某云ES倒排索引" class="headerlink" title="SP1 某云ES倒排索引"></a>SP1 某云ES倒排索引</h2><p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/7ba676741a3c4920b7846476be520779?tpId=332&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=/exam/oj?page=1&tab=%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587&topicId=332">https://www.nowcoder.com/practice/7ba676741a3c4920b7846476be520779?tpId=332&amp;tags=&amp;title=&amp;difficulty=0&amp;judgeStatus=0&amp;rp=0&amp;sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D332</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ID      int整型ArrayList</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> content string字符串ArrayList</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> word    string字符串</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> int整型ArrayList</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title function_">invertedIndex</span><span class="params">(ArrayList&lt;Integer&gt; ID, ArrayList&lt;String&gt; content, String word)</span> &#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        HashMap&lt;String, LinkedHashSet&lt;Integer&gt;&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; ID.size(); i++) &#123;</span><br><span class="line">            String[] split = content.get(i).split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">            <span class="keyword">for</span> (String s : split) &#123;</span><br><span class="line">                LinkedHashSet&lt;Integer&gt; linkedHashSet = map.getOrDefault(s, <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;());</span><br><span class="line">                linkedHashSet.add(ID.get(i));</span><br><span class="line">                map.put(s, linkedHashSet);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(map.getOrDefault(word, <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/zh/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95">倒排索引wiki</a></p>
+<h2 id="SP4-某音一致性哈希"><a href="#SP4-某音一致性哈希" class="headerlink" title="SP4 某音一致性哈希"></a><strong>SP4</strong> <strong>某音一致性哈希</strong></h2><p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/a93bd04c71d445c090565da14990a421?tpId=332&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=/exam/oj?page=1&tab=%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587&topicId=332">https://www.nowcoder.com/practice/a93bd04c71d445c090565da14990a421?tpId=332&amp;tags=&amp;title=&amp;difficulty=0&amp;judgeStatus=0&amp;rp=0&amp;sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D332</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConsistentHashing</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">static</span> <span class="keyword">class</span> <span class="title class_">Section</span> &#123;</span><br><span class="line">        <span class="type">int</span> id;</span><br><span class="line">        <span class="type">int</span> l, r;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Section</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.l = l;</span><br><span class="line">            <span class="keyword">this</span>.r = r;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Section</span><span class="params">(<span class="type">int</span> id, <span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.id = id;</span><br><span class="line">            <span class="keyword">this</span>.l = l;</span><br><span class="line">            <span class="keyword">this</span>.r = r;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @<span class="function">Override</span></span><br><span class="line"><span class="function">        <span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;&#123;&quot;</span> +</span><br><span class="line">                    <span class="string">&quot;id=&quot;</span> + id +</span><br><span class="line">                    <span class="string">&quot;, l=&quot;</span> + l +</span><br><span class="line">                    <span class="string">&quot;, r=&quot;</span> + r +</span><br><span class="line">                    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> machineId = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="type">int</span> <span class="title">nextMachineId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> machineId++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    PriorityQueue&lt;Section&gt; sectionLengthPQ;</span><br><span class="line">    TreeSet&lt;Section&gt; lSet;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> capacity;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConsistentHashing</span><span class="params">(<span class="type">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.capacity = capacity;</span><br><span class="line">        <span class="built_in">init</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        sectionLengthPQ = <span class="keyword">new</span> PriorityQueue&lt;&gt;(<span class="keyword">new</span> <span class="built_in">Comparator</span>&lt;Section&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="type">int</span> <span class="built_in">compare</span>(Section o1, Section o2) &#123;</span><br><span class="line">                <span class="type">int</span> cmp = (o2.r - o2.l) - (o1.r - o1.l);</span><br><span class="line">                <span class="keyword">if</span> (cmp != <span class="number">0</span>) <span class="keyword">return</span> cmp;</span><br><span class="line">                <span class="keyword">return</span> o1.id - o2.id;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        lSet = <span class="keyword">new</span> TreeSet&lt;&gt;(Comparator.<span class="built_in">comparingInt</span>(o -&gt; o.l));</span><br><span class="line">        Section section = <span class="keyword">new</span> <span class="built_in">Section</span>(<span class="built_in">nextMachineId</span>(), <span class="number">0</span>, <span class="keyword">this</span>.capacity - <span class="number">1</span>);</span><br><span class="line">        sectionLengthPQ.<span class="built_in">offer</span>(section);</span><br><span class="line">        lSet.<span class="built_in">add</span>(section);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">void</span> <span class="title">addNode</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            Section section = sectionLengthPQ.<span class="built_in">poll</span>();</span><br><span class="line">            <span class="type">int</span> oldId = section.id;</span><br><span class="line">            <span class="type">int</span> newId = <span class="built_in">nextMachineId</span>();</span><br><span class="line">            <span class="type">int</span> l = section.l;</span><br><span class="line">            <span class="type">int</span> r = section.r;</span><br><span class="line">            lSet.<span class="built_in">remove</span>(section);</span><br><span class="line">            <span class="type">int</span> l1 = l, r1 = (r - l) / <span class="number">2</span> + l;</span><br><span class="line">            <span class="type">int</span> l2 = r1 + <span class="number">1</span>, r2 = r;</span><br><span class="line">            Section section1 = <span class="keyword">new</span> <span class="built_in">Section</span>(oldId, l1, r1);</span><br><span class="line">            Section section2 = <span class="keyword">new</span> <span class="built_in">Section</span>(newId, l2, r2);</span><br><span class="line">            sectionLengthPQ.<span class="built_in">offer</span>(section1);</span><br><span class="line">            sectionLengthPQ.<span class="built_in">offer</span>(section2);</span><br><span class="line">            lSet.<span class="built_in">add</span>(section1);</span><br><span class="line">            lSet.<span class="built_in">add</span>(section2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">int</span> <span class="title">querySection</span><span class="params">(<span class="type">int</span> ID)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> id = ID % capacity;</span><br><span class="line">        Section section = <span class="keyword">new</span> <span class="built_in">Section</span>(id, id);</span><br><span class="line">        <span class="keyword">return</span> lSet.<span class="built_in">floor</span>(section).id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param n  int整型</span></span><br><span class="line"><span class="comment">     * @param ID int整型</span></span><br><span class="line"><span class="comment">     * @return int整型</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">int</span> <span class="title">consistentHashing</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> ID)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        ConsistentHashing consistentHashing = <span class="keyword">new</span> <span class="built_in">ConsistentHashing</span>(<span class="number">800</span>);</span><br><span class="line">        consistentHashing.<span class="built_in">addNode</span>(n - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> consistentHashing.<span class="built_in">querySection</span>(ID);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">static</span> <span class="type">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Solution solution = <span class="keyword">new</span> <span class="built_in">Solution</span>();</span><br><span class="line">        System.out.<span class="built_in">println</span>(solution.<span class="built_in">consistentHashing</span>(<span class="number">10</span>, <span class="number">999</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%80%E8%87%B4%E5%93%88%E5%B8%8C">一致哈希</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000021199728">https://segmentfault.com/a/1190000021199728</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/378056811">https://zhuanlan.zhihu.com/p/378056811</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/12/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/" rel="prev" title="倒排索引">
+                  <i class="fa fa-chevron-left"></i> 倒排索引
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/" rel="next" title="Redis的热key问题">
+                  Redis的热key问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

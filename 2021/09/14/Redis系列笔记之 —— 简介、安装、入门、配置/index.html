@@ -1,37 +1,442 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="简介Redis是什么 Redis是一个开源的使用ANSI C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API,是一个由Salvatore Sanfilippo写的key-value存储系统。   Redis 即 Remote Dictionary Server （远程字典服务器），是一个以字典结构（key-value形式）存储数据的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis系列笔记之 —— 简介、安装、入门、配置">
+<meta property="og:url" content="http://example.com/2021/09/14/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E5%85%A5%E9%97%A8%E3%80%81%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="简介Redis是什么 Redis是一个开源的使用ANSI C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API,是一个由Salvatore Sanfilippo写的key-value存储系统。   Redis 即 Remote Dictionary Server （远程字典服务器），是一个以字典结构（key-value形式）存储数据的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210118202017633.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20210119134549587.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODQ2MzI0,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2021-09-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-10-04T08:31:37.741Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="NoSQL">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20210118202017633.png">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/09/14/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E5%85%A5%E9%97%A8%E3%80%81%E9%85%8D%E7%BD%AE/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/09/14/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E5%85%A5%E9%97%A8%E3%80%81%E9%85%8D%E7%BD%AE/","path":"2021/09/14/Redis系列笔记之 —— 简介、安装、入门、配置/","title":"Redis系列笔记之 —— 简介、安装、入门、配置"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Redis系列笔记之 —— 简介、安装、入门、配置 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.1.</span> <span class="nav-text">Redis是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%80%A7%E4%B8%8E%E4%BC%98%E5%8A%BF"><span class="nav-number">1.2.</span> <span class="nav-text">特性与优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E8%A7%92%E8%89%B2"><span class="nav-number">1.3.</span> <span class="nav-text">功能角色</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%85%A5%E9%97%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">安装与入门操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8"><span class="nav-number">2.2.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%97%ADRedis"><span class="nav-number">2.3.</span> <span class="nav-text">关闭Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E5%90%AF%E5%8A%A8"><span class="nav-number">2.4.</span> <span class="nav-text">客户端的启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PING%E6%A3%80%E6%B5%8B"><span class="nav-number">2.5.</span> <span class="nav-text">PING检测</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.</span> <span class="nav-text">获取配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="nav-number">3.2.</span> <span class="nav-text">修改配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%A6%E9%85%8D%E7%BD%AE%E5%90%AF%E5%8A%A8"><span class="nav-number">3.3.</span> <span class="nav-text">带配置启动</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/14/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E5%85%A5%E9%97%A8%E3%80%81%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Redis系列笔记之 —— 简介、安装、入门、配置 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis系列笔记之 —— 简介、安装、入门、配置
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-14 00:00:00" itemprop="dateCreated datePublished" datetime="2021-09-14T00:00:00+08:00">2021-09-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-10-04 16:31:37" itemprop="dateModified" datetime="2021-10-04T16:31:37+08:00">2021-10-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="Redis是什么"><a href="#Redis是什么" class="headerlink" title="Redis是什么"></a>Redis是什么</h2><blockquote>
+<p>Redis是一个开源的使用ANSI C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API,是一个由Salvatore Sanfilippo写的key-value存储系统。</p>
+</blockquote>
+<ul>
+<li><strong>Redis</strong> 即 <strong>Remote Dictionary Server</strong> （远程字典服务器），是一个以<strong>字典结构</strong>（<strong>key-value</strong>形式）存储数据的存储系统。</li>
+<li>Redis 由 <strong>C语言</strong>编写而成，<strong>开源</strong>，简单稳定，代码量只有几万行，<strong>单线程</strong>模式工作，但性能强劲。</li>
+</ul>
+<h2 id="特性与优势"><a href="#特性与优势" class="headerlink" title="特性与优势"></a>特性与优势</h2><ul>
+<li>Redis的数据都存储在内存中，<strong>读写速度快</strong>（相对于关系型数据库而言）。</li>
+<li>Redis支持<strong>数据的持久化</strong>，可以将内存中的数据保存在磁盘中(<strong>异步写入</strong>)，重启的时候可以再次加载进行使用。</li>
+<li>Redis 支持<strong>高级数据结构</strong>，如<strong>list，set，zset，hash</strong>（列表、集合、有序集合、散列）等数据结构的存储。</li>
+<li>Redis支持<strong>数据的备份</strong>，即master-slave模式的数据备份。</li>
+<li>Redis的所有操作都是<strong>原子性</strong>的，意思就是要么成功执行要么失败完全不执行。单个操作是原子性的。多个操作也支持<strong>事务</strong>，即原子性，通过MULTI和EXEC指令包起来。</li>
+</ul>
+<h2 id="功能角色"><a href="#功能角色" class="headerlink" title="功能角色"></a>功能角色</h2><ul>
+<li><strong>数据库</strong>,这也是它最开始的用途。</li>
+<li><strong>缓存</strong>，Redis可以为每个键设置生存时间（Time To Live）TTL，这一功能可以让Redis扮演缓存系统的功能。</li>
+<li><strong>高性能的优先队列</strong>，Redis的列表类型键可以用来实现队列，并且支持阻塞式读取。</li>
+</ul>
+<h1 id="安装与入门操作"><a href="#安装与入门操作" class="headerlink" title="安装与入门操作"></a>安装与入门操作</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>MacOS中安装Redis很简单，使用包管理工具如HomeBrew即可，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install redis</span><br></pre></td></tr></table></figure>
+
+<p>在<code>/usr/local/bin</code>下,我们可以看到这么几个可执行文件：</p>
+<ul>
+<li>redis-server <strong>Redis服务器</strong></li>
+<li>redis-cli       <strong>Redis命令行客户端</strong></li>
+<li>redis-benchmark	<strong>Redis性能测试工具</strong></li>
+<li>redis-check-aof    <strong>AOF文件修复文件</strong></li>
+<li>redis-check-rdb	<strong>RDB文件检查文件</strong></li>
+<li>redis-sentinel       <strong>Sentinel服务器</strong></li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20210118202017633.png" alt="在这里插入图片描述"></p>
+<p>最常用的是 redis-server 和 redis-cli<br>其中</p>
+<ul>
+<li>redis-server是Redis的服务器，启动Redis也就是启动redis-server;</li>
+<li>redis-cli是Redis<strong>自带的命令行客户端</strong>。</li>
+</ul>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server</span><br></pre></td></tr></table></figure>
+<p>默认是 6379端口。<br>会出现如下提示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">51490:C 18 Jan 2021 20:25:26.344 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo</span><br><span class="line">51490:C 18 Jan 2021 20:25:26.345 # Redis version=6.0.9, bits=64, commit=00000000, modified=0, pid=51490, just started</span><br><span class="line">51490:C 18 Jan 2021 20:25:26.345 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.346 * Increased maximum number of open files to 10032 (it was originally set to 256).</span><br><span class="line">                _._                                                  </span><br><span class="line">           _.-``__ &#x27;&#x27;-._                                             </span><br><span class="line">      _.-``    `.  `_.  &#x27;&#x27;-._           Redis 6.0.9 (00000000/0) 64 bit</span><br><span class="line">  .-`` .-```.  ```\/    _.,_ &#x27;&#x27;-._                                   </span><br><span class="line"> (    &#x27;      ,       .-`  | `,    )     Running in standalone mode</span><br><span class="line"> |`-._`-...-` __...-.``-._|&#x27;` _.-&#x27;|     Port: 6379</span><br><span class="line"> |    `-._   `._    /     _.-&#x27;    |     PID: 51490</span><br><span class="line">  `-._    `-._  `-./  _.-&#x27;    _.-&#x27;                                   </span><br><span class="line"> |`-._`-._    `-.__.-&#x27;    _.-&#x27;_.-&#x27;|                                  </span><br><span class="line"> |    `-._`-._        _.-&#x27;_.-&#x27;    |           http://redis.io        </span><br><span class="line">  `-._    `-._`-.__.-&#x27;_.-&#x27;    _.-&#x27;                                   </span><br><span class="line"> |`-._`-._    `-.__.-&#x27;    _.-&#x27;_.-&#x27;|                                  </span><br><span class="line"> |    `-._`-._        _.-&#x27;_.-&#x27;    |                                  </span><br><span class="line">  `-._    `-._`-.__.-&#x27;_.-&#x27;    _.-&#x27;                                   </span><br><span class="line">      `-._    `-.__.-&#x27;    _.-&#x27;                                       </span><br><span class="line">          `-._        _.-&#x27;                                           </span><br><span class="line">              `-.__.-&#x27;                                               </span><br><span class="line"></span><br><span class="line">51490:M 18 Jan 2021 20:25:26.351 # Server initialized</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.353 * Loading RDB produced by version 6.0.9</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.353 * RDB age 623843 seconds</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.353 * RDB memory usage when created 1.02 Mb</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.353 * DB loaded from disk: 0.002 seconds</span><br><span class="line">51490:M 18 Jan 2021 20:25:26.353 * Ready to accept connections</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server- --port 8888</span><br></pre></td></tr></table></figure>
+<p>通过–port自定义端口号。</p>
+<h2 id="关闭Redis"><a href="#关闭Redis" class="headerlink" title="关闭Redis"></a>关闭Redis</h2><ol>
+<li><p>关闭服务器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli SHUTDOWN</span><br></pre></td></tr></table></figure>
+<p>因为Redis此时可能正在将内存中的数据同步到硬盘，所以强行终止Redis进程可能导致数据丢失，所以应该让客户端请求关闭Redis。<br>当Redis收到 <code>SHUTDOWN</code>(小写的也是可以的)之后，</p>
+</li>
+<li><p>先<strong>断开所有客户端连接</strong>。</p>
+</li>
+<li><p>根据配置执行<strong>持久化</strong>。</p>
+</li>
+<li><p>完成<strong>退出</strong>。</p>
+</li>
+</ol>
+<p>在会看到如下提示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">51578:M 18 Jan 2021 20:32:13.180 # User requested shutdown...</span><br><span class="line">51578:M 18 Jan 2021 20:32:13.180 * Saving the final RDB snapshot before exiting.</span><br><span class="line">51578:M 18 Jan 2021 20:32:13.182 * DB saved on disk</span><br><span class="line">51578:M 18 Jan 2021 20:32:13.182 # Redis is now ready to exit, bye bye...</span><br></pre></td></tr></table></figure>
+
+
+<ol start="2">
+<li>退出客户端<br>使用<code>quit</code>即可</li>
+</ol>
+<h2 id="客户端的启动"><a href="#客户端的启动" class="headerlink" title="客户端的启动"></a>客户端的启动</h2><p>通过redis-cli向Redis发送命令有两种方式</p>
+<ol>
+<li><p>将命令作为<code>redis-cli</code>的参数，比如上面的将SHUTDOWN作为参数。</p>
+</li>
+<li><p>不带参数的启动<code>redis-cli</code>，进入交互模式，自由输入命令，在输入多条命令时方便。</p>
+</li>
+</ol>
+<p>-h、-p自定义地址和端口号。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h 127.0.0.1 -p 6379</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>在远程服务上执行命令</strong><br>用密码password连接主机名为host，端口号为port的<strong>Redis</strong>服务<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h host -p port -a password</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="PING检测"><a href="#PING检测" class="headerlink" title="PING检测"></a>PING检测</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; PING</span><br><span class="line">PONG</span><br></pre></td></tr></table></figure>
+<p>PING 命令，该命令用于检测 redis 服务是否启动。</p>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>Redis 的配置文件位于 Redis 安装目录下，文件名为 redis.conf。<br><img src="https://img-blog.csdnimg.cn/20210119134549587.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODQ2MzI0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="获取配置"><a href="#获取配置" class="headerlink" title="获取配置"></a>获取配置</h2><ul>
+<li><strong>获取所有配置</strong><br>在进入redis客户端的交互模式后，输入:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG GET *</span><br></pre></td></tr></table></figure>
+即可获取所有配置。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">1) &quot;rdbchecksum&quot;</span><br><span class="line">2) &quot;yes&quot;</span><br><span class="line">3) &quot;daemonize&quot;</span><br><span class="line">4) &quot;no&quot;</span><br><span class="line">5) &quot;io-threads-do-reads&quot;</span><br><span class="line">6) &quot;no&quot;</span><br><span class="line">7) &quot;lua-replicate-commands&quot;</span><br><span class="line">8) &quot;yes&quot;</span><br><span class="line">9) &quot;always-show-logo&quot;</span><br><span class="line">10) &quot;no&quot;</span><br><span class="line">11) &quot;protected-mode&quot;</span><br><span class="line">………………</span><br><span class="line">291) &quot;slaveof&quot;</span><br><span class="line">292) &quot;&quot;</span><br><span class="line">293) &quot;notify-keyspace-events&quot;</span><br><span class="line">294) &quot;&quot;</span><br><span class="line">295) &quot;bind&quot;</span><br><span class="line">296) &quot;&quot;</span><br><span class="line">297) &quot;requirepass&quot;</span><br><span class="line">298) &quot;&quot;</span><br><span class="line">299) &quot;oom-score-adj-values&quot;</span><br><span class="line">300) &quot;0 200 800&quot;</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li><strong>获取单个配置信息：</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; config get loglevel</span><br><span class="line">1) &quot;loglevel&quot;</span><br><span class="line">2) &quot;notice&quot;</span><br></pre></td></tr></table></figure>
+第一行是选项名，第二行是选项值。</li>
+</ul>
+<h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG SET config_setting_name new_config_value</span><br></pre></td></tr></table></figure>
+
+<p>如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; config set loglevel warning</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; config get loglevel</span><br><span class="line">1) &quot;loglevel&quot;</span><br><span class="line">2) &quot;warning&quot;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="带配置启动"><a href="#带配置启动" class="headerlink" title="带配置启动"></a>带配置启动</h2><p>如果我们要修改的参数过多，可以直接修改配置文件（备份一开始的），然后带着配置文件启动。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NoSQL/" rel="tag"># NoSQL</a>
+              <a href="/tags/Redis/" rel="tag"># Redis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/07/12306/" rel="prev" title="12306究竟难在哪里">
+                  <i class="fa fa-chevron-left"></i> 12306究竟难在哪里
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/15/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E9%94%AE%E3%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E6%95%A3%E5%88%97%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E9%9B%86%E5%90%88%E3%80%81%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88%E3%80%81HyperLogLog%E7%9A%84%E6%80%A7%E8%B4%A8%E5%8F%8A%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4/" rel="next" title="Redis系列笔记之 —— 键、字符串、散列、列表、集合、有序集合、HyperLogLog的性质及操作命令">
+                  Redis系列笔记之 —— 键、字符串、散列、列表、集合、有序集合、HyperLogLog的性质及操作命令 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

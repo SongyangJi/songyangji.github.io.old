@@ -1,37 +1,425 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Maven依赖1234567891011121314151617&lt;dependency&gt;    &lt;groupId&gt;org.springframework.kafka&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;spring-kafka&lt;&#x2F;artifactId&gt;&lt;&#x2F;dependency&gt;&lt;!-- kafka 流处理相">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot整合Kafka收发消息">
+<meta property="og:url" content="http://example.com/2021/10/25/SpringBoot%E6%95%B4%E5%90%88Kafka/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="Maven依赖1234567891011121314151617&lt;dependency&gt;    &lt;groupId&gt;org.springframework.kafka&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;spring-kafka&lt;&#x2F;artifactId&gt;&lt;&#x2F;dependency&gt;&lt;!-- kafka 流处理相">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-25T01:58:57.000Z">
+<meta property="article:modified_time" content="2023-01-08T19:12:19.281Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Message Queue">
+<meta property="article:tag" content="Kafka">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/10/25/SpringBoot%E6%95%B4%E5%90%88Kafka/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/10/25/SpringBoot%E6%95%B4%E5%90%88Kafka/","path":"2021/10/25/SpringBoot整合Kafka/","title":"SpringBoot整合Kafka收发消息"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SpringBoot整合Kafka收发消息 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Maven%E4%BE%9D%E8%B5%96"><span class="nav-number">1.</span> <span class="nav-text">Maven依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">配置主题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF"><span class="nav-number">3.</span> <span class="nav-text">发送消息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8KafkaTemplate"><span class="nav-number">3.1.</span> <span class="nav-text">使用KafkaTemplate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">发送模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fire-and-forget%EF%BC%88%E5%8F%91%E5%AE%8C%E5%8D%B3%E5%BF%98%EF%BC%89"><span class="nav-number">3.2.1.</span> <span class="nav-text">fire-and-forget（发完即忘）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E"><span class="nav-number">3.2.2.</span> <span class="nav-text">阻塞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E9%98%BB%E5%A1%9E"><span class="nav-number">3.2.3.</span> <span class="nav-text">非阻塞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8ReplyingKafkaTemplate"><span class="nav-number">3.2.4.</span> <span class="nav-text">使用ReplyingKafkaTemplate</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%97%E6%B6%88%E6%81%AF"><span class="nav-number">3.3.</span> <span class="nav-text">接受消息</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/25/SpringBoot%E6%95%B4%E5%90%88Kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SpringBoot整合Kafka收发消息 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringBoot整合Kafka收发消息
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 09:58:57" itemprop="dateCreated datePublished" datetime="2021-10-25T09:58:57+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-09 03:12:19" itemprop="dateModified" datetime="2023-01-09T03:12:19+08:00">2023-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Maven依赖"><a href="#Maven依赖" class="headerlink" title="Maven依赖"></a>Maven依赖</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.kafka<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-kafka<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- kafka 流处理相关 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.kafka<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>kafka-streams<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 本地嵌入式kafka，测试用，可无需依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.kafka<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-kafka-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h1><p>使用SpringBoot,  一个默认配置的 KafkaAdmin 会被注入，可以直接使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> KafkaAdmin <span class="title function_">admin</span><span class="params">()</span> &#123;</span><br><span class="line">    Map&lt;String, Object&gt; configs = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    <span class="comment">// configs.put(AdminClientConfig.BOOTSTRAPx_SERVERS_CONFIG, ...); </span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">KafkaAdmin</span>(configs);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>使用<code>TopicBuilder</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> NewTopic <span class="title function_">topic1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> TopicBuilder.name(<span class="string">&quot;topic1&quot;</span>)  <span class="comment">// 主题名</span></span><br><span class="line">            .partitions(<span class="number">10</span>) <span class="comment">// 分区数</span></span><br><span class="line">            .replicas(<span class="number">3</span>)    <span class="comment">// 备份数</span></span><br><span class="line">            .compact()</span><br><span class="line">            .build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h1><h2 id="使用KafkaTemplate"><a href="#使用KafkaTemplate" class="headerlink" title="使用KafkaTemplate"></a>使用KafkaTemplate</h2><p>使用<code>KafkaTemplate</code>来发送消息, API</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 需要设置默认的主题： public void setDefaultTopic(String defaultTopic)</span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">sendDefault</span><span class="params">(V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">sendDefault</span><span class="params">(K key, V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">sendDefault</span><span class="params">(Integer partition, K key, V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">sendDefault</span><span class="params">(Integer partition, Long timestamp, K key, V data)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.必须指定主题、值（数据）</span></span><br><span class="line"><span class="comment">// 可以指定分区、键、时间戳</span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(String topic, V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(String topic, K key, V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(String topic, Integer partition, K key, V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(String topic, Integer partition, Long timestamp, K key, V data)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3.使用 kafka-clients 提供的 ProducerRecord </span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(ProducerRecord&lt;K, V&gt; record)</span>;</span><br><span class="line"><span class="comment">// 4.使用 spring 封装提供的 message</span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(Message&lt;?&gt; message)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>返回值值得注意,<code>ListenableFuture</code>是spring提供的拓展了juc下<code>Future</code>接口的增加了添加了回调功能增强版Future。</p>
+<h2 id="发送模式"><a href="#发送模式" class="headerlink" title="发送模式"></a>发送模式</h2><h3 id="fire-and-forget（发完即忘）"><a href="#fire-and-forget（发完即忘）" class="headerlink" title="fire-and-forget（发完即忘）"></a>fire-and-forget（发完即忘）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafkaTemplate.send(...)</span><br></pre></td></tr></table></figure>
+
+<p>也就是发完之后完全不做任何处理，发送失败也无所谓，比如传送一些日志的时候。</p>
+<h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>因为返回的是 <code>ListenableFuture</code>，所以可以阻塞式的等待结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一直阻塞</span></span><br><span class="line">kafkaTemplate.send().get();</span><br><span class="line"><span class="comment">// 等待固定时间</span></span><br><span class="line">kafkaTemplate.send().get(<span class="number">10</span>, TimeUnit.SECONDS);</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendToKafka</span><span class="params">(<span class="keyword">final</span> MyOutputData data)</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> ProducerRecord&lt;String, String&gt; record = createRecord(data);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        template.send(record).get(<span class="number">10</span>, TimeUnit.SECONDS);</span><br><span class="line">        handleSuccess(data);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">        handleFailure(data, record, e.getCause());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (TimeoutException | InterruptedException e) &#123;</span><br><span class="line">        handleFailure(data, record, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="非阻塞"><a href="#非阻塞" class="headerlink" title="非阻塞"></a>非阻塞</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendToKafka</span><span class="params">(<span class="keyword">final</span> MyOutputData data)</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> ProducerRecord&lt;String, String&gt; record = createRecord(data);</span><br><span class="line"></span><br><span class="line">    ListenableFuture&lt;SendResult&lt;Integer, String&gt;&gt; future = template.send(record);</span><br><span class="line">    <span class="comment">// 添加处理回调</span></span><br><span class="line">    future.addCallback(<span class="keyword">new</span> <span class="title class_">KafkaSendCallback</span>&lt;SendResult&lt;Integer, String&gt;&gt;() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(SendResult&lt;Integer, String&gt; result)</span> &#123;</span><br><span class="line">            handleSuccess(data);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(KafkaProducerException ex)</span> &#123;</span><br><span class="line">            handleFailure(data, record, ex);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>当然，还有种粗粒度的添加回调，在kafkaTemplate上添加回调：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// LoggingProducerListener，它会记录错误并且在发送成功时不执行任何操作。</span></span><br><span class="line">kafkaTemplate.setProducerListener(<span class="keyword">new</span> <span class="title class_">LoggingProducerListener</span>&lt;&gt;());</span><br><span class="line">kafkaTemplate.setProducerListener(<span class="keyword">new</span> <span class="title class_">ProducerListener</span>&lt;String, String&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(ProducerRecord&lt;String, String&gt; producerRecord, RecordMetadata recordMetadata)</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(ProducerRecord&lt;String, String&gt; producerRecord, RecordMetadata recordMetadata, Exception exception)</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="使用ReplyingKafkaTemplate"><a href="#使用ReplyingKafkaTemplate" class="headerlink" title="使用ReplyingKafkaTemplate"></a>使用ReplyingKafkaTemplate</h3><p>不过需要注意，这个<code>ReplyingKafkaTemplate</code>SpringBoot并没有注入，需要自行构造。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> ReplyingKafkaTemplate&lt;String, String, String&gt; <span class="title function_">replyingTemplate</span><span class="params">(</span></span><br><span class="line"><span class="params">        ProducerFactory&lt;String, String&gt; pf,</span></span><br><span class="line"><span class="params">        ConcurrentMessageListenerContainer&lt;String, String&gt; repliesContainer)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ReplyingKafkaTemplate</span>&lt;&gt;(pf, repliesContainer);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> ConcurrentMessageListenerContainer&lt;String, String&gt; <span class="title function_">repliesContainer</span><span class="params">(</span></span><br><span class="line"><span class="params">        ConcurrentKafkaListenerContainerFactory&lt;String, String&gt; containerFactory)</span> &#123;</span><br><span class="line"></span><br><span class="line">    ConcurrentMessageListenerContainer&lt;String, String&gt; repliesContainer =</span><br><span class="line">            containerFactory.createContainer(<span class="string">&quot;replies&quot;</span>);</span><br><span class="line">    repliesContainer.getContainerProperties().setGroupId(<span class="string">&quot;repliesGroup&quot;</span>);</span><br><span class="line">    repliesContainer.setAutoStartup(<span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">return</span> repliesContainer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>API</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RequestReplyFuture&lt;K, V, R&gt; <span class="title function_">sendAndReceive</span><span class="params">(ProducerRecord&lt;K, V&gt; record)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// replyTimeout为等待回复的超时时间</span></span><br><span class="line">RequestReplyFuture&lt;K, V, R&gt; <span class="title function_">sendAndReceive</span><span class="params">(ProducerRecord&lt;K, V&gt; record,</span></span><br><span class="line"><span class="params">    Duration replyTimeout)</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如何使用这个返回值<code>RequestReplyFuture</code>呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RequestReplyFuture&lt;String, String, String&gt; replyFuture = template.sendAndReceive(record);</span><br><span class="line"><span class="comment">// 发送结果</span></span><br><span class="line">SendResult&lt;String, String&gt; sendResult = replyFuture.getSendFuture().get();</span><br><span class="line">System.out.println(<span class="string">&quot;Sent ok: &quot;</span> + sendResult.getRecordMetadata());</span><br><span class="line"><span class="comment">// 返回的结果</span></span><br><span class="line">ConsumerRecord&lt;String, String&gt; consumerRecord = replyFuture.get();</span><br><span class="line">System.out.println(<span class="string">&quot;Return value: &quot;</span> + consumerRecord.value()); <span class="comment">// 返回值</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="接受消息"><a href="#接受消息" class="headerlink" title="接受消息"></a>接受消息</h2><p>大的方向有两种接受消息的方式,一个low-level一点，一个high-level一点。</p>
+<ol>
+<li>配置<code>MessageListenerContainer</code>并提供<code>MessageListener</code>。</li>
+<li>使用<code>@KafkaListener</code>。</li>
+</ol>
+<p>其中第二种方法类似于其他MQ的监听器，如<code>@RabbitListener</code>,使用简单方便。</p>
+<p>第一种方法相当于SpringBoot提供了一个消息监听器的容器，这个容器负责<code>kafkaConsumer.poll</code>调用，</p>
+<p>以及MessageListener的方法调用，主要的动能就是让用户无需关注多线程并发代码的编写，着力于消息的消费与处理。</p>
+<p>值得注意的是，即使你没有直接使用第一种方法，<code>@KafkaListener</code>所注解的类也被封装成<code>MessagingMessageListenerAdapter</code>然后由<code>MessageListenerContainer</code>调度。</p>
+<p>下面主要介绍@KafkaListener的使用。</p>
+<blockquote>
+<p>只列出最常用的属性</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> KafkaListener &#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 订阅的主题</span></span><br><span class="line">	String[] topics() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 用于匹配主题的pattern</span></span><br><span class="line">	String <span class="title function_">topicPattern</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 主题分区</span></span><br><span class="line">	TopicPartition[] topicPartitions() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">	String <span class="title function_">errorHandler</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 消费组id</span></span><br><span class="line">	String <span class="title function_">groupId</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 线程数</span></span><br><span class="line">	String <span class="title function_">concurrency</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  </span><br><span class="line">  String[] properties() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> TopicPartition &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	String <span class="title function_">topic</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">	String[] partitions() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	PartitionOffset[] partitionOffsets() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> PartitionOffset &#123;</span><br><span class="line"></span><br><span class="line">	String <span class="title function_">partition</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	String <span class="title function_">initialOffset</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	String <span class="title function_">relativeToCurrent</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;false&quot;</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Message-Queue/" rel="tag"># Message Queue</a>
+              <a href="/tags/Kafka/" rel="tag"># Kafka</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/23/Elasticsearch%E5%85%A5%E9%97%A8/" rel="prev" title="Elasticsearch入门">
+                  <i class="fa fa-chevron-left"></i> Elasticsearch入门
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/" rel="next" title="MySQL系列——索引">
+                  MySQL系列——索引 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

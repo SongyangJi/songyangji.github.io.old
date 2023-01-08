@@ -1,37 +1,551 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="并发编程中的三个主要问题可见性问题当一个线程修改共享变量的值的时候，其他能否立即得知这个修改，这是第一个问题。 原子性问题这里的原子性，有两个尺度。  小的尺度上，对于单个变量（主要对long、double而言）的修改是否具有原子性。 大的尺度上，对于一个方法或者代码块的原子性如何保证。  有序性问题有序性问题在并发编程时是最令人困惑的。 这里先指明，如果没有作出一些合理的同步工作，那么在单个线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中的volatile关键字、JMM、happen-before">
+<meta property="og:url" content="http://example.com/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="并发编程中的三个主要问题可见性问题当一个线程修改共享变量的值的时候，其他能否立即得知这个修改，这是第一个问题。 原子性问题这里的原子性，有两个尺度。  小的尺度上，对于单个变量（主要对long、double而言）的修改是否具有原子性。 大的尺度上，对于一个方法或者代码块的原子性如何保证。  有序性问题有序性问题在并发编程时是最令人困惑的。 这里先指明，如果没有作出一些合理的同步工作，那么在单个线程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/main-local.png">
+<meta property="og:image" content="http://example.com/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/dlc.png">
+<meta property="article:published_time" content="2021-11-11T18:00:00.000Z">
+<meta property="article:modified_time" content="2022-09-15T06:04:24.431Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Java多线程">
+<meta property="article:tag" content="JMM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/main-local.png">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/","path":"2021/11/12/Java中的volatile关键字、JMM、happen-before/","title":"Java中的volatile关键字、JMM、happen-before"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java中的volatile关键字、JMM、happen-before | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E4%B8%BB%E8%A6%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">并发编程中的三个主要问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%A7%81%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">可见性问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">原子性问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%BA%8F%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.</span> <span class="nav-text">有序性问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">Java 内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%8E%92%E5%BA%8F%E5%92%8C%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C"><span class="nav-number">2.1.</span> <span class="nav-text">重排序和内存屏障</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%8E%92%E5%BA%8F"><span class="nav-number">2.1.1.</span> <span class="nav-text">重排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C"><span class="nav-number">2.1.2.</span> <span class="nav-text">内存屏障</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#as-if-serial%E8%AF%AD%E4%B9%89"><span class="nav-number">2.1.3.</span> <span class="nav-text">as-if-serial语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%8E%92%E5%BA%8F%E5%AF%B9%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">2.1.4.</span> <span class="nav-text">重排序对多线程程序的影响</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatile%E7%9A%84%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89"><span class="nav-number">3.</span> <span class="nav-text">volatile的内存语义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile%E7%9A%84%E8%AF%BB-%E5%86%99%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89"><span class="nav-number">3.1.</span> <span class="nav-text">volatile的读-写内存语义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile%E7%9A%84%E7%A6%81%E6%AD%A2%E9%87%8D%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99"><span class="nav-number">3.2.</span> <span class="nav-text">volatile的禁止重排序规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile%E5%AF%B9%E9%9D%9E%E5%8E%9F%E5%AD%90%E6%80%A7%E7%BA%A6%E5%AE%9A%E7%9A%84%E4%BF%AE%E6%AD%A3"><span class="nav-number">3.3.</span> <span class="nav-text">volatile对非原子性约定的修正</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.4.</span> <span class="nav-text">volatile内存语义的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">3.4.1.</span> <span class="nav-text">共享内存的可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%81%E6%AD%A2%E6%8C%87%E4%BB%A4%E4%BC%98%E5%8C%96%E9%87%8D%E6%8E%92%E5%BA%8F"><span class="nav-number">3.4.2.</span> <span class="nav-text">禁止指令优化重排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#happens-before"><span class="nav-number">4.</span> <span class="nav-text">happens-before</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#happen-before%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text">happen-before的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#happen-before%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">4.2.</span> <span class="nav-text">happen-before的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#happen-before%E7%9A%84%E8%A7%84%E5%88%99"><span class="nav-number">4.3.</span> <span class="nav-text">happen-before的规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#happen-before%E4%B8%8E%E6%97%B6%E9%97%B4%E4%B8%8A%E7%9A%84%E5%85%88%E5%90%8E%E9%A1%BA%E5%BA%8F%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">4.4.</span> <span class="nav-text">happen-before与时间上的先后顺序的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8happen-before%E8%A7%A3%E9%87%8ADoubleCheckLock"><span class="nav-number">4.5.</span> <span class="nav-text">使用happen-before解释DoubleCheckLock</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java中的volatile关键字、JMM、happen-before | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java中的volatile关键字、JMM、happen-before
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-12 02:00:00" itemprop="dateCreated datePublished" datetime="2021-11-12T02:00:00+08:00">2021-11-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-15 14:04:24" itemprop="dateModified" datetime="2022-09-15T14:04:24+08:00">2022-09-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">Java多线程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="并发编程中的三个主要问题"><a href="#并发编程中的三个主要问题" class="headerlink" title="并发编程中的三个主要问题"></a>并发编程中的三个主要问题</h1><h2 id="可见性问题"><a href="#可见性问题" class="headerlink" title="可见性问题"></a>可见性问题</h2><p>当一个线程修改共享变量的值的时候，其他能否立即得知这个修改，这是第一个问题。</p>
+<h2 id="原子性问题"><a href="#原子性问题" class="headerlink" title="原子性问题"></a>原子性问题</h2><p>这里的原子性，有两个尺度。</p>
+<ol>
+<li>小的尺度上，对于单个变量（主要对long、double而言）的修改是否具有原子性。</li>
+<li>大的尺度上，对于一个方法或者代码块的原子性如何保证。</li>
+</ol>
+<h2 id="有序性问题"><a href="#有序性问题" class="headerlink" title="有序性问题"></a>有序性问题</h2><p>有序性问题在并发编程时是最令人困惑的。</p>
+<p>这里先指明，<strong>如果没有作出一些合理的同步工作</strong>，那么<strong>在单个线程中执行顺序具有顺序性</strong>， 但是<strong>在一个线程中观察另一个线程的操作都是不具有有序性的</strong>。</p>
+<blockquote>
+<p> 正由于上面的问题，才有了这篇文章，其中有的问题这篇文章已经可以回答，有的还不能（主要是对<strong>锁的内存语义</strong>没有阐述）。</p>
+</blockquote>
+<h1 id="Java-内存模型"><a href="#Java-内存模型" class="headerlink" title="Java 内存模型"></a>Java 内存模型</h1><p>Java线程之间的通信由Java内存模型（也就是JMM）来控制，JMM决定一个线程对共享变量的写入何时对另一个线程可见。</p>
+<p>从抽象的角度看，JMM定义了线程和主内存之间的抽象关系：线程之间的共享变量存储在主内存（Main memory）中，每个线程都有一个私有的本地内存（Local memory），本地内存存储了线程读写共享变量的副本。本地内存是JMM的一个抽象，它涵盖cache、store buffer、寄存器以及其他的硬件和编译器优化。</p>
+<p><img src="/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/main-local.png"></p>
+<h2 id="重排序和内存屏障"><a href="#重排序和内存屏障" class="headerlink" title="重排序和内存屏障"></a>重排序和内存屏障</h2><h3 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h3><p>在执行程序的过程中，为了提高性能，编译器和处理器通常会对指令进行重排序。重排序主要分为三类。</p>
+<ol>
+<li><p>编译器优化的重排序：编译器在不改变单线程语义的情况下，会对执行语句进行重新排序；</p>
+</li>
+<li><p>指令集重排序：现代操作系统中的处理器都是并行的，如果执行语句之间不存在数据依赖性，处理器可以改变语句的执行顺序；</p>
+</li>
+<li><p>内存重排序：由于处理器会使用读&#x2F;写缓冲区，出于性能的原因，内存会对读&#x2F;写进行重排序；</p>
+</li>
+</ol>
+<p>上述的 1 属于编译器重排序，2、3属于处理器重排序。这些重排序会导致多线程程序出现内存可见性问题。</p>
+<p>对于编译器，JMM的编译器重排序规则会禁止特定类型的编译器重排序；</p>
+<p>对于处理器，JMM的处理器重排序规则会要求Java编译器生成指令序列的时插入特定的内存屏障（Memory barrier、Memory fence）。</p>
+<h3 id="内存屏障"><a href="#内存屏障" class="headerlink" title="内存屏障"></a>内存屏障</h3><blockquote>
+<p>这里我们先来了解一下内存屏障的概念。</p>
+</blockquote>
+<p>内存屏障也叫做<code>栅栏</code>，它是一种底层原语。它使得 CPU 或编译器在对内存进行操作的时候, 要严格按照一定的顺序来执行, 也就是说在 memory barrier 之前的指令和 memory barrier 之后的指令不会由于系统优化等原因而导致乱序。</p>
+<p>内存屏障提供了两个功能。首先，它们通过确保从另一个 CPU 来看屏障的两边的所有指令都是正确的程序顺序；其次它们可以实现内存数据可见性，确保内存数据会同步到 CPU 缓存子系统。</p>
+<p>不同计算机体系结构下面的内存屏障也不一样，通常需要认真研读硬件手册来确定，所以我们的主要研究对象是基于 x86 的内存屏障，通常情况下，硬件为我们提供了四种类型的内存屏障。</p>
+<ul>
+<li><strong>LoadLoad</strong> 屏障</li>
+</ul>
+<p>它的执行顺序是 Load1 ； LoadLoad ；Load2 ，其中的 Load1 和 Load2 都是加载指令。LoadLoad 指令能够确保执行顺序是在 Load1 之后，Load2 之前，LoadLoad 指令是一个比较有效的防止看到旧数据的指令。</p>
+<ul>
+<li><strong>StoreStore</strong> 屏障</li>
+</ul>
+<p>它的执行顺序是 Store1 ；StoreStore ；Store2 ，和上面的 LoadLoad 屏障的执行顺序相似，它也能够确保执行顺序是在 Store1 之后，Store2 之前。</p>
+<ul>
+<li><strong>LoadStore</strong> 屏障</li>
+</ul>
+<p>它的执行顺序是 Load1 ； StoreLoad ； Store2 ，保证 Load1 的数据被加载在与这数据相关的 Store2 和之后的 store 指令之前。</p>
+<ul>
+<li><strong>StoreLoad</strong> 屏障</li>
+</ul>
+<p>它的执行顺序是 Store1 ； StoreLoad ； Load2 ，确保 Store1 数据对其他处理器可见先于 Load2 及所有后续的访存指令。该屏障会使的此屏障前所有的访存指令完成之后，才会执行此屏障之后的访存指令。</p>
+<p>其中<strong>StoreLoad</strong>是一个全能屏障，同时具有其他3个屏障的效果。</p>
+<p>此屏障的开销很大，往往需要把写缓冲区（store buffer）中的所有数据全部刷新到主存中（Buffer fully flush）。</p>
+<p>也正因此，x86处理器禁止了所有的Load-Load、Store-Store、Load-Store重排序，所以说它具有较强的处理器内存模型。不过对于Store-Load并没有在处理器层面“一棒子打死”，而是把禁止Store-Load重排序的责任交给了更上层，禁止Store-Load重排序的方式就是使用<strong>StoreLoad</strong> 内存屏障。</p>
+<h3 id="as-if-serial语义"><a href="#as-if-serial语义" class="headerlink" title="as-if-serial语义"></a>as-if-serial语义</h3><p>正如前面所说，为了提高程序的运行的效率，即使是单线程的程序，每行代码的执行顺序也并非如我们想的那样，完全是顺序的执行的，这好几个步骤的指令重排。</p>
+<p>但是，为什么在单线程编程环境下，我们从来没有关心过这些重排序带来的问题。</p>
+<p>这就是as-if-serial语义带来的效果，不管编译器、处理器为了提高并行度做出怎样的重排序，单线程程序的结果不能被改变，就好像代码就是真的就是顺序执行的一样。</p>
+<p>as-if-serial语义为单线程编程环境下的程序员创造了一个幻觉：单线程程序是按程序的顺序执行的，无心担心内存可见性等问题。</p>
+<h3 id="重排序对多线程程序的影响"><a href="#重排序对多线程程序的影响" class="headerlink" title="重排序对多线程程序的影响"></a>重排序对多线程程序的影响</h3><p>举例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">write</span><span class="params">()</span> &#123;</span><br><span class="line">        x = <span class="number">1</span>;</span><br><span class="line">        flag = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">read</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> x; <span class="comment">// i 可能等于 0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在单线程下执行，当然不会有任何异常，原因正如上面的as-if-serial;</p>
+<p>但是在多线程下，由于重排序，在read()方法的if代码块中，可能没能读到最新的 x 值。</p>
+<p>比如说，A线程先执行 write方法，修改了 flag值，但是此时还没有修改x的值（指令重拍），或者修改了x但是还没有刷回到主存，这个时候B线程执行了read方法，通过率 if的判断条件，但是读 x 的值还是 0 。</p>
+<p>这个时候，在多线程程序中，对存在控制依赖的操作重排序，可能改变程序的执行结果。</p>
+<p>这是另一个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MemoryReorderingExample</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">0</span>, y = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">0</span>, b = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            i++;</span><br><span class="line">            x = <span class="number">0</span>;</span><br><span class="line">            y = <span class="number">0</span>;</span><br><span class="line">            a = <span class="number">0</span>;</span><br><span class="line">            b = <span class="number">0</span>;</span><br><span class="line">            <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">                a = <span class="number">1</span>;</span><br><span class="line">                x = b;</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">                b = <span class="number">1</span>;</span><br><span class="line">                y = a;</span><br><span class="line">            &#125;);</span><br><span class="line">            t1.start();</span><br><span class="line">            t2.start();</span><br><span class="line">            t1.join();</span><br><span class="line">            t2.join();</span><br><span class="line">            <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> <span class="string">&quot;第&quot;</span> + i + <span class="string">&quot;次(&quot;</span> + x + <span class="string">&quot;,&quot;</span> + y + <span class="string">&quot;)&quot;</span>;</span><br><span class="line">            <span class="keyword">if</span> (x == <span class="number">0</span> &amp;&amp; y == <span class="number">0</span>) &#123;</span><br><span class="line">                System.out.println(result);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="volatile的内存语义"><a href="#volatile的内存语义" class="headerlink" title="volatile的内存语义"></a>volatile的内存语义</h1><p>volatile: 为了确保共享变量能被准确和一致地更新，线程应该确保通过排它锁单独的更改这个变量。</p>
+<p>Java提供了 <code>volatile</code>，它在多线程中保证了共享变量的可见性——一个线程修改一个共享变量时，另一个线程能读到这个修改值。</p>
+<p>它某种程度上是一个轻量级的<code>synchronized</code>。</p>
+<p><strong>volatile的特性</strong>：</p>
+<ol>
+<li>保证共享变量的可见性；</li>
+<li>禁止指令重排序的优化；</li>
+<li>对单个变量的读写的原子性。</li>
+</ol>
+<p>下面会对此分别作出解释。</p>
+<h2 id="volatile的读-写内存语义"><a href="#volatile的读-写内存语义" class="headerlink" title="volatile的读-写内存语义"></a>volatile的读-写内存语义</h2><ul>
+<li><p>volatile写的内存语义：当写一个volatile变量时，JMM会把该线程的本地内存中的共享变量值刷新到主内存。</p>
+</li>
+<li><p>volatile读的内存语义：当读一个volatile变量时，如果此共享变量值已被另一个线程修改，JMM会把线程对应的本地内存置为无效，然后会从主内存中读取共享变量。</p>
+</li>
+</ul>
+<p>一个关于可见性的测试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestVolatile</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">volatile</span> <span class="type">boolean</span> <span class="variable">finished</span> <span class="operator">=</span> <span class="literal">false</span>; <span class="comment">// 去掉 volatile 再看看执行效果</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doWork</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (!finished) &#123;</span><br><span class="line">            ++x;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;x is &quot;</span>+x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">done</span><span class="params">()</span> &#123;</span><br><span class="line">        finished = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">TestVolatile</span> <span class="variable">test</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TestVolatile</span>();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(test::doWork).start();</span><br><span class="line">        Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(test::done).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="volatile的禁止重排序规则"><a href="#volatile的禁止重排序规则" class="headerlink" title="volatile的禁止重排序规则"></a>volatile的禁止重排序规则</h2><p>为了优化代码执行顺序，前面提到过编译器和处理器的重排序。</p>
+<p>为了实现volatile的语义，JMM会限制这两种类型的重排序类型。</p>
+<p><strong>JMM规则</strong>:</p>
+<ol>
+<li><p>当第二个操作是volatile写时，不管第一个操作是什么，都不允许重排序；</p>
+</li>
+<li><p>当第一个操作是volatile读时，不管第二个操作是什么，都不能重排序；</p>
+</li>
+<li><p>第一个操作是volatile写，第二个操作是volatile读时，不允许重排序。</p>
+</li>
+</ol>
+<p>其中，第1条保证，在volatile写之前的所有的普通写在执行完 volatile写后都会被刷新到主内存，换言之，如果volatile写没有执行，前面的普通写也不会产生影响（也就是说其他线程不可见）。这个性质对于普通是不具备的（下面会举个例子）</p>
+<p>其中，第2条保证，在volatile读之前，下面的普通读不会执行，直到volatile读执行完，才能执行下面的普通读。</p>
+<p>其中，第3条的保证是自然要有的。</p>
+<p>值得注意的是，第1条、第2条实际上让<strong>volatile写-读</strong>在内存读写顺序上具有<strong>锁的释放-获取</strong>语义。</p>
+<p><strong>volatile写对应锁的释放，volatile读对应锁的获取。</strong></p>
+<p>注意一定只有在一个线程在将锁释放之后，另一个线程可以获取锁。</p>
+<p>这让 volatile 具有一定的有序性。</p>
+<blockquote>
+<p>注意，上述的性质是在JSR-133标准（JDK-5）发布之后才有的语义，之前的volatile的语义比较弱，而这会给程序员带来了很多违反直觉的结果。</p>
+</blockquote>
+<p>举例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestVolatile</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">false</span>; <span class="comment">// #1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">write</span><span class="params">()</span> &#123;</span><br><span class="line">        x = <span class="number">1</span>;</span><br><span class="line">        flag = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">read</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">y</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">            y = x; <span class="comment">// #2</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在多线程环境下，#2处 y 一定为 1 吗？答案是不确定的。这就是违反程序员直觉的结果。</p>
+<p>因为程序没有得到正确的同步处理，所以多线程并发下的结果很可能是混乱的。</p>
+<p>同步的方法有很多，比如给<code>write()</code>、<code>read()</code>加上<code>synchronized</code>修饰。</p>
+<p>不过这里还有更高效的同步方法，就是在#1处用<code>volatile</code>修饰flag变量，根据volatile的指令重排序规则，</p>
+<p>一样可以做到访问变量的有序性，此时#1出y的值必然是 1 。</p>
+<h2 id="volatile对非原子性约定的修正"><a href="#volatile对非原子性约定的修正" class="headerlink" title="volatile对非原子性约定的修正"></a>volatile对非原子性约定的修正</h2><p>首先讲一个冷知识，在32位机器上，java对64位长度的数据类型（double、long）的读写<strong>可能不是原子性的</strong>。</p>
+<p>换言之，<strong>有可能</strong>一个线程在读写double、long变量读的结果既不是自己修改的也不是其它线程修改的，而是一个错误的混乱的值（比如其中前32位来自一个线程，后32位来自另一个线程）。这就带来了一定的风险（虽然这个风险很小很小）。</p>
+<p>所以，如果确保一定没有这样的风险，就需要使用volatile修饰double、long变量。</p>
+<p>因为，<strong>对于任何单个volatile变量的读写是具有原子性的</strong>。（注意，i++这种经典的<strong>读改写操作</strong>可不是原子的）</p>
+<h2 id="volatile内存语义的实现"><a href="#volatile内存语义的实现" class="headerlink" title="volatile内存语义的实现"></a>volatile内存语义的实现</h2><h3 id="共享内存的可见性"><a href="#共享内存的可见性" class="headerlink" title="共享内存的可见性"></a>共享内存的可见性</h3><p>volatile的两条实现原则：</p>
+<ol>
+<li><p>lock前缀指令会让处理器缓存写回到主内存。</p>
+<p>锁住总线：从而独占任何共享内存。</p>
+<p>锁住缓存：锁定某块共享内存的缓存并写回到内存，并用缓存一致性协议（MESI）确保修改的原子性，这常常称为”缓存锁定“。</p>
+<p>缓存一致性机制会阻止同时修改由两个处理器缓存的内存区域数据。</p>
+</li>
+<li><p>一个处理器的缓存会写到内存的操作会导致其他处理器的缓存无效。</p>
+<p>每个处理器通过嗅探在总线上传播来的数据来检查自己的缓存值是不是已经过期了，当处理器发现自己缓存行对应中有内存地址对应的数据被修改，就会把该缓存行（cache line）设置为无效，需要这个值时重新到主存中获取。</p>
+</li>
+</ol>
+<p>比如<code>lock addl $0x0,(%esp)</code>就是实际上的有lock前缀的汇编命令（这是个空操纵，因为不允许单独使用lock）。</p>
+<h3 id="禁止指令优化重排序"><a href="#禁止指令优化重排序" class="headerlink" title="禁止指令优化重排序"></a>禁止指令优化重排序</h3><p>正如上面所言，我们需要使用内存屏障来禁止重排序。</p>
+<p>具体的，基于保守策略的JMM按如下规则插入内存屏障：</p>
+<ol>
+<li>每个volatile写前面插入StoreStore屏障；</li>
+<li>每个volatile写后面插入StoreLoad屏障；</li>
+<li>每个volatile读后面插入LoadLoad屏障；</li>
+<li>每个volatile读后面插入LoadStore屏障；</li>
+</ol>
+<p>在上面说到，x86机器本身就有着较为安全的内存模型，在处理器层面就禁止了Store-Store、Load-Load、Load-Store 重排序。</p>
+<p>所以，在x86机器上，仅仅需要在每个volatile写后面插入StoreLoad屏障即可。</p>
+<p>那么这个内存屏障究竟是什么呢？</p>
+<p>实际上仍然依赖使用带有Lock前缀的汇编代码来完成。</p>
+<h1 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h1><h2 id="happen-before的作用"><a href="#happen-before的作用" class="headerlink" title="happen-before的作用"></a>happen-before的作用</h2><p>我们先不讲happen-before的定义和规则，先旗帜鲜明地指出<strong>happen-before的价值</strong>。</p>
+<p>正因为上面的一系列的内存屏障等等底层的细节，让Java工作组觉得对于开发者极不友好，很难在跨平台的编程环境中编写出可靠的多线程程序，他们提出了happen-before这个规则， 或者说是工具，帮助程序在不了解内存屏障这些概念的情况下依旧可以对他们的程序的执行顺序有个清醒的判断。</p>
+<h2 id="happen-before的定义"><a href="#happen-before的定义" class="headerlink" title="happen-before的定义"></a>happen-before的定义</h2><p>JSR-133中对Java内存模型<strong>happen-before</strong>的定义如下：</p>
+<p><code>happen-before</code>是 Java 模型中定义的两项操作的偏序关系。</p>
+<ol>
+<li>如果一个操作happen-before另一个操作，那么<strong>第一个操作的执行结果将对第二个操作可见</strong>，而且<strong>第一个操作的执行顺序可认为排在第二个操作之前</strong>。</li>
+<li>两个操作之间存在happen-before关系，并不意味着Java平台具体实现必须要按照happen-before关系指定的顺序来执行，如果重排序之后的结果，与按happen-before关系来执行的结果一致，那么这种重排序也是合理的，JMM并不禁止。</li>
+</ol>
+<blockquote>
+<p>注意第二个含义，是“可以认为”第一个执行顺序排在第二个操作“，意思是，即使由于重排序导致时间上第二个操作排在第一个操作之前，它的执行效果也可以等同于”第一个执行顺序排在第二个操作“。</p>
+</blockquote>
+<p>上面的(1)是对程序员的承诺：如果 A happens-before B，那么A的操作结果将对 B 可见，并且执行结果正如A的执行顺序在B之前那样。</p>
+<p>上面的(2)是对编译器和处理器排序的约束原则：在不改变程序的语义的情况下，编译器和处理器怎么优化都是可以的。</p>
+<h2 id="happen-before的规则"><a href="#happen-before的规则" class="headerlink" title="happen-before的规则"></a>happen-before的规则</h2><ul>
+<li>程序次序规则：一个线程内，按照执行流顺序，书写在前面的操作先行发生于书写在后面的操作;</li>
+<li>锁定规则：一个 unLock 操作先行发生于后面对同一个锁的 lock 操作，注意这个后面指的是”时间上的先后“；</li>
+<li>volatile 变量规则：对一个volatile变量的写操作先行发生于后面对这个volatile变量的读操作，注意这个后面指的是”时间上的先后“;</li>
+<li>传递规则：如果操作 A 先行发生于操作 B，而操作 B 又先行发生于操作 C，则可以得出操作 A 先行发生于操作C;</li>
+<li>线程启动规则：Thread 对象的 <code>start()</code> 方法先行发生于此线程的每个一个动作;</li>
+<li>线程中断规则：对线程<code>interrupt()</code>方法的调用先行发生于被中断线程的代码检测到中断事件的发生;</li>
+<li>线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过 <code>Thread.join()</code> 方法结束、<code>Thread.isAlive()</code>的返回值手段检测到线程已经终止执行;</li>
+<li>对象终结规则：一个对象的初始化完成先行发生于他的<code>finalize()</code>方法的开始。</li>
+</ul>
+<blockquote>
+<p>这 8 条原则摘自《深入理解Java虚拟机》。</p>
+</blockquote>
+<p>其中第三条规则，尤其需要注意一下。</p>
+<p>这 8 条规则中，前 4 条规则是比较重要的，后 4 条规则都是显而易见的。</p>
+<p>所以，只有在可以使用上面的8条规则的前提下，才能使用happen-before的规则， 进而判断程序的执行顺序。</p>
+<p>否则不能仅靠你的直觉判断，那完全不可信。</p>
+<h2 id="happen-before与时间上的先后顺序的关系"><a href="#happen-before与时间上的先后顺序的关系" class="headerlink" title="happen-before与时间上的先后顺序的关系"></a>happen-before与时间上的先后顺序的关系</h2><p>先说答案，二者之间没有必然的关系。</p>
+<p>一一解释。</p>
+<ol>
+<li><p>A happen-before B, A 在时间上就排在B前面吗？</p>
+<p>不一定。前面已经说了，在单线程中as-serial就是来确保这个事情的，就是两个无数据依赖关系的变量的读写顺序可以被交换，但是仍然具有happen-before关系。</p>
+</li>
+<li><p>A 在时间上就排在B前面，A 就 happen-before B 吗?</p>
+<p>happen-before的定义要求中有<strong>操作的可见性</strong>，但是在多线程中，如果有正确的同步操作（synchronized、volatile等），那么先发生的操作也不一定对发生的操作可见。</p>
+</li>
+</ol>
+<h2 id="使用happen-before解释DoubleCheckLock"><a href="#使用happen-before解释DoubleCheckLock" class="headerlink" title="使用happen-before解释DoubleCheckLock"></a>使用happen-before解释DoubleCheckLock</h2><p>下面是使用双重检查锁实现单例的经典代码。（为什么这么写，就不细讲了）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//懒汉式</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">singleton</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getSingleton</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(singleton==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class)&#123;</span><br><span class="line">                <span class="keyword">if</span>(singleton==<span class="literal">null</span>)&#123;</span><br><span class="line">                    singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里我只讲为什么 <code>volatile</code>可以实现代码重排序的效果。</p>
+<p>使用的工具正是happen-before。</p>
+<p><img src="/2021/11/12/Java%E4%B8%AD%E7%9A%84volatile%E5%85%B3%E9%94%AE%E5%AD%97%E3%80%81JMM%E3%80%81happen-before/dlc.png"></p>
+<p>根据happe-before的第一条规则（<strong>程序次序规则</strong>），可以得到各个线程内的蓝色线（代表happen-before的偏序关系）。</p>
+<p>根据<strong>volatile 变量规则</strong>，可以得到红色的那条线。</p>
+<p>最后根据<strong>传递性规则</strong>，可以得出5个操作的全序关系，这就做到了对象的安全访问。</p>
+<p>（多说一句，本质上volatile是通过禁止线程A的2、3的重排序实现happen-before的）。</p>
+<p>反过来，如果没有volatile修饰，那么那条红色的线也就不复存在，自然操作5完全可能排在操作2的前面，从而导致对象的不安全访问。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/296949412">既然CPU有缓存一致性协议（MESI），为什么JMM还需要volatile关键字？</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiaowenmu1/article/details/89705740">MESI（缓存一致性协议）</a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/MESI%E5%8D%8F%E8%AE%AE">MESI协议-wiki</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"># Java多线程</a>
+              <a href="/tags/JMM/" rel="tag"># JMM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/12/KMP%E7%AE%97%E6%B3%95%20%E2%80%94%E2%80%94%20%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%81%E6%A8%A1%E6%9D%BF%E3%80%81%20%E5%BA%94%E7%94%A8/" rel="prev" title="KMP算法 —— 知识点、模板、 应用">
+                  <i class="fa fa-chevron-left"></i> KMP算法 —— 知识点、模板、 应用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/13/JUC%E4%B9%8BAQS%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B8%8E%E4%BD%BF%E7%94%A8/" rel="next" title="JUC之AQS源码解析与使用">
+                  JUC之AQS源码解析与使用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

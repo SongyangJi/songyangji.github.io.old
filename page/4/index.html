@@ -1,23 +1,1320 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
-{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}
-  {% if is_home() %}page-home{% endif -%}
-{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block content %}
-  <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
-  </section>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="website">
+<meta property="og:title" content="JsyBlog">
+<meta property="og:url" content="http://example.com/page/4/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="SongyangJi">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/page/4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/4/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">JsyBlog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/21/GoLang-%E7%B1%BB%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/11/21/GoLang-%E7%B1%BB%E5%9E%8B/" class="post-title-link" itemprop="url">GoLang-类型</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-21 09:48:19" itemprop="dateCreated datePublished" datetime="2022-11-21T09:48:19+08:00">2022-11-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-25 15:48:33" itemprop="dateModified" datetime="2022-11-25T15:48:33+08:00">2022-11-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Go是<strong>静态类型</strong>语言。</p>
+<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>用<code>var</code>关键字声明变量</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x <span class="type">int</span>  <span class="comment">// 默认值为0</span></span><br><span class="line"><span class="keyword">var</span> f <span class="type">bool</span> <span class="comment">// 默认值为false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a, b <span class="type">int</span> <span class="comment">// 相同类型的多个变量</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x1 <span class="type">int</span> = <span class="number">1</span> <span class="comment">// 这里的int可以省略</span></span><br><span class="line"><span class="keyword">var</span> b <span class="type">byte</span> = <span class="number">1</span> <span class="comment">// 这里的byte不可以省略</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> i = <span class="number">0</span>           <span class="comment">// 省略类型，提供初始值，类型有编译器推断</span></span><br><span class="line"><span class="keyword">var</span> j, s = <span class="number">100</span>, <span class="string">&quot;s&quot;</span> <span class="comment">// 不同类型初始化值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 以组方式整理多行变量</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	i1, i2 <span class="type">int</span></span><br><span class="line">	x1, s2 = <span class="number">12.1</span>, <span class="string">&quot;&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;Hello World&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="简短模式"><a href="#简短模式" class="headerlink" title="简短模式"></a>简短模式</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	x := <span class="number">1</span></span><br><span class="line">	s := <span class="string">&quot;s&quot;</span></span><br><span class="line"></span><br><span class="line">	i, s1 := <span class="number">0</span>, <span class="string">&quot;&quot;</span> <span class="comment">// 多个变量</span></span><br><span class="line"></span><br><span class="line">	fmt.Println(x, s, i, s1)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但这种简短模式</p>
+<ol>
+<li><strong>只能用在函数内部</strong>。</li>
+<li>不能指定类型，只能通过初始化数据自动推导默认类型。</li>
+</ol>
+<p><strong>退化赋值</strong></p>
+<p>指的是多个变量使用<strong>简短模式</strong>并不总是定义，可能是重新赋值，比如err的使用。</p>
+<p>（至少一个是新定义）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;os&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	f, err := os.Open(<span class="string">&quot;/dev/random&quot;</span>) <span class="comment">// f, err 都是新定义</span></span><br><span class="line">	buf := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">1024</span>)</span><br><span class="line">	n, err := f.Read(buf) <span class="comment">// n 新定义，err退化赋值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="多变量赋值"><a href="#多变量赋值" class="headerlink" title="多变量赋值"></a>多变量赋值</h2><p>先计算出所有右值，然后再依次完成赋值操作</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  x, y := <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">  x, y = y + <span class="number">3</span>, x + <span class="number">2</span></span><br><span class="line">  <span class="built_in">println</span>(x, y) <span class="comment">// 5 3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h1><p>使用<code>const</code>关键字声明变量，取代<code>var</code>，并且必须提供初始值，没什么特别大的区别。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> i = <span class="number">0</span>           <span class="comment">// 省略类型，提供初始值，类型有编译器推断</span></span><br><span class="line"><span class="keyword">const</span> j, s = <span class="number">100</span>, <span class="string">&quot;s&quot;</span> <span class="comment">// 不同类型初始化值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 以组方式整理多行变量</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	x1, s2 = <span class="number">12.1</span>, <span class="string">&quot;&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="各种类型"><a href="#各种类型" class="headerlink" title="各种类型"></a>各种类型</h1><h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p>Go 内置了以下基本类型：</p>
+<ul>
+<li>布尔<ul>
+<li><em>bool</em></li>
+</ul>
+</li>
+<li>字符串<ul>
+<li><em>string</em>（它的默认值是”“，而不是null）</li>
+</ul>
+</li>
+<li>整数<ul>
+<li><em>int</em> <em>int8</em> <em>int16</em> <em>int32</em> <em>int64</em>（int是默认类型，依据目标平台，32位或者64位）</li>
+<li><em>uint</em> <em>uint8</em> <em>uint16</em> <em>uint32</em> <em>uint64</em></li>
+</ul>
+</li>
+<li>字节<ul>
+<li><em>byte</em> ，<em>uint8</em> 的别名</li>
+</ul>
+</li>
+<li>Unicode<ul>
+<li><em>rune</em> ，<em>int32</em> 的别名</li>
+</ul>
+</li>
+<li>浮点<ul>
+<li><em>float32</em> <em>float64</em>（float64默认浮点数类型）</li>
+</ul>
+</li>
+<li>复数<ul>
+<li><em>complex64</em> <em>complex128</em></li>
+</ul>
+</li>
+</ul>
+<p>还有其他几种高级类型，如slice、map、channel等等，后面详细介绍。</p>
+<ul>
+<li>存储指针的uintptr</li>
+</ul>
+<p>uintptr is an integer type that is large enough to hold the bit pattern of any pointer.</p>
+<h2 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h2><p>这里引用类型特指slice、map、channel这种预定义类型。</p>
+<p>它们必须使用<code>make</code>，而不是使用<code>new</code>，具体的后面再讲。</p>
+<h2 id="自定义类型"><a href="#自定义类型" class="headerlink" title="自定义类型"></a>自定义类型</h2><p>使用<code>type</code>自定义自定义类型，包括基本类型创建，结构体，函数，接口等等。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> (</span><br><span class="line">	flags <span class="type">byte</span></span><br><span class="line">	user <span class="keyword">struct</span> &#123;</span><br><span class="line">		id <span class="type">int</span></span><br><span class="line">		name <span class="type">string</span></span><br><span class="line">	&#125;</span><br><span class="line">	handle <span class="function"><span class="keyword">func</span><span class="params">(<span class="type">string</span>)</span></span> <span class="type">bool</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> x flags = <span class="number">1</span></span><br><span class="line">	<span class="keyword">var</span> u user = user&#123;</span><br><span class="line">		id:   <span class="number">0</span>,</span><br><span class="line">		name: <span class="string">&quot;&quot;</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> f handle = <span class="function"><span class="keyword">func</span><span class="params">(s <span class="type">string</span>)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">		fmt.Println(s)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h1><p>如果制定了变量的类型，那么go不允许隐式的转换，哪怕是向下兼容的。（这一点和java有点区别）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x1 <span class="type">int64</span> = <span class="number">11</span></span><br><span class="line"><span class="keyword">var</span> x2 <span class="type">int32</span></span><br><span class="line"><span class="comment">//x1 = x2 // Cannot use &#x27;x2&#x27; (type int32) as the type int64</span></span><br><span class="line">x1 = <span class="type">int64</span>(x2) <span class="comment">// 必须强制转换</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>注意是 int(x)，而不是(int)x</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/09/Shell%E2%80%94%E2%80%94find/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/11/09/Shell%E2%80%94%E2%80%94find/" class="post-title-link" itemprop="url">Shell——find</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-11-09 14:29:42 / 修改时间：14:30:27" itemprop="dateCreated datePublished" datetime="2022-11-09T14:29:42+08:00">2022-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Shell/" itemprop="url" rel="index"><span itemprop="name">Shell</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/dengjin20104042056/article/details/96155995">https://blog.csdn.net/dengjin20104042056/article/details/96155995</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/dengjin20104042056/article/details/96177043">https://blog.csdn.net/dengjin20104042056/article/details/96177043</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/09/Shell%E2%80%94%E2%80%94awk/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/11/09/Shell%E2%80%94%E2%80%94awk/" class="post-title-link" itemprop="url">Shell——awk</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-11-09 10:45:56 / 修改时间：14:25:56" itemprop="dateCreated datePublished" datetime="2022-11-09T10:45:56+08:00">2022-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Shell/" itemprop="url" rel="index"><span itemprop="name">Shell</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/baichuanhuihai/p/8258984.html">Shell基础(六)：使用awk提取文本、awk处理条件、awk综合脚本应用、awk流程控制、awk扩展应用</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/menglingqian/p/6783527.html">linux 下的 正则表达式（awk,sed,awk）学习</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/07/Linux%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3No-space-left-on-device/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/11/07/Linux%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3No-space-left-on-device/" class="post-title-link" itemprop="url">Linux磁盘满了解决方案</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-07 09:53:50" itemprop="dateCreated datePublished" datetime="2022-11-07T09:53:50+08:00">2022-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-09 14:46:51" itemprop="dateModified" datetime="2022-11-09T14:46:51+08:00">2022-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <ol>
+<li>发现不能创建文件了</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/home/sduoj<span class="comment"># mkdir jsy</span></span><br><span class="line"><span class="built_in">mkdir</span>: cannot create directory ‘jsy’: No space left on device</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="2">
+<li>分析是磁盘空间不够用还是inode不够用</li>
+</ol>
+<p>查看文件系统的硬盘空间使用率（block usage，block）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/home/sduoj<span class="comment"># df -h</span></span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">udev            914M     0  914M   0% /dev</span><br><span class="line">tmpfs           189M   22M  167M  12% /run</span><br><span class="line">/dev/vda1        40G   40G     0 100% /</span><br><span class="line">tmpfs           943M     0  943M   0% /dev/shm</span><br><span class="line">tmpfs           5.0M     0  5.0M   0% /run/lock</span><br><span class="line">tmpfs           943M     0  943M   0% /sys/fs/cgroup</span><br></pre></td></tr></table></figure>
+
+<p>查看文件系统的inode使用率（block usage，block）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/home<span class="comment"># df -i</span></span><br><span class="line">Filesystem      Inodes  IUsed   IFree IUse% Mounted on</span><br><span class="line">udev            233972    384  233588    1% /dev</span><br><span class="line">tmpfs           241188    527  240661    1% /run</span><br><span class="line">/dev/vda1      2621440 162723 2458717    7% /</span><br><span class="line">tmpfs           241188      1  241187    1% /dev/shm</span><br><span class="line">tmpfs           241188      2  241186    1% /run/lock</span><br><span class="line">tmpfs           241188     18  241170    1% /sys/fs/cgroup</span><br></pre></td></tr></table></figure>
+
+<p>由此可以发现，inode充足，但是由于一些大文件导致了空间不足</p>
+<ol start="3">
+<li><p>找出那些大文件</p>
+<p>使用<code>du --max-depth=2 | sort -nr -k 1 | awk &#39;$1&gt;1024*1024 &#123;print&#125;&#39;</code></p>
+<p>含义是，在<code>/</code>下递归深度为2的找出那些大小超过1MB的文件并倒序输出，输出第一列为文件大小（单位字节），第二列为目录名。</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/# du --max-depth=2 | sort -nr -k 1 | awk &#x27;$1&gt;1024*1024 &#123;print&#125;&#x27;</span><br><span class="line">41109700	.</span><br><span class="line">35567412	./home</span><br><span class="line">35567408	./home/sduoj</span><br><span class="line">3203416	./usr</span><br><span class="line">2153156	./usr/lib</span><br><span class="line">1202160	./var</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>ls</code>的<code>-S</code>选项可以按照文件大小顺序逆序列出。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -lhS</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<ol start="4">
+<li>删除</li>
+</ol>
+<p>这一步就不细说了，使用<code>rm</code>小心一点。</p>
+<p>或者使用<code>find</code>的&#96;delete，参考文章(<a target="_blank" rel="noopener" href="https://blog.csdn.net/10km/article/details/121652997)%E3%80%82">https://blog.csdn.net/10km/article/details/121652997)。</a></p>
+<ol start="5">
+<li>检测是否删除成功</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/home/sduoj/testMyJudgeServer/logs<span class="comment"># df -lh</span></span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">udev            914M     0  914M   0% /dev</span><br><span class="line">tmpfs           189M   22M  167M  12% /run</span><br><span class="line">/dev/vda1        40G  7.0G   31G  19% /</span><br><span class="line">tmpfs           943M     0  943M   0% /dev/shm</span><br><span class="line">tmpfs           5.0M     0  5.0M   0% /run/lock</span><br><span class="line">tmpfs           943M     0  943M   0% /sys/fs/cgroup</span><br></pre></td></tr></table></figure>
+
+<p>文件系统已经有空闲内存了。</p>
+<p><strong>如果发现删除了文件，但是磁盘空间并没有释放呢?</strong></p>
+<p>在Linux或者Unix系统中，通过rm或者文件管理器删除文件将会从文件系统的目录结构上解除链接(unlink).然而如果文件是被打开的（有一个进程正在使用），那么进程将仍然可以读取该文件，磁盘空间也一直被占用。</p>
+<p>使用</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof | grep deleted</span><br></pre></td></tr></table></figure>
+
+<p>查看那些被进程打开未被释放但是被删除的文件。</p>
+<p>然后kill掉那些进程。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/07/Linux%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/11/07/Linux%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">Linux磁盘与文件系统管理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-07 09:16:07" itemprop="dateCreated datePublished" datetime="2022-11-07T09:16:07+08:00">2022-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-09 14:49:58" itemprop="dateModified" datetime="2022-11-09T14:49:58+08:00">2022-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h1><h2 id="fdisk"><a href="#fdisk" class="headerlink" title="fdisk"></a>fdisk</h2><blockquote>
+<p>fdisk: 操作磁盘分区表</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br><span class="line">fdisk -l | grep Disk</span><br></pre></td></tr></table></figure>
+
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/# fdisk -l</span><br><span class="line">Disk /dev/vda: 40 GiB, 42949672960 bytes, 83886080 sectors</span><br><span class="line">Units: sectors of 1 * 512 = 512 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br><span class="line">Disklabel type: dos</span><br><span class="line">Disk identifier: 0x13be70fb</span><br><span class="line"></span><br><span class="line">Device     Boot Start      End  Sectors Size Id Type</span><br><span class="line">/dev/vda1  *     2048 83886046 83883999  40G 83 Linux</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="df"><a href="#df" class="headerlink" title="df"></a>df</h2><blockquote>
+<p>df: report file system disk space usage</p>
+<p>usage: df [OPTION]… [FILE]…</p>
+</blockquote>
+<p>df 以<strong>磁盘分区</strong>为单位查看文件系统，可以获取硬盘被占用了多少空间，目前还剩下多少空间等信息。</p>
+<p>例如，我们使用<strong>df -h</strong>命令来查看磁盘信息， <strong>-h</strong> 选项为根据大小适当显示：</p>
+<p>显示内容参数说明：</p>
+<ul>
+<li><strong>Filesystem</strong>：文件系统</li>
+<li><strong>Size</strong>： 分区大小</li>
+<li><strong>Used</strong>： 已使用容量</li>
+<li><strong>Avail</strong>： 还可以使用的容量</li>
+<li>**Use%**： 已用百分比</li>
+<li><strong>Mounted on</strong>： 挂载点</li>
+</ul>
+<p>　</p>
+<p><strong>相关命令：</strong></p>
+<ul>
+<li><strong>df -hl</strong>：查看磁盘剩余空间</li>
+<li><strong>df -h</strong>：查看每个根路径的分区大小</li>
+</ul>
+<p>实例<code>df -h</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">udev            914M     0  914M   0% /dev</span><br><span class="line">tmpfs           189M   22M  167M  12% /run</span><br><span class="line">/dev/vda1        40G   40G     0 100% /</span><br><span class="line">tmpfs           943M     0  943M   0% /dev/shm</span><br><span class="line">tmpfs           5.0M     0  5.0M   0% /run/lock</span><br><span class="line">tmpfs           943M     0  943M   0% /sys/fs/cgroup</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><strong>-i</strong>: 展示inode</li>
+</ul>
+<h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><blockquote>
+<p>du: estimate file space usage</p>
+</blockquote>
+<p><strong>du</strong> 的英文原义为 <strong>disk usage</strong>，含义为显示磁盘空间的使用情况，用于查看当前目录的总大小。</p>
+<p>例如查看当前目录的大小：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># du -sh</span><br><span class="line">605M    .</span><br></pre></td></tr></table></figure>
+
+<p>显示指定文件所占空间：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># du log2012.log </span><br><span class="line">300     log2012.log</span><br></pre></td></tr></table></figure>
+
+<p>方便阅读的格式显示test目录所占空间情况：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># du -h test</span><br><span class="line">608K    test/test6</span><br><span class="line">308K    test/test4</span><br><span class="line">4.0K    test/scf/lib</span><br><span class="line">4.0K    test/scf/service/deploy/product</span><br><span class="line">4.0K    test/scf/service/deploy/info</span><br><span class="line">12K     test/scf/service/deploy</span><br><span class="line">16K     test/scf/service</span><br><span class="line">4.0K    test/scf/doc</span><br><span class="line">4.0K    test/scf/bin</span><br><span class="line">32K     test/scf</span><br><span class="line">8.0K    test/test3</span><br><span class="line">1.3M    test</span><br></pre></td></tr></table></figure>
+
+<p>du 命令用于查看当前目录的总大小：</p>
+<ul>
+<li><strong>-s</strong>：对每个Names参数只给出占用的数据块总数。</li>
+<li><strong>-a</strong>：递归地显示指定目录中各文件及子目录中各文件占用的数据块数。<strong>若既不指定-s，也不指定-a，则只显示Names中的每一个目录及其中的各子目录所占的磁盘块数。</strong></li>
+<li><strong>-b</strong>：以字节为单位列出磁盘空间使用情况（系统默认以k字节为单位）。</li>
+<li><strong>-k</strong>：以1024字节为单位列出磁盘空间使用情况。</li>
+<li><strong>-c</strong>：最后再加上一个总计（系统默认设置）。</li>
+<li><strong>-l</strong>：计算所有的文件大小，对硬链接文件，则计算多次。</li>
+<li><strong>-x</strong>：跳过在不同文件系统上的目录不予统计。</li>
+<li><strong>-h</strong>：以K，M，G为单位，提高信息的可读性。</li>
+<li><strong>–max-depth</strong>: 超过指定层数的目录后，予以忽略。</li>
+</ul>
+<p>常用的</p>
+<ul>
+<li>**du -sh [目录名]**：返回该目录的大小</li>
+<li>**du -sm [文件夹]**：返回该文件夹总M数</li>
+<li>**du -h [目录名]**：查看指定文件夹下的所有文件大小（包含子文件夹）</li>
+</ul>
+<p>实例</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/<span class="comment"># du -sh -c</span></span><br><span class="line"><span class="built_in">du</span>: cannot access <span class="string">&#x27;./proc/271257/task/271257/fd/4&#x27;</span>: No such file or directory</span><br><span class="line"><span class="built_in">du</span>: cannot access <span class="string">&#x27;./proc/271257/task/271257/fdinfo/4&#x27;</span>: No such file or directory</span><br><span class="line"><span class="built_in">du</span>: cannot access <span class="string">&#x27;./proc/271257/fd/3&#x27;</span>: No such file or directory</span><br><span class="line"><span class="built_in">du</span>: cannot access <span class="string">&#x27;./proc/271257/fdinfo/3&#x27;</span>: No such file or directory</span><br><span class="line">40G	.</span><br><span class="line">40G	total</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果需要排序呢？</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/home/sduoj<span class="comment"># du | sort -n -r -k 1</span></span><br><span class="line">35567408	.</span><br><span class="line">35566168	./testMyJudgeServer</span><br><span class="line">35548224	./testMyJudgeServer/logs</span><br><span class="line">18620304	./testMyJudgeServer/logs/service-log</span><br><span class="line">16927848	./testMyJudgeServer/logs/platform-log</span><br><span class="line">16927808	./testMyJudgeServer/logs/platform-log/2021-11</span><br><span class="line">16881936	./testMyJudgeServer/logs/service-log/2021-11</span><br><span class="line">1738324	./testMyJudgeServer/logs/service-log/2021-10</span><br><span class="line">1132	./sduoj-sandbox</span><br><span class="line">832	./sduoj-sandbox/build</span><br><span class="line">492	./sduoj-sandbox/build/objects</span><br><span class="line">300	./sduoj-sandbox/build/bin</span><br><span class="line">264	./sduoj-sandbox/src</span><br><span class="line">184	./sduoj-sandbox/src/argtable</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="dumpe2fs"><a href="#dumpe2fs" class="headerlink" title="dumpe2fs"></a>dumpe2fs</h2><blockquote>
+<p>dumpe2fs  prints the super block and blocks group information for the filesystem present on device.</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">root@iZuf6h5bru0f6zsysev3zuZ:/home<span class="comment"># dumpe2fs /dev/vda1 | head -n 50</span></span><br><span class="line">dumpe2fs 1.45.5 (07-Jan-2020)</span><br><span class="line">Filesystem volume name:   /</span><br><span class="line">Last mounted on:          /</span><br><span class="line">Filesystem UUID:          abf381e7-98ce-491f-85d5-f16aa9b23811</span><br><span class="line">Filesystem magic number:  0xEF53</span><br><span class="line">Filesystem revision <span class="comment">#:    1 (dynamic)</span></span><br><span class="line">Filesystem features:      has_journal ext_attr resize_inode dir_index filetype needs_recovery extent flex_bg sparse_super large_file huge_file dir_nlink extra_isize</span><br><span class="line">Filesystem flags:         signed_directory_hash</span><br><span class="line">Default mount options:    user_xattr acl</span><br><span class="line">Filesystem state:         clean</span><br><span class="line">Errors behavior:          Continue</span><br><span class="line">Filesystem OS <span class="built_in">type</span>:       Linux</span><br><span class="line">Inode count:              2621440</span><br><span class="line">Block count:              10485499</span><br><span class="line">Reserved block count:     471818</span><br><span class="line">Free blocks:              4097</span><br><span class="line">Free inodes:              2458600</span><br><span class="line">First block:              0</span><br><span class="line">Block size:               4096</span><br><span class="line">Fragment size:            4096</span><br><span class="line">Reserved GDT blocks:      1021</span><br><span class="line">Blocks per group:         32768</span><br><span class="line">Fragments per group:      32768</span><br><span class="line">Inodes per group:         8192</span><br><span class="line">Inode blocks per group:   512</span><br><span class="line">Flex block group size:    16</span><br><span class="line">Filesystem created:       Thu Mar 18 14:35:58 2021</span><br><span class="line">Last mount time:          Wed Apr 27 15:48:37 2022</span><br><span class="line">Last write time:          Wed Apr 27 23:48:37 2022</span><br><span class="line">Mount count:              10</span><br><span class="line">Maximum mount count:      -1</span><br><span class="line">Last checked:             Thu Mar 18 14:35:58 2021</span><br><span class="line">Check interval:           0 (&lt;none&gt;)</span><br><span class="line">Lifetime writes:          2705 GB</span><br><span class="line">Reserved blocks uid:      0 (user root)</span><br><span class="line">Reserved blocks gid:      0 (group root)</span><br><span class="line">First inode:              11</span><br><span class="line">Inode size:	          256</span><br><span class="line">Required extra isize:     32</span><br><span class="line">Desired extra isize:      32</span><br><span class="line">Journal inode:            8</span><br><span class="line">Default directory <span class="built_in">hash</span>:   half_md4</span><br><span class="line">Directory Hash Seed:      79fdb20b-e5e8-4438-8721-e0c49cef8222</span><br><span class="line">Journal backup:           inode blocks</span><br><span class="line">Journal features:         journal_incompat_revoke</span><br><span class="line">Journal size:             128M</span><br><span class="line">Journal length:           32768</span><br><span class="line">Journal sequence:         0x003cf420</span><br><span class="line">Journal start:            549</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/18/%E7%9F%AD%E9%93%BE%E6%8E%A5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/18/%E7%9F%AD%E9%93%BE%E6%8E%A5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">短链接系统设计</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-18 19:47:40 / 修改时间：19:50:26" itemprop="dateCreated datePublished" datetime="2022-10-18T19:47:40+08:00">2022-10-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">架构</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>参考文章</p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904090602848270">https://juejin.cn/post/6844904090602848270</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/myshowtime/p/16316654.html">https://www.cnblogs.com/myshowtime/p/16316654.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/18/Dockerfile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/18/Dockerfile/" class="post-title-link" itemprop="url">Dockerfile</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-18 19:41:31 / 修改时间：19:49:01" itemprop="dateCreated datePublished" datetime="2022-10-18T19:41:31+08:00">2022-10-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>dockerfile 的命令摘要</p>
+<ul>
+<li><p>FROM- 镜像从那里来</p>
+</li>
+<li><p>MAINTAINER- 镜像维护者信息</p>
+</li>
+<li><p>RUN- 构建镜像执行的命令，每一次RUN都会构建一层</p>
+</li>
+<li><p>CMD- 容器启动的命令，如果有多个则以最后一个为准，也可以为ENTRYPOINT提供参数</p>
+</li>
+<li><p>VOLUME- 定义数据卷，如果没有定义则使用默认</p>
+</li>
+<li><p>USER- 指定后续执行的用户组和用户</p>
+</li>
+<li><p>WORKDIR- 切换当前执行的工作目录</p>
+</li>
+<li><p>HEALTHCHECH- 健康检测指令</p>
+</li>
+<li><p>ARG- 变量属性值，但不在容器内部起作用</p>
+</li>
+<li><p>EXPOSE- 暴露端口</p>
+</li>
+<li><p>ENV- 变量属性值，容器内部也会起作用</p>
+</li>
+<li><p>ADD- 添加文件，如果是压缩文件也解压</p>
+</li>
+<li><p>COPY- 添加文件，以复制的形式</p>
+</li>
+<li><p>ENTRYPOINT- 容器进入时执行的命令</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/18/Docker%E5%BA%95%E5%B1%82%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-Cgroups/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/18/Docker%E5%BA%95%E5%B1%82%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-Cgroups/" class="post-title-link" itemprop="url">Docker底层核心技术-Cgroups</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-18 19:00:41 / 修改时间：19:38:23" itemprop="dateCreated datePublished" datetime="2022-10-18T19:00:41+08:00">2022-10-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p> 我们知道使用不同的 Namespace，可以实现容器中的进程看不到别的容器的资源，但是有一个问题你是否注意到？容器内的进程仍然可以任意地使用主机的 CPU 、内存等资源，如果某一个容器使用的主机资源过多，可能导致主机的资源竞争，进而影响业务。那如果我们想限制一个容器资源的使用（如 CPU、内存等）应该如何做呢？</p>
+</blockquote>
+<p>这里就需要用到 Linux 内核的另一个核心技术cgroups。那么究竟什么是cgroups？我们应该如何使用cgroups？Docker 又是如何使用cgroups的？</p>
+<h1 id="cgroups"><a href="#cgroups" class="headerlink" title="cgroups"></a>cgroups</h1><p>cgroups（全称：control groups）是 Linux 内核的一个功能，它可以实现限制进程或者进程组的资源（如 CPU、内存、磁盘 IO 等）。</p>
+<blockquote>
+<p>在 2006 年，Google 的工程师（ Rohit Seth 和 Paul Menage 为主要发起人） 发起了这个项目，起初项目名称并不是cgroups，而被称为进程容器（process containers）。在 2007 年cgroups代码计划合入Linux 内核，但是当时在 Linux 内核中，容器（container）这个词被广泛使用，并且拥有不同的含义。为了避免命名混乱和歧义，进程容器被重名为cgroups，并在 2008 年成功合入 Linux 2.6.24 版本中。cgroups目前已经成为 systemd、Docker、Linux Containers（LXC） 等技术的基础。</p>
+</blockquote>
+<p>cgroups 主要提供了如下功能。</p>
+<ul>
+<li>资源限制： 限制资源的使用量，例如我们可以通过限制某个业务的内存上限，从而保护主机其他业务的安全运行。</li>
+<li><strong>优先级控制</strong>：不同的组可以有不同的资源（ CPU 、磁盘 IO 等）使用优先级。</li>
+<li>审计：计算控制组的资源使用情况。（实时吗？）</li>
+<li><strong>控制：控制进程的挂起或恢复。</strong></li>
+</ul>
+<p>了解了 cgroups 可以为我们提供什么功能，下面我来看下 cgroups 是如何实现这些功能的。</p>
+<p>cgroups功能的实现依赖于三个核心概念：子系统、控制组、层级树。</p>
+<ul>
+<li>子系统（subsystem）：<strong>是一个内核的组件，一个子系统代表一类资源调度控制器</strong>。例如内存子系统可以限制内存的使用量，CPU 子系统可以限制 CPU 的使用时间。</li>
+<li>控制组（cgroup）：表示一组进程和一组带有参数的子系统的关联关系。例如，一个进程使用了 CPU 子系统来限制 CPU 的使用时间，则这个进程和 CPU 子系统的关联关系称为控制组。</li>
+<li>层级树（hierarchy）：是由一系列的控制组按照树状结构排列组成的。这种排列方式可以使得控制组拥有父子关系，子控制组默认拥有父控制组的属性，也就是子控制组会继承于父控制组。比如，系统中定义了一个控制组 c1，限制了 CPU 可以使用 1 核，然后另外一个控制组 c2 想实现既限制 CPU 使用 1 核，同时限制内存使用 2G，那么 c2 就可以直接继承 c1，无须重复定义 CPU 限制。</li>
+</ul>
+<p><strong>cgroups 的三个核心概念中，子系统是最核心的概念，因为子系统是真正实现某类资源的限制的基础。</strong></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本课时我们讲解了什么是 cgroups，以及 cgroups 可以为我们提供哪些核心功能。其实 cgroups 不仅可以实现资源的限制，还可以为我们统计资源的使用情况，容器监控系统的数据来源也是 cgroups 提供的。</p>
+<p>另外，请注意 cgroups 虽然可以实现资源的限制，但是不能保证资源的使用。例如，cgroups 限制某个容器最多使用 1 核 CPU，但不保证总是能使用到 1 核 CPU，当 CPU 资源发生竞争时，可能会导致实际使用的 CPU 资源产生竞争。</p>
+<blockquote>
+<p>参考文章<a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/%E7%94%B1%E6%B5%85%E5%85%A5%E6%B7%B1%E5%90%83%E9%80%8F%20Docker-%E5%AE%8C/10%20%20%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%20Cgroups%20%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%EF%BC%9F.md">https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/%E7%94%B1%E6%B5%85%E5%85%A5%E6%B7%B1%E5%90%83%E9%80%8F%20Docker-%E5%AE%8C/10%20%20%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%20Cgroups%20%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%EF%BC%9F.md</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/18/TCP%E5%92%8CHTTP%E7%9A%84Keep-Alive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/18/TCP%E5%92%8CHTTP%E7%9A%84Keep-Alive/" class="post-title-link" itemprop="url">TCP和HTTP的Keep-Alive</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-18 18:52:42 / 修改时间：18:54:23" itemprop="dateCreated datePublished" datetime="2022-10-18T18:52:42+08:00">2022-10-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaolincoding/p/14984584.html">https://www.cnblogs.com/xiaolincoding/p/14984584.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/18/MySQL%E7%9A%84dump/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/18/MySQL%E7%9A%84dump/" class="post-title-link" itemprop="url">MySQL的dump</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-18 18:51:14 / 修改时间：18:55:20" itemprop="dateCreated datePublished" datetime="2022-10-18T18:51:14+08:00">2022-10-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>参考文章</p>
+<p><a target="_blank" rel="noopener" href="https://ibit.tech/archives/mysqldump-usage">https://ibit.tech/archives/mysqldump-usage</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/472306">https://developer.aliyun.com/article/472306</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.51cto.com/gosenkle/4852817">https://blog.51cto.com/gosenkle/4852817</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

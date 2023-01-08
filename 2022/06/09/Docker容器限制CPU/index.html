@@ -1,37 +1,382 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="压测工具使用ubuntu的stress 作为压测工具，并制作镜像 1234FROM ubuntu:latestRUN apt-get update &amp;&amp; \        apt-get install stress shell命令 1docker build -t u-stress:latest .    限制CPU资源限制CPU核心个数（百分比）在 docker 1.13 及更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker容器限制CPU">
+<meta property="og:url" content="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="压测工具使用ubuntu的stress 作为压测工具，并制作镜像 1234FROM ubuntu:latestRUN apt-get update &amp;&amp; \        apt-get install stress shell命令 1docker build -t u-stress:latest .    限制CPU资源限制CPU核心个数（百分比）在 docker 1.13 及更">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163457514-1473983991.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163742921-1627559356.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163808468-652259868.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164142218-723091322.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164255702-1003240099.png">
+<meta property="article:published_time" content="2022-06-09T03:11:04.000Z">
+<meta property="article:modified_time" content="2022-06-09T14:22:34.225Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="资源限制">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163457514-1473983991.png">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/","path":"2022/06/09/Docker容器限制CPU/","title":"Docker容器限制CPU"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Docker容器限制CPU | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%8B%E6%B5%8B%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">压测工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%90%E5%88%B6CPU%E8%B5%84%E6%BA%90"><span class="nav-number">2.</span> <span class="nav-text">限制CPU资源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%90%E5%88%B6CPU%E6%A0%B8%E5%BF%83%E4%B8%AA%E6%95%B0%EF%BC%88%E7%99%BE%E5%88%86%E6%AF%94%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">限制CPU核心个数（百分比）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E5%9B%BA%E5%AE%9A%E7%9A%84-CPU%E9%9B%86"><span class="nav-number">2.2.</span> <span class="nav-text">指定固定的 CPU集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E4%BD%BF%E7%94%A8-CPU-%E7%9A%84%E6%9D%83%E9%87%8D"><span class="nav-number">2.3.</span> <span class="nav-text">设置使用 CPU 的权重</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Docker容器限制CPU | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker容器限制CPU
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-06-09 11:11:04 / 修改时间：22:22:34" itemprop="dateCreated datePublished" datetime="2022-06-09T11:11:04+08:00">2022-06-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="压测工具"><a href="#压测工具" class="headerlink" title="压测工具"></a>压测工具</h1><p>使用ubuntu的<code>stress</code> 作为压测工具，并制作镜像</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:latest</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">        apt-get install stress</span></span><br></pre></td></tr></table></figure>
+<p>shell命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t u-stress:latest .</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="限制CPU资源"><a href="#限制CPU资源" class="headerlink" title="限制CPU资源"></a>限制CPU资源</h1><h2 id="限制CPU核心个数（百分比）"><a href="#限制CPU核心个数（百分比）" class="headerlink" title="限制CPU核心个数（百分比）"></a>限制CPU核心个数（百分比）</h2><p>在 docker 1.13 及更高的版本上，能够很容易的限制容器可以使用的主机 CPU 核心个数。<br>只需要通过 –cpus 选项指定容器可以使用的 CPU 个数就可以了，并且还可以指定如 1.5 之类的小数。（为什么还可以是小数呢，后面解释）</p>
+<p>通过下面的命令创建容器，–cpus&#x3D;2 表示容器最多可以使用主机上两个 CPU：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --cpus=2 u-stress:latest /bin/bash</span><br></pre></td></tr></table></figure>
+<p>然后由 stress 命令创建四个繁忙的进程消耗 CPU 资源：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stress -c 4</span><br></pre></td></tr></table></figure>
+<p>使用<code>docker stats</code>查看容状态，发现容器 CPU 的负载为 200%左右，它的含义为单个 CPU 负载的两倍。我们也可以把它理解为有两颗 CPU核心在 100% 的为它工作。</p>
+<p>再让我们通过 top 命令看看主机 CPU 的真实负载情况：</p>
+<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163457514-1473983991.png" alt="img"></p>
+<p>实际的情况并不是两个 CPU 负载 100%，而另外两个负载 0%。四个 CPU 的负载都是 50%，加起来容器消耗的 CPU 总量就是两个 CPU 100% 的负载。</p>
+<p><strong>所以对于进程来说是没有 CPU 个数这一概念的</strong>，内核只能通过进程消耗的 CPU 时间片来统计出进程占用 CPU 的百分比。这也是我们看到的各种工具中都使用百分比来说明 CPU 使用率的原因。<br>并且 –cpus 选项支持设为小数也从侧面说明了对 CPU 的计量只能是百分比。</p>
+<h2 id="指定固定的-CPU集"><a href="#指定固定的-CPU集" class="headerlink" title="指定固定的 CPU集"></a>指定固定的 CPU集</h2><p>通过 –cpus 选项我们无法让容器始终在一个或某几个 CPU 上运行，但是通过<code>--cpuset-cpus</code> 选项却可以做到！这是非常有意义的，因为现在的多核系统中每个核心都有自己的缓存，如果频繁的调度进程在不同的核心上执行势必会带来缓存失效等开销。下面我们就演示如何设置容器使用固定的 CPU，下面的命令为容器设置了 –cpuset-cpus 选项，指定运行容器的 CPU 编号为 1：(编号从0开始)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --cpuset-cpus=&quot;1&quot; u-stress:latest /bin/bash</span><br></pre></td></tr></table></figure>
+
+
+
+<p>再启动压力测试命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stress -c 4</span><br></pre></td></tr></table></figure>
+
+<p>然后查看主机 CPU 的负载情况：</p>
+<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163742921-1627559356.png" alt="img"></p>
+<p>这次只有 Cpu1 达到了 100%，其它的 CPU 并未被容器使用。我们还可以反复的执行 stress -c 4 命令，但是始终都是 Cpu1 在干活。<br>再看看容器的 CPU 负载，也是只有 100%：</p>
+<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163808468-652259868.png"></p>
+<p>-cpuset-cpus 选项还可以一次指定多个 CPU：<br>比如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --cpuset-cpus=&quot;1,3&quot; u-stress:latest /bin/bash</span><br></pre></td></tr></table></figure>
+<p>–cpuset-cpus 选项的一个缺点是必须指定 CPU 在操作系统中的编号，这对于动态调度的环境(无法预测容器会在哪些主机上运行，只能通过程序动态的检测系统中的 CPU 编号，并生成 docker run 命令)会带来一些不便。</p>
+<h2 id="设置使用-CPU-的权重"><a href="#设置使用-CPU-的权重" class="headerlink" title="设置使用 CPU 的权重"></a>设置使用 CPU 的权重</h2><p>当 CPU 资源充足时，设置 CPU 的权重是没有意义的。只有在容器争用 CPU 资源的情况下， CPU 的权重才能让不同的容器分到不同的 CPU 用量。–cpu-shares 选项用来设置 CPU 权重，它的默认值为 1024。我们可以把它设置为 2 表示很低的权重，但是设置为 0 表示使用默认值 1024。<br>下面我们分别运行两个容器，指定它们都使用 Cpu0，并分别设置 –cpu-shares 为 512 和 1024：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run -it --<span class="built_in">rm</span> --cpuset-cpus=<span class="string">&quot;0&quot;</span> --cpu-shares=512 u-stress:latest /bin/bash</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run -it --<span class="built_in">rm</span> --cpuset-cpus=<span class="string">&quot;0&quot;</span> --cpu-shares=1024 u-stress:latest /bin/bash</span></span><br></pre></td></tr></table></figure>
+
+<p>在两个容器中都运行 stress -c 4 命令。</p>
+<p>此时主机 Cpu0 的负载为 100%：</p>
+<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164142218-723091322.png"></p>
+<p>容器中 CPU 的负载为：</p>
+<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164255702-1003240099.png"></p>
+<p>两个容器分享一个 CPU，所以总量应该是 100%。具体每个容器分得的负载则取决于 –cpu-shares 选项的设置！我们的设置分别是 512 和 1024，则它们分得的比例为 1:2。在本例中如果想让两个容器各占 50%，只要把 –cpu-shares 选项设为相同的值就可以了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+              <a href="/tags/%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/" rel="tag"># 资源限制</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/28/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%A7%A6%E5%8F%91Jenkins%E6%B5%81%E6%B0%B4%E7%BA%BF/" rel="prev" title="多种方式触发Jenkins流水线">
+                  <i class="fa fa-chevron-left"></i> 多种方式触发Jenkins流水线
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/06/10/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory/" rel="next" title="Docker容器限制Memory">
+                  Docker容器限制Memory <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

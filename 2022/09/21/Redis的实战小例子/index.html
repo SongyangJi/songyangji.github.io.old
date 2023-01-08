@@ -1,37 +1,390 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="缓存最常见的使用方式。 分布式锁https:&#x2F;&#x2F;songyangji.gitee.io&#x2F;2021&#x2F;11&#x2F;29&#x2F;Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81&#x2F; 排行榜在线比赛的排行榜。 使用 zset即可。 1234567891011121314151617181920212223242526272829303132@Serv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis的实战小例子">
+<meta property="og:url" content="http://example.com/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="缓存最常见的使用方式。 分布式锁https:&#x2F;&#x2F;songyangji.gitee.io&#x2F;2021&#x2F;11&#x2F;29&#x2F;Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81&#x2F; 排行榜在线比赛的排行榜。 使用 zset即可。 1234567891011121314151617181920212223242526272829303132@Serv">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-21T07:14:47.000Z">
+<meta property="article:modified_time" content="2022-09-28T00:49:14.462Z">
+<meta property="article:author" content="SongyangJi">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/","path":"2022/09/21/Redis的实战小例子/","title":"Redis的实战小例子"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Redis的实战小例子 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text">缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="nav-number">2.</span> <span class="nav-text">分布式锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E8%A1%8C%E6%A6%9C"><span class="nav-number">3.</span> <span class="nav-text">排行榜</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%BE%E5%88%B0"><span class="nav-number">4.</span> <span class="nav-text">签到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E5%AF%B9%E9%9D%A2%E5%BC%80%E6%88%BF%E9%97%B4"><span class="nav-number">5.</span> <span class="nav-text">面对面开房间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%90%E6%B5%81"><span class="nav-number"></span> <span class="nav-text">限流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%EF%BC%9A%E5%9F%BA%E4%BA%8ERedis%E7%9A%84setnx%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">第一种：基于Redis的setnx的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%EF%BC%9A%E5%9F%BA%E4%BA%8ERedis%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84zset"><span class="nav-number">2.</span> <span class="nav-text">第二种：基于Redis的数据结构zset]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%A7%8D%EF%BC%9A%E5%9F%BA%E4%BA%8ERedis%E7%9A%84%E4%BB%A4%E7%89%8C%E6%A1%B6%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">第三种：基于Redis的令牌桶算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%A7%8D%EF%BC%9A%E5%9F%BA%E4%BA%8ERedis%E7%9A%84%E6%BC%8F%E6%A1%B6%E7%AE%97%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">第四种：基于Redis的漏桶算法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Redis的实战小例子 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis的实战小例子
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-21 15:14:47" itemprop="dateCreated datePublished" datetime="2022-09-21T15:14:47+08:00">2022-09-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-28 08:49:14" itemprop="dateModified" datetime="2022-09-28T08:49:14+08:00">2022-09-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>最常见的使用方式。</p>
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p><a target="_blank" rel="noopener" href="https://songyangji.gitee.io/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">https://songyangji.gitee.io/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</a></p>
+<h2 id="排行榜"><a href="#排行榜" class="headerlink" title="排行榜"></a>排行榜</h2><p>在线比赛的排行榜。</p>
+<p>使用 zset即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GameService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    RedisTemplate redisTemplate;</span><br><span class="line">    ZSetOperations ops;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">        ops = redisTemplate.opsForZSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">incrUserScoreInGame</span><span class="params">(String gameId, <span class="type">int</span> uid, <span class="type">double</span> addedScore)</span> &#123;</span><br><span class="line">        ops.incrementScore(gameId, uid, addedScore);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addUserWithScore</span><span class="params">(String gameId, <span class="type">int</span> uid, <span class="type">double</span> score)</span> &#123;</span><br><span class="line">        ops.add(gameId, uid, score);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;UserScore&gt; <span class="title function_">getTopK</span><span class="params">(String gameId, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        Set&lt;ZSetOperations.TypedTuple&lt;Integer&gt;&gt; set = ops.rangeWithScores(gameId, <span class="number">0</span>, k - <span class="number">1</span>);</span><br><span class="line">        ArrayList&lt;UserScore&gt; objects = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">assert</span> set != <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">for</span> (ZSetOperations.TypedTuple&lt;Integer&gt; tuple : set) &#123;</span><br><span class="line">            <span class="type">UserScore</span> <span class="variable">userScore</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UserScore</span>(tuple.getValue() == <span class="literal">null</span> ? -<span class="number">1</span> : tuple.getValue() , tuple.getScore() == <span class="literal">null</span> ?<span class="number">0</span> : tuple.getScore());</span><br><span class="line">            objects.add(userScore);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> objects;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>大数据量进行排名时候，分数的累加是具有规律性的，就是说一般不会突然一下子加10000分，减10000分。而是+10，-10。那么可以得出这么一个结论：在一般情况下，前十名的用户是由前1000名（也可以是2000名，结合具体业务来）来产出的。所以给出这样的策略：1.第一次跑批得出前1000名的uid，进行排序，计算出前10名进行展示。2.10分钟内，只统计这1000个uid的分数变化情况，产出10名。3.定时任务10分钟一次跑全量数据跑出最新的1000个uid，计算前10。4.如果遇到大分数累加事件，直接将该用户当前积分和第1000个uid分数进行比较，分数低的uid进行抛弃。</p>
+<p>zset只存10个，每次写入前判断下第10名的value，大于就写入，并存储更新第10名的value，难道不是这样做？</p>
+<h2 id="签到"><a href="#签到" class="headerlink" title="签到"></a>签到</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">testBitMap</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 示例：使用BitMap记录用户本周是否有签到</span></span><br><span class="line">    <span class="keyword">final</span> <span class="type">long</span> <span class="variable">userId</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>().nextLong();</span><br><span class="line">    <span class="comment">// final long userId = 1L;</span></span><br><span class="line">    <span class="comment">// userId高48位用于将用户划分到不同的key，低16位作为位图偏移参数offset;</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">keySign</span> <span class="operator">=</span> <span class="string">&quot;user:sign:&quot;</span> + LocalDate.now().getDayOfWeek() + <span class="string">&quot;:&quot;</span> + (userId &gt;&gt; <span class="number">16</span>);</span><br><span class="line">    <span class="comment">// offset参数必须大于或等于0，小于2^32(bit 映射被限制在 512 MB 之内)</span></span><br><span class="line">    redisTemplate.opsForValue().setBit(keySign, userId &amp; <span class="number">0xffff</span>, <span class="literal">true</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, userId &amp; <span class="number">0xffff</span>));</span><br><span class="line">    System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, (userId + <span class="number">1</span>) &amp; <span class="number">0xffff</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="面对面开房间"><a href="#面对面开房间" class="headerlink" title="面对面开房间"></a>面对面开房间</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/54chensongxia/p/13813533.html">https://www.cnblogs.com/54chensongxia/p/13813533.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/html/html5-geolocation.html">https://www.runoob.com/html/html5-geolocation.html</a></p>
+<p>数据结构：</p>
+<p>6位的房间号 ： 1000，000；</p>
+<p><code>longitude:latitude</code></p>
+<blockquote>
+<p>在经线上，纬度每差1度,实地距离大约为111千米；</p>
+<p>在纬线上，经度每差1度,实际距离为111×cosθ千米。（其中θ表示该纬线的纬度.在不同纬线上,经度每差1度的实际距离是不相等的）。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加一个空间元素,longitude、latitude、member分别是该地理位置的经度、纬度、成员</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这里的成员就是指代具体的业务数据，比如说用户的ID等</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">需要注意的是Redis的纬度有效范围不是[-90,90]而是[-85,85]</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果在添加一个空间元素时，这个元素中的menber已经存在key中，那么GEOADD命令会返回0,相当于更新了这个menber的位置信息</span></span><br><span class="line">GEOADD key longitude latitude member [longitude latitude member]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">用于添加城市的坐标信息</span></span><br><span class="line">geoadd cities:locations 117.12 39.08 tianjin 114.29 38.02 shijiazhuang 118.01 39.38 tangshan 115.29 38.51 baoding</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取地理位置信息</span></span><br><span class="line">geopos key member [member ...]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取天津的坐标</span></span><br><span class="line">geopos cities:locations tianjin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取两个坐标之间的距离</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">unit代表单位，有4个单位值</span></span><br><span class="line">  - m (meter) 代表米</span><br><span class="line">  - km （kilometer）代表千米</span><br><span class="line">  - mi （miles）代表英里</span><br><span class="line">  - ft （ft）代表尺</span><br><span class="line">geodist key member1 member2 [unit]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取天津和保定之间的距离</span></span><br><span class="line">GEODIST cities:locations tianjin baoding km</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取指定位置范围内的地理信息位置集合，此命令可以用于实现附近的人的功能</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">georadius和georadiusbymember两个命令的作用是一样的，都是以一个地理位置为中心算出指定半径内的其他地理信息位置，不同的是georadius命令的中心位置给出了具体的经纬度，georadiusbymember只需给出成员即可。其中radiusm|km|ft|mi是必需参数，指定了半径（带单位），这两个命令有很多可选参数，参数含义如下：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withcoord：返回结果中包含经纬度。</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withdist：返回结果中包含离中心节点位置的距离。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withhash：返回结果中包含geohash，有关geohash后面介绍。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- COUNT count：指定返回结果的数量。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- asc|desc：返回结果按照离中心节点的距离做升序或者降序。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- store key：将返回结果的地理位置信息保存到指定键。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- storedist key：将返回结果离中心节点的距离保存到指定键。</span></span><br><span class="line">georadius key longitude latitude radiusm|km|ft|mi [withcoord] [withdist] [withhash] [COUNT count] [asc|desc] [store key] [storedist key]</span><br><span class="line"></span><br><span class="line">georadiusbymember key member radiusm|km|ft|mi [withcoord] [withdist] [withhash] [COUNT count] [asc|desc] [store key] [storedist key]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取geo <span class="built_in">hash</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Redis使用geohash将二维经纬度转换为一维字符串，geohash有如下特点：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- GEO的数据类型为zset，Redis将所有地理位置信息的geohash存放在zset中。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- 字符串越长，表示的位置更精确，表3-8给出了字符串长度对应的精度，例如geohash长度为9时，精度在2米左右。长度和精度的对应关系，请参考：https://easyreadfs.nosdn.127.net/9F42_CKRFsfc8SUALbHKog==/8796093023252281390</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- 两个字符串越相似，它们之间的距离越近，Redis利用字符串前缀匹配算法实现相关的命令。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- geohash编码和经纬度是可以相互转换的。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- Redis正是使用有序集合并结合geohash的特性实现了GEO的若干命令。</span></span><br><span class="line">geohash key member [member ...]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除操作，GEO没有提供删除成员的命令，但是因为GEO的底层实现是zset，所以可以借用zrem命令实现对地理位置信息的删除。</span></span><br><span class="line">zrem key member</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h1><h2 id="第一种：基于Redis的setnx的操作"><a href="#第一种：基于Redis的setnx的操作" class="headerlink" title="第一种：基于Redis的setnx的操作"></a>第一种：基于Redis的setnx的操作</h2><p>我们在使用Redis的分布式锁的时候，大家都知道是依靠了setnx的指令，在CAS（Compare and swap）的操作的时候，同时给指定的key设置了过期实践（expire），我们在限流的主要目的就是为了在单位时间内，有且仅有N数量的请求能够访问我的代码程序。所以依靠setnx可以很轻松的做到这方面的功能。</p>
+<p>比如我们需要在10秒内限定20个请求，那么我们在setnx的时候可以设置过期时间10，当请求的setnx数量达到20时候即达到了限流效果。代码比较简单就不做展示了。</p>
+<p>当然这种做法的弊端是很多的，比如当统计1-10秒的时候，无法统计2-11秒之内，如果需要统计N秒内的M个请求，那么我们的Redis中需要保持N个key等等问题</p>
+<h2 id="第二种：基于Redis的数据结构zset"><a href="#第二种：基于Redis的数据结构zset" class="headerlink" title="第二种：基于Redis的数据结构zset]"></a>第二种：基于Redis的数据结构zset]</h2><p>其实限流涉及的最主要的就是滑动窗口，上面也提到1-10怎么变成2-11。其实也就是起始值和末端值都各+1即可。</p>
+<p>而我们如果用Redis的list数据结构可以轻而易举的实现该功能</p>
+<p>我们可以将请求打造成一个zset数组，当每一次请求进来的时候，value保持唯一，可以用UUID生成，而score可以用当前时间戳表示，因为score我们可以用来计算当前时间戳之内有多少的请求数量，而zset数据结构也提供了range方法让我们可以很轻易的获取到2个时间戳内有多少请求。</p>
+<p>代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Response <span class="title function_">limitFlow</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">Long</span> <span class="variable">currentTime</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>().getTime();</span><br><span class="line">        System.out.println(currentTime);</span><br><span class="line">        <span class="keyword">if</span>(redisTemplate.hasKey(<span class="string">&quot;limit&quot;</span>)) &#123;</span><br><span class="line">            <span class="type">Integer</span> <span class="variable">count</span> <span class="operator">=</span> redisTemplate.opsForZSet().rangeByScore(<span class="string">&quot;limit&quot;</span>, currentTime -  intervalTime, currentTime).size();        <span class="comment">// intervalTime是限流的时间 </span></span><br><span class="line">            System.out.println(count);</span><br><span class="line">            <span class="keyword">if</span> (count != <span class="literal">null</span> &amp;&amp; count &gt; <span class="number">5</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> Response.ok(<span class="string">&quot;每分钟最多只能访问5次&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        redisTemplate.opsForZSet().add(<span class="string">&quot;limit&quot;</span>,UUID.randomUUID().toString(),currentTime);</span><br><span class="line">        <span class="keyword">return</span> Response.ok(<span class="string">&quot;访问成功&quot;</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过上述代码可以做到滑动窗口的效果，并且能保证每N秒内至多M个请求，缺点就是zset的数据结构会越来越大。实现方式相对也是比较简单的。</p>
+<blockquote>
+<p>基于微服务的思想，构建在 B2C 电商场景下的项目实战。核心技术栈，是 Spring Boot + Dubbo 。未来，会重构成 Spring Cloud Alibaba 。</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/YunaiV/onemall">https://github.com/YunaiV/onemall</a></p>
+</blockquote>
+<h2 id="第三种：基于Redis的令牌桶算法"><a href="#第三种：基于Redis的令牌桶算法" class="headerlink" title="第三种：基于Redis的令牌桶算法"></a>第三种：基于Redis的令牌桶算法</h2><p>提到限流就不得不提到令牌桶算法了。</p>
+<p>令牌桶算法提及到输入速率和输出速率，当输出速率大于输入速率，那么就是超出流量限制了。</p>
+<p>也就是说我们每访问一次请求的时候，可以从Redis中获取一个令牌，如果拿到令牌了，那就说明没超出限制，而如果拿不到，则结果相反。</p>
+<p>依靠上述的思想，我们可以<strong>结合Redis的List数据结构</strong>很轻易的做到这样的代码，只是简单实现</p>
+<p><strong>依靠List的leftPop来获取令牌；</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出令牌</span></span><br><span class="line"><span class="keyword">public</span> Response <span class="title function_">limitFlow2</span><span class="params">(Long id)</span>&#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> redisTemplate.opsForList().leftPop(<span class="string">&quot;limit_list&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span>(result == <span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> Response.ok(<span class="string">&quot;当前令牌桶中无令牌&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Response.ok(articleDescription2);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>再<strong>依靠Java的定时任务，定时往List中rightPush令牌</strong>，当然令牌也需要唯一性，所以我这里还是用UUID进行了生成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 10S的速率往令牌桶中添加UUID，只为保证唯一性</span></span><br><span class="line">    <span class="meta">@Scheduled(fixedDelay = 10_000,initialDelay = 0)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setIntervalTimeTask</span><span class="params">()</span>&#123;</span><br><span class="line">        redisTemplate.opsForList().rightPush(<span class="string">&quot;limit_list&quot;</span>,UUID.randomUUID().toString());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>综上，代码实现起始都不是很难，针对这些限流方式我们可以在AOP或者filter中加入以上代码，用来做到接口的限流，最终保护你的网站。</p>
+<p>Redis其实还有很多其他的用处，他的作用不仅仅是缓存，分布式锁的作用。他的数据结构也不仅仅是只有String，Hash，List，Set，Zset。有兴趣的可以后续了解下他的GeoHash算法；BitMap，HLL以及布隆过滤器数据(Redis4.0之后加入，可以用Docker直接安装redislabs&#x2F;rebloom)结构。</p>
+<blockquote>
+<p> <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/jT0WYISuSoi_hkTmELb7PQ">https://mp.weixin.qq.com/s/jT0WYISuSoi_hkTmELb7PQ</a></p>
+</blockquote>
+<h2 id="第四种：基于Redis的漏桶算法"><a href="#第四种：基于Redis的漏桶算法" class="headerlink" title="第四种：基于Redis的漏桶算法"></a>第四种：基于Redis的漏桶算法</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903982842789896">https://juejin.cn/post/6844903982842789896</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" rel="prev" title="海量数据问题解决">
+                  <i class="fa fa-chevron-left"></i> 海量数据问题解决
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/21/Redis%E5%A4%A7Key%E9%97%AE%E9%A2%98/" rel="next" title="Redis大Key问题">
+                  Redis大Key问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

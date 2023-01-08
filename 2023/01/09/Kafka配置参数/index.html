@@ -1,37 +1,426 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Producer主要消息配置 buffer.memory 缓冲消息的缓冲区大小（默认值32MB） retries 可重试异常的自动重试次数 batch.size 当一个batch满的时候，producer会发送此batch的所有消息（默认值16KB） linger.ms 发送消息的延迟时间（即使batch没有满，也会发送消息，和batch.size配合使用） max.request.size 控制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka配置参数">
+<meta property="og:url" content="http://example.com/2023/01/09/Kafka%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="Producer主要消息配置 buffer.memory 缓冲消息的缓冲区大小（默认值32MB） retries 可重试异常的自动重试次数 batch.size 当一个batch满的时候，producer会发送此batch的所有消息（默认值16KB） linger.ms 发送消息的延迟时间（即使batch没有满，也会发送消息，和batch.size配合使用） max.request.size 控制">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-08T16:25:00.000Z">
+<meta property="article:modified_time" content="2023-01-08T20:47:53.971Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="Message Queue">
+<meta property="article:tag" content="Kafka">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2023/01/09/Kafka%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/01/09/Kafka%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/","path":"2023/01/09/Kafka配置参数/","title":"Kafka配置参数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Kafka配置参数 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Producer%E4%B8%BB%E8%A6%81%E6%B6%88%E6%81%AF%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">Producer主要消息配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Consumer%E4%B8%BB%E8%A6%81%E6%B6%88%E6%81%AF%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">Consumer主要消息配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E6%B6%88%E6%81%AF%E4%B8%8D%E4%B8%A2%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">发消息不丢配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Producer%E7%AB%AF"><span class="nav-number">3.1.</span> <span class="nav-text">Producer端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Broker%E9%85%8D%E7%BD%AE"><span class="nav-number">3.2.</span> <span class="nav-text">Broker配置</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/09/Kafka%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Kafka配置参数 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka配置参数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-01-09 00:25:00 / 修改时间：04:47:53" itemprop="dateCreated datePublished" datetime="2023-01-09T00:25:00+08:00">2023-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Producer主要消息配置"><a href="#Producer主要消息配置" class="headerlink" title="Producer主要消息配置"></a>Producer主要消息配置</h1><ol>
+<li>buffer.memory 缓冲消息的缓冲区大小（默认值32MB）</li>
+<li>retries <strong>可重试异常的自动重试次数</strong></li>
+<li>batch.size 当一个batch满的时候，producer会发送此batch的所有消息（默认值16KB）</li>
+<li>linger.ms 发送消息的延迟时间（即使batch没有满，也会发送消息，和batch.size配合使用）</li>
+<li>max.request.size 控制producer单条消息的大小</li>
+<li>request.timeout.ms broker需要在此规定时间内返回处理结果</li>
+</ol>
+<p>为合理使用kafka的缓冲区和批处理机制，一般情况下，buffer.memory &gt; batch.size &gt; max.request.size。</p>
+<h1 id="Consumer主要消息配置"><a href="#Consumer主要消息配置" class="headerlink" title="Consumer主要消息配置"></a>Consumer主要消息配置</h1><table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>默认值</strong></th>
+<th><strong>推荐值</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>auto.commit.enable</td>
+<td>TRUE</td>
+<td>FALSE</td>
+<td>如果为真，consumer所fetch的消息的offset将会自动的同步到zookeeper。这项提交的offset将在进程无法提供服务时，由新的consumer使用。约束： 设置为false后，需要先成功消费再提交，这样可以避免消息丢失。</td>
+</tr>
+<tr>
+<td>auto.offset.reset</td>
+<td>latest</td>
+<td>earliest</td>
+<td>没有初始化offset或者offset被删除时，可以设置以下值：earliest：自动复位offset为最早 latest：自动复位offset为最新none：如果没有发现offset则向消费者抛出异常anything else：向消费者抛出异常。</td>
+</tr>
+<tr>
+<td>connections.max.idle.ms</td>
+<td>600000</td>
+<td>30000</td>
+<td>空连接的超时时间（单位为ms），设置为30000可以在网络异常场景下减少请求卡顿的时间。</td>
+</tr>
+</tbody></table>
+<ul>
+<li>earliest<br>当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费</li>
+<li>latest<br>当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据</li>
+<li>none<br>topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常</li>
+</ul>
+<h1 id="发消息不丢配置"><a href="#发消息不丢配置" class="headerlink" title="发消息不丢配置"></a>发消息不丢配置</h1><ol>
+<li>block.on.buffer.full &#x3D; true</li>
+<li>acks &#x3D; all</li>
+<li>retries &#x3D; MAX_VALUE</li>
+<li>max.in.flight.requests.per.connection &#x3D; 1</li>
+<li>使用KafkaProducer.send(record, callback)</li>
+<li>callback逻辑中显式关闭producer：close(0) </li>
+<li>unclean.leader.election.enable&#x3D;false</li>
+<li>replication.factor &#x3D; 3 </li>
+<li>min.insync.replicas &#x3D; 2</li>
+<li>replication.factor &gt; min.insync.replicas</li>
+<li>enable.auto.commit&#x3D;false</li>
+</ol>
+<h2 id="Producer端"><a href="#Producer端" class="headerlink" title="Producer端"></a>Producer端</h2><ul>
+<li>block.on.buffer.full &#x3D; true  尽管该参数在0.9.0.0已经被标记为“deprecated”，但鉴于它的含义非常直观，所以这里还是显式设置它为true，使得producer将一直等待缓冲区直至其变为可用。否则如果producer生产速度过快耗尽了缓冲区，producer将抛出异常</li>
+<li>acks&#x3D;all  很好理解，所有follower都响应了才认为消息提交成功，即 ‘committed’</li>
+<li>retries &#x3D; MAX 无限重试，直到你意识到出现了问题</li>
+<li>max.in.flight.requests.per.connection &#x3D; 1 限制客户端在单个broker连接上能够发送的未响应请求的个数。设置此值是1表示kafka broker在响应请求之前client不能再向同一个broker发送请求。注意：设置此参数是为了避免消息乱序</li>
+<li>使用KafkaProducer.send(record, callback)而不是send(record)方法 ，自定义回调逻辑处理消息发送失败</li>
+<li>callback逻辑中最好显式关闭producer：close(0) 注意：设置此参数是为了避免消息乱序</li>
+</ul>
+<p><strong>关于acks</strong>:</p>
+<table>
+<thead>
+<tr>
+<th><strong>acks</strong></th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>0</strong></td>
+<td>Producer 往集群发送数据不需要等到集群的返回，不确保消息发送成功。安全性最低但是效率最高。</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>Producer 往集群发送数据只要 Leader 应答就可以发送下一条，只确保 Leader 接收成功。</td>
+</tr>
+<tr>
+<td><strong>-1 或 all</strong></td>
+<td>Producer 往集群发送数据需要所有的ISR Follower 都完成从 Leader 的同步才会发送下一条，确保 Leader 发送成功和所有的副本都成功接收。安全性最高，但是效率最低。</td>
+</tr>
+</tbody></table>
+<h2 id="Broker配置"><a href="#Broker配置" class="headerlink" title="Broker配置"></a>Broker配置</h2><ul>
+<li>unclean.leader.election.enable&#x3D;false  关闭unclean leader选举，即不允许非ISR中的副本被选举为leader，以避免数据丢失</li>
+<li>replication.factor &gt;&#x3D; 3  这个完全是个人建议了，参考了Hadoop及业界通用的三备份原则</li>
+<li>min.insync.replicas &gt; 1 消息至少要被写入到ISR中的这么多副本才算成功，也是提升数据持久性的一个参数。与acks配合使用</li>
+<li>保证replication.factor &gt; min.insync.replicas  如果两者相等，当一个副本挂掉了分区也就没法正常工作了。通常设置replication.factor &#x3D; min.insync.replicas + 1即可</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/#configuration">官网参考配置</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Message-Queue/" rel="tag"># Message Queue</a>
+              <a href="/tags/Kafka/" rel="tag"># Kafka</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/01/08/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" rel="prev" title="分布式锁">
+                  <i class="fa fa-chevron-left"></i> 分布式锁
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/01/09/Kafka%E9%AB%98%E6%80%A7%E8%83%BD/" rel="next" title="Kafka高性能">
+                  Kafka高性能 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

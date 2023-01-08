@@ -1,37 +1,448 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前置知识事务并发执行时遇到的一致性问题 脏写  一个事务修改了另一个未提交事务修改过的数据。  脏读  一个事务读到了另一个未提交事务修改过的数据。  不可重复读  一个事务多次读到的同一数据行的值不相同。  幻读  一个事务多次按照同一个搜索条件，读到了不同的数据行。 隔离级别隔离级别描述了并发事务执行时对竞争数据的互相影响的程度。 最理想化的隔离应该每个事务执行时互不影响，互不干涉，就像数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL系列—— InnoDB的MVCC机制">
+<meta property="og:url" content="http://example.com/2021/10/31/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-InnoDB%E7%9A%84MVCC%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="前置知识事务并发执行时遇到的一致性问题 脏写  一个事务修改了另一个未提交事务修改过的数据。  脏读  一个事务读到了另一个未提交事务修改过的数据。  不可重复读  一个事务多次读到的同一数据行的值不相同。  幻读  一个事务多次按照同一个搜索条件，读到了不同的数据行。 隔离级别隔离级别描述了并发事务执行时对竞争数据的互相影响的程度。 最理想化的隔离应该每个事务执行时互不影响，互不干涉，就像数据库">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/10/31/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-InnoDB%E7%9A%84MVCC%E6%9C%BA%E5%88%B6/mvcc.png">
+<meta property="article:published_time" content="2021-10-31T15:37:11.000Z">
+<meta property="article:modified_time" content="2022-09-15T07:27:06.423Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/10/31/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-InnoDB%E7%9A%84MVCC%E6%9C%BA%E5%88%B6/mvcc.png">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/10/31/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-InnoDB%E7%9A%84MVCC%E6%9C%BA%E5%88%B6/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/10/31/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-InnoDB%E7%9A%84MVCC%E6%9C%BA%E5%88%B6/","path":"2021/10/31/MySQL系列——-InnoDB的MVCC机制/","title":"MySQL系列—— InnoDB的MVCC机制"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MySQL系列—— InnoDB的MVCC机制 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E5%B9%B6%E5%8F%91%E6%89%A7%E8%A1%8C%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">事务并发执行时遇到的一致性问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="nav-number">1.2.</span> <span class="nav-text">隔离级别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MVCC"><span class="nav-number">2.</span> <span class="nav-text">MVCC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E9%93%BE"><span class="nav-number">2.1.</span> <span class="nav-text">版本链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReadView%EF%BC%88%E4%B8%80%E8%87%B4%E6%80%A7%E8%A7%86%E5%9B%BE%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">ReadView（一致性视图）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95%E5%92%8CMVCC"><span class="nav-number">2.3.</span> <span class="nav-text">二级索引和MVCC</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/31/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-InnoDB%E7%9A%84MVCC%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MySQL系列—— InnoDB的MVCC机制 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL系列—— InnoDB的MVCC机制
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-31 23:37:11" itemprop="dateCreated datePublished" datetime="2021-10-31T23:37:11+08:00">2021-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-15 15:27:06" itemprop="dateModified" datetime="2022-09-15T15:27:06+08:00">2022-09-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><h2 id="事务并发执行时遇到的一致性问题"><a href="#事务并发执行时遇到的一致性问题" class="headerlink" title="事务并发执行时遇到的一致性问题"></a>事务并发执行时遇到的一致性问题</h2><ul>
+<li>脏写</li>
+</ul>
+<p>一个事务修改了另一个未提交事务修改过的数据。</p>
+<ul>
+<li>脏读</li>
+</ul>
+<p>一个事务读到了另一个未提交事务修改过的数据。</p>
+<ul>
+<li>不可重复读</li>
+</ul>
+<p>一个事务多次读到的同一数据行的值不相同。</p>
+<ul>
+<li>幻读</li>
+</ul>
+<p>一个事务多次按照同一个搜索条件，读到了不同的数据行。</p>
+<h2 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h2><p>隔离级别描述了并发事务执行时对竞争数据的互相影响的程度。</p>
+<p>最理想化的隔离应该每个事务执行时互不影响，互不干涉，就像数据库此时只为它一个事务使用似的。</p>
+<p>不过，一般使用场景下，我们会<strong>舍弃一定的隔离性去换取一部分性能</strong>,</p>
+<p>于是SQL标准设立的4个隔离级别，隔离级别越低，越有可能出现数据不一致的情况，不过并发性能也越高。</p>
+<blockquote>
+<p>注意，这是SQL指定的标准，不是MySQL指定的。</p>
+<p>不同DBMS对隔离级别的支持也不一样。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Isolation Level P1（隔离级别）</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>READ UNCOMMITTED （读未提交）</td>
+<td>Possible</td>
+<td>Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>READ COMMITTED（读已提交）</td>
+<td>Not Possible</td>
+<td>Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>REPEATABLE READ （可重复读）</td>
+<td>Not Possible</td>
+<td>Not Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>SERIALIZABLE  （可序列化）</td>
+<td>Not Possible</td>
+<td>Not Possible</td>
+<td>Not Possible</td>
+</tr>
+</tbody></table>
+<p>在任何隔离级别下，脏写都是不可接受的，这是一个对一致性影响极大的操作。</p>
+<p>MySQL会用锁去保证不会有两个并发事务同时修改一条记录。</p>
+<p><strong>MySQL默认使用的隔离级别是REPEATABLE READ</strong>，而且MySQL的可重复读，可以在很大程度上禁止幻读现象的发生，但不能绝对禁止（后文会给出原因）。</p>
+<h1 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h1><p>Multi-Version Concurrency Control（多版本并发控制），MySQL中如何实现？</p>
+<p>对于<code>READ UNCOMMITTED </code>直接读取B+树的最新记录就好了，无需任何多余操作，很简单；</p>
+<p>对于<code>SERIALIZABLE</code>是通过对select语句加共享锁的方式实现的，后面会详细将锁的实现与使用；</p>
+<p>对于<code>READ COMMITTED</code>和<code>REPEATABLE READ</code>的实现是比较复杂的，具体看下面的<strong>版本链+ReadView</strong>。</p>
+<h2 id="版本链"><a href="#版本链" class="headerlink" title="版本链"></a>版本链</h2><ul>
+<li>trx_id</li>
+</ul>
+<p>一个事务每次对某条聚簇索引进行更改的时候，都会把该事务的事务id赋值给trx_id列。</p>
+<ul>
+<li>roll_pointer</li>
+</ul>
+<p>每次对某条聚簇索引记录进行改动时，都会把旧的记录写入到undo日志中，这个隐藏列就相当于一个指针，可以通过它找到修改前的信息。</p>
+<p><img src="/2021/10/31/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-InnoDB%E7%9A%84MVCC%E6%9C%BA%E5%88%B6/mvcc.png"></p>
+<p>如上图，每一次修改记录，就会产生一条undo日志（当然在具体实现的时候是许多条undo log）,每个undo日志也有一个 roll_pointer，那么对于某一数据行，B+树中的行记录和undo日志就构成一条版本链。</p>
+<p>这条版本链在MVCC机制中起到重要作用。</p>
+<h2 id="ReadView（一致性视图）"><a href="#ReadView（一致性视图）" class="headerlink" title="ReadView（一致性视图）"></a>ReadView（一致性视图）</h2><p><code>READ COMMITTED</code>和<code>REPEATABLE READ</code>二者的一个共同的问题就是，如何判断版本链中的哪个版本是当前事务可见的。</p>
+<p>MySQL设计出ReadView这样的数据结构解决这个问题。</p>
+<p>它包括4个比较重要的概念：</p>
+<ol>
+<li><strong>m_ids</strong> : 生成此ReadView时，当前系统<strong>活跃的</strong>读写事务的事务id列表；</li>
+<li><strong>min_trx_id</strong> ：生成此ReadView时，当前系统活跃的读写事务列表中最小的事务id，也就是m_ids中的最小值；</li>
+<li><strong>max_trx_id</strong> ：生成此ReadView时，系统应该分配给下一个事务的事务id值；</li>
+<li><strong>creator_trx_id</strong> ：生成此ReadView的事务id。</li>
+</ol>
+<p>有了这个ReadView，在访问某条记录时，采用下面的方式判断即可。</p>
+<ol>
+<li>如果被访问版本的<strong>trx_id和creator_trx_id相同</strong>，说明这个事务正在访问它自己修改过的记录，所以可见。</li>
+<li>如果被访问版本的<strong>trx_id小于min_trx_id</strong>，说明生成此版本的事务在当前事务生成readview之前就已经提交了，自然也是可见的。</li>
+<li>如果被访问版本的<strong>trx_id大于等于max_trx_id</strong>，表明生成此版本的事务在当前事务后才开启，所以不可见。</li>
+<li>如果被访问版本的<strong>trx_id在min_trx_id-max_trx_id之间</strong>，那么需要判断trx_id是否在m_ids之间。如果在，说明此事务是活跃的，记录不可以被访问；如果不在，说明生成此已经结束，记录可见。</li>
+<li>如果某个版本的记录对当前事务不可见，那么就顺着版本链往下找，并按照上面的方式判断可见性，直到遍历到最后一个版本返回空。</li>
+</ol>
+<p>那么具体怎么实现<code>READ COMMITTED</code>和<code>REPEATABLE READ</code>呢？</p>
+<p>实际上二者的区别就在于生成ReadView的时机不同。</p>
+<p><code>READ COMMITTED</code>在每次读取一条记录前都去生成ReadView，</p>
+<p><code>REPEATABLE READ</code>则在第一次读取数据的时候生成ReadView（不过可以使用<code>WITH CONSISTENT SANPSHOT</code>指定一开启事务就生成ReadView）。</p>
+<h2 id="二级索引和MVCC"><a href="#二级索引和MVCC" class="headerlink" title="二级索引和MVCC"></a>二级索引和MVCC</h2><p>注意只有聚簇索引记录才有 trx_id和roll_pointer。那么如果使用二级索引查询记录如何判断可见性呢？</p>
+<ol>
+<li>二级索引页面的Page Header部分有一个PAGE_MAX_TRX_ID的属性，它代表着<strong>修改</strong>该二级索引页面的最大事务id。如果此<code>PAGE_MAX_TRX_ID</code>是小于min_trx_id的，说明整个页面对当前事务都是可见的，判断完毕。</li>
+<li>否则， 根据二级索引的主键值执行回表操作，得到对应的聚簇索引记录根据前面的方法判断可见性，然后对第一个可见的记录判断是否和利用二级索引查询的索引列的值相匹配，匹配，则此条记录可见；否则继续往下找，<strong>直到聚簇索引记录可见同时二级索引匹配条件满足</strong>。</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-95-51.pdf">A Critique of ANSI SQL Isolation Levels</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hhc9_9/article/details/109394221">Mysql8.0下验证mysql的四种隔离级别</a></p>
+<p>《MySQL是怎样运行的》</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/31/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B-%E2%80%94%E2%80%94-%E7%BC%93%E5%AD%98%E4%B8%89%E5%A4%A7%E9%97%AE%E9%A2%98%E5%8F%8A%E5%85%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" rel="prev" title="Redis系列笔记之 —— 缓存三大问题及其解决方案">
+                  <i class="fa fa-chevron-left"></i> Redis系列笔记之 —— 缓存三大问题及其解决方案
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/02/MongoDB%20%E7%B4%A2%E5%BC%95/" rel="next" title="MongoDB 索引">
+                  MongoDB 索引 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

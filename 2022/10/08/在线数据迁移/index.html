@@ -1,37 +1,378 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="在线数据迁移最大的挑战是如何保证迁移过程服务不受影响。很多人将其比喻成“飞行过程中换发动机”“给行驶的汽车换轮胎”，但实际上并没有那么困难，一个入行一两年的技术人员，遵从一些经验指导，完全可以完成。下面就跟大家分享一下个人在这方面的一些经验，作为抛砖引玉。  在线数据迁移一般分为四个步骤： 一. 上线双写，即同时写入新旧两种数据； 二. 历史数据离线搬迁，即离线将历史存量数据从旧系统搬到新系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在线数据迁移">
+<meta property="og:url" content="http://example.com/2022/10/08/%E5%9C%A8%E7%BA%BF%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="在线数据迁移最大的挑战是如何保证迁移过程服务不受影响。很多人将其比喻成“飞行过程中换发动机”“给行驶的汽车换轮胎”，但实际上并没有那么困难，一个入行一两年的技术人员，遵从一些经验指导，完全可以完成。下面就跟大家分享一下个人在这方面的一些经验，作为抛砖引玉。  在线数据迁移一般分为四个步骤： 一. 上线双写，即同时写入新旧两种数据； 二. 历史数据离线搬迁，即离线将历史存量数据从旧系统搬到新系统">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://static001.infoq.cn/resource/image/e0/8a/e043082562e046bef188321d2a97ec8a.png">
+<meta property="og:image" content="https://static001.infoq.cn/resource/image/61/2c/61bffb2af80ae332bf892ddf74b8b52c.png">
+<meta property="og:image" content="https://static001.infoq.cn/resource/image/c9/47/c9042f3c2e1658f1383b8b091e602347.png">
+<meta property="article:published_time" content="2022-10-08T14:38:41.000Z">
+<meta property="article:modified_time" content="2022-10-18T09:01:49.265Z">
+<meta property="article:author" content="SongyangJi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://static001.infoq.cn/resource/image/e0/8a/e043082562e046bef188321d2a97ec8a.png">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2022/10/08/%E5%9C%A8%E7%BA%BF%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/10/08/%E5%9C%A8%E7%BA%BF%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/","path":"2022/10/08/在线数据迁移/","title":"在线数据迁移"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在线数据迁移 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E7%BA%BF%E5%8F%8C%E5%86%99"><span class="nav-number">1.</span> <span class="nav-text">上线双写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%86%E5%8F%B2%E6%95%B0%E6%8D%AE%E6%90%AC%E8%BF%81"><span class="nav-number">2.</span> <span class="nav-text">历史数据搬迁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%87%E8%AF%BB"><span class="nav-number">3.</span> <span class="nav-text">切读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%85%E7%90%86%E6%B2%89%E6%B7%80"><span class="nav-number">4.</span> <span class="nav-text">清理沉淀</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/08/%E5%9C%A8%E7%BA%BF%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="在线数据迁移 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在线数据迁移
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-10-08 22:38:41" itemprop="dateCreated datePublished" datetime="2022-10-08T22:38:41+08:00">2022-10-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-18 17:01:49" itemprop="dateModified" datetime="2022-10-18T17:01:49+08:00">2022-10-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">架构</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p> 在线数据迁移最大的挑战是如何保证迁移过程服务不受影响。很多人将其比喻成“飞行过程中换发动机”“给行驶的汽车换轮胎”，但实际上并没有那么困难，一个入行一两年的技术人员，遵从一些经验指导，完全可以完成。下面就跟大家分享一下个人在这方面的一些经验，作为抛砖引玉。</p>
+</blockquote>
+<p>在线数据迁移一般分为四个步骤：</p>
+<p>一. 上线双写，即同时写入新旧两种数据；</p>
+<p>二. 历史数据离线搬迁，即离线将历史存量数据从旧系统搬到新系统；</p>
+<p>三. 切读，即将读请求路由到新系统；</p>
+<p>四. 清理沉淀，包括清理旧的数据，回收资源，及清理旧的代码逻辑，旧的配套系统等等，将迁移过程中的经验教训进行总结沉淀，将过程中开发或使用的工具进行通用化改造，以备下次使用。</p>
+<p>注意，某些情况下，步骤一和步骤二也可能倒过来，先做历史数据搬迁，然后再写入新数据，这时候就需要谨慎的处理搬迁这段时间里产生的新数据，一般使用 queue 缓存写入的方式，称为“追数据”。(相当于先存量迁移+再增量迁移)。</p>
+<p><img src="https://static001.infoq.cn/resource/image/e0/8a/e043082562e046bef188321d2a97ec8a.png" alt="img"></p>
+<p>图 1：在线数据迁移步骤示意图</p>
+<p>下面以某社交平台粉丝列表从 Mysql 迁移到 HBase 为例子，展开来讲讲每个步骤具体实施、可能的问题及对策。</p>
+<p>在迁移之前，根据以往的经验制定了更详细的流程，如图：</p>
+<p><img src="https://static001.infoq.cn/resource/image/61/2c/61bffb2af80ae332bf892ddf74b8b52c.png" alt="img"></p>
+<p>图 2：粉丝列表迁移到 HBase 工作流程图</p>
+<h2 id="上线双写"><a href="#上线双写" class="headerlink" title="上线双写"></a>上线双写</h2><p>编写双写的代码逻辑之前，首先要根据业务规则和性能指标确定 HBase 的表结构和主键设计。</p>
+<blockquote>
+<p> 对于列表类的需求，HBase 有两种典型的用法，一种是高表模式，与传统的 Mysql 模式非常类似，列表中的每一项存一行，每一行有固定的属性列；另一种是宽表模式，一个列表存一行，列表中的每一项存成一个单独的列，各种属性都打包到列内部的 value 中。如图：</p>
+</blockquote>
+<p><img src="https://static001.infoq.cn/resource/image/c9/47/c9042f3c2e1658f1383b8b091e602347.png" alt="img"></p>
+<blockquote>
+<p> 粉丝列表业务分别使用 HBase 高表模式和宽表模式存储示意图<br>高表模式的好处在于与 Mysql 类似，各种业务逻辑的实现也比较像，认知和改造成本较低，劣势在于因为 HBase 的实现机制导致单个列表可能被分别存储在多个不同的 Region 里，查询的性能较差。而宽表的优劣势正好与高表相反。在高并发大流量系统中，技术方案很多特性都可以妥协，但唯独性能永远是不能妥协的，所以我们选择宽表模式。</p>
+</blockquote>
+<p><strong>很多高并发系统都采用上行异步化，通过将操作转化为消息，写入消息队列，后台异步处理的方式来削峰填谷，并获得更好的可用性</strong>。大部分消息队列都支持单个消息被多个业务模块重复处理，并支持串联和并联。所以在这里我们将写入 HBase 的代码逻辑单独封装到一个模块中，将它配置为与写入旧 Mysql 代码串联或并联即可。</p>
+<p><strong>为了支持消息异步处理的重试机制，建议将业务模块设计成具有幂等特性，即同一条消息可以重试多次，而不会破坏最终的结果</strong>。有一些模块，如计数器，提醒等，业务本身不支持重试，可以通过“重复消息检测模块”为它们提供短时间内的重试支持。大部分 Mysql 存储都通过主键或者单独的 Unique key 索引来达到幂等要求，相应的，HBase 高表模式通过主键保证，宽表模式通过 column qualifier 保证。在粉丝列表迁移过程中，因为 column qualifier 不能保证幂等，导致数据一致性无法达到要求，最后也是通过引入额外的重复消息检测模块解决。</p>
+<blockquote>
+<p> 另外，HBase 当前不提供二级索引、覆盖索引、join、order by 等 Mysql 高级查询功能，需要在迁移之前做好评估，确定新方案能够支持所有的业务特性。比如粉丝列表一般都是查询最新的 5000 个粉丝，但如果还要支持查询最初 100 个粉丝列表的功能，就会比较费劲。</p>
+</blockquote>
+<p><strong>上线双写完成后，需要对双写的数据进行一致性校验。</strong></p>
+<p>数据一致性校验需要从两个维度进行：存储维度和业务维度。存储维度是指直接取 Mysql 和 HBase 里的数据进行对比；业务维度是指从最终用户看到的数据维度进行校验，即访问粉丝列表页面，看结果是否与原来一致。大型系统的数据一致性校验建议及格线是 6 个 9，即 99.9999%，也就是说每一百万条数据中，差别不能超过 1 条。</p>
+<h2 id="历史数据搬迁"><a href="#历史数据搬迁" class="headerlink" title="历史数据搬迁"></a>历史数据搬迁</h2><p>上线双写并校验确认通过后，就可以开始搬迁历史数据了。</p>
+<p>搬迁历史数据的步骤中，最大的困难是保证搬迁过程与线上业务写入互不干扰。对于列表类功能，最大的干扰是来自于这样一种业务场景：搬迁程序从 Mysql 中 select 出来一个列表，在插入到 HBase 之前，这个列表发生了变化。如果是增加一个元素，由于 HBase 的幂等保证，最终结果并不会产生偏差，但如果是删除一个或多个元素，那么最终会表现为 HBase 中删除操作未生效，因为线上业务执行完删除操作后，搬迁程序又执行了插入操作。本质上，这是因为我们在这样的数据量规模下不能使用事务引起的，如果引入事务，能够解决这个问题，但同时也会将搬迁耗时从几天延长到几周甚至几个月。为了解决这个问题，可以通过引入轻量级的 Memcache 锁来模拟 Serializable 级别的事务隔离。</p>
+<p><strong>历史数据搬迁完成后也需要进行一致性校验。</strong>实际上，建议在搬迁全量数据之前，先搬迁部分数据，并进行一致性校验。部分数据一致性校验通过后，再对全量数据进行搬迁。这种方式可以极大的节约搬迁时间，降低因为搬迁流程或代码不完善导致的延期风险。</p>
+<h2 id="切读"><a href="#切读" class="headerlink" title="切读"></a>切读</h2><p>全量数据搬迁并校验完成后，即可以进行读请求切换了。通用的切换方式是在代码中埋入开关，通过 Config Service 或类似机制进行切换操作。切换的流程为：Tcpcopy 环境 –&gt; 线上环境 uid 白名单（内部工程师）–&gt; 线上环境百分比灰度 0.01%，1%，10% –&gt; 线上环境全量。tcpcopy 环境用来验证代码在线上环境是否正常，uid 白名单用来验证功能是否正常，百分比灰度用来验证性能和资源压力是否正常，所有验证都通过后，最后才进行全量切换。一般这个过程会持续一周到两周。</p>
+<h2 id="清理沉淀"><a href="#清理沉淀" class="headerlink" title="清理沉淀"></a>清理沉淀</h2><p>切读完成后，整个数据迁移过程可以认为已经完成了。但项目工作并没有完结，旧的逻辑代码清理，旧的配套系统下线，旧资源回收，以及最重要的一个环节：经验教训总结、分享，流程完善，工具通用化改造。</p>
+<p>在线数据迁移并不是一项需要高深技术的工作，它更多需要的是对业务逻辑的把控，对操作流程的理解，对新旧系统特性的掌握，以及对细节的敬畏之心。</p>
+<blockquote>
+<p>参考文章 <a target="_blank" rel="noopener" href="https://www.infoq.cn/article/online-data-migration-experience">https://www.infoq.cn/article/online-data-migration-experience</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/10/03/MySQL%E8%AF%AD%E5%8F%A5%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B/" rel="prev" title="MySQL语句执行过程">
+                  <i class="fa fa-chevron-left"></i> MySQL语句执行过程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/10/08/HBase%E5%AE%BD%E8%A1%A8%E5%92%8C%E9%AB%98%E8%A1%A8/" rel="next" title="HBase宽表和高表">
+                  HBase宽表和高表 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,37 +1,567 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="介绍进程间通信（IPC：interprocess communication）是一种涉及一个进程与另一个进程的通信的机制。 这通常只发生在一个系统中。 沟通可以有两种类型 -  在仅从一个进程启动的相关进程之间，例如父进程和子进程。 在不相关的进程之间，或两个或多个不同的进程之间。  具体来说，有下面三大类形式：  按照《UNIX网络编程 卷2：进程间通信》的目录分类：  消息传递（管道、FIFO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程间通信IPC">
+<meta property="og:url" content="http://example.com/2021/11/27/IPC/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="介绍进程间通信（IPC：interprocess communication）是一种涉及一个进程与另一个进程的通信的机制。 这通常只发生在一个系统中。 沟通可以有两种类型 -  在仅从一个进程启动的相关进程之间，例如父进程和子进程。 在不相关的进程之间，或两个或多个不同的进程之间。  具体来说，有下面三大类形式：  按照《UNIX网络编程 卷2：进程间通信》的目录分类：  消息传递（管道、FIFO">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/11/27/IPC/ipc.png">
+<meta property="og:image" content="http://example.com/2021/11/27/IPC/pipe_with_two.jpg">
+<meta property="og:image" content="http://example.com/2021/11/27/IPC/message_queue.jpg">
+<meta property="og:image" content="http://example.com/2021/11/27/IPC/multiple_message_queue.jpg">
+<meta property="article:published_time" content="2021-11-27T09:40:03.000Z">
+<meta property="article:modified_time" content="2021-12-14T16:37:43.584Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="IPC">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/11/27/IPC/ipc.png">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/11/27/IPC/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/11/27/IPC/","path":"2021/11/27/IPC/","title":"进程间通信IPC"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>进程间通信IPC | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E4%BC%A0%E9%80%92"><span class="nav-number">2.</span> <span class="nav-text">消息传递</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93"><span class="nav-number">2.1.</span> <span class="nav-text">管道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.1.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">2.1.2.</span> <span class="nav-text">实例代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FIFO"><span class="nav-number">2.2.</span> <span class="nav-text">FIFO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="nav-number">2.3.</span> <span class="nav-text">消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-1"><span class="nav-number">2.3.1.</span> <span class="nav-text">使用方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5"><span class="nav-number">3.</span> <span class="nav-text">同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E6%96%A5%E9%94%81%E4%B8%8E%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="nav-number">3.1.</span> <span class="nav-text">互斥锁与条件变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-2"><span class="nav-number">3.1.1.</span> <span class="nav-text">使用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">3.2.</span> <span class="nav-text">信号量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-3"><span class="nav-number">3.2.1.</span> <span class="nav-text">使用方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9B%B8%E5%85%B3"><span class="nav-number">4.</span> <span class="nav-text">共享内存相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84"><span class="nav-number">4.1.</span> <span class="nav-text">内存映射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-4"><span class="nav-number">4.1.1.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E4%BB%A3%E7%A0%81-1"><span class="nav-number">4.1.2.</span> <span class="nav-text">实例代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="nav-number">4.2.</span> <span class="nav-text">共享内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Posix-%E7%89%88%E6%9C%AC"><span class="nav-number">4.2.1.</span> <span class="nav-text">Posix 版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SystemV-%E7%89%88%E6%9C%AC"><span class="nav-number">4.2.2.</span> <span class="nav-text">SystemV 版本</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/27/IPC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="进程间通信IPC | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          进程间通信IPC
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-27 17:40:03" itemprop="dateCreated datePublished" datetime="2021-11-27T17:40:03+08:00">2021-11-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-15 00:37:43" itemprop="dateModified" datetime="2021-12-15T00:37:43+08:00">2021-12-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>进程间通信（IPC：interprocess communication）是一种涉及一个进程与另一个进程的通信的机制。 这通常只发生在一个系统中。</p>
+<p>沟通可以有两种类型 -</p>
+<ul>
+<li>在仅从一个进程启动的相关进程之间，例如父进程和子进程。</li>
+<li>在不相关的进程之间，或两个或多个不同的进程之间。</li>
+</ul>
+<p>具体来说，有下面三大类形式：</p>
+<p><img src="/2021/11/27/IPC/ipc.png"></p>
+<p>按照《UNIX网络编程 卷2：进程间通信》的目录分类：</p>
+<ol>
+<li>消息传递（管道、FIFO、消息队列）</li>
+<li>同步（互斥锁和条件变量、读写锁、信号量）</li>
+<li>共享内存（匿名的、具名的）</li>
+</ol>
+<h1 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h1><h2 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h2><p><strong>管道是两个或多个相关或相互关联的过程之间的通信媒介。</strong></p>
+<p>它可以在一个进程内，也可以在子进程和父进程之间进行通信。 通信也可以是多层次的，例如父母，孩子和孙子之间的通信等。通过写入管道的一个过程和管道的其他读取来实现通信。 </p>
+<p><strong>要实现管道系统调用，请创建两个文件，一个用于写入文件，另一个用于从文件中读取。</strong></p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">pipe</span><span class="params">(<span class="type">int</span> pipedes[<span class="number">2</span>])</span>;</span><br></pre></td></tr></table></figure>
+
+<p>该系统调用将创建用于单向通信的管道，即，它创建两个描述符，第一个连接到管道读取而另一个连接以写入管道。</p>
+<p>描述符pipedes [0]用于读取，pipedes [1]用于写入。 无论写入管道[1]是什么都可以从pipedes [0]中读取。</p>
+<p>此调用在成功时返回零，在失败时返回-1。 要了解失败的原因，请使用errno variable或perror（）函数进行检查。</p>
+<p>如下图这是使用管道进行双向通信的常见做法：</p>
+<p><img src="/2021/11/27/IPC/pipe_with_two.jpg" alt="img"></p>
+<h3 id="实例代码"><a href="#实例代码" class="headerlink" title="实例代码"></a>实例代码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 用两个单工的管道实现双向通信</span></span><br><span class="line">    <span class="type">int</span> pipefds1[<span class="number">2</span>], pipefds2[<span class="number">2</span>];</span><br><span class="line">    <span class="type">int</span> returnstatus1, returnstatus2;</span><br><span class="line">    <span class="type">int</span> pid;</span><br><span class="line">    <span class="type">char</span> pipe1writemessage[<span class="number">20</span>] = <span class="string">&quot;Hi&quot;</span>;</span><br><span class="line">    <span class="type">char</span> pipe2writemessage[<span class="number">20</span>] = <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">    <span class="type">char</span> readmessage[<span class="number">20</span>];</span><br><span class="line">    returnstatus1 = pipe(pipefds1);</span><br><span class="line">    <span class="keyword">if</span> (returnstatus1 == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Unable to create pipe 1 \n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    returnstatus2 = pipe(pipefds2);</span><br><span class="line">    <span class="keyword">if</span> (returnstatus2 == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Unable to create pipe 2 \n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    pid = fork();</span><br><span class="line">    <span class="keyword">if</span> (pid != <span class="number">0</span>) &#123; <span class="comment">// Parent process </span></span><br><span class="line">        close(pipefds1[<span class="number">0</span>]); <span class="comment">// Close the unwanted pipe1 read side</span></span><br><span class="line">        close(pipefds2[<span class="number">1</span>]); <span class="comment">// Close the unwanted pipe2 write side</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;In Parent: Writing to pipe 1 – Message is %s\n&quot;</span>, pipe1writemessage);</span><br><span class="line">        write(pipefds1[<span class="number">1</span>], pipe1writemessage, <span class="keyword">sizeof</span>(pipe1writemessage));</span><br><span class="line">        read(pipefds2[<span class="number">0</span>], readmessage, <span class="keyword">sizeof</span>(readmessage));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;In Parent: Reading from pipe 2 – Message is %s\n&quot;</span>, readmessage);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">//child process</span></span><br><span class="line">        close(pipefds1[<span class="number">1</span>]); <span class="comment">// Close the unwanted pipe1 write side</span></span><br><span class="line">        close(pipefds2[<span class="number">0</span>]); <span class="comment">// Close the unwanted pipe2 read side</span></span><br><span class="line">        read(pipefds1[<span class="number">0</span>], readmessage,</span><br><span class="line">             <span class="keyword">sizeof</span>(readmessage));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;In Child: Reading from pipe 1 – Message is %s\n&quot;</span>, readmessage);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;In Child: Writing to pipe 2 – Message is %s\n&quot;</span>, pipe2writemessage);</span><br><span class="line">        write(pipefds2[<span class="number">1</span>], pipe2writemessage,</span><br><span class="line">              <span class="keyword">sizeof</span>(pipe2writemessage));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h2><p>暂略</p>
+<h2 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h2><p>当我们已经拥有共享内存时，为什么我们需要消息队列？ 这将有多种原因，让我们试着将其分解为多个点以简化 -</p>
+<ul>
+<li>如所理解的，一<strong>旦进程接收到消息，它将不再可用于任何其他过程</strong>。 而在共享内存中，数据可供多个进程访问。</li>
+<li>如果我们想要与小消息格式进行通信。</li>
+<li>当多个进程同时通信时，<strong>共享内存数据需要通过同步进行保护</strong>。</li>
+<li>使用共享内存的写入和读取频率很高，但<strong>实现该功能将非常复杂</strong>。 在这种情况下使用不值得。</li>
+<li>如果<strong>并不是所有进程都需要访问共享内存</strong>，那么使用消息队列实现会更好。</li>
+<li>如果我们想要<strong>与不同的数据包进行通信</strong>，则说过程A将消息类型1发送到进程B，消息类型10发送到进程C，消息类型20发送到进程D.在这种情况下，使用消息队列实现更简单。 为了将给定的消息类型简化为1,10,20，它可以是0或+ ve或-ve，如下所述。</li>
+<li>当然，<strong>消息队列的顺序是FIFO</strong>（先进先出）。 插入队列中的第一条消息是第一个要检索的消息。</li>
+</ul>
+<ol>
+<li>通过一个进程写入共享内存并通过另一个进程从共享内存中读取。 我们知道，阅读也可以通过多个流程完成</li>
+</ol>
+<p><img src="/2021/11/27/IPC/message_queue.jpg" alt="消息队列"></p>
+<ol start="2">
+<li>一个进程使用不同的数据包写入共享内存，并通过多个进程从中读取，即按消息类型。</li>
+</ol>
+<p><img src="/2021/11/27/IPC/multiple_message_queue.jpg" alt="多个消息队列"></p>
+<h3 id="使用方法-1"><a href="#使用方法-1" class="headerlink" title="使用方法"></a>使用方法</h3><p>这里以POSIX的接口为实例</p>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>API 作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mqd_t mq_open(const char <em>name, int oflag, mode_t mode, struct mq_attr</em> attr)</td>
+<td>创建命名消息队列</td>
+</tr>
+<tr>
+<td>mqd_t mq_close(mqd_t mqdes)</td>
+<td>结束到开放式消息队列的连接</td>
+</tr>
+<tr>
+<td>mqd_t mq_unlink(const char *name)</td>
+<td>结束到开放式消息队列的连接，并在最后一个进程关闭此队列时将其删除</td>
+</tr>
+<tr>
+<td>mqd_t mq_send(mqd_t mqdes, const char *msg_ptr, size_t msg_len, unsigned msg_prio)</td>
+<td>将消息放入队列</td>
+</tr>
+<tr>
+<td>ssize_t mq_receive(mqd_t mqdes, char <em>msg_ptr, size_t msg_len, unsigned</em> msg_prio)</td>
+<td>在队列中接收消息</td>
+</tr>
+<tr>
+<td>mqd_t mq_notify(mqd_t mqdes, const struct sigevent *notification)</td>
+<td>通知进程或线程消息已存在于队列中</td>
+</tr>
+<tr>
+<td>mqd_t mq_getattr(mqd_t mqdes, struct mq_attr <em>attr) 、mqd_t mq_setattr(mqd_t mqdes, struct mq_attr</em> newattr, struct mq_attr *oldattr)</td>
+<td>设置或获取消息队列属性</td>
+</tr>
+</tbody></table>
+<h1 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h1><h2 id="互斥锁与条件变量"><a href="#互斥锁与条件变量" class="headerlink" title="互斥锁与条件变量"></a>互斥锁与条件变量</h2><p>这里互斥锁和条件变量的使用，与Java的<code>synchronized+wait+notify</code>以及<code>Lock+Condition</code> 机制在语义上和使用上十分相似，就不详细介绍了。</p>
+<h3 id="使用方法-2"><a href="#使用方法-2" class="headerlink" title="使用方法"></a>使用方法</h3><blockquote>
+<p>linux c版本的条件变量和互斥锁(mutex)，不是C++的。</p>
+</blockquote>
+<ol>
+<li>互斥锁的初始化</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_mutex_init</span><span class="params">(<span class="type">pthread_mutex_t</span> *<span class="keyword">restrict</span> mutex, <span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *<span class="keyword">restrict</span> attr)</span>;</span><br><span class="line"><span class="type">pthread_mutex_t</span> mutex = PTHREAD_MUTEX_INITIALIZER;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>互斥锁的销毁</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_mutex_destroy</span><span class="params">(<span class="type">pthread_mutex_t</span> *mutex)</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="3">
+<li>加锁与解锁</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_mutex_lock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mutex)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">pthread_mutex_trylock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mutex)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">pthread_mutex_unlock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mutex)</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="4">
+<li>条件变量的函数</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_cond_wait</span><span class="params">(<span class="type">pthread_cond_t</span> *<span class="keyword">restrict</span> cond,</span></span><br><span class="line"><span class="params">           <span class="type">pthread_mutex_t</span> *<span class="keyword">restrict</span> mutex)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">pthread_cond_signal</span><span class="params">(<span class="type">pthread_cond_t</span> *cond)</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h2><p>基本上信号量分为两种类型 -</p>
+<p><strong>Binary Semaphores</strong> - 只有两个状态0和1，即锁定&#x2F;解锁或可用&#x2F;不可用，Mutex实现。</p>
+<p><strong>Counting Semaphores</strong> - 允许任意资源计数的信号量称为计数信号量。</p>
+<h3 id="使用方法-3"><a href="#使用方法-3" class="headerlink" title="使用方法"></a>使用方法</h3><table>
+<thead>
+<tr>
+<th>API</th>
+<th>API 作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sem_t *sem_open(const char  *name, int oflag, mode_t mode, unsigned int value)</td>
+<td>创建命名信号量</td>
+</tr>
+<tr>
+<td>int sem_init(sem_t *sem, int pshared, unsigned int value)</td>
+<td>初始化信号量结构</td>
+</tr>
+<tr>
+<td>int sem_close(sem_t *sem)</td>
+<td>结束到开放式信号量的连接</td>
+</tr>
+<tr>
+<td>int sem_unlink(const char *name)</td>
+<td>结束到开放式信号量的连接，并在最后一个进程关闭此信号量时将其删除</td>
+</tr>
+<tr>
+<td>int sem_getvalue(sem_t <em>sem, int</em> sval)</td>
+<td>将信号量的值复制到指定整数中</td>
+</tr>
+<tr>
+<td>int sem_wait(sem_t *sem)</td>
+<td>递减信号量计数，当其他进程拥有信号量时进行阻塞，或者当其他进程拥有信号量时返回错误（aka P 操作）</td>
+</tr>
+<tr>
+<td>int sem_post(sem_t *sem)</td>
+<td>递增信号量计数（aka V 操作）</td>
+</tr>
+</tbody></table>
+<h1 id="共享内存相关"><a href="#共享内存相关" class="headerlink" title="共享内存相关"></a>共享内存相关</h1><h2 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h2><p>mmap()系统调用在调用进程的虚拟地址空间中提供映射，该映射将文件或设备映射到内存中。 这有两种类型 -</p>
+<p><strong>File mapping or File-backed mapping</strong> - 此映射将进程的虚拟内存区域映射到文件。 这意味着读取或写入这些内存区域会导致文件被读取或写入。 这是默认的映射类型。</p>
+<p><strong>Anonymous mapping</strong> - 此映射映射进程的虚拟内存区域，不受任何文件的支持。 内容初始化为零。 此映射类似于动态内存分配（malloc()），并在某些malloc()实现中用于某些分配。</p>
+<p>当两个或多个进程共享相同的页面时，每个进程可以根据映射类型查看其他进程所做的页面内容的更改。 映射类型可以是私有的也可以是共享的 -</p>
+<p><strong>Private Mapping (MAP_PRIVATE)</strong> - 对此映射内容的修改对其他进程不可见，并且映射不会传送到基础文件。</p>
+<p><strong>Shared Mapping (MAP_SHARED)</strong> - 对此映射内容的修改对其他进程可见，并且映射将传送到基础文件。</p>
+<h3 id="使用方法-4"><a href="#使用方法-4" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> *<span class="title function_">mmap</span><span class="params">(<span class="type">void</span> *addr, <span class="type">size_t</span> length, <span class="type">int</span> prot, <span class="type">int</span> flags, <span class="type">int</span> fd, <span class="type">off_t</span> offset)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>参数</li>
+</ul>
+<p>虚拟地址addr可以是用户指定的，也可以是内核生成的（将addr作为NULL传递）;</p>
+<p>字段length需要以字节为单位的映射大小;</p>
+<p>字段prot表示存储器保护值，例如PROT_NONE，PROT_READ，PROT_WRITE，PROT_EXEC，分别用于可能无法访问，读取，写入或执行的区域。 该值可以是单个（PROT_NONE），也可以与三个标志中的任何一个（最后3个）进行OR运算;</p>
+<p>字段flags指示映射类型或MAP_PRIVATE或MAP_SHARED;</p>
+<p>字段fd表示标识要映射的文件的文件描述符;</p>
+<p>字段offset表示文件的起始点，如果需要映射整个文件，则偏移量应为零。</p>
+<ul>
+<li>返回值</li>
+</ul>
+<p>在成功时返回映射的起始地址，或者在出错时返回MAP_FAILED。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">munmap</span><span class="params">(<span class="type">void</span> *addr, <span class="type">size_t</span> length)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>执行已映射内存映射区域的取消映射。</p>
+<p>字段addr表示映射的起始地址，length表示要取消映射的映射的字节大小。</p>
+<h3 id="实例代码-1"><a href="#实例代码-1" class="headerlink" title="实例代码"></a>实例代码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Filename: mmap_test.c */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">write_mmap_sample_data</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">stat</span> <span class="title">mmapstat</span>;</span></span><br><span class="line">    <span class="type">char</span> *data;</span><br><span class="line">    <span class="type">int</span> minbyteindex;</span><br><span class="line">    <span class="type">int</span> maxbyteindex;</span><br><span class="line">    <span class="type">int</span> offset;</span><br><span class="line">    <span class="type">int</span> fd;</span><br><span class="line">    <span class="type">int</span> unmapstatus;</span><br><span class="line">    write_mmap_sample_data();</span><br><span class="line">    <span class="keyword">if</span> (stat(<span class="string">&quot;MMAP_DATA.txt&quot;</span>, &amp;mmapstat) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;stat failure&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ((fd = open(<span class="string">&quot;MMAP_DATA.txt&quot;</span>, O_RDONLY)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;open failure&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    data = mmap((<span class="type">caddr_t</span>) <span class="number">0</span>, mmapstat.st_size, PROT_READ, MAP_SHARED, fd, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (data == (<span class="type">caddr_t</span>) (<span class="number">-1</span>)) &#123;</span><br><span class="line">        perror(<span class="string">&quot;mmap failure&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    minbyteindex = <span class="number">0</span>;</span><br><span class="line">    maxbyteindex = mmapstat.st_size - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Enter -1 to quit or &quot;</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;enter a number between %d and %d: &quot;</span>, minbyteindex, maxbyteindex);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;offset);</span><br><span class="line">        <span class="keyword">if</span> ((offset &gt;= <span class="number">0</span>) &amp;&amp; (offset &lt;= maxbyteindex))</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Received char at %d is %c\n&quot;</span>, offset, data[offset]);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (offset != <span class="number">-1</span>)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Received invalid index %d\n&quot;</span>, offset);</span><br><span class="line">    &#125; <span class="keyword">while</span> (offset != <span class="number">-1</span>);</span><br><span class="line">    unmapstatus = munmap(data, mmapstat.st_size);</span><br><span class="line">    <span class="keyword">if</span> (unmapstatus == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;munmap failure&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    close(fd);</span><br><span class="line">    system(<span class="string">&quot;rm -f MMAP_DATA.txt&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">write_mmap_sample_data</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> fd;</span><br><span class="line">    <span class="type">char</span> ch;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">stat</span> <span class="title">textfilestat</span>;</span></span><br><span class="line">    fd = open(<span class="string">&quot;MMAP_DATA.txt&quot;</span>, O_CREAT | O_TRUNC | O_WRONLY, <span class="number">0666</span>);</span><br><span class="line">    <span class="keyword">if</span> (fd == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;File open error &quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Write A to Z</span></span><br><span class="line">    ch = <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">    <span class="keyword">while</span> (ch &lt;= <span class="string">&#x27;Z&#x27;</span>) &#123;</span><br><span class="line">        write(fd, &amp;ch, <span class="keyword">sizeof</span>(ch));</span><br><span class="line">        ch++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Write 0 to 9</span></span><br><span class="line">    ch = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    <span class="keyword">while</span> (ch &lt;= <span class="string">&#x27;9&#x27;</span>) &#123;</span><br><span class="line">        write(fd, &amp;ch, <span class="keyword">sizeof</span>(ch));</span><br><span class="line">        ch++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Write a to z</span></span><br><span class="line">    ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">    <span class="keyword">while</span> (ch &lt;= <span class="string">&#x27;z&#x27;</span>) &#123;</span><br><span class="line">        write(fd, &amp;ch, <span class="keyword">sizeof</span>(ch));</span><br><span class="line">        ch++;</span><br><span class="line">    &#125;</span><br><span class="line">    close(fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h2><p>共享内存是两个或多个进程之间共享的内存。 但是，为什么我们需要共享内存或其他一些通信方式？</p>
+<p>重申一下，每个进程都有自己的地址空间，如果任何进程想要将自己的地址空间中的某些信息与其他进程通信，那么只有IPC（进程间通信）技术才有可能。 我们已经知道，沟通可以在相关或不相关的流程之间进行。</p>
+<h3 id="Posix-版本"><a href="#Posix-版本" class="headerlink" title="Posix 版本"></a>Posix 版本</h3><table>
+<thead>
+<tr>
+<th>API</th>
+<th>API 作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int shm_open(const char *name, int oflag, mode_t mode)</td>
+<td>创建共享内存，成功返回描述符</td>
+</tr>
+<tr>
+<td>int shm_unlink(const char *name)</td>
+<td>结束到共享内存的连接，并在最后一个进程关闭它时将其删除</td>
+</tr>
+<tr>
+<td>void <em>mmap(void</em> addr, size_t length, int prot, int flags, int fd, off_t offset)</td>
+<td>映射内存</td>
+</tr>
+</tbody></table>
+<p>Posix的共享内存区构筑在<code>mmap</code>之上。</p>
+<h3 id="SystemV-版本"><a href="#SystemV-版本" class="headerlink" title="SystemV 版本"></a>SystemV 版本</h3><p>相关函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ipc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/shm.h&gt;</span></span></span><br><span class="line"><span class="comment">// 创建或分配System V共享内存段, 成功时返回有效的共享内存标识符（用于进一步调用共享内存）</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">shmget</span><span class="params">(<span class="type">key_t</span> key, <span class="type">size_t</span> size, <span class="type">int</span> shmflg)</span></span><br><span class="line"><span class="comment">// 为System V共享内存段执行共享内存操作，即将共享内存段附加到调用进程的地址空间。成功时返回附加共享内存段的地址。 </span></span><br><span class="line"><span class="type">void</span> * <span class="title function_">shmat</span><span class="params">(<span class="type">int</span> shmid, <span class="type">const</span> <span class="type">void</span> *shmaddr, <span class="type">int</span> shmflg)</span></span><br><span class="line"><span class="comment">// 从调用进程的地址空间中分离共享内存段的System V共享内存段。将在成功时返回0，在失败时返回-1</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">shmdt</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *shmaddr)</span></span><br><span class="line"><span class="comment">// 执行System V共享内存段的控制操作</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">shmctl</span><span class="params">(<span class="type">int</span> shmid, <span class="type">int</span> cmd, <span class="keyword">struct</span> shmid_ds *buf)</span>  </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<blockquote>
+<p>参考链接</p>
+<p>《UNIX网络编程 卷2：进程间通信》</p>
+<p><a target="_blank" rel="noopener" href="https://iowiki.com/inter_process_communication/inter_process_communication_index.html">WIKI教程</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/52php/p/5861372.html">Linux进程间通信（六）：共享内存 shmget()、shmat()、shmdt()、shmctl() </a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/IPC/" rel="tag"># IPC</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/27/Linux%E5%91%BD%E4%BB%A4-%E2%80%94%E2%80%94-%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E7%9B%91%E6%8E%A7/" rel="prev" title="Linux命令 —— 进程、线程监控">
+                  <i class="fa fa-chevron-left"></i> Linux命令 —— 进程、线程监控
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/28/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="next" title="Lambda表达式">
+                  Lambda表达式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

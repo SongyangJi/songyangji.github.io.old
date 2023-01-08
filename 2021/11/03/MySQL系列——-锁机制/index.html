@@ -1,37 +1,535 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="两阶段锁协议两阶段锁协议（2PL）是一种能够保证事务可串行化的协议，它将事务的获取锁和释放锁划分成了增长（Growing）和缩减（Shrinking）两个不同的阶段。 在增长阶段，一个事务可以获得锁但是不能释放锁；而在缩减阶段事务只可以释放锁，并不能获得新的锁，如果只看 2PL 的定义，那么到这里就已经介绍完了，但是它还有两个变种：  严格两阶段锁（Strict 2PL）：事务持有的互斥锁必须在提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL系列 —— 锁机制">
+<meta property="og:url" content="http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="两阶段锁协议两阶段锁协议（2PL）是一种能够保证事务可串行化的协议，它将事务的获取锁和释放锁划分成了增长（Growing）和缩减（Shrinking）两个不同的阶段。 在增长阶段，一个事务可以获得锁但是不能释放锁；而在缩减阶段事务只可以释放锁，并不能获得新的锁，如果只看 2PL 的定义，那么到这里就已经介绍完了，但是它还有两个变种：  严格两阶段锁（Strict 2PL）：事务持有的互斥锁必须在提">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/granularity-hierarchy.png">
+<meta property="og:image" content="http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/lock-type-compatibility-matrix.png">
+<meta property="og:image" content="http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/gap-lock.png">
+<meta property="og:image" content="http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/next-key-lock.png">
+<meta property="og:image" content="http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/lock-structure.png">
+<meta property="og:image" content="http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/typemode.png">
+<meta property="article:published_time" content="2021-11-03T08:11:15.000Z">
+<meta property="article:modified_time" content="2021-11-27T04:23:01.677Z">
+<meta property="article:author" content="SongyangJi">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="锁">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/granularity-hierarchy.png">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/","path":"2021/11/03/MySQL系列——-锁机制/","title":"MySQL系列 —— 锁机制"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MySQL系列 —— 锁机制 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E9%98%B6%E6%AE%B5%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.</span> <span class="nav-text">两阶段锁协议</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL%E4%B8%AD%E9%94%81%E6%9C%BA%E5%88%B6"><span class="nav-number"></span> <span class="nav-text">MySQL中锁机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E7%B2%92%E5%BA%A6%E5%88%86"><span class="nav-number"></span> <span class="nav-text">按粒度分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E6%98%AF%E5%90%A6%E6%84%8F%E5%90%91%E9%94%81%E5%8C%BA%E5%88%86"><span class="nav-number"></span> <span class="nav-text">按是否意向锁区分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E8%AF%BB%E5%86%99%E6%80%A7%E8%B4%A8%E5%88%86"><span class="nav-number"></span> <span class="nav-text">按读写性质分</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E4%B8%AD%E7%9A%84%E9%94%81"><span class="nav-number"></span> <span class="nav-text">InnoDB存储引擎中的锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#InnoDB%E4%B8%AD%E7%9A%84%E8%A1%A8%E7%BA%A7%E9%94%81"><span class="nav-number"></span> <span class="nav-text">InnoDB中的表级锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InnoDB%E4%B8%AD%E7%9A%84%E8%A1%8C%E7%BA%A7%E9%94%81"><span class="nav-number"></span> <span class="nav-text">InnoDB中的行级锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#InnoDB%E9%94%81%E7%9A%84%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84"><span class="nav-number"></span> <span class="nav-text">InnoDB锁的内存结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%8A%A0%E9%94%81%E6%83%85%E5%86%B5"><span class="nav-number"></span> <span class="nav-text">查看事务的加锁情况</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%BB%E9%94%81"><span class="nav-number"></span> <span class="nav-text">死锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number"></span> <span class="nav-text">参考资料</span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MySQL系列 —— 锁机制 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL系列 —— 锁机制
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-03 16:11:15" itemprop="dateCreated datePublished" datetime="2021-11-03T16:11:15+08:00">2021-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-11-27 12:23:01" itemprop="dateModified" datetime="2021-11-27T12:23:01+08:00">2021-11-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="两阶段锁协议"><a href="#两阶段锁协议" class="headerlink" title="两阶段锁协议"></a>两阶段锁协议</h3><p>两阶段锁协议（2PL）是一种能够保证事务可串行化的协议，它将事务的获取锁和释放锁划分成了增长（Growing）和缩减（Shrinking）两个不同的阶段。</p>
+<p>在增长阶段，一个事务可以获得锁但是不能释放锁；而在缩减阶段事务只可以释放锁，并不能获得新的锁，如果只看 2PL 的定义，那么到这里就已经介绍完了，但是它还有两个变种：</p>
+<ol>
+<li><strong>严格两阶段锁</strong>（Strict 2PL）：事务持有的<strong>互斥</strong>锁必须在提交后再释放；</li>
+<li><strong>强两阶段锁</strong>（Rigorous 2PL）：事务持有的<strong>所有</strong>锁必须在提交后释放；</li>
+</ol>
+<h1 id="MySQL中锁机制"><a href="#MySQL中锁机制" class="headerlink" title="MySQL中锁机制"></a>MySQL中锁机制</h1><h2 id="按粒度分"><a href="#按粒度分" class="headerlink" title="按粒度分"></a>按粒度分</h2><p>表锁<br>行锁</p>
+<p>简单的说，表锁上锁的粒度是table，而行锁可以只对部分行上锁。</p>
+<p>后者粒度低得多，这也是为什么InnoDB引擎是默认的引擎，除非你的数据库操作只有读，没有写和加锁读。</p>
+<p>否则表锁的代价太大。</p>
+<p><img src="/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/granularity-hierarchy.png" alt="granularity-hierarchy"></p>
+<h2 id="按是否意向锁区分"><a href="#按是否意向锁区分" class="headerlink" title="按是否意向锁区分"></a>按是否意向锁区分</h2><p>意向锁、非意向锁</p>
+<p>（见上图）</p>
+<p>虽然这种不同粒度的锁能够解决父节点被加锁时，子节点不能被加锁的问题，但是我们没有办法在子节点被加锁时，立刻确定父节点能不能被加锁。</p>
+<p>在这时我们就需要引入<strong>意向锁</strong>来解决这个问题了。</p>
+<p><strong>当需要给子节点加锁时，先给所有的父节点加对应的意向锁</strong>，<strong>意向锁之间是完全不会互斥的</strong>，只是用来帮助父节点快速判断是否可以对该节点进行加锁。</p>
+<p>具体的，InnoDB如果需要对每一行加上行锁，那么需要先给它所在表加上意向锁。</p>
+<p>加的是互斥行锁，就给表加上意向互斥锁（IX）；</p>
+<p>加的是共享行锁，就给锁加上意向共享锁（IS）。</p>
+<p>见下图，各种锁的兼容性矩阵。</p>
+<p><img src="/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/lock-type-compatibility-matrix.png" alt="lock-type-compatibility-matrix"></p>
+<h2 id="按读写性质分"><a href="#按读写性质分" class="headerlink" title="按读写性质分"></a>按读写性质分</h2><p>读锁（共享锁、S锁）<br>写锁（互斥锁、X锁）</p>
+<p>这个锁的语义和其他地方（如Java中的<code>ReadWriteLock</code>）锁的意义是一致的。</p>
+<p>读锁-读锁共享；读锁-写锁互斥；写锁-写锁互斥。</p>
+<p>写操作加的都是写锁，普通读操作是不加锁的（这个读称之为MVCC的一致性非锁定读）。</p>
+<p>如果需要读操作也要加锁，可以使用<code>for share</code>、<code>for update</code>）(前者也就是<code>lock in share mode </code>)。（后面会详细介绍）</p>
+<blockquote>
+<p> 注意MySQL支持多种存储引擎，不同引擎对锁的支持是不一样的。<br>比如，MyISAM、Memory引擎就不支持行锁，自然也无需表级别的意向锁。<br>重点是InnoDB中的锁机制。</p>
+</blockquote>
+<h1 id="InnoDB存储引擎中的锁"><a href="#InnoDB存储引擎中的锁" class="headerlink" title="InnoDB存储引擎中的锁"></a>InnoDB存储引擎中的锁</h1><h2 id="InnoDB中的表级锁"><a href="#InnoDB中的表级锁" class="headerlink" title="InnoDB中的表级锁"></a>InnoDB中的表级锁</h2><ul>
+<li><strong>表级别的S锁、X锁</strong></li>
+</ul>
+<ol>
+<li><p>默认情况在对一个表执行 select、insert、delete、update语句时, InnoDB引擎不会为这个表加上表级别的锁。</p>
+</li>
+<li><p>在执行一些DDL语句时，会和select、insert、delete、update产生冲突，一个阻塞另一个。</p>
+<p>不过，这个不是表锁起的作用，而是位于服务器层的 <strong>元数据锁</strong>（Metadata Lock）来实现的。</p>
+<p>（DDL语句执行时，<strong>会隐式提交当前会话中的事务</strong>，这个要注意)</p>
+</li>
+<li><p>InnoDB存储引擎提供的表锁其实在一般使用场景下，并不会直接使用到，只有在一些特殊场景下（服务崩溃需要对系统运维时使用）。</p>
+</li>
+</ol>
+<p><strong>如何加表锁</strong></p>
+<p>在系统变量为 <code>autocommit = 0</code>和<code>innodb_table_locks = 1</code>时，</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LOCK TABLES t READ; # 表级别读锁</span><br><span class="line">LOCK TABLES T WRITE; # 表级别的写锁</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><p><strong>表级别的IS、IX锁</strong></p>
+<p>在需要加行锁的时候，需要先给所在的表加上意向锁。加意向锁的作用和意图在上面已经说过了。</p>
+</li>
+<li><p><strong>表级别的AUTO-INC锁</strong></p>
+</li>
+</ul>
+<p>如何实现对具有<strong>AUTO_INCREMENT</strong>属性的列的自增？</p>
+<p>这个时候需要使用到表级别的<strong>自增锁</strong>。</p>
+<p>注意这个AUTO-INC锁的作用范围只有单个插入语句，在插入语句完成后，这把锁就会被释放。</p>
+<p>还有一个更轻量的实现，就是在获取到需要的自增值就立即释放锁，不必等待插入语句完成。</p>
+<p>可以使用<code>innodb_autoinc_lock_mode</code>控制使用哪个实现。</p>
+<h2 id="InnoDB中的行级锁"><a href="#InnoDB中的行级锁" class="headerlink" title="InnoDB中的行级锁"></a>InnoDB中的行级锁</h2><p>InnoDB中的行级锁有下面几种概念， 共同实现了行锁这个语义。</p>
+<ul>
+<li><p><strong>Record Lock</strong></p>
+<p>记录锁，官方叫它“LOCK_REC_NOT_GAP”，顾名思义，锁住的是真实的数据行。</p>
+</li>
+<li><p><strong>Gap Lock</strong></p>
+<p>间隙锁，”LOCK_GAP”</p>
+<p>这个间隙锁，锁住的是数据记录之间的间隙。</p>
+<p>为什么要锁住间隙？这个gap lock的提出是为了解决”幻行“现象的发生。</p>
+<p>所谓幻读，就是一个事务向另一个事务读范围中插入了一条记录，然后另一个事务就读到了“幻行”（虽然说MVCC的一致性读很大程度上可以避免，但是彻底避免幻读就需要使用gap lock）。</p>
+</li>
+</ul>
+<img src="gap-lock.png" style="zoom:50%;" />
+
+<p>如上图，再给7上间隙锁的时候，其他事务无法向(5,7)之间插入行记录。这就是<strong>锁住间隙</strong>的作用。</p>
+<ul>
+<li><strong>Next-key Lock</strong></li>
+</ul>
+<p>临键锁，官方叫它”LOCK_ORDINARY“,从这个英文名字就可以看出。</p>
+<p>这个锁才是正常使用的加的行锁。</p>
+<img src="next-key-lock.png" style="zoom:50%;" />
+
+<p>如上，临键锁实际上记录锁和间隙锁的合体。给某个记录加上临键锁，实际上锁住了这条记录和它前面的间隙。</p>
+<p>所以说临键锁是”左开右闭“的。</p>
+<h1 id="InnoDB锁的内存结构"><a href="#InnoDB锁的内存结构" class="headerlink" title="InnoDB锁的内存结构"></a>InnoDB锁的内存结构</h1><p>上面讲到了表锁和行锁。</p>
+<p>表锁的对象的是一个表，可以为这张表生成一个锁结构。</p>
+<p>如果是行锁呢？难不成为每一个数据行都要生成一个锁结构吧，这个对内存消耗太大了，也不利于管理。</p>
+<p>所以，符合下面这些条件的记录的锁实际上使用一个锁结构就可以做到。</p>
+<ul>
+<li>同一个事务中</li>
+<li>加锁的类型一样</li>
+<li>等待状态一样</li>
+<li>被加锁的记录在同一个页面中</li>
+</ul>
+<img src="lock-structure.png" style="zoom:30%;" />
+
+
+
+<ul>
+<li><p><strong>锁所在的事务信息</strong>：无论表级锁还是行级锁，都是属于一个事务的，这里记载着属于这个事务的信息。</p>
+</li>
+<li><p><strong>索引信息</strong>：对于行级锁而言，需要记录一下加锁的记录属于哪个索引。</p>
+</li>
+<li><p>表锁或者行锁信息：</p>
+<p>如果是行锁的话：</p>
+<ul>
+<li>Space ID：记录所在表空间。</li>
+<li>Page Number：记录所在的页号</li>
+<li>n_bits：对弈行级锁而言，一条记录对应一个比特，实际上就是用一个位图结构去记录那些行记录被加了锁，n_bits则是表示使用了多少比特。</li>
+</ul>
+</li>
+<li><p><strong>type mode</strong></p>
+<ul>
+<li><p><strong>lock_mode</strong>（锁模式）</p>
+<ul>
+<li>LOCK_IS（共享意向锁）</li>
+<li>LOCK_IX（独占意向锁）</li>
+<li>LOCK_S（共享锁）</li>
+<li>LOCK_X（独占锁）</li>
+<li>LOCK_AUTO_INC（AUTO_INC锁）</li>
+</ul>
+</li>
+<li><p><strong>lock_type</strong>（锁类型）</p>
+<ul>
+<li>LOCK_TABLE（表级锁）</li>
+<li>LOCK_REC （行级锁）</li>
+</ul>
+</li>
+<li><p><strong>rec_lock_type</strong> （行锁的具体类型，只有当lock_type为LOCK_REC时才是有效的）</p>
+<ul>
+<li>LOCK_ORDINARY（next_key临键锁）</li>
+<li>LOCK_GAP（间隙锁）</li>
+<li>LOCK_REC_NOT_GAP（记录锁）</li>
+<li>LOCK_INSERT_INTENTION（插入意向锁）</li>
+</ul>
+</li>
+<li><p><strong>LOCK_WAITING</strong> </p>
+<p>1 表示当前事务尚未得到锁，正处于等待状态，0 表示当前事务已经或得到锁。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>其实仅仅看这个一个type mode 的结构皆可以知道MySQL锁的整体结构了。</p>
+<p><img src="/2021/11/03/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94-%E9%94%81%E6%9C%BA%E5%88%B6/typemode.png"></p>
+<ul>
+<li>其他信息</li>
+</ul>
+<p>为了更好地管理系统运行过程中生成的锁结构，有哈希表、链表等等数据结构方便管理</p>
+<ul>
+<li><p>比特数组</p>
+<p>n_bits属性指出这个位图有多大，那么这一堆比特位就是用来隐射这一页中有哪些记录加上了锁的。</p>
+</li>
+</ul>
+<h1 id="查看事务的加锁情况"><a href="#查看事务的加锁情况" class="headerlink" title="查看事务的加锁情况"></a>查看事务的加锁情况</h1><p>也许需要打开一些配置项：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> innodb_status_output<span class="operator">=</span><span class="keyword">ON</span>;</span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> innodb_status_output_locks<span class="operator">=</span><span class="keyword">ON</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在MySQL Clinet中使用<code>show engine innodb status</code></p>
+<p>这里只列出关于事务和锁的信息，其余信息省略：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">当前活动的事务</span> </span><br><span class="line">TRANSACTIONS</span><br><span class="line">------------</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下一个分配的事务ID信息</span></span><br><span class="line">Trx id counter 7203081</span><br><span class="line">Purge done for trx&#x27;s n:o &lt; 7203074 undo n:o &lt; 0 state: running but idle</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">每个回滚段中都有一个History链表，链表的长度为 57</span></span><br><span class="line">History list length 57</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下面对于每一个会话列出它的事务信息</span></span><br><span class="line">LIST OF TRANSACTIONS FOR EACH SESSION:</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"> 每一个<span class="string">&#x27;---TRANSACTION&#x27;</span> 后面跟着响应的事务的信息</span></span><br><span class="line">---TRANSACTION 422190990756560, not started</span><br><span class="line">0 lock struct(s), heap size 1136, 0 row lock(s)</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">事务ID7203080, 活跃了 163 秒</span></span><br><span class="line">---TRANSACTION 7203080, ACTIVE 163 sec</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2个锁结构， 7个行锁（实际上只有6条记录）（这里的锁结构指的就是前面的锁的内存结构）</span></span><br><span class="line">2 lock struct(s), heap size 1136, 7 row lock(s)</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">MySQL内部线程号、操作系统中的线程号等信息</span></span><br><span class="line">MySQL thread id 17, OS thread handle 13048123392, query id 389 localhost 127.0.0.1 root</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">锁结构1. 表级别的意向互斥锁</span></span><br><span class="line">TABLE LOCK table `test_lock`.`test_lock` trx id 7203080 lock mode IX</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">锁结构2. 记录锁（</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">详细解释：表空间号是106，页号是4，锁的位图大小为80，索引是PRIMARY聚簇索引，X型实际上是next-key-lock，（aka 临键锁）</span></span><br><span class="line">RECORD LOCKS space id 106 page no 4 n bits 80 index PRIMARY of table `test_lock`.`test_lock` trx id 7203080 lock_mode X</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">紧接着就是加锁记录的详细信息</span></span><br><span class="line">Record lock, heap no 1 PHYSICAL RECORD: n_fields 1; compact format; info bits 0</span><br><span class="line"> 0: len 8; hex 73757072656d756d; asc supremum;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 2 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000000; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0502; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 0100000164102a; asc     d *;;</span><br><span class="line"> 3: len 4; hex 80000000; asc     ;;</span><br><span class="line"> 4: len 4; hex 80000000; asc     ;;</span><br><span class="line"> 5: len 4; hex 80000000; asc     ;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 3 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0502; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 01000001641060; asc     d `;;</span><br><span class="line"> 3: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 4: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 5: len 4; hex 8000000a; asc     ;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 4 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0551; asc    . Q;;</span><br><span class="line"> 2: len 7; hex 010000012c112d; asc     , -;;</span><br><span class="line"> 3: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 4: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 5: len 4; hex 80000014; asc     ;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 5 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 8000001e; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0502; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 01000001641100; asc     d  ;;</span><br><span class="line"> 3: len 4; hex 8000001e; asc     ;;</span><br><span class="line"> 4: len 4; hex 8000001e; asc     ;;</span><br><span class="line"> 5: len 4; hex 8000001e; asc     ;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 6 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000028; asc    (;;</span><br><span class="line"> 1: len 6; hex 0000002e13cd; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 02000001591605; asc     Y  ;;</span><br><span class="line"> 3: len 4; hex 80000028; asc    (;;</span><br><span class="line"> 4: len 4; hex 80000028; asc    (;;</span><br><span class="line"> 5: len 4; hex 80000028; asc    (;;</span><br><span class="line"></span><br><span class="line">Record lock, heap no 7 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000032; asc    2;;</span><br><span class="line"> 1: len 6; hex 0000002e0990; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 020000013e14d7; asc     &gt;  ;;</span><br><span class="line"> 3: len 4; hex 80000032; asc    2;;</span><br><span class="line"> 4: len 4; hex 80000032; asc    2;;</span><br><span class="line"> 5: len 4; hex 80000032; asc    2;;</span><br><span class="line"></span><br><span class="line">--------</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>死锁示例sql：</p>
+<p>事务1</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">start</span> transaction ;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test_lock <span class="keyword">where</span> primary_id <span class="operator">=</span> <span class="number">10</span> <span class="keyword">for</span> <span class="keyword">update</span> ;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test_lock <span class="keyword">where</span> primary_id <span class="operator">=</span> <span class="number">20</span> <span class="keyword">for</span> <span class="keyword">update</span> ;</span><br></pre></td></tr></table></figure>
+
+<p>事务2</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">start</span> transaction ;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test_lock <span class="keyword">where</span> primary_id <span class="operator">=</span> <span class="number">20</span> <span class="keyword">for</span> <span class="keyword">update</span> ;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test_lock <span class="keyword">where</span> primary_id <span class="operator">=</span> <span class="number">10</span> <span class="keyword">for</span> <span class="keyword">update</span> ;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>InnoDB的死锁检测机制</strong></p>
+<p>当它检测到死锁发生时，会选择一个较小的事务（所谓较小的事务，就是在事务执行过程中插入、更新后删除的记录较少的事务）进行回滚（这个是自动完成的），并向客户端发送一条消息：<code>[40001][1213] Deadlock found when trying to get lock; try restarting transaction</code> .</p>
+<blockquote>
+<p>那么如何定位到死锁的发生的地方呢？</p>
+</blockquote>
+<p>仍然是使用<code>show engine innnodb status</code>来查看死锁信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">------------------------</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">最近一次捕捉的死锁信息</span></span><br><span class="line">LATEST DETECTED DEADLOCK</span><br><span class="line">------------------------</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">死锁发生时间</span></span><br><span class="line">2021-11-27 11:49:06 0x309c3d000</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">死锁发生时的第一个事务信息</span></span><br><span class="line">*** (1) TRANSACTION:</span><br><span class="line">TRANSACTION 7203086, ACTIVE 12 sec starting index read</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">该事务使用了一个表，为一个表上了锁</span></span><br><span class="line">mysql tables in use 1, locked 1</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">拥有 3 个锁结构，2个行锁</span></span><br><span class="line">LOCK WAIT 3 lock struct(s), heap size 1136, 2 row lock(s)</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">线程信息</span></span><br><span class="line">MySQL thread id 24, OS thread handle 13048426496, query id 978 localhost 127.0.0.1 root statistics</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">发生锁时执行的SQL语句</span></span><br><span class="line">/* ApplicationName=DataGrip 2020.3.1 */ select * from test_lock where primary_id = 20 for update</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">当前线程正在等待获取的锁</span></span><br><span class="line">*** (1) WAITING FOR THIS LOCK TO BE GRANTED:</span><br><span class="line">RECORD LOCKS space id 106 page no 4 n bits 80 index PRIMARY of table `test_lock`.`test_lock` trx id 7203086 lock_mode X locks rec but not gap waiting</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这条记录正对应着 select * from test_lock <span class="built_in">where</span> primary_id = 20 <span class="keyword">for</span> update ;</span></span><br><span class="line">Record lock, heap no 4 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0551; asc    . Q;;</span><br><span class="line"> 2: len 7; hex 010000012c112d; asc     , -;;</span><br><span class="line"> 3: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 4: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 5: len 4; hex 80000014; asc     ;;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">死锁发生时的第二个事务信息</span></span><br><span class="line">*** (2) TRANSACTION:</span><br><span class="line">TRANSACTION 7203087, ACTIVE 9 sec starting index read</span><br><span class="line">mysql tables in use 1, locked 1</span><br><span class="line">3 lock struct(s), heap size 1136, 2 row lock(s)</span><br><span class="line">MySQL thread id 25, OS thread handle 13048729600, query id 987 localhost 127.0.0.1 root statistics</span><br><span class="line">/* ApplicationName=DataGrip 2020.3.1 */ select * from test_lock where primary_id = 10 for update</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">此事务已经或得到的锁</span></span><br><span class="line">*** (2) HOLDS THE LOCK(S):</span><br><span class="line">RECORD LOCKS space id 106 page no 4 n bits 80 index PRIMARY of table `test_lock`.`test_lock` trx id 7203087 lock_mode X locks rec but not gap</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这条记录正对应着 select * from test_lock <span class="built_in">where</span> primary_id = 20 <span class="keyword">for</span> update ;</span></span><br><span class="line">Record lock, heap no 4 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0551; asc    . Q;;</span><br><span class="line"> 2: len 7; hex 010000012c112d; asc     , -;;</span><br><span class="line"> 3: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 4: len 4; hex 80000014; asc     ;;</span><br><span class="line"> 5: len 4; hex 80000014; asc     ;;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">此事务等待的锁</span></span><br><span class="line">*** (2) WAITING FOR THIS LOCK TO BE GRANTED:</span><br><span class="line">RECORD LOCKS space id 106 page no 4 n bits 80 index PRIMARY of table `test_lock`.`test_lock` trx id 7203087 lock_mode X locks rec but not gap waiting</span><br><span class="line">Record lock, heap no 3 PHYSICAL RECORD: n_fields 6; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 1: len 6; hex 0000002e0502; asc    .  ;;</span><br><span class="line"> 2: len 7; hex 01000001641060; asc     d `;;</span><br><span class="line"> 3: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 4: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 5: len 4; hex 8000000a; asc     ;;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">InnoDB决定回滚第二个事务</span></span><br><span class="line">*** WE ROLL BACK TRANSACTION (2)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>不过注意，默认只记录最近一次死锁信息，可以将全局变量<code>innodb_print_all_deadlocks</code>设置为ON，这样的话</p>
+<p>死锁发生的信息就会都记录在MySQL的错误日志中，然后就可以通过查看错误日志来分析更多的日志情况了。</p>
+<p>于是，根据死锁发生的死锁日志来逆向定位产生的死锁的语句，然后再优化我们的业务。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://draveness.me/database-concurrency-control/">浅谈数据库并发控制 - 锁和 MVCC</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+              <a href="/tags/%E9%94%81/" rel="tag"># 锁</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/03/%E5%B8%B8%E8%A7%81%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%EF%BC%88%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E3%80%81%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E3%80%81%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E3%80%81%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E3%80%81%E5%A0%86%E6%8E%92%E5%BA%8F%E3%80%81%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%E3%80%81%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F%EF%BC%89/" rel="prev" title="常见排序算法笔记（插入排序、希尔排序、归并排序、快速排序、堆排序、计数排序、基数排序）">
+                  <i class="fa fa-chevron-left"></i> 常见排序算法笔记（插入排序、希尔排序、归并排序、快速排序、堆排序、计数排序、基数排序）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/10/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E8%AF%A6%E8%A7%A3/" rel="next" title="背包问题详解">
+                  背包问题详解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

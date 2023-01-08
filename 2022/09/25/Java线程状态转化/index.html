@@ -1,37 +1,488 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="多线程使用方式1. 直接继承Thread123456789101112131415public class Main &amp;#123;    static class MyThread extends Thread &amp;#123;        @Override        public void run() &amp;#123;            System.out.println(&quot;he">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java线程基本知识">
+<meta property="og:url" content="http://example.com/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:description" content="多线程使用方式1. 直接继承Thread123456789101112131415public class Main &amp;#123;    static class MyThread extends Thread &amp;#123;        @Override        public void run() &amp;#123;            System.out.println(&quot;he">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/java-thread-state-transfer.png">
+<meta property="article:published_time" content="2022-09-25T09:00:01.000Z">
+<meta property="article:modified_time" content="2023-01-04T16:56:12.056Z">
+<meta property="article:author" content="SongyangJi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/java-thread-state-transfer.png">
 
 
-{% block content %}
+<link rel="canonical" href="http://example.com/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/","path":"2022/09/25/Java线程状态转化/","title":"Java线程基本知识"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java线程基本知识 | JsyBlog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JsyBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">多线程使用方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%9B%B4%E6%8E%A5%E7%BB%A7%E6%89%BFThread"><span class="nav-number">1.1.</span> <span class="nav-text">1. 直接继承Thread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%9E%E7%8E%B0Runnable"><span class="nav-number">1.2.</span> <span class="nav-text">2. 实现Runnable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8Callable"><span class="nav-number">1.3.</span> <span class="nav-text">3. 使用Callable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8FutureTask"><span class="nav-number">1.4.</span> <span class="nav-text">4. 使用FutureTask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%BD%BF%E7%94%A8CompletableFuture"><span class="nav-number">1.5.</span> <span class="nav-text">5. 使用CompletableFuture</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E5%8F%98%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">状态变化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%96%B0%E5%BB%BA%E7%8A%B6%E6%80%81-NEW"><span class="nav-number">2.1.</span> <span class="nav-text">一、新建状态(NEW)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81-RUNNABLE"><span class="nav-number">2.2.</span> <span class="nav-text">二、运行状态(RUNNABLE)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%B1%E7%BB%AA%E7%8A%B6%E6%80%81%EF%BC%88READY"><span class="nav-number">2.2.1.</span> <span class="nav-text">就绪状态（READY)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%8A%B6%E6%80%81-gt-%E5%B0%B1%E7%BB%AA"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">其他状态 -&gt;就绪</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81-RUNNING"><span class="nav-number">2.2.2.</span> <span class="nav-text">运行状态(RUNNING)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%98%BB%E5%A1%9E%E7%8A%B6%E6%80%81-BLOCKED"><span class="nav-number">2.3.</span> <span class="nav-text">三、阻塞状态(BLOCKED)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%AD%89%E5%BE%85%E7%8A%B6%E6%80%81-WAITING"><span class="nav-number">2.4.</span> <span class="nav-text">四、等待状态(WAITING)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C-gt-%E7%AD%89%E5%BE%85"><span class="nav-number">2.4.1.</span> <span class="nav-text">运行-&gt;等待</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%89%E5%BE%85-gt-%E5%B0%B1%E7%BB%AA"><span class="nav-number">2.4.2.</span> <span class="nav-text">等待-&gt;就绪</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E8%B6%85%E6%97%B6%E7%AD%89%E5%BE%85%E7%8A%B6%E6%80%81-TIMED-WAITING"><span class="nav-number">2.5.</span> <span class="nav-text">五、超时等待状态(TIMED_WAITING)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C-gt-%E8%B6%85%E6%97%B6%E7%AD%89%E5%BE%85"><span class="nav-number">2.5.1.</span> <span class="nav-text">运行-&gt;超时等待</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B6%85%E6%97%B6%E7%AD%89%E5%BE%85-gt-%E5%B0%B1%E7%BB%AA"><span class="nav-number">2.5.2.</span> <span class="nav-text">超时等待-&gt;就绪</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E6%B6%88%E4%BA%A1%E7%8A%B6%E6%80%81"><span class="nav-number">2.6.</span> <span class="nav-text">六、消亡状态</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java线程基本知识 | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java线程基本知识
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 17:00:01" itemprop="dateCreated datePublished" datetime="2022-09-25T17:00:01+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-05 00:56:12" itemprop="dateModified" datetime="2023-01-05T00:56:12+08:00">2023-01-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">Java多线程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="多线程使用方式"><a href="#多线程使用方式" class="headerlink" title="多线程使用方式"></a>多线程使用方式</h1><h2 id="1-直接继承Thread"><a href="#1-直接继承Thread" class="headerlink" title="1. 直接继承Thread"></a>1. 直接继承Thread</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;here&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">MyThread</span> <span class="variable">myThread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        myThread.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-实现Runnable"><a href="#2-实现Runnable" class="headerlink" title="2. 实现Runnable"></a>2. 实现Runnable</h2><ol>
+<li>传入Thread</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;here&quot;</span>);</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="2">
+<li>线程池池化</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        Executors.newCachedThreadPool().submit(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;here&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// or lambda</span></span><br><span class="line">        Executors.newCachedThreadPool().submit(() -&gt; System.out.println(<span class="string">&quot;here&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-使用Callable"><a href="#3-使用Callable" class="headerlink" title="3. 使用Callable"></a>3. 使用Callable</h2><ul>
+<li>Callable接口类似于Runnable，需要<strong>实现接口中的call()方法</strong>。但是，Runnable不返回结果，也不能抛出已检查的异常。</li>
+<li>Runnable接口提供run()方法支持用户定义线程的执行体，而Callable中提供call()方法。<ul>
+<li><strong>拥有返回值</strong>。</li>
+<li><strong>允许抛出异常</strong>。</li>
+</ul>
+</li>
+<li>通过泛型我们可以知道，Callable接口中的形参类型需要和call方法返回值类型相同。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.Callable;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Future;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">ExecutorService</span> <span class="variable">pool</span> <span class="operator">=</span> Executors.newCachedThreadPool();</span><br><span class="line">        Future&lt;String&gt; future = pool.submit(<span class="keyword">new</span> <span class="title class_">Callable</span>&lt;String&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> String <span class="title function_">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// or lambda</span></span><br><span class="line"><span class="comment">//        pool.submit(() -&gt; &quot;Hello&quot;);</span></span><br><span class="line">        System.out.println(future.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-使用FutureTask"><a href="#4-使用FutureTask" class="headerlink" title="4. 使用FutureTask"></a>4. 使用FutureTask</h2><p>通过继承关系可以发现，<code>RunnableFuture</code>接口同时继承了<code>Runnable</code>和<code>Future</code>接口，意味着实现<code>RunnableFuture</code>接口的类既是Runnable的是实现类，又是Future的实现类。FutureTask就是充当这样的角色，<strong>它的实例可以作为target传入Thread的构造器中。</strong></p>
+<p>通过查看源码，可以发现<strong>FutureTask内部维护了一个Callable的对象</strong>，可以通过下面的这个构造器初始化Callable对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        FutureTask&lt;String&gt; futureTask = <span class="keyword">new</span> <span class="title class_">FutureTask</span>&lt;&gt;(<span class="keyword">new</span> <span class="title class_">Callable</span>&lt;String&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> String <span class="title function_">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;here&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// 1. Thread</span></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(futureTask).start();</span><br><span class="line">        <span class="comment">// 2. pooled</span></span><br><span class="line">        Executors.newCachedThreadPool().submit(futureTask);</span><br><span class="line">        System.out.println(futureTask.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-使用CompletableFuture"><a href="#5-使用CompletableFuture" class="headerlink" title="5. 使用CompletableFuture"></a>5. 使用CompletableFuture</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903594165026829">https://juejin.cn/post/6844903594165026829</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="状态变化"><a href="#状态变化" class="headerlink" title="状态变化"></a>状态变化</h1><p><code>java.lang.Thread.State</code>枚举类中定义了六种线程的状态，可以调用线程Thread中的<code>getState()</code>方法<strong>获取当前线程的状态</strong>。</p>
+<table>
+<thead>
+<tr>
+<th align="left">线程状态</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">NEW</td>
+<td align="left">尚未启动的线程状态，即线程创建，<strong>还未调用start方法</strong></td>
+</tr>
+<tr>
+<td align="left">RUNNABLE</td>
+<td align="left"><strong>就绪状态</strong>（调用start，等待调度）+<strong>正在运行</strong></td>
+</tr>
+<tr>
+<td align="left">BLOCKED</td>
+<td align="left"><strong>等待监视器锁</strong>时，陷入阻塞状态</td>
+</tr>
+<tr>
+<td align="left">WAITING</td>
+<td align="left">等待状态的线程正在<strong>等待</strong>另一线程执行特定的操作（如notify）</td>
+</tr>
+<tr>
+<td align="left">TIMED_WAITING</td>
+<td align="left">具有<strong>指定等待时间</strong>的等待状态</td>
+</tr>
+<tr>
+<td align="left">TERMINATED</td>
+<td align="left">线程完成执行，<strong>终止状态</strong></td>
+</tr>
+</tbody></table>
+<p><img src="/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/java-thread-state-transfer.png"></p>
+<h2 id="一、新建状态-NEW"><a href="#一、新建状态-NEW" class="headerlink" title="一、新建状态(NEW)"></a>一、新建状态(NEW)</h2><p>即用<strong>new关键字</strong>新建一个线程，这个线程就处于<strong>新建状态</strong>。</p>
+<h2 id="二、运行状态-RUNNABLE"><a href="#二、运行状态-RUNNABLE" class="headerlink" title="二、运行状态(RUNNABLE)"></a>二、运行状态(RUNNABLE)</h2><p>操作系统中的就绪和运行两种状态，在Java中统称为RUNNABLE。</p>
+<h3 id="就绪状态（READY"><a href="#就绪状态（READY" class="headerlink" title="就绪状态（READY)"></a>就绪状态（READY)</h3><p>当线程对象调用了<code>start()</code>方法之后，线程处于<strong>就绪状态</strong>，就绪意味着该线程<strong>可以执行</strong>，但具体啥时候执行将取决于JVM里线程调度器的调度。</p>
+<blockquote>
+<p>It is never legal to start a thread more than once. In particular, a thread may not be restarted once it has completed execution.</p>
+</blockquote>
+<ul>
+<li>不允许对一个线程多次使用start。</li>
+<li>线程执行完成之后，不能试图用start将其唤醒。</li>
+</ul>
+<h4 id="其他状态-gt-就绪"><a href="#其他状态-gt-就绪" class="headerlink" title="其他状态 -&gt;就绪"></a>其他状态 -&gt;就绪</h4><ul>
+<li>线程调用start()，新建状态转化为就绪状态。</li>
+<li>线程sleep(long)时间到，等待状态转化为就绪状态。</li>
+<li>阻塞式IO操作结果返回，线程变为就绪状态。</li>
+<li>其他线程调用join()方法，结束之后转化为就绪状态。</li>
+<li>线程对象拿到对象锁之后，也会进入就绪状态。</li>
+</ul>
+<h3 id="运行状态-RUNNING"><a href="#运行状态-RUNNING" class="headerlink" title="运行状态(RUNNING)"></a>运行状态(RUNNING)</h3><p>处于就绪状态的线程获得了CPU之后，<strong>真正开始执行run()方法的线程执行体时</strong>，意味着该线程就已经处于<strong>运行状态</strong>。需要注意的是，<strong>对于单处理器，一个时刻只能有一个线程处于运行状态。</strong><br>对于抢占式策略的系统来说，系统会给每个线程一小段时间处理各自的任务。时间用完之后，系统负责夺回线程占用的资源。下一段时间里，系统会根据一定规则，再次进行调度。</p>
+<p><strong>运行状态转变为就绪状态</strong>的情形：</p>
+<ul>
+<li>线程失去处理器资源。线程不一定完整执行的，执行到一半，说不定就被别的线程抢走了。</li>
+<li>调用yield()静态方法，暂时暂停当前线程，让系统的线程调度器重新调度一次，它自己完全有可能再次运行。</li>
+</ul>
+<p>yield方法的官方解释：</p>
+<blockquote>
+<p>A hint to the scheduler that the current thread is willing to yield its current use of a processor. The scheduler is free to ignore this hint.</p>
+</blockquote>
+<p>提示调度程序，当前线程愿意放弃当前对处理器的使用。这时，<strong>当前线程将会被置为就绪状态</strong>，和其他线程一样等待调度，这时候根据不同<strong>优先级</strong>决定的<strong>概率</strong>，当前线程完全有可能再次抢到处理器资源。</p>
+<h2 id="三、阻塞状态-BLOCKED"><a href="#三、阻塞状态-BLOCKED" class="headerlink" title="三、阻塞状态(BLOCKED)"></a>三、阻塞状态(BLOCKED)</h2><p>阻塞状态表示线程<strong>正等待监视器锁</strong>，而陷入的状态。</p>
+<p>以下场景线程将会阻塞：</p>
+<ul>
+<li>线程等待进入synchronized同步方法。</li>
+<li>线程等待进入synchronized同步代码块。</li>
+</ul>
+<p>线程取得锁，就会从阻塞状态转变为就绪状态。</p>
+<h2 id="四、等待状态-WAITING"><a href="#四、等待状态-WAITING" class="headerlink" title="四、等待状态(WAITING)"></a>四、等待状态(WAITING)</h2><p>进入该状态表示<strong>当前线程需要等待其他线程做出一些的特定的动作</strong>（通知或中断）。</p>
+<h3 id="运行-gt-等待"><a href="#运行-gt-等待" class="headerlink" title="运行-&gt;等待"></a>运行-&gt;等待</h3><ul>
+<li>当前线程运行过程中，其他线程调用<code>join</code>方法，当前线程将会进入等待状态。</li>
+<li>当前线程对象调用<code>wait()</code>方法。<br>-<code>LockSupport.park()</code>：出于线程调度的目的<strong>禁用当前线程</strong>。</li>
+</ul>
+<h3 id="等待-gt-就绪"><a href="#等待-gt-就绪" class="headerlink" title="等待-&gt;就绪"></a>等待-&gt;就绪</h3><ul>
+<li>等待的线程<strong>被其他线程对象唤醒</strong>，<code>notify()</code>和<code>notifyAll()</code>。</li>
+<li><code>LockSupport.unpark(Thread)</code>，与上面park方法对应，给出许可证，<strong>解除等待状态</strong>。</li>
+</ul>
+<h2 id="五、超时等待状态-TIMED-WAITING"><a href="#五、超时等待状态-TIMED-WAITING" class="headerlink" title="五、超时等待状态(TIMED_WAITING)"></a>五、超时等待状态(TIMED_WAITING)</h2><p>区别于<code>WAITING</code>，它可以在<strong>指定的时间</strong>自行返回。</p>
+<h3 id="运行-gt-超时等待"><a href="#运行-gt-超时等待" class="headerlink" title="运行-&gt;超时等待"></a>运行-&gt;超时等待</h3><ul>
+<li>调用静态方法，<code>Thread.sleep(long)</code></li>
+<li>线程对象调用<code>wait(long)</code>方法</li>
+<li>其他线程调用指定时间的<code>join(long)</code>。</li>
+<li><code>LockSupport.parkNanos()</code>。</li>
+<li><code>LockSupport.parkUntil()</code>。</li>
+</ul>
+<p>补充：<br>sleep和yield的不同之处：</p>
+<ul>
+<li>sleep(long)方法会<strong>使线程转入超时等待状态</strong>，时间到了之后才会转入就绪状态。而yield()方法不会将线程转入等待，而是强制线程进入就绪状态。</li>
+<li>使用sleep(long)方法<strong>需要处理异常</strong>，而yield()不用。</li>
+</ul>
+<h3 id="超时等待-gt-就绪"><a href="#超时等待-gt-就绪" class="headerlink" title="超时等待-&gt;就绪"></a>超时等待-&gt;就绪</h3><ul>
+<li>同样的，等待的线程被其他线程对象唤醒，<code>notify()</code>和<code>notifyAll()</code>。</li>
+<li><code>LockSupport.unpark(Thread)</code>。</li>
+</ul>
+<h2 id="六、消亡状态"><a href="#六、消亡状态" class="headerlink" title="六、消亡状态"></a>六、消亡状态</h2><p>即<strong>线程的终止</strong>，表示线程已经执行完毕。前面已经说了，已经消亡的线程不能通过start再次唤醒。</p>
+<ul>
+<li>run()和call()线程执行体中顺利执行完毕，<strong>线程正常终止</strong>。</li>
+<li>线程抛出一个没有捕获的Exception或Error。</li>
+</ul>
+<p>需要注意的是：主线成和子线程互不影响，子线程并不会因为主线程结束就结束。</p>
+<blockquote>
+<p>参考文章</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/summerday152/p/12288671.html">https://www.cnblogs.com/summerday152/p/12288671.html</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" rel="prev" title="操作系统——进程与线程、调度算法">
+                  <i class="fa fa-chevron-left"></i> 操作系统——进程与线程、调度算法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/26/%E7%94%9F%E4%BA%A7%E8%80%85%E3%80%81%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%BC%8F/" rel="next" title="生产者、消费者模式">
+                  生产者、消费者模式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
