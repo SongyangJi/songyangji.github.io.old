@@ -134,6 +134,10 @@
 
 
 
+<h2 id="5-使用CompletableFuture"><a href="#5-使用CompletableFuture" class="headerlink" title="5. 使用CompletableFuture"></a>5. 使用CompletableFuture</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903594165026829">https://juejin.cn/post/6844903594165026829</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 
 
 
@@ -172,7 +176,7 @@
 <td align="left">线程完成执行，<strong>终止状态</strong></td>
 </tr>
 </tbody></table>
-<p><img src="https://img2018.cnblogs.com/blog/1771072/202002/1771072-20200209204908012-1070559737.png"></p>
+<p><img src="/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/java-thread-state-transfer.png"></p>
 <h2 id="一、新建状态-NEW"><a href="#一、新建状态-NEW" class="headerlink" title="一、新建状态(NEW)"></a>一、新建状态(NEW)</h2><p>即用<strong>new关键字</strong>新建一个线程，这个线程就处于<strong>新建状态</strong>。</p>
 <h2 id="二、运行状态-RUNNABLE"><a href="#二、运行状态-RUNNABLE" class="headerlink" title="二、运行状态(RUNNABLE)"></a>二、运行状态(RUNNABLE)</h2><p>操作系统中的就绪和运行两种状态，在Java中统称为RUNNABLE。</p>
 <h3 id="就绪状态（READY"><a href="#就绪状态（READY" class="headerlink" title="就绪状态（READY)"></a>就绪状态（READY)</h3><p>当线程对象调用了<code>start()</code>方法之后，线程处于<strong>就绪状态</strong>，就绪意味着该线程<strong>可以执行</strong>，但具体啥时候执行将取决于JVM里线程调度器的调度。</p>

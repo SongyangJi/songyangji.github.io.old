@@ -117,11 +117,9 @@
 <li>对齐填充(Padding)</li>
 </ul>
 <p><strong>Java对象头主要包括两部分数据：</strong></p>
-<p><img src="https://segmentfault.com/img/remote/1460000041268790"></p>
-<blockquote>
+<p><img src="/2022/03/16/synchronized/synchronized%E9%94%81%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84.png"></p>
 <p><strong>1)类型指针（Klass Pointer）</strong></p>
-</blockquote>
-<p>是对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是哪个类的实例;</p>
+<p>是对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是哪个类的实例；</p>
 <p><strong>2)标记字段(Mark Word)</strong></p>
 <p>用于存储对象自身的运行时数据，如哈希码（HashCode）、GC分代年龄、锁状态标志、持有锁的线程、偏向线程 ID、偏向时间戳等等,它是实现轻量级锁和偏向锁的关键.</p>
 <p>所以，很明显synchronized使用的锁对象是存储在Java对象头里的标记字段里。</p>
