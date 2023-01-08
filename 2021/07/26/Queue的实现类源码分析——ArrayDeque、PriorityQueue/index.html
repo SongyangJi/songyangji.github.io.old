@@ -1,258 +1,103 @@
 <!DOCTYPE html>
+
+
 <html lang="zh-CN">
+
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Queue的实现类源码分析——ArrayDeque、PriorityQueue |  JsyBlog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/images/ayer.png" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  
+<link rel="stylesheet" href="/css/custom.css">
 
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-
-    <meta name="description" content="Queue的实现继承类图其中LinkedList的实现已经在这篇List实现类里面讲过了。  ArrayDeque数据结构使用一个循环数组来实现队列, 应将数组视作首尾相连的。 数组的长度始终是2的整数次幂。为什么呢？ 还是和HashMap一样的道理，取模运算可以使用位运算代替，加快速度。 12345678910111213141516171819202122232425262728  &#x2F;&#x2F; 存储">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Queue的实现类源码分析——ArrayDeque、PriorityQueue">
-<meta property="og:url" content="http://example.com/2021/07/26/Queue%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E2%80%94%E2%80%94ArrayDeque%E3%80%81PriorityQueue/index.html">
-<meta property="og:site_name" content="JsyBlog">
-<meta property="og:description" content="Queue的实现继承类图其中LinkedList的实现已经在这篇List实现类里面讲过了。  ArrayDeque数据结构使用一个循环数组来实现队列, 应将数组视作首尾相连的。 数组的长度始终是2的整数次幂。为什么呢？ 还是和HashMap一样的道理，取模运算可以使用位运算代替，加快速度。 12345678910111213141516171819202122232425262728  &#x2F;&#x2F; 存储">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2021/07/26/Queue%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E2%80%94%E2%80%94ArrayDeque%E3%80%81PriorityQueue/Queue.png">
-<meta property="article:published_time" content="2021-07-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-10-24T08:41:58.685Z">
-<meta property="article:author" content="SongyangJi">
-<meta property="article:tag" content="数据结构">
-<meta property="article:tag" content="Java集合类">
-<meta property="article:tag" content="源码系列">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/07/26/Queue%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E2%80%94%E2%80%94ArrayDeque%E3%80%81PriorityQueue/Queue.png">
-
-
-<link rel="canonical" href="http://example.com/2021/07/26/Queue%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E2%80%94%E2%80%94ArrayDeque%E3%80%81PriorityQueue/">
-
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/07/26/Queue%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E2%80%94%E2%80%94ArrayDeque%E3%80%81PriorityQueue/","path":"2021/07/26/Queue的实现类源码分析——ArrayDeque、PriorityQueue/","title":"Queue的实现类源码分析——ArrayDeque、PriorityQueue"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Queue的实现类源码分析——ArrayDeque、PriorityQueue | JsyBlog</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
   
 
+  
 
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
+</html>
 
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">JsyBlog</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Queue%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">Queue的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E7%B1%BB%E5%9B%BE"><span class="nav-number">1.1.</span> <span class="nav-text">继承类图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ArrayDeque"><span class="nav-number">1.2.</span> <span class="nav-text">ArrayDeque</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="nav-number">1.2.3.</span> <span class="nav-text">扩容机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PriorityQueue"><span class="nav-number">1.3.</span> <span class="nav-text">PriorityQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0-1"><span class="nav-number">1.3.2.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E9%80%BB%E8%BE%91"><span class="nav-number">1.3.3.</span> <span class="nav-text">算法逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BB%BA%E5%A0%86"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">建堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8B%E7%A7%BB"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">下移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8A%E7%A7%BB"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">上移</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A5%E9%98%9F%E5%92%8C%E5%87%BA%E9%98%9F%E6%93%8D%E4%BD%9C%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.4.</span> <span class="nav-text">入队和出队操作的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6-1"><span class="nav-number">1.3.5.</span> <span class="nav-text">扩容机制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0"><span class="nav-number">2.</span> <span class="nav-text">源码阅读笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ArrayDeque-1"><span class="nav-number">2.1.</span> <span class="nav-text">ArrayDeque</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PriorityQueue-1"><span class="nav-number">2.2.</span> <span class="nav-text">PriorityQueue</span></a></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">SongyangJi</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">237</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">42</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">109</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
+<body>
+  <div id="app">
     
-  </aside>
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Queue的实现类源码分析——ArrayDeque、PriorityQueue"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Queue的实现类源码分析——ArrayDeque、PriorityQueue
+</h1>
+ 
 
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/07/26/Queue%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E2%80%94%E2%80%94ArrayDeque%E3%80%81PriorityQueue/" class="article-date">
+  <time datetime="2021-07-25T16:00:00.000Z" itemprop="datePublished">2021-07-26</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java%E9%9B%86%E5%90%88%E7%B1%BB/">Java集合类</a>
+  </div>
   
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/26/Queue%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E2%80%94%E2%80%94ArrayDeque%E3%80%81PriorityQueue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Queue的实现类源码分析——ArrayDeque、PriorityQueue | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Queue的实现类源码分析——ArrayDeque、PriorityQueue
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-26 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-26T00:00:00+08:00">2021-07-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-10-24 16:41:58" itemprop="dateModified" datetime="2021-10-24T16:41:58+08:00">2021-10-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Java%E9%9B%86%E5%90%88%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">Java集合类</span></a>
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4k</span>
         </span>
     </span>
 
-  
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">19 分钟</span>
+        </span>
+    </span>
 </div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
 
-        </div>
-      </header>
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-        <h1 id="Queue的实现"><a href="#Queue的实现" class="headerlink" title="Queue的实现"></a>Queue的实现</h1><h2 id="继承类图"><a href="#继承类图" class="headerlink" title="继承类图"></a>继承类图</h2><p>其中<code>LinkedList</code>的实现已经在这篇<a target="_blank" rel="noopener" href="http://47.117.127.179/2021/07/24/List%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%20%E2%80%94%E2%80%94%20LinkedList%E3%80%81ArrayList/">List实现类</a>里面讲过了。</p>
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="Queue的实现"><a href="#Queue的实现" class="headerlink" title="Queue的实现"></a>Queue的实现</h1><h2 id="继承类图"><a href="#继承类图" class="headerlink" title="继承类图"></a>继承类图</h2><p>其中<code>LinkedList</code>的实现已经在这篇<a target="_blank" rel="noopener" href="http://47.117.127.179/2021/07/24/List%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%20%E2%80%94%E2%80%94%20LinkedList%E3%80%81ArrayList/">List实现类</a>里面讲过了。</p>
 <p><img src="/2021/07/26/Queue%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E2%80%94%E2%80%94ArrayDeque%E3%80%81PriorityQueue/Queue.png"></p>
 <h2 id="ArrayDeque"><a href="#ArrayDeque" class="headerlink" title="ArrayDeque"></a>ArrayDeque</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>使用一个循环数组来实现队列, 应将数组视作首尾相连的。</p>
 <p>数组的长度始终是2的整数次幂。为什么呢？</p>
@@ -336,97 +181,478 @@
 
 <h1 id="源码阅读笔记"><a href="#源码阅读笔记" class="headerlink" title="源码阅读笔记"></a>源码阅读笔记</h1><h2 id="ArrayDeque-1"><a href="#ArrayDeque-1" class="headerlink" title="ArrayDeque"></a><code>ArrayDeque</code></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.util;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 实现了 Deque 接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ArrayDeque</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">AbstractCollection</span>&lt;E&gt;</span><br><span class="line">                           <span class="keyword">implements</span> <span class="title class_">Deque</span>&lt;E&gt;, Cloneable, Serializable</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 存储真实元素的数组，其 length 必为2的整数次幂</span></span><br><span class="line">    <span class="keyword">transient</span> Object[] elements; <span class="comment">// non-private to simplify nested class access</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    不变量: x 为 element、o 为 empty cell</span></span><br><span class="line"><span class="comment">    实例1:</span></span><br><span class="line"><span class="comment">        o x x x x x o o	</span></span><br><span class="line"><span class="comment">          h         t</span></span><br><span class="line"><span class="comment">		实例2:	 </span></span><br><span class="line"><span class="comment">        x x o o o o x x</span></span><br><span class="line"><span class="comment">            t       h</span></span><br><span class="line"><span class="comment">    实例3: (队列空)</span></span><br><span class="line"><span class="comment">        o o o o o o o o</span></span><br><span class="line"><span class="comment">          h(t)</span></span><br><span class="line"><span class="comment">    实例4: (队列满)      </span></span><br><span class="line"><span class="comment">        x x x o x x x x</span></span><br><span class="line"><span class="comment">              t h</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 队列头部元素在数组中的索引</span></span><br><span class="line">    <span class="keyword">transient</span> <span class="type">int</span>  head;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 队列尾部元素的下一个元素在数组中的索引</span></span><br><span class="line">    <span class="comment">// 也就是下一个元素要放置的位置索引</span></span><br><span class="line">    <span class="keyword">transient</span> <span class="type">int</span> tail;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 数组容量的最小值,必为 2 的整数次幂</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">MIN_INITIAL_CAPACITY</span> <span class="operator">=</span> <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ******  Array allocation and resizing utilities ******</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算能容纳 numElements个元素的最小2的幂次</span></span><br><span class="line">    <span class="comment">// 也就是 arg_min(2^p &gt;= numElements) , 不过这里没有使用循环实现</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">calculateSize</span><span class="params">(<span class="type">int</span> numElements)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">initialCapacity</span> <span class="operator">=</span> MIN_INITIAL_CAPACITY;</span><br><span class="line">        <span class="comment">// 这里的位运算很巧妙，将形如 10011011的串，转换到 11111111再加1</span></span><br><span class="line">        <span class="keyword">if</span> (numElements &gt;= initialCapacity) &#123;</span><br><span class="line">            initialCapacity = numElements;</span><br><span class="line">            initialCapacity |= (initialCapacity &gt;&gt;&gt;  <span class="number">1</span>);</span><br><span class="line">            initialCapacity |= (initialCapacity &gt;&gt;&gt;  <span class="number">2</span>);</span><br><span class="line">            initialCapacity |= (initialCapacity &gt;&gt;&gt;  <span class="number">4</span>);</span><br><span class="line">            initialCapacity |= (initialCapacity &gt;&gt;&gt;  <span class="number">8</span>);</span><br><span class="line">            initialCapacity |= (initialCapacity &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">            initialCapacity++;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (initialCapacity &lt; <span class="number">0</span>)   <span class="comment">// Too many elements, must back  off</span></span><br><span class="line">                initialCapacity &gt;&gt;&gt;= <span class="number">1</span>;<span class="comment">// Good luck allocating 2 ^ 30 elements</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> initialCapacity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分配”空“数组</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">allocateElements</span><span class="params">(<span class="type">int</span> numElements)</span> &#123;</span><br><span class="line">        elements = <span class="keyword">new</span> <span class="title class_">Object</span>[calculateSize(numElements)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 只在队列满的时候调用，断言此时 head == tail</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">doubleCapacity</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">assert</span> head == tail;</span><br><span class="line">        <span class="type">int</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> elements.length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> n - p; <span class="comment">// number of elements to the right of p</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">newCapacity</span> <span class="operator">=</span> n &lt;&lt; <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (newCapacity &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;Sorry, deque too big&quot;</span>);</span><br><span class="line">        Object[] a = <span class="keyword">new</span> <span class="title class_">Object</span>[newCapacity];</span><br><span class="line">        <span class="comment">// 左边的</span></span><br><span class="line">        System.arraycopy(elements, p, a, <span class="number">0</span>, r);</span><br><span class="line">        <span class="comment">// 右边的</span></span><br><span class="line">        System.arraycopy(elements, <span class="number">0</span>, a, r, p);</span><br><span class="line">        elements = a;</span><br><span class="line">        <span class="comment">// 注意 tail 是最后一个元素的下一个位置（循环意义上）</span></span><br><span class="line">        head = <span class="number">0</span>;</span><br><span class="line">        tail = n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> &lt;T&gt; T[] copyElements(T[] a) &#123;</span><br><span class="line">        <span class="keyword">if</span> (head &lt; tail) &#123;</span><br><span class="line">            System.arraycopy(elements, head, a, <span class="number">0</span>, size());</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (head &gt; tail) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">headPortionLen</span> <span class="operator">=</span> elements.length - head;</span><br><span class="line">            System.arraycopy(elements, head, a, <span class="number">0</span>, headPortionLen);</span><br><span class="line">            System.arraycopy(elements, <span class="number">0</span>, a, headPortionLen, tail);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 默认构造器的容量是 16, 并没有按照 ArrayList的处理方式进行“懒”处理</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ArrayDeque</span><span class="params">()</span> &#123;</span><br><span class="line">        elements = <span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">16</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定容量</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ArrayDeque</span><span class="params">(<span class="type">int</span> numElements)</span> &#123;</span><br><span class="line">        allocateElements(numElements);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ArrayDeque</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        allocateElements(c.size());</span><br><span class="line">        addAll(c);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    注意：在数组长度在为2的幂次时，取模运算可以用位运算代替，</span></span><br><span class="line"><span class="comment">    这也正是为什么设计者要把数组容量设置为 2的幂次 的原因了（加快取模操作）</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addFirst</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (e == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">        elements[head = (head - <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>)] = e;</span><br><span class="line">        <span class="keyword">if</span> (head == tail)</span><br><span class="line">            doubleCapacity();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addLast</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (e == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">        elements[tail] = e;</span><br><span class="line">        <span class="keyword">if</span> ( (tail = (tail + <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>)) == head)</span><br><span class="line">            doubleCapacity();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里的返回值是没有意义的</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offerFirst</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        addFirst(e);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offerLast</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        addLast(e);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="comment">// removeX 会抛出异常，但 pollX 不会</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">removeFirst</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">E</span> <span class="variable">x</span> <span class="operator">=</span> pollFirst();</span><br><span class="line">        <span class="keyword">if</span> (x == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">removeLast</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">E</span> <span class="variable">x</span> <span class="operator">=</span> pollLast();</span><br><span class="line">        <span class="keyword">if</span> (x == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">pollFirst</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">h</span> <span class="operator">=</span> head;</span><br><span class="line">        <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">        <span class="type">E</span> <span class="variable">result</span> <span class="operator">=</span> (E) elements[h];</span><br><span class="line">        <span class="comment">// Element is null if deque empty</span></span><br><span class="line">        <span class="keyword">if</span> (result == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        elements[h] = <span class="literal">null</span>;     <span class="comment">// Must null out slot</span></span><br><span class="line">        head = (h + <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">pollLast</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">t</span> <span class="operator">=</span> (tail - <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>);</span><br><span class="line">        <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">        <span class="type">E</span> <span class="variable">result</span> <span class="operator">=</span> (E) elements[t];</span><br><span class="line">        <span class="keyword">if</span> (result == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        elements[t] = <span class="literal">null</span>;</span><br><span class="line">        tail = t;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// getX会抛出异常，但 peekX 不会</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">getFirst</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">        <span class="type">E</span> <span class="variable">result</span> <span class="operator">=</span> (E) elements[head];</span><br><span class="line">        <span class="keyword">if</span> (result == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">getLast</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">        <span class="type">E</span> <span class="variable">result</span> <span class="operator">=</span> (E) elements[(tail - <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>)];</span><br><span class="line">        <span class="keyword">if</span> (result == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">peekFirst</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// elements[head] is null if deque empty</span></span><br><span class="line">        <span class="keyword">return</span> (E) elements[head];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">peekLast</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (E) elements[(tail - <span class="number">1</span>) &amp; (elements.length - <span class="number">1</span>)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="comment">// Queue的方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        addLast(e);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offer</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> offerLast(e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">remove</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> removeFirst();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">poll</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> pollFirst();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">element</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> getFirst();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">peek</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> peekFirst();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Stack的方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">push</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        addFirst(e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">pop</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> removeFirst();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// *** Collection Methods ***</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 一样的道理，本来是取模，现在用位运算，而且做减法的时候无需加上 elements.length</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (tail - head) &amp; (elements.length - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> head == tail;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> removeFirstOccurrence(o);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// head、tail复位、数组的所有cell置空（help GC）</span></span><br><span class="line">    <span class="comment">// 但是注意，此时没有对数组容量作出改变！</span></span><br><span class="line">    <span class="comment">// 此方法的时间复杂度也就是 O(n) 的。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">h</span> <span class="operator">=</span> head;</span><br><span class="line">        <span class="type">int</span> <span class="variable">t</span> <span class="operator">=</span> tail;</span><br><span class="line">        <span class="keyword">if</span> (h != t) &#123; <span class="comment">// clear all cells</span></span><br><span class="line">            head = tail = <span class="number">0</span>;</span><br><span class="line">            <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> h;</span><br><span class="line">            <span class="type">int</span> <span class="variable">mask</span> <span class="operator">=</span> elements.length - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                elements[i] = <span class="literal">null</span>;</span><br><span class="line">                i = (i + <span class="number">1</span>) &amp; mask;</span><br><span class="line">            &#125; <span class="keyword">while</span> (i != t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /</span><br><span class="line">    <span class="keyword">public</span> Object[] toArray() &#123;</span><br><span class="line">        <span class="keyword">return</span> copyElements(<span class="keyword">new</span> <span class="title class_">Object</span>[size()]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; T[] toArray(T[] a) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> size();</span><br><span class="line">        <span class="keyword">if</span> (a.length &lt; size)</span><br><span class="line">            <span class="comment">// 注意，泛型数组的创建，需要使用反射的方式</span></span><br><span class="line">            a = (T[])java.lang.reflect.Array.newInstance(</span><br><span class="line">                    a.getClass().getComponentType(), size);</span><br><span class="line">        copyElements(a);</span><br><span class="line">        <span class="keyword">if</span> (a.length &gt; size)</span><br><span class="line">            a[size] = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> <span class="number">2340985798034038923L</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h2 id="PriorityQueue-1"><a href="#PriorityQueue-1" class="headerlink" title="PriorityQueue"></a><code>PriorityQueue</code></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.util;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实现了 Queue接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PriorityQueue</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">AbstractQueue</span>&lt;E&gt;</span><br><span class="line">    <span class="keyword">implements</span> <span class="title class_">java</span>.io.Serializable &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> -<span class="number">7720805057305804111L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_INITIAL_CAPACITY</span> <span class="operator">=</span> <span class="number">11</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 本实现中，最小的元素放在下标为 0 的位置，</span></span><br><span class="line">    <span class="comment">// 某个下标为 n 的节点的左右孩子的下标为 2*n+1,2*(n+1)</span></span><br><span class="line">    <span class="comment">// 注意和起始位置为 1 的构造方法的区别</span></span><br><span class="line">    <span class="keyword">transient</span> Object[] queue; <span class="comment">// non-private to simplify nested class access</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 元素的个数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 比较器，如果为null, 则是自然顺序（如果没有实现Comparable接口，报错）</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Comparator&lt;? <span class="built_in">super</span> E&gt; comparator;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">transient</span> <span class="type">int</span> <span class="variable">modCount</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">// non-private to simplify nested class access</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(DEFAULT_INITIAL_CAPACITY, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(<span class="type">int</span> initialCapacity)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(initialCapacity, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(Comparator&lt;? <span class="built_in">super</span> E&gt; comparator)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(DEFAULT_INITIAL_CAPACITY, comparator);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化容量、比较器</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(<span class="type">int</span> initialCapacity,</span></span><br><span class="line"><span class="params">                         Comparator&lt;? <span class="built_in">super</span> E&gt; comparator)</span> &#123;</span><br><span class="line">        <span class="comment">// Note: This restriction of at least one is not actually needed,</span></span><br><span class="line">        <span class="comment">// but continues for 1.5 compatibility</span></span><br><span class="line">        <span class="keyword">if</span> (initialCapacity &lt; <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">        <span class="built_in">this</span>.queue = <span class="keyword">new</span> <span class="title class_">Object</span>[initialCapacity];</span><br><span class="line">        <span class="built_in">this</span>.comparator = comparator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 三种构造方式：SortedSet、PriorityQueue、普通Collection</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (c <span class="keyword">instanceof</span> SortedSet&lt;?&gt;) &#123;</span><br><span class="line">            SortedSet&lt;? <span class="keyword">extends</span> <span class="title class_">E</span>&gt; ss = (SortedSet&lt;? <span class="keyword">extends</span> <span class="title class_">E</span>&gt;) c;</span><br><span class="line">            <span class="built_in">this</span>.comparator = (Comparator&lt;? <span class="built_in">super</span> E&gt;) ss.comparator();</span><br><span class="line">            initElementsFromCollection(ss);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (c <span class="keyword">instanceof</span> PriorityQueue&lt;?&gt;) &#123;</span><br><span class="line">            PriorityQueue&lt;? <span class="keyword">extends</span> <span class="title class_">E</span>&gt; pq = (PriorityQueue&lt;? <span class="keyword">extends</span> <span class="title class_">E</span>&gt;) c;</span><br><span class="line">            <span class="built_in">this</span>.comparator = (Comparator&lt;? <span class="built_in">super</span> E&gt;) pq.comparator();</span><br><span class="line">            initFromPriorityQueue(pq);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.comparator = <span class="literal">null</span>;</span><br><span class="line">            initFromCollection(c);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(PriorityQueue&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.comparator = (Comparator&lt;? <span class="built_in">super</span> E&gt;) c.comparator();</span><br><span class="line">        initFromPriorityQueue(c);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(SortedSet&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.comparator = (Comparator&lt;? <span class="built_in">super</span> E&gt;) c.comparator();</span><br><span class="line">        <span class="comment">// 已经有序了，所以无需堆化</span></span><br><span class="line">        initElementsFromCollection(c);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">initFromPriorityQueue</span><span class="params">(PriorityQueue&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (c.getClass() == PriorityQueue.class) &#123;</span><br><span class="line">            <span class="built_in">this</span>.queue = c.toArray();</span><br><span class="line">            <span class="built_in">this</span>.size = c.size();</span><br><span class="line">        <span class="comment">// 有可能是 PriorityQueue 的子类</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            initFromCollection(c);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">initElementsFromCollection</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        Object[] a = c.toArray();</span><br><span class="line">        <span class="keyword">if</span> (c.getClass() != ArrayList.class)</span><br><span class="line">            a = Arrays.copyOf(a, a.length, Object[].class);</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> a.length;</span><br><span class="line">        <span class="comment">// 检查为null</span></span><br><span class="line">        <span class="keyword">if</span> (len == <span class="number">1</span> || <span class="built_in">this</span>.comparator != <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">                <span class="keyword">if</span> (a[i] == <span class="literal">null</span>)</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">        <span class="built_in">this</span>.queue = a;</span><br><span class="line">        <span class="built_in">this</span>.size = a.length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">initFromCollection</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        initElementsFromCollection(c);</span><br><span class="line">        <span class="comment">// 建堆操作</span></span><br><span class="line">        heapify();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">MAX_ARRAY_SIZE</span> <span class="operator">=</span> Integer.MAX_VALUE - <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 核心扩容函数</span></span><br><span class="line">    <span class="comment">// size 过小则 double 一下；否则，增长一半</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">grow</span><span class="params">(<span class="type">int</span> minCapacity)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">oldCapacity</span> <span class="operator">=</span> queue.length;</span><br><span class="line">        <span class="comment">// Double size if small; else grow by 50%</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">newCapacity</span> <span class="operator">=</span> oldCapacity + ((oldCapacity &lt; <span class="number">64</span>) ?</span><br><span class="line">                                         (oldCapacity + <span class="number">2</span>) :</span><br><span class="line">                                         (oldCapacity &gt;&gt; <span class="number">1</span>));</span><br><span class="line">        <span class="comment">// overflow-conscious code</span></span><br><span class="line">        <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">            newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">        queue = Arrays.copyOf(queue, newCapacity);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">hugeCapacity</span><span class="params">(<span class="type">int</span> minCapacity)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (minCapacity &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">OutOfMemoryError</span>();</span><br><span class="line">        <span class="keyword">return</span> (minCapacity &gt; MAX_ARRAY_SIZE) ?</span><br><span class="line">            Integer.MAX_VALUE :</span><br><span class="line">            MAX_ARRAY_SIZE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> offer(e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 调用 siftUp函数</span></span><br><span class="line">    <span class="comment">// 也就是插入数组末端，然后向上 up </span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offer</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (e == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">        modCount++;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> size;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= queue.length)</span><br><span class="line">            grow(i + <span class="number">1</span>);</span><br><span class="line">        size = i + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">            queue[<span class="number">0</span>] = e;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            siftUp(i, e);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">peek</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (size == <span class="number">0</span>) ? <span class="literal">null</span> : (E) queue[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 注意，这一步仍然没有减少数组容量</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;</span><br><span class="line">        modCount++;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            queue[i] = <span class="literal">null</span>;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用数组的最后一个元素代替第一个元素，然后从位置 0 处进行一次down操作</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">poll</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">s</span> <span class="operator">=</span> --size;</span><br><span class="line">        modCount++;</span><br><span class="line">        <span class="type">E</span> <span class="variable">result</span> <span class="operator">=</span> (E) queue[<span class="number">0</span>];</span><br><span class="line">        <span class="type">E</span> <span class="variable">x</span> <span class="operator">=</span> (E) queue[s];</span><br><span class="line">        queue[s] = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (s != <span class="number">0</span>)</span><br><span class="line">            siftDown(<span class="number">0</span>, x);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将元素放置在 k 位置上，然后执行 up 操作</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftUp</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (comparator != <span class="literal">null</span>)</span><br><span class="line">            siftUpUsingComparator(k, x);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            siftUpComparable(k, x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftUpComparable</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">        Comparable&lt;? <span class="built_in">super</span> E&gt; key = (Comparable&lt;? <span class="built_in">super</span> E&gt;) x;</span><br><span class="line">        <span class="keyword">while</span> (k &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 注意在从 0 开始的情况下，父亲的节点是 (k-1)/2</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">parent</span> <span class="operator">=</span> (k - <span class="number">1</span>) &gt;&gt;&gt; <span class="number">1</span>;</span><br><span class="line">            <span class="type">Object</span> <span class="variable">e</span> <span class="operator">=</span> queue[parent];</span><br><span class="line">            <span class="keyword">if</span> (key.compareTo((E) e) &gt;= <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            queue[k] = e;</span><br><span class="line">            k = parent;</span><br><span class="line">        &#125;</span><br><span class="line">        queue[k] = key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftUpUsingComparator</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">       <span class="comment">// 算法同上</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将元素放置在 k 位置上，然后执行 down 操作 </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftDown</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (comparator != <span class="literal">null</span>)</span><br><span class="line">            siftDownUsingComparator(k, x);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            siftDownComparable(k, x);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 采用自然排序</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftDownComparable</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">        Comparable&lt;? <span class="built_in">super</span> E&gt; key = (Comparable&lt;? <span class="built_in">super</span> E&gt;)x;</span><br><span class="line">        <span class="type">int</span> <span class="variable">half</span> <span class="operator">=</span> size &gt;&gt;&gt; <span class="number">1</span>;        <span class="comment">// loop while a non-leaf</span></span><br><span class="line">        <span class="keyword">while</span> (k &lt; half) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">child</span> <span class="operator">=</span> (k &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>; <span class="comment">// assume left child is least</span></span><br><span class="line">            <span class="type">Object</span> <span class="variable">c</span> <span class="operator">=</span> queue[child];</span><br><span class="line">            <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> child + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (right &lt; size &amp;&amp;</span><br><span class="line">                ((Comparable&lt;? <span class="built_in">super</span> E&gt;) c).compareTo((E) queue[right]) &gt; <span class="number">0</span>)</span><br><span class="line">                c = queue[child = right];</span><br><span class="line">            <span class="keyword">if</span> (key.compareTo((E) c) &lt;= <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            queue[k] = c;</span><br><span class="line">            k = child;</span><br><span class="line">        &#125;</span><br><span class="line">        queue[k] = key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 算法是相同的，只不过是比较器罢了</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftDownUsingComparator</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">       <span class="comment">// 算法同上</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 建堆操作，时间复杂度：O(n)</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">heapify</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 原本是 从 size/2 到 1 进行 down(i) 操作</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> (size &gt;&gt;&gt; <span class="number">1</span>) - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">            siftDown(i, (E) queue[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="PriorityQueue-1"><a href="#PriorityQueue-1" class="headerlink" title="PriorityQueue"></a><code>PriorityQueue</code></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.util;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实现了 Queue接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PriorityQueue</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">AbstractQueue</span>&lt;E&gt;</span><br><span class="line">    <span class="keyword">implements</span> <span class="title class_">java</span>.io.Serializable &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> -<span class="number">7720805057305804111L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_INITIAL_CAPACITY</span> <span class="operator">=</span> <span class="number">11</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 本实现中，最小的元素放在下标为 0 的位置，</span></span><br><span class="line">    <span class="comment">// 某个下标为 n 的节点的左右孩子的下标为 2*n+1,2*(n+1)</span></span><br><span class="line">    <span class="comment">// 注意和起始位置为 1 的构造方法的区别</span></span><br><span class="line">    <span class="keyword">transient</span> Object[] queue; <span class="comment">// non-private to simplify nested class access</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 元素的个数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 比较器，如果为null, 则是自然顺序（如果没有实现Comparable接口，报错）</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Comparator&lt;? <span class="built_in">super</span> E&gt; comparator;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">transient</span> <span class="type">int</span> <span class="variable">modCount</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">// non-private to simplify nested class access</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(DEFAULT_INITIAL_CAPACITY, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(<span class="type">int</span> initialCapacity)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(initialCapacity, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(Comparator&lt;? <span class="built_in">super</span> E&gt; comparator)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(DEFAULT_INITIAL_CAPACITY, comparator);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化容量、比较器</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(<span class="type">int</span> initialCapacity,</span></span><br><span class="line"><span class="params">                         Comparator&lt;? <span class="built_in">super</span> E&gt; comparator)</span> &#123;</span><br><span class="line">        <span class="comment">// Note: This restriction of at least one is not actually needed,</span></span><br><span class="line">        <span class="comment">// but continues for 1.5 compatibility</span></span><br><span class="line">        <span class="keyword">if</span> (initialCapacity &lt; <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">        <span class="built_in">this</span>.queue = <span class="keyword">new</span> <span class="title class_">Object</span>[initialCapacity];</span><br><span class="line">        <span class="built_in">this</span>.comparator = comparator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 三种构造方式：SortedSet、PriorityQueue、普通Collection</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (c <span class="keyword">instanceof</span> SortedSet&lt;?&gt;) &#123;</span><br><span class="line">            SortedSet&lt;? <span class="keyword">extends</span> <span class="title class_">E</span>&gt; ss = (SortedSet&lt;? <span class="keyword">extends</span> <span class="title class_">E</span>&gt;) c;</span><br><span class="line">            <span class="built_in">this</span>.comparator = (Comparator&lt;? <span class="built_in">super</span> E&gt;) ss.comparator();</span><br><span class="line">            initElementsFromCollection(ss);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (c <span class="keyword">instanceof</span> PriorityQueue&lt;?&gt;) &#123;</span><br><span class="line">            PriorityQueue&lt;? <span class="keyword">extends</span> <span class="title class_">E</span>&gt; pq = (PriorityQueue&lt;? <span class="keyword">extends</span> <span class="title class_">E</span>&gt;) c;</span><br><span class="line">            <span class="built_in">this</span>.comparator = (Comparator&lt;? <span class="built_in">super</span> E&gt;) pq.comparator();</span><br><span class="line">            initFromPriorityQueue(pq);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.comparator = <span class="literal">null</span>;</span><br><span class="line">            initFromCollection(c);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(PriorityQueue&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.comparator = (Comparator&lt;? <span class="built_in">super</span> E&gt;) c.comparator();</span><br><span class="line">        initFromPriorityQueue(c);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PriorityQueue</span><span class="params">(SortedSet&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.comparator = (Comparator&lt;? <span class="built_in">super</span> E&gt;) c.comparator();</span><br><span class="line">        <span class="comment">// 已经有序了，所以无需堆化</span></span><br><span class="line">        initElementsFromCollection(c);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">initFromPriorityQueue</span><span class="params">(PriorityQueue&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (c.getClass() == PriorityQueue.class) &#123;</span><br><span class="line">            <span class="built_in">this</span>.queue = c.toArray();</span><br><span class="line">            <span class="built_in">this</span>.size = c.size();</span><br><span class="line">        <span class="comment">// 有可能是 PriorityQueue 的子类</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            initFromCollection(c);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">initElementsFromCollection</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        Object[] a = c.toArray();</span><br><span class="line">        <span class="keyword">if</span> (c.getClass() != ArrayList.class)</span><br><span class="line">            a = Arrays.copyOf(a, a.length, Object[].class);</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> a.length;</span><br><span class="line">        <span class="comment">// 检查为null</span></span><br><span class="line">        <span class="keyword">if</span> (len == <span class="number">1</span> || <span class="built_in">this</span>.comparator != <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">                <span class="keyword">if</span> (a[i] == <span class="literal">null</span>)</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">        <span class="built_in">this</span>.queue = a;</span><br><span class="line">        <span class="built_in">this</span>.size = a.length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">initFromCollection</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        initElementsFromCollection(c);</span><br><span class="line">        <span class="comment">// 建堆操作</span></span><br><span class="line">        heapify();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">MAX_ARRAY_SIZE</span> <span class="operator">=</span> Integer.MAX_VALUE - <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 核心扩容函数</span></span><br><span class="line">    <span class="comment">// size 过小则 double 一下；否则，增长一半</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">grow</span><span class="params">(<span class="type">int</span> minCapacity)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">oldCapacity</span> <span class="operator">=</span> queue.length;</span><br><span class="line">        <span class="comment">// Double size if small; else grow by 50%</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">newCapacity</span> <span class="operator">=</span> oldCapacity + ((oldCapacity &lt; <span class="number">64</span>) ?</span><br><span class="line">                                         (oldCapacity + <span class="number">2</span>) :</span><br><span class="line">                                         (oldCapacity &gt;&gt; <span class="number">1</span>));</span><br><span class="line">        <span class="comment">// overflow-conscious code</span></span><br><span class="line">        <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">            newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">        queue = Arrays.copyOf(queue, newCapacity);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">hugeCapacity</span><span class="params">(<span class="type">int</span> minCapacity)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (minCapacity &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">OutOfMemoryError</span>();</span><br><span class="line">        <span class="keyword">return</span> (minCapacity &gt; MAX_ARRAY_SIZE) ?</span><br><span class="line">            Integer.MAX_VALUE :</span><br><span class="line">            MAX_ARRAY_SIZE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> offer(e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 调用 siftUp函数</span></span><br><span class="line">    <span class="comment">// 也就是插入数组末端，然后向上 up </span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offer</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (e == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">        modCount++;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> size;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= queue.length)</span><br><span class="line">            grow(i + <span class="number">1</span>);</span><br><span class="line">        size = i + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">            queue[<span class="number">0</span>] = e;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            siftUp(i, e);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">peek</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (size == <span class="number">0</span>) ? <span class="literal">null</span> : (E) queue[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 注意，这一步仍然没有减少数组容量</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;</span><br><span class="line">        modCount++;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            queue[i] = <span class="literal">null</span>;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用数组的最后一个元素代替第一个元素，然后从位置 0 处进行一次down操作</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">poll</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">s</span> <span class="operator">=</span> --size;</span><br><span class="line">        modCount++;</span><br><span class="line">        <span class="type">E</span> <span class="variable">result</span> <span class="operator">=</span> (E) queue[<span class="number">0</span>];</span><br><span class="line">        <span class="type">E</span> <span class="variable">x</span> <span class="operator">=</span> (E) queue[s];</span><br><span class="line">        queue[s] = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (s != <span class="number">0</span>)</span><br><span class="line">            siftDown(<span class="number">0</span>, x);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将元素放置在 k 位置上，然后执行 up 操作</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftUp</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (comparator != <span class="literal">null</span>)</span><br><span class="line">            siftUpUsingComparator(k, x);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            siftUpComparable(k, x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftUpComparable</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">        Comparable&lt;? <span class="built_in">super</span> E&gt; key = (Comparable&lt;? <span class="built_in">super</span> E&gt;) x;</span><br><span class="line">        <span class="keyword">while</span> (k &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 注意在从 0 开始的情况下，父亲的节点是 (k-1)/2</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">parent</span> <span class="operator">=</span> (k - <span class="number">1</span>) &gt;&gt;&gt; <span class="number">1</span>;</span><br><span class="line">            <span class="type">Object</span> <span class="variable">e</span> <span class="operator">=</span> queue[parent];</span><br><span class="line">            <span class="keyword">if</span> (key.compareTo((E) e) &gt;= <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            queue[k] = e;</span><br><span class="line">            k = parent;</span><br><span class="line">        &#125;</span><br><span class="line">        queue[k] = key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftUpUsingComparator</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">       <span class="comment">// 算法同上</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将元素放置在 k 位置上，然后执行 down 操作 </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftDown</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (comparator != <span class="literal">null</span>)</span><br><span class="line">            siftDownUsingComparator(k, x);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            siftDownComparable(k, x);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 采用自然排序</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftDownComparable</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">        Comparable&lt;? <span class="built_in">super</span> E&gt; key = (Comparable&lt;? <span class="built_in">super</span> E&gt;)x;</span><br><span class="line">        <span class="type">int</span> <span class="variable">half</span> <span class="operator">=</span> size &gt;&gt;&gt; <span class="number">1</span>;        <span class="comment">// loop while a non-leaf</span></span><br><span class="line">        <span class="keyword">while</span> (k &lt; half) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">child</span> <span class="operator">=</span> (k &lt;&lt; <span class="number">1</span>) + <span class="number">1</span>; <span class="comment">// assume left child is least</span></span><br><span class="line">            <span class="type">Object</span> <span class="variable">c</span> <span class="operator">=</span> queue[child];</span><br><span class="line">            <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span> child + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (right &lt; size &amp;&amp;</span><br><span class="line">                ((Comparable&lt;? <span class="built_in">super</span> E&gt;) c).compareTo((E) queue[right]) &gt; <span class="number">0</span>)</span><br><span class="line">                c = queue[child = right];</span><br><span class="line">            <span class="keyword">if</span> (key.compareTo((E) c) &lt;= <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            queue[k] = c;</span><br><span class="line">            k = child;</span><br><span class="line">        &#125;</span><br><span class="line">        queue[k] = key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 算法是相同的，只不过是比较器罢了</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">siftDownUsingComparator</span><span class="params">(<span class="type">int</span> k, E x)</span> &#123;</span><br><span class="line">       <span class="comment">// 算法同上</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 建堆操作，时间复杂度：O(n)</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">heapify</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 原本是 从 size/2 到 1 进行 down(i) 操作</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> (size &gt;&gt;&gt; <span class="number">1</span>) - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">            siftDown(i, (E) queue[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
     </div>
-
-    
-    
     
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
-              <a href="/tags/Java%E9%9B%86%E5%90%88%E7%B1%BB/" rel="tag"># Java集合类</a>
-              <a href="/tags/%E6%BA%90%E7%A0%81%E7%B3%BB%E5%88%97/" rel="tag"># 源码系列</a>
-          </div>
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
 
-        
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/07/26/Queue%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E2%80%94%E2%80%94ArrayDeque%E3%80%81PriorityQueue/" alt="微信分享二维码">
+    </div>
+</div>
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2021/07/24/List%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%20%E2%80%94%E2%80%94%20LinkedList%E3%80%81ArrayList/" rel="prev" title="List实现类源码分析 —— LinkedList、ArrayList">
-                  <i class="fa fa-chevron-left"></i> List实现类源码分析 —— LinkedList、ArrayList
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2021/07/27/AVL%E4%B8%8ERedBlackTree/" rel="next" title="AVL与RedBlackTree">
-                  AVL与RedBlackTree <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java%E9%9B%86%E5%90%88%E7%B1%BB/" rel="tag">Java集合类</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81%E7%B3%BB%E5%88%97/" rel="tag">源码系列</a></li></ul>
+
     </footer>
-  </article>
-</div>
-
-
-
-
-
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-
-<div class="copyright">
-  &copy; 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/07/27/AVL%E4%B8%8ERedBlackTree/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            AVL与RedBlackTree
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/07/24/List%E5%AE%9E%E7%8E%B0%E7%B1%BB%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%20%E2%80%94%E2%80%94%20LinkedList%E3%80%81ArrayList/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">List实现类源码分析 —— LinkedList、ArrayList</div>
+      </a>
+    
+  </nav>
+
+  
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2023
+        <i class="ri-heart-fill heart_icon"></i> SongyangJi
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
 
     </div>
-  </footer>
 
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
+
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
   </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-
-
-
-
-  
-
-
-
-
-
 </body>
+
 </html>

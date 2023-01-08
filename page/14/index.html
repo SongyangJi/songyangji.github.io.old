@@ -1,2096 +1,944 @@
 <!DOCTYPE html>
+
+
 <html lang="zh-CN">
+
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+     JsyBlog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/images/ayer.png" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  
+<link rel="stylesheet" href="/css/custom.css">
 
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-
-    <meta property="og:type" content="website">
-<meta property="og:title" content="JsyBlog">
-<meta property="og:url" content="http://example.com/page/14/index.html">
-<meta property="og:site_name" content="JsyBlog">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="SongyangJi">
-<meta name="twitter:card" content="summary">
-
-
-<link rel="canonical" href="http://example.com/page/14/">
-
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/14/index.html","title":""}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>JsyBlog</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
   
 
+  
 
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
+</html>
 
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      
+<section class="cover">
+    
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="/images/cover1.jpg" alt="image frame" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">JsyBlog</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+        <img
+          src="/images/ayer.svg"
+          class="cover-logo"
+          alt="JsyBlog"
+        />
+        
+      </div>
     </div>
   </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">JsyBlog</h1>
-      <i class="logo-line"></i>
-    </a>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
   </div>
+</section>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '让风吹干流过的泪和汗，总有一天我有属于我的天'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 70,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
+<div id="main">
+  <section class="outer">
+  
+  
+  
+
+<div class="notice" style="margin-top:50px">
+    <i class="ri-heart-fill"></i>
+    <div class="notice-content" id="broad"></div>
+</div>
+<script type="text/javascript">
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("broad").innerHTML = data.hitokoto;
+        })
+        .catch(console.error)
+</script>
+
+<style>
+    .notice {
+        padding: 20px;
+        border: 1px dashed #e6e6e6;
+        color: #969696;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #fbfbfb50;
+        border-radius: 10px;
+    }
+
+    .notice i {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        padding-right: 10px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+
+    .notice-content {
+        display: initial;
+        vertical-align: middle;
+    }
+</style>
+  
+  <article class="articles">
+    
+    
+    
+    
+    <article
+  id="post-JVM垃圾回收算法和垃圾回收器"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/"
+    >JVM垃圾回收算法和垃圾回收器</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/" class="article-date">
+  <time datetime="2021-12-12T10:31:40.000Z" itemprop="datePublished">2021-12-12</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+  </div>
+   
     </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
+
+    </footer>
   </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-ConcurrentHashMap"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/12/12/ConcurrentHashMap/"
+    >JUC之并发安全的HashMap —— ConcurrentHashMap</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/12/ConcurrentHashMap/" class="article-date">
+  <time datetime="2021-12-12T08:15:24.000Z" itemprop="datePublished">2021-12-12</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JUC/">JUC</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JUC/" rel="tag">JUC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91%E9%9B%86%E5%90%88%E7%B1%BB/" rel="tag">并发集合类</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Sandbox的安全机制"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/12/10/Sandbox%E7%9A%84%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6/"
+    >Sandbox的安全机制</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/10/Sandbox%E7%9A%84%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6/" class="article-date">
+  <time datetime="2021-12-10T13:51:54.000Z" itemprop="datePublished">2021-12-10</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/sandbox/">sandbox</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sandbox/" rel="tag">sandbox</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-LinkLayer"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/12/10/LinkLayer/"
+    >LinkLayer</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/10/LinkLayer/" class="article-date">
+  <time datetime="2021-12-10T12:53:24.000Z" itemprop="datePublished">2021-12-10</time>
+</a>    
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-IP 协议相关技术——DNS、NAT、ICMP、DHCP、ARP"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/12/10/IP%20%E5%8D%8F%E8%AE%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94DNS%E3%80%81NAT%E3%80%81ICMP%E3%80%81DHCP%E3%80%81ARP/"
+    >IP 协议相关技术——DNS、NAT、ICMP、DHCP、ARP</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/10/IP%20%E5%8D%8F%E8%AE%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94DNS%E3%80%81NAT%E3%80%81ICMP%E3%80%81DHCP%E3%80%81ARP/" class="article-date">
+  <time datetime="2021-12-09T16:42:13.000Z" itemprop="datePublished">2021-12-10</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ARP/" rel="tag">ARP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DHCP/" rel="tag">DHCP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ICMP/" rel="tag">ICMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NAT/" rel="tag">NAT</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Redis高可用"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/12/09/Redis%E9%AB%98%E5%8F%AF%E7%94%A8/"
+    >Redis高可用</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/09/Redis%E9%AB%98%E5%8F%AF%E7%94%A8/" class="article-date">
+  <time datetime="2021-12-09T12:45:27.000Z" itemprop="datePublished">2021-12-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NoSQL/" rel="tag">NoSQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Redis-哨兵"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/12/09/Redis-%E5%93%A8%E5%85%B5/"
+    >Redis-哨兵</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/09/Redis-%E5%93%A8%E5%85%B5/" class="article-date">
+  <time datetime="2021-12-09T12:43:29.000Z" itemprop="datePublished">2021-12-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NoSQL/" rel="tag">NoSQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-undolog"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/12/09/undolog/"
+    >MySQL —— Undo log</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/09/undolog/" class="article-date">
+  <time datetime="2021-12-09T10:47:10.000Z" itemprop="datePublished">2021-12-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-redolog"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/12/09/redolog/"
+    >MySQL —— Redo log</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/09/redolog/" class="article-date">
+  <time datetime="2021-12-09T10:47:05.000Z" itemprop="datePublished">2021-12-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Raft"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/12/09/Raft/"
+    >Raft</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/09/Raft/" class="article-date">
+  <time datetime="2021-12-09T05:58:09.000Z" itemprop="datePublished">2021-12-09</time>
+</a>    
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/13/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/15/">下一页</a>
+  </nav>
+  
+</section>
 </div>
 
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2023
+        <i class="ri-heart-fill heart_icon"></i> SongyangJi
       </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
   </ul>
 </nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
 </div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
   </div>
 </div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
 
     </div>
-  </div>
 
-</header>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
         
-  
-  <aside class="sidebar">
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
+
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
 
-    <div class="sidebar-inner sidebar-overview-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
 
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-        </div>
-        <!--/noindex-->
 
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">SongyangJi</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">237</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">42</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">109</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/" class="post-title-link" itemprop="url">JVM垃圾回收算法和垃圾回收器</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-12 18:31:40" itemprop="dateCreated datePublished" datetime="2021-12-12T18:31:40+08:00">2021-12-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-05 03:04:06" itemprop="dateModified" datetime="2023-01-05T03:04:06+08:00">2023-01-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="GC的基础知识"><a href="#GC的基础知识" class="headerlink" title="GC的基础知识"></a>GC的基础知识</h1><h2 id="一、垃圾回收的区域"><a href="#一、垃圾回收的区域" class="headerlink" title="一、垃圾回收的区域"></a>一、垃圾回收的区域</h2><ul>
-<li>栈：栈中的生命周期是跟随线程，所以一般不需要关注。</li>
-<li>堆：堆中的对象是垃圾回收的重点。</li>
-<li>方法区：这一块也会发生垃圾回收，不过这块的效率比较低，一般不是我们关注的重点。</li>
-</ul>
-<h2 id="二、怎么判断对象的存活"><a href="#二、怎么判断对象的存活" class="headerlink" title="二、怎么判断对象的存活"></a>二、怎么判断对象的存活</h2><p>一般有两种方式（引用计数法、可达性分析），<strong>JVM使用的是可达性分析</strong>。</p>
-<h3 id="1-引用计数法"><a href="#1-引用计数法" class="headerlink" title="1. 引用计数法"></a>1. 引用计数法</h3><p>给对象添加一个引用计数器，当对象增加一个引用时计数器加 1，引用失效时计数器减 1。引用计数为 0 的对象可被回收（Python 在用，但主流虚拟机没有使用）。</p>
-<ul>
-<li>优点：快，方便，实现简单。</li>
-<li>缺陷：对象相互引用时（A.instance&#x3D;B 同时 B.instance&#x3D;A），很难判断对象是否该回收。</li>
-</ul>
-<h3 id="2-可达性分析"><a href="#2-可达性分析" class="headerlink" title="2. 可达性分析"></a>2. 可达性分析</h3><p>来判定对象是否存活的。这个算法的基本思路就是通过一系列的称为“GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链（Reference Chain），当一个对象到 GC Roots 没有任何引用链相连时，则证明此对象是不可用的。</p>
-<p>作为 GC Roots 的对象包括下面几种：</p>
-<ul>
-<li>虚拟机栈（栈帧中的本地变量表）中引用的对象；</li>
-<li>方法区中类静态属性引用的对象；</li>
-<li>方法区中常量引用的对象；</li>
-<li>本地方法栈中JNI（即一般说的Native方法）引用的对象；</li>
-</ul>
-<h2 id="三、-垃圾回收算法"><a href="#三、-垃圾回收算法" class="headerlink" title="三、 垃圾回收算法"></a>三、 垃圾回收算法</h2><p>本节具体介绍一下各种垃圾回收算法的思想：</p>
-<h3 id="1-标记-清除算法"><a href="#1-标记-清除算法" class="headerlink" title="1. 标记-清除算法"></a>1. 标记-清除算法</h3><p>标记-清除算法对<strong>根集合</strong>进行扫描，对<strong>存活</strong>的对象进行标记。标记完成后，再对整个空间内<strong>未被标记</strong>的对象扫描，进行回收。</p>
-<ul>
-<li><p><strong>优点</strong>：</p>
-<p><strong>实现简单，不需要进行对象进行移动</strong>。</p>
-</li>
-<li><p><strong>缺点</strong>：</p>
-<p>标记、清除过程效率低，<strong>产生大量不连续的内存碎片</strong>，提高了垃圾回收的频率。</p>
-</li>
-</ul>
-<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/mark-sweep.png"></p>
-<h3 id="2-标记-复制算法"><a href="#2-标记-复制算法" class="headerlink" title="2. 标记-复制算法"></a>2. 标记-复制算法</h3><p>这种收集算法解决了标记清除算法存在的效率问题。它将内存区域划分成相同的两个<strong>内存块</strong>。每次仅使用一半的空间，<code>JVM</code>生成的新对象放在一半空间中。当一半空间用完时进行<code>GC</code>，把可到达对象复制到另一半空间，然后把使用过的内存空间一次清理掉。</p>
-<ul>
-<li><p><strong>优点</strong>：</p>
-<p>按顺序分配内存即可，实现简单、运行高效，不用考虑内存碎片。</p>
-</li>
-<li><p><strong>缺点</strong>：</p>
-<p><strong>可用的内存大小缩小为原来的一半</strong>，<strong>对象存活率高时会频繁进行复制</strong>。</p>
-</li>
-</ul>
-<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/gc-copy.png"></p>
-<h3 id="3-标记-整理算法"><a href="#3-标记-整理算法" class="headerlink" title="3. 标记-整理算法"></a>3. 标记-整理算法</h3><p><strong>标记-整理算法</strong> 采用和 <strong>标记-清除算法</strong> 一样的方式进行对象的标记，但后续不直接对可回收对象进行清理，而是将所有的<strong>存活对象</strong>往一端<strong>空闲空间</strong>移动，然后清理掉端边界以外的内存空间。</p>
-<ul>
-<li><p><strong>优点</strong>：</p>
-<p><strong>解决了标记-清理算法存在的内存碎片问题</strong>。</p>
-</li>
-<li><p><strong>缺点</strong>：</p>
-<p>仍<strong>需要进行局部对象移动，一定程度上降低了效率</strong>。</p>
-<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/mark-compact.png"></p>
-</li>
-</ul>
-<h3 id="4-分代收集技术"><a href="#4-分代收集技术" class="headerlink" title="4. 分代收集技术"></a>4. 分代收集技术</h3><h4 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h4><ul>
-<li>部分收集（Partial GC）指目标不是完整收集整个Java堆的垃圾收集，其中可以分为：</li>
-<li><ul>
-<li>新生代收集（Minor GC&#x2F;Young GC）: 指目标只是新生代的垃圾收集；</li>
-<li>老年代收集（Major GC&#x2F;Old GC）: 指目标只是老年代的垃圾收集。注意这个名词可能有歧义，有的也指整堆收集。</li>
-<li>混合收集（Mixed GC）：指目标是收集整个新生代以及部分老年代的来及收集。目前只有G1收集器有这种行为。</li>
-</ul>
-</li>
-<li>整堆收集（Full GC）：收集整个Java堆和方法区的垃圾收集。</li>
-</ul>
-<p>当前商业虚拟机都采用<strong>分代收集</strong>的垃圾收集算法。分代收集算法，顾名思义是根据对象的<strong>存活周期</strong>将内存划分为几块。一般包括<strong>年轻代</strong>、<strong>老年代</strong> 和 <strong>永久代</strong>，如图所示：</p>
-<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/gc-generation.png"></p>
-<blockquote>
-<p>上图中的 永久（Permanent）代在 JDK8之后便被取消。</p>
-</blockquote>
-<h4 id="新生代（Young-generation）"><a href="#新生代（Young-generation）" class="headerlink" title="新生代（Young generation）"></a>新生代（Young generation）</h4><p>绝大多数最新被创建的对象会被分配到这里，由于<strong>大部分对象</strong>在创建后会很快变得<strong>不可达</strong>，所以很多对象被创建在<strong>新生代</strong>，然后<strong>消失</strong>。对象从这个区域消失的过程我们称之为 <code>minor GC</code>。</p>
-<p><strong>新生代</strong> 中存在一个<code>Eden</code>区和两个<code>Survivor</code>区（Survivor 区里面分为 from 和 to 区），每次只使用Eden和其中的一块Survivor区。新对象会首先分配在<code>Eden</code>中（<strong>如果新对象过大，会直接分配在老年代</strong>中）。在<code>GC</code>中，<code>Eden</code>中的对象会被移动到<code>Survivor</code>中，直至对象满足一定的年纪（定义为熬过<code>GC</code>的次数），会被移动到<strong>老年代</strong>。</p>
-<p>可以设置<strong>新生代</strong>和<strong>老年代</strong>的相对大小。这种方式的优点是新生代大小会随着整个<strong>堆</strong>大小<strong>动态扩展</strong>。参数 <code>-XX:NewRatio</code> 设置<strong>老年代</strong>与<strong>新生代</strong>的比例。例如 <code>-XX:NewRatio=8</code> 指定 <strong>老年代&#x2F;新生代</strong> 为<code>8/1</code>. <strong>老年代</strong> 占堆大小的 <code>7/8</code> ，<strong>新生代</strong> 占堆大小的 <code>1/8</code>（默认即是 <code>1/8</code>）。</p>
-<p><strong>当Eden区满了的时候，会触发Young GC。</strong></p>
-<h4 id="老年代（Old-generation）"><a href="#老年代（Old-generation）" class="headerlink" title="老年代（Old generation）"></a>老年代（Old generation）</h4><p>对象没有变得不可达，并且从新生代中<strong>存活</strong>下来，会被<strong>拷贝</strong>到这里。其所占用的空间要比新生代多。也正由于其相对<strong>较大的空间</strong>，发生在<strong>老年代</strong>上的<code>GC</code>要比<strong>新生代</strong>要<strong>少得多</strong>。对象从<strong>老年代</strong>中消失的过程，可以称之为<code>major GC</code>（或者<code>full GC</code>）。</p>
-<p><code>JDK8</code>堆内存一般是划分为<strong>年轻代</strong>和<strong>老年代</strong>，<strong>不同年代</strong> 根据自身特性采用<strong>不同的垃圾收集算法</strong>。</p>
-<p>对于<strong>新生代</strong>，每次<code>GC</code>时都有<strong>大量</strong>的对象死亡，只有<strong>少量</strong>对象存活。考虑到复制成本低，适合采用<strong>复制算法</strong>。因此有了<code>From Survivor</code>和<code>To Survivor</code>区域。</p>
-<p>对于<strong>老年代</strong>，因为对象<strong>存活率高</strong>，没有额外的内存空间对它进行担保。因而适合采用<strong>标记-清除算法</strong>和<strong>标记-整理算法</strong>进行回收。</p>
-<h1 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h1><p>Jvm 垃圾回收器把上面的三种算法全部用到了，采用分代收集。</p>
-<h2 id="新生代：复制算法。"><a href="#新生代：复制算法。" class="headerlink" title="新生代：复制算法。"></a>新生代：复制算法。</h2><table>
-<thead>
-<tr>
-<th>收集器</th>
-<th>收集对象和算法</th>
-<th>收集器类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Serial</td>
-<td>新生代，<strong>标记复制算法</strong></td>
-<td>单线程</td>
-</tr>
-<tr>
-<td>ParNew</td>
-<td>新生代，<strong>标记复制算法</strong></td>
-<td>并行的多线程收集器</td>
-</tr>
-<tr>
-<td>Parallel Scavenge</td>
-<td>新生代，<strong>标记复制算法</strong></td>
-<td>并行的多线程收集器</td>
-</tr>
-</tbody></table>
-<h2 id="老年代：标记清除算法和标记整理算法"><a href="#老年代：标记清除算法和标记整理算法" class="headerlink" title="老年代：标记清除算法和标记整理算法"></a>老年代：标记清除算法和标记整理算法</h2><table>
-<thead>
-<tr>
-<th>收集器</th>
-<th>收集对象和算法</th>
-<th>收集器类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Serial Old</td>
-<td>老年代，标记整理算法</td>
-<td>单线程</td>
-</tr>
-<tr>
-<td>Parallel Old</td>
-<td>老年代，标记整理算法</td>
-<td>并行的多线程收集器</td>
-</tr>
-<tr>
-<td>CMS（Concurrent Mark Sweep ）</td>
-<td>老年代，<strong>标记清除算法</strong></td>
-<td>并行和并发收集器</td>
-</tr>
-<tr>
-<td>G1（Garbage First）</td>
-<td>跨新生代和老年代，复制算法 + 标记整理算法</td>
-<td>并行和并发收集器</td>
-</tr>
-</tbody></table>
-<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/gc-machines.png"></p>
-<p><strong>注：</strong></p>
-<ul>
-<li><strong>并行：垃圾收集的多线程的同时进行</strong>。</li>
-<li><strong>并发：垃圾收集的多线程和用户应用的多线程同时进行</strong>。</li>
-<li>使用 <code>jps -v</code> 可以看到使用的垃圾收集器，例如：<code>-XX:+UseConcMarkSweepGC</code> （CMS）</li>
-</ul>
-<h2 id="Serial-x2F-Serial-Old"><a href="#Serial-x2F-Serial-Old" class="headerlink" title="Serial&#x2F;Serial Old"></a>Serial&#x2F;Serial Old</h2><p>最古老的，单线程，独占式，成熟，适合单 CPU 服务器。<code>-XX:+UseSerialGC</code> 新生代和老年代都用串行收集器。</p>
-<h2 id="ParNew"><a href="#ParNew" class="headerlink" title="ParNew"></a>ParNew</h2><p>ParNew 和 Serial 基本没区别，唯一的区别：多线程，多 CPU 的，停顿时间比 Serial 少 。</p>
-<p><code>-XX:+UseParNewGC</code>新生代使用 ParNew，老年代使用 Serial Old 。</p>
-<p>可以和CMS搭配使用。</p>
-<h2 id="Parallel-Scavenge（ParallerGC）-x2F-Parallel-Old"><a href="#Parallel-Scavenge（ParallerGC）-x2F-Parallel-Old" class="headerlink" title="Parallel Scavenge（ParallerGC）&#x2F;Parallel Old"></a>Parallel Scavenge（ParallerGC）&#x2F;Parallel Old</h2><p><strong>关注吞吐量的垃圾收集器</strong>，<strong>高吞吐量则可以高效率地利用 CPU 时间</strong>（但对响应时间有负面影响），尽快完成程序的运算任务，主要适合在后台运算而不需要太多交互的任务。所谓吞吐量就是 CPU 用于运行用户代码的时间与 CPU 总消耗时间的比值，即吞吐量&#x3D;运行用户代码时间&#x2F;（运行用户代码时间+垃圾收集时间）</p>
-<h2 id="CMS（Concurrent-Mark-Sweep）"><a href="#CMS（Concurrent-Mark-Sweep）" class="headerlink" title="CMS（Concurrent Mark Sweep）"></a>CMS（Concurrent Mark Sweep）</h2><p>CMS收集器是一种<strong>以获取最短回收停顿时间为目标</strong>的收集器。目前很大一部分的 Java 应用集中在互联网站或者 B&#x2F;S 系统的服务端上，这类应用尤其<strong>重视服务的响应速度，希望系统停顿时间最短</strong>，以给用户带来较好的体验。</p>
-<p>CMS 收集器就非常符合这类应用的需求。<code>-XX:+UseConcMarkSweepGC</code> ，<strong>一般新生代使用 ParNew，老年代的用 CMS</strong>，从名字（包含“Mark Sweep”）上就可以看出，CMS 收集器是基于“标记—清除”算法实现的，它的运作过程相对于前面几种收集器来说更复杂一些。</p>
-<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/gc-cms.png"></p>
-<p>整个过程分为 4 个步骤，包括：</p>
-<p>1、<strong>初始标记</strong>：仅仅只是标记一下 <strong>GC Roots 能直接关联到的对象</strong>，速度很快，需要停顿（STW -Stop the world）。（需要 STW）</p>
-<p>2、<strong>并发标记</strong>：从 GC Root 开始对堆中对象进行可达性分析，找到存活对象，它在整个回收过程中耗时最长，不需要停顿。（无需STW）</p>
-<p>3、<strong>重新标记</strong>：<strong>为了修正并发标记期间因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，</strong>。这个阶段的停顿时间一般会比初始标记阶段稍长一些，但远比并发标记的时间短。(因为用户在并发标记阶段对对象做的修改相对来讲是比较少的)。（需要STW)</p>
-<ol start="4">
-<li><strong>并发清除</strong>：（无需STW）</li>
-</ol>
-<blockquote>
-<p><strong>Stop The World</strong></p>
-<p>Java中Stop-The-World机制简称STW，是在执行垃圾收集算法时，Java应用程序的其他所有线程都被挂起（除了垃圾收集帮助器之外）。Java中一种全局暂停现象，全局停顿，所有Java代码停止，native代码可以执行，但不能与JVM交互。</p>
-</blockquote>
-<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><ol>
-<li>优点</li>
-</ol>
-<p>由于整个过程中耗时最长的并发标记和并发清除过程收集器线程都可以与用户线程一起工作，所以，从<strong>总体上来说，CMS 收集器的内存回收过程是与用户线程一起并发执行的</strong>。</p>
-<ol start="2">
-<li>缺点</li>
-</ol>
-<ul>
-<li><strong>CPU 资源敏感</strong>：因为并发阶段多线程占据 CPU 资源，如果 CPU 资源不足，效率会明显降低。</li>
-<li><strong>会产生内存碎片</strong>：<strong>标记-清除算法</strong> 会导致产生不连续的内存碎片。</li>
-<li>由于 CMS <strong>并发清理阶段</strong> 用户线程还在运行着，伴随程序运行自然就还会有新的垃圾不断产生，这一部分垃圾出现在标记过程之后，CMS 无法在当次收集中处理掉它们，只好留待下一次 GC 时再清理掉。这一部分垃圾就称为 <strong>浮动垃圾</strong>。</li>
-<li>由于浮动垃圾的存在，因此需要预留出一部分内存，意味着 CMS 收集不能像其它收集器那样等待老年代快满的时候再回收。在 1.6 的版本中老年代空间使用率阈值(92%)，如果预留的内存不够存放浮动垃圾，就会出现 Concurrent Mode Failure，这时虚拟机将临时启用 Serial Old 来替代 CMS。</li>
-</ul>
-<h2 id="G1"><a href="#G1" class="headerlink" title="G1"></a>G1</h2><p><strong>G1相比较CMS的改进</strong></p>
-<ul>
-<li><strong>基于标记-整理算法, 不会产生空间碎片</strong>，分配大对象时不会无法得到连续的空间而提前触发一次full gc 。</li>
-<li><strong>停顿时间相对可控</strong>： G1可以通过设置预期停顿时间（Pause time）来控制垃圾收集时间，但是<strong>这个预期停顿时间G1只能尽量做到，而不是一定能做到</strong>。</li>
-</ul>
-<p>G1 收集器之所以能建立可预测的停顿时间模型，是因为它可以<strong>有计划地避免在整个 Java 堆中进行全区域的垃圾收集</strong>。</p>
-<p>G1 跟踪各个 Region 里面的垃圾堆积的价值大小（回收所获得的空间大小以及回收所需时间的经验值），<strong>在后台维护一个优先列表</strong>，<strong>每次根据允许的收集时间，优先回收价值最大的 Region</strong>（这也就是 <strong>Garbage-First</strong> 名称的来由）。</p>
-<p><strong>这种使用 Region 划分内存空间以及有优先级的区域回收方式</strong>，<strong>保证了 G1 收集器在有限的时间内可以获取尽可高的收集效率</strong>。</p>
-<h3 id="Region如何划分"><a href="#Region如何划分" class="headerlink" title="Region如何划分"></a>Region如何划分</h3><p>G1 把堆划分成多个大小相等的 <strong>独立区域</strong>（Region），<strong>新生代和老年代不再物理隔离</strong>。</p>
-<p>G1 算法将堆划分为若干个独立区域（Region），它仍然属于分代收集器。</p>
-<p>不过，这些区域的一部分包含新生代，<strong>新生代的垃圾收集依然采用暂停所有应用线程的方式，将存活对象拷贝到老年代或者 Survivor 空间</strong>。</p>
-<p>例如其中一个独立区域如图：</p>
-<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/g1-region.png"></p>
-<h3 id="步骤-1"><a href="#步骤-1" class="headerlink" title="步骤"></a>步骤</h3><p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/gc-g1.png"></p>
-<p>大致分为4个步骤：</p>
-<ol>
-<li><strong>初始标记</strong>：仅仅只是标记一下 GC Roots 能直接关联到的对象，并且修改 TAMS（Nest Top Mark Start）的值，让下一阶段用户程序并发运行时，能在正确可以的 Region 中创建对象，此阶段需要停顿线程(STW)，但耗时很短。</li>
-<li><strong>并发标记</strong>：从 GC Root 开始对堆中对象进行可达性分析，找到存活对象，此阶段耗时较长，但可与用户程序并发执行。</li>
-<li><strong>最终标记</strong>：<strong>为了修正在并发标记期间因用户程序继续运作而导致标记产生变动的那一部分标记记录</strong>，虚拟机将这段时间对象变化记录在线程的 <code>Remembered Set Logs</code> 里面，最终标记阶段需要把 Remembered Set Logs 的数据合并到 Remembered Set 中。这阶段需要停顿线程(STW)，但是可并行执行。</li>
-<li><strong>筛选回收</strong>：<strong>首先对各个 Region 中的回收价值和成本进行排序，根据用户所期望的 GC 停顿时间来制定回收计划</strong>。此阶段其实也可以做到与用户程序一起并发执行，但是因为只回收一部分 Region，时间是用户可控制的，而且停顿用户线程将大幅度提高收集效率。</li>
-</ol>
-<p>G1 从整体来看是基于<strong>标记整理</strong>算法实现的收集器，从局部（两个Region之间）上来看是基于复制算法实现的。</p>
-<h2 id="垃圾回收器的一些重要参数"><a href="#垃圾回收器的一些重要参数" class="headerlink" title="垃圾回收器的一些重要参数"></a>垃圾回收器的一些重要参数</h2><p>使用<code>java -XX:+PrintCommandLineFlags -version</code>查看关于垃圾收集器的一些信息。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-XX:InitialHeapSize=268435456 -XX:MaxHeapSize=4294967296 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC</span><br><span class="line">java version &quot;1.8.0_281&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_281-b09)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.281-b09, mixed mode)</span><br></pre></td></tr></table></figure>
-
-
-
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>UseSerialGC</td>
-<td>虚拟机运行在 Client 模式下的默认值，打开此开关后，使用 Serial+Serial Old 的收集器组合进行内存回收</td>
-</tr>
-<tr>
-<td>UseParNewGC</td>
-<td>打开此开关后，使用 ParNew + Serial Old 的收集器组合进行内存回收</td>
-</tr>
-<tr>
-<td>UseConcMarkSweepGC</td>
-<td>打开此开关后，使用 ParNew + CMS + Serial Old 的收集器组合进行内存回收。Serial Old 收集器将作为 CMS 收集器出现 Concurrent Mode Failure 失败后的后备收集器使用</td>
-</tr>
-<tr>
-<td><strong>UseParallelGC</strong></td>
-<td><strong>虚拟机运行在 Server 模式下的默认值</strong>，打开此开关后，使用 <strong>Parallel Scavenge + Serial Old(PS MarkSweep)</strong> 的收集器组合进行内存回收</td>
-</tr>
-<tr>
-<td>UseParallelOldGC</td>
-<td>打开此开关后，使用 Parallel Scavenge + Parallel Old 的收集器组合进行内存回收</td>
-</tr>
-<tr>
-<td>SurvivorRatio</td>
-<td>新生代中 Eden 区域与 Survivor 区域的容量比值，默认为 8，代表 Eden : Survivor &#x3D; 8 : 1</td>
-</tr>
-<tr>
-<td>PretenureSizeThreshold</td>
-<td>直接晋升到老年代的对象大小，设置这个参数后，大于这个参数的对象将直接在老年代分配</td>
-</tr>
-<tr>
-<td>MaxTenuringThreshold</td>
-<td>晋升到老年代的对象年龄，每个对象在坚持过一次 Minor GC 之后，年龄就增加 1，当超过这个参数值时就进入老年代</td>
-</tr>
-<tr>
-<td>UseAdaptiveSizePolicy</td>
-<td>动态调整 Java 堆中各个区域的大小以及进入老年代的年龄</td>
-</tr>
-<tr>
-<td>HandlePromotionFailure</td>
-<td>是否允许分配担保失败，即老年代的剩余空间不足以应付新生代的整个 Eden 和 Survivor 区的所有对象都存活的极端情况</td>
-</tr>
-<tr>
-<td>ParallelGCThreads</td>
-<td>设置并行 GC 时进行内存回收的线程数</td>
-</tr>
-<tr>
-<td>GCTimeRatio GC</td>
-<td>时间占总时间的比率，默认值为 99，即允许 1% 的 GC 时间，仅在使用 Parallel Scavenge 收集器生效</td>
-</tr>
-<tr>
-<td>MaxGCPauseMillis</td>
-<td>设置 GC 的最大停顿时间，仅在使用 Parallel Scavenge 收集器时生效</td>
-</tr>
-<tr>
-<td>CMSInitiatingOccupancyFraction</td>
-<td>设置 CMS 收集器在老年代空间被使用多少后触发垃圾收集，默认值为 68%，仅在使用 CMS 收集器时生效</td>
-</tr>
-<tr>
-<td>UseCMSCompactAtFullCollection</td>
-<td>设置 CMS 收集器在完成垃圾收集后是否要进行一次内存碎片整理，仅在使用 CMS 收集器时生效</td>
-</tr>
-<tr>
-<td>CMSFullGCsBeforeCompaction</td>
-<td>设置 CMS 收集器在进行若干次垃圾收集后再启动一次内存碎片整理，仅在使用 CMS 收集器时生效</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904148404535309">JVM垃圾回收算法和垃圾回收器</a></p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903639794843656">JVM系列(五) - JVM垃圾回收算法</a></p>
-<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1582661">Full GC 和 Minor GC，傻傻分不清楚</a></p>
-</blockquote>
-<h1 id="FullGC"><a href="#FullGC" class="headerlink" title="FullGC"></a>FullGC</h1><h2 id="什么时候会触发FullGC"><a href="#什么时候会触发FullGC" class="headerlink" title="什么时候会触发FullGC"></a>什么时候会触发FullGC</h2><h3 id="System-gc-方法的调用"><a href="#System-gc-方法的调用" class="headerlink" title="System.gc()方法的调用"></a>System.gc()方法的调用</h3><p>此方法的调用是建议JVM进行Full GC,虽然只是建议而非一定,但很多情况下它会触发 Full GC,从而增加Full GC的频率,也即增加了间歇性停顿的次数。强烈影响系建议能不使用此方法就别使用，让虚拟机自己去管理它的内存，可通过通过<code>-XX:+ DisableExplicitGC</code>来禁止RMI调用System.gc。</p>
-<h3 id="Metaspace区内存达到阈值"><a href="#Metaspace区内存达到阈值" class="headerlink" title="Metaspace区内存达到阈值"></a>Metaspace区内存达到阈值</h3><p>从JDK8开始，永久代(PermGen)的概念被废弃掉了，取而代之的是一个称为Metaspace的存储空间。Metaspace使用的是本地内存，而不是堆内存，也就是说在默认情况下Metaspace的大小只与本地内存大小有关。-XX:MetaspaceSize&#x3D;21810376B（约为20.8MB）超过这个值就会引发Full GC，这个值不是固定的，是会随着JVM的运行进行动态调整的，与此相关的参数还有多个，详细情况请参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/bolg_hero/article/details/78189621">这篇文章</a></p>
-<h3 id="老年代空间不足"><a href="#老年代空间不足" class="headerlink" title="老年代空间不足"></a>老年代空间不足</h3><blockquote>
-<p><strong>Survivor区域对象晋升到老年代有两种情况</strong>：</p>
-<p>一种是给每个对象定义一个对象计数器，如果对象在Eden区域出生，并且经过了第一次GC，那么就将他的年龄设置为1，在Survivor区域的对象每熬过一次GC，年龄计数器加一，等到到达默认值15时，就会被移动到老年代中，默认值可以通过-XX:MaxTenuringThreshold来设置。<br>另外一种情况是如果JVM发现Survivor区域中的相同年龄的对象占到所有对象的一半以上时，就会将大于这个年龄的对象移动到老年代，在这批对象在统计后发现可以晋升到老年代，但是发现老年代没有足够的空间来放置这些对象，这就会引起Full GC。</p>
-</blockquote>
-<p>老年代空间只有在<strong>新生代对象转入</strong>及<strong>创建大对象、大数组</strong>时才会出现不足的现象，</p>
-<p>当执行Full GC后空间仍然不足，则抛出如下错误：<code>java.lang.OutOfMemoryError: Java heap space</code><br>为避免以上两种状况引起的Full GC，调优时应尽量做到让对象在Minor GC阶段被回收、让对象在新生代多存活一段时间及不要创建过大的对象及数组。</p>
-<h3 id="堆中分配很大的对象"><a href="#堆中分配很大的对象" class="headerlink" title="堆中分配很大的对象"></a>堆中分配很大的对象</h3><p>这个参数可以通过<code>-XX:PretenureSizeThreshold</code>进行设定，大对象或者长期存活的对象进入老年代，典型的大对象就是很长的字符串或者数组，它们在被创建后会直接进入老年代，虽然可能新生代中的Eden区域可以放置这个对象，在要放置的时候JVM如果发现老年代的空间不足时，会触发GC。</p>
-<p>所谓大对象，是指需要大量连续内存空间的java对象，例如很长的数组，<strong>此种对象会直接进入老年代，而老年代虽然有很大的剩余空间，但是无法找到足够大的连续空间来分配给当前对象</strong>，此种情况就会触发JVM进行Full GC。</p>
-<p>为了解决这个问题，CMS垃圾收集器提供了一个可配置的参数，即-XX:+UseCMSCompactAtFullCollection开关参数，用于在“享受”完Full GC服务之后额外免费赠送一个碎片整理的过程，<strong>内存整理的过程无法并发的，空间碎片问题没有了，但提顿时间不得不变长了</strong>，JVM设计者们还提供了另外一个参数 -XX:CMSFullGCsBeforeCompaction,这个参数用于设置在执行多少次不压缩的Full GC后,跟着来一次带压缩的。</p>
-<h3 id="统计得到的Minor-GC晋升到旧生代的平均大小大于老年代的剩余空间"><a href="#统计得到的Minor-GC晋升到旧生代的平均大小大于老年代的剩余空间" class="headerlink" title="统计得到的Minor GC晋升到旧生代的平均大小大于老年代的剩余空间"></a>统计得到的Minor GC晋升到旧生代的平均大小大于老年代的剩余空间</h3><p>这是一个较为复杂的触发情况，Hotspot<strong>为了避免由于新生代对象晋升到旧生代导致旧生代空间不足的现象</strong>，在进行Minor GC时，做了一个判断，<strong>如果之前统计所得到的Minor GC晋升到旧生代的平均大小大于旧生代的剩余空间，那么就直接触发Full GC</strong>。</p>
-<blockquote>
-<p>例如程序第一次触发Minor GC后，有6MB的对象晋升到旧生代，那么当下一次Minor GC发生时，首先检查旧生代的剩余空间是否大于6MB，如果小于6MB，则执行Full GC（相当于，提前进行fullgc，而不是把新生代的对象移动过去之后发现内存不足才fullgc）。</p>
-<p>当新生代采用PS GC时，方式稍有不同，PS GC是在Minor GC后也会检查，例如上面的例子中第一次Minor GC后，PS GC会检查此时旧生代的剩余空间是否大于6MB，如小于，则触发对旧生代的回收。<br>除了以上4种状况外，对于使用RMI来进行RPC或管理的Sun JDK应用而言，默认情况下会一小时执行一次Full GC。可通过在启动时通过- java -Dsun.rmi.dgc.client.gcInterval&#x3D;3600000来设置Full GC执行的间隔时间或通过-XX:+ DisableExplicitGC来禁止RMI调用System.gc。</p>
-</blockquote>
-<h3 id="CMS-GC时出现promotion-failed和concurrent-mode-failure"><a href="#CMS-GC时出现promotion-failed和concurrent-mode-failure" class="headerlink" title="CMS GC时出现promotion failed和concurrent mode failure"></a>CMS GC时出现promotion failed和concurrent mode failure</h3><p>对于采用CMS进行老年代GC的程序而言，尤其要注意GC日志中是否有<strong>promotion failed</strong>和<strong>concurrent mode failure</strong>两种状况，当这两种状况出现时可能会触发Full GC。</p>
-<p>promotion failed是在进行Minor GC时，survivor space放不下、对象只能放入老年代，而此时老年代也放不下造成的；concurrent mode failure是在</p>
-<p>执行CMS GC的过程中同时有对象要放入老年代，而此时老年代空间不足造成的（有时候“空间不足”是CMS GC时当前的浮动垃圾过多导致暂时性的空间不足触发Full GC）。<br>应对措施为：增大survivor space、老年代空间或调低触发并发GC的比率，但在JDK 5.0+、6.0+的版本中有可能会由于JDK的bug29导致CMS在remark完毕后很久才触发sweeping动作。对于这种状况，可通过设置-XX: CMSMaxAbortablePrecleanTime&#x3D;5（单位为ms）来避免。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>可以发现其实堆内存的Full GC一般都是<strong>两个原因</strong>引起的，<strong>要么是老年代内存过小，要么是老年代连续内存过小。</strong>无非是这两点，而<strong>元数据区Metaspace引发的Full GC可能是阈值引起的</strong>。</p>
-<h2 id="如何排查"><a href="#如何排查" class="headerlink" title="如何排查"></a>如何排查</h2><p><strong>检测JVM堆的情况</strong></p>
-<p>方法1. 可以使用JDK的bin目录下的jvisualvm.exe工具来进行实时监测，这个是图形化界面，最为直观，这是一个强大的工具。<br>方法2. 采用jps找到进行id，然后使用jstat -gc pid来实时进行检测。<br>方法3. 运行程序前设置-XX:+PrintGCDetails，-XX:+PrintGCDateStamps参数打印GC的详细信息进行分析。</p>
-<blockquote>
-<p>参考博客</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Hollake/article/details/90484027">https://blog.csdn.net/Hollake/article/details/90484027</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/12/ConcurrentHashMap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/12/ConcurrentHashMap/" class="post-title-link" itemprop="url">JUC之并发安全的HashMap —— ConcurrentHashMap</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-12 16:15:24" itemprop="dateCreated datePublished" datetime="2021-12-12T16:15:24+08:00">2021-12-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-03-22 15:19:33" itemprop="dateModified" datetime="2022-03-22T15:19:33+08:00">2022-03-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JUC/" itemprop="url" rel="index"><span itemprop="name">JUC</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本篇文章将要介绍的 ConcurrentHashMap 是 HashMap 的并发版本，它是线程安全的，并且在高并发的情境下，性能优于 Hashtable 很多。</p>
-<h2 id="历史版本的演变"><a href="#历史版本的演变" class="headerlink" title="历史版本的演变"></a>历史版本的演变</h2><blockquote>
-<p><em>一句话总结</em></p>
-<p>从JDK7版本的ReentrantLock+Segment+HashEntry，到JDK8版本中synchronized+CAS+HashEntry+红黑树。</p>
-</blockquote>
-<h3 id="JDK7的ConcurrentHashMap"><a href="#JDK7的ConcurrentHashMap" class="headerlink" title="JDK7的ConcurrentHashMap"></a>JDK7的ConcurrentHashMap</h3><p>JDK7 采用<strong>分段锁技术</strong>，<strong>整个 Hash 表被分成多个段（默认为16段），每个段中会对应一个 Segment 段锁</strong>，<strong>段与段之间可以并发访问，但是多线程想要操作同一个段是需要获取锁的</strong>。所有的 put，get，remove 等方法都是根据键的 hash 值对应到相应的段中，然后尝试获取锁进行访问。</p>
-<p>相当于通过增加锁的数量来降低锁的粒度（能支持 N 个 Segment 这么多次数的并发）。</p>
-<p><img src="/2021/12/12/ConcurrentHashMap/jdk7-segment.png"></p>
-<p>下图为JDK7的数据结构。</p>
-<p><img src="/2021/12/12/ConcurrentHashMap/jdk7-segment2.webp"></p>
-<p>Segment 是 ConcurrentHashMap 的一个内部类，主要的组成如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Segment</span>&lt;K,V&gt; <span class="keyword">extends</span> <span class="title class_">ReentrantLock</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> <span class="number">2249069246763182397L</span>;</span><br><span class="line">       </span><br><span class="line">       <span class="comment">// 和 HashMap 中的 HashEntry 作用一样，真正存放数据的桶</span></span><br><span class="line">       <span class="keyword">transient</span> <span class="keyword">volatile</span> HashEntry&lt;K,V&gt;[] table;</span><br><span class="line">       <span class="keyword">transient</span> <span class="type">int</span> count;</span><br><span class="line">       <span class="keyword">transient</span> <span class="type">int</span> modCount;</span><br><span class="line">       <span class="keyword">transient</span> <span class="type">int</span> threshold;</span><br><span class="line">       <span class="keyword">final</span> <span class="type">float</span> loadFactor;</span><br><span class="line">       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>原理上来说：ConcurrentHashMap 采用了分段锁技术，其中 Segment 继承于 ReentrantLock。不会像 HashTable 那样不管是 put 还是 get 操作都需要做同步处理，理论上 ConcurrentHashMap 支持 CurrencyLevel (Segment 数组数量)的线程并发。每当一个线程占用锁访问一个 Segment 时，不会影响到其他的 Segment。</p>
-<p>下面也来看看核心的 <code>put</code>、<code>get</code> 方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> V <span class="title function_">put</span><span class="params">(K key, V value)</span> &#123;</span><br><span class="line">    Segment&lt;K,V&gt; s;</span><br><span class="line">    <span class="keyword">if</span> (value == <span class="literal">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">    <span class="type">int</span> <span class="variable">hash</span> <span class="operator">=</span> hash(key);</span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> (hash &gt;&gt;&gt; segmentShift) &amp; segmentMask;</span><br><span class="line">    <span class="keyword">if</span> ((s = (Segment&lt;K,V&gt;)UNSAFE.getObject          <span class="comment">// nonvolatile; recheck</span></span><br><span class="line">         (segments, (j &lt;&lt; SSHIFT) + SBASE)) == <span class="literal">null</span>) <span class="comment">//  in ensureSegment</span></span><br><span class="line">        s = ensureSegment(j);</span><br><span class="line">    <span class="keyword">return</span> s.put(key, hash, value, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>首先是通过 key 定位到 Segment，之后在对应的 Segment 中进行具体的 put。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> V <span class="title function_">put</span><span class="params">(K key, <span class="type">int</span> hash, V value, <span class="type">boolean</span> onlyIfAbsent)</span> &#123;</span><br><span class="line">    HashEntry&lt;K,V&gt; node = tryLock() ? <span class="literal">null</span> :</span><br><span class="line">        scanAndLockForPut(key, hash, value); <span class="comment">// 尝试获取锁，如果获取失败肯定就有其他线程存在竞争</span></span><br><span class="line">    V oldValue;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        HashEntry&lt;K,V&gt;[] tab = table;</span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> (tab.length - <span class="number">1</span>) &amp; hash;</span><br><span class="line">        HashEntry&lt;K,V&gt; first = entryAt(tab, index);</span><br><span class="line">        <span class="keyword">for</span> (HashEntry&lt;K,V&gt; e = first;;) &#123;</span><br><span class="line">            <span class="keyword">if</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">                K k;</span><br><span class="line">                <span class="keyword">if</span> ((k = e.key) == key ||</span><br><span class="line">                    (e.hash == hash &amp;&amp; key.equals(k))) &#123;</span><br><span class="line">                    oldValue = e.value;</span><br><span class="line">                    <span class="keyword">if</span> (!onlyIfAbsent) &#123;</span><br><span class="line">                        e.value = value;</span><br><span class="line">                        ++modCount;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                e = e.next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (node != <span class="literal">null</span>)</span><br><span class="line">                    node.setNext(first);</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    node = <span class="keyword">new</span> <span class="title class_">HashEntry</span>&lt;K,V&gt;(hash, key, value, first);</span><br><span class="line">                <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> count + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span> (c &gt; threshold &amp;&amp; tab.length &lt; MAXIMUM_CAPACITY)</span><br><span class="line">                    rehash(node);</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    setEntryAt(tab, index, node);</span><br><span class="line">                ++modCount;</span><br><span class="line">                count = c;</span><br><span class="line">                oldValue = <span class="literal">null</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        unlock();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> oldValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>scanAndLockForPut</code>为第一步操作：获取锁，尝试自旋获取锁（try lock），如果重试的次数达到了 <code>MAX_SCAN_RETRIES</code> 则改为阻塞锁（lock）获取，保证能获取成功。</p>
-<p>再结合图看看 put 的流程。</p>
-<ol>
-<li>将当前 Segment 中的 table 通过 key 的 hashcode 定位到 HashEntry。</li>
-<li>遍历该 HashEntry，如果不为空则判断传入的 key 和当前遍历的 key 是否相等，相等则覆盖旧的 value。</li>
-<li>不为空则需要新建一个 HashEntry 并加入到 Segment 中，同时会先判断是否需要扩容。</li>
-<li>最后会解除在 1 中所获取当前 Segment 的锁。</li>
-</ol>
-<p><code>get</code>的逻辑比价简单：</p>
-<p>只需要将 Key 通过 Hash 之后定位到具体的 Segment ，再通过一次 Hash 定位到具体的元素上。</p>
-<p>由于 HashEntry 中的 value 属性是用 volatile 关键词修饰的，保证了内存可见性，所以每次获取时都是最新值。</p>
-<p>ConcurrentHashMap 的 get 方法是非常高效的，<strong>因为整个过程都不需要加锁</strong>。</p>
-<h3 id="JDK8的ConcurrentHashMap"><a href="#JDK8的ConcurrentHashMap" class="headerlink" title="JDK8的ConcurrentHashMap"></a>JDK8的ConcurrentHashMap</h3><p>J<strong>DK8 取消了基于 Segment 的分段锁思想</strong>，<strong>改用 CAS + synchronized 控制并发操作</strong>，在某些方面提升了性能。</p>
-<p><strong>并且追随 1.8 版本的 HashMap 底层实现，使用数组+链表+红黑树进行数据存储</strong>。本篇主要介绍 1.8 版本的 ConcurrentHashMap 的具体实现。</p>
-<h3 id="put流程"><a href="#put流程" class="headerlink" title="put流程"></a>put流程</h3><ul>
-<li>根据 key 计算出 hashcode 。</li>
-<li>判断是否需要进行初始化。</li>
-<li><code>f</code> 即为当前 key 定位出的 Node，<strong>如果为空表示当前位置可以写入数据，利用 CAS 尝试写入，失败则自旋保证成功</strong>。</li>
-<li>如果当前位置的 <code>hashcode == MOVED == -1</code>,则需要进行扩容。</li>
-<li>如果都不满足，则利用 synchronized 锁写入数据。</li>
-<li>如果数量大于 <code>TREEIFY_THRESHOLD</code> 则要转换为红黑树。</li>
-</ul>
-<p>有关其之前版本的实现情况，这里推荐几篇文章：</p>
-<p><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/e694f1e868ec">谈谈ConcurrentHashMap1.7和1.8的不同实现</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/everSeeker/p/5601861.html">ConcurrentHashMap在jdk1.8中的改进</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/study-everyday/p/6430462.html">ConcurrentHashMap原理分析（1.7与1.8）</a></p>
-<h3 id="JDK7与JDK8的区别"><a href="#JDK7与JDK8的区别" class="headerlink" title="JDK7与JDK8的区别"></a>JDK7与JDK8的区别</h3><ol>
-<li><strong>底层数据结构</strong>：<strong>取消了Segment分段锁的数据结构</strong>，取而代之的是Node数组+链表+红黑树的结构，从而实现了对每一行数据进行加锁，进一步减少并发冲突的概率。</li>
-</ol>
-<blockquote>
-<p>Node类成员变量Node的元素val和指针next都标注volatile，目的是在多线程环境下<strong>线程A修改结点的val或者新增节点的时候是对线程B可见的</strong>。</p>
-</blockquote>
-<blockquote>
-<p>ConcurrentHashMap有成员变量transient volatile Node&lt;K,V&gt;[] table，此volatile的目的是<strong>为了使Node数组在扩容的时候对其他线程具有可见性</strong>。（例如：volatile int array[10]是指array的地址是volatile的而不是数组元素的值是volatile的.）</p>
-</blockquote>
-<ol start="2">
-<li><strong>保证线程安全机制</strong>：JDK7采用segment的分段锁机制实现线程安全，其中segment继承自ReentrantLock。<strong>JDK8采用CAS(读)+Synchronized(写)保证线程安全</strong>。</li>
-<li><strong>锁的粒度</strong>：原来是对需要进行数据操作的Segment加锁<strong>，JDK8调整为对每个数组元素加锁（Node）</strong>。</li>
-<li><strong>链表转化为红黑树</strong>：定位结点的hash算法简化会带来弊端，Hash冲突加剧，因此在链表节点数量大于8时，会将链表转化为红黑树进行存储。</li>
-<li><strong>查询时间复杂度</strong>：从原来的遍历链表O(n)，变成遍历红黑树O(logN)。</li>
-</ol>
-<h3 id="Collections-synchronizedMap、Hashtable、ConcurrentHashMap区别"><a href="#Collections-synchronizedMap、Hashtable、ConcurrentHashMap区别" class="headerlink" title="Collections.synchronizedMap、Hashtable、ConcurrentHashMap区别"></a>Collections.synchronizedMap、Hashtable、ConcurrentHashMap区别</h3><blockquote>
-<p>参考文章</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yangming1996/p/8031199.html">为并发而生的 ConcurrentHashMap（Java 8）</a></p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903813892014087">解读Java8中ConcurrentHashMap是如何保证线程安全的</a></p>
-<p><a target="_blank" rel="noopener" href="https://crossoverjie.top/2018/07/23/java-senior/ConcurrentHashMap/">HashMap? ConcurrentHashMap? 相信看完这篇没人能难住你！</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/10/Sandbox%E7%9A%84%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/10/Sandbox%E7%9A%84%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">Sandbox的安全机制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-10 21:51:54" itemprop="dateCreated datePublished" datetime="2021-12-10T21:51:54+08:00">2021-12-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/sandbox/" itemprop="url" rel="index"><span itemprop="name">sandbox</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Sandbox的安全机制如何设计？"><a href="#Sandbox的安全机制如何设计？" class="headerlink" title="Sandbox的安全机制如何设计？"></a>Sandbox的安全机制如何设计？</h1><p>对于Linux而言，它的风格是一贯的。沙盒是进程而不是线程，这点非常明确。</p>
-<h2 id="用户权限相关"><a href="#用户权限相关" class="headerlink" title="用户权限相关"></a>用户权限相关</h2><h3 id="Nobody-用户"><a href="#Nobody-用户" class="headerlink" title="Nobody 用户"></a>Nobody 用户</h3><p>在许多Unix系统与类Unix系统（如Linux）中，nobody是一个没有任何权限的用户。<br>该用户不拥有任何文件，也没有任何特殊权限。某些系统还会定义类似的用户组“nogroup”。<br>示例：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @Author: 吉松阳</span></span><br><span class="line"><span class="comment"> * @Date: 2021/9/23</span></span><br><span class="line"><span class="comment"> * @Description: </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pwd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">passwd</span> *<span class="title">pw</span>;</span></span><br><span class="line">    <span class="type">char</span> *username = <span class="string">&quot;nobody&quot;</span>;</span><br><span class="line">    pw = getpwnam(username);</span><br><span class="line">    <span class="keyword">if</span> (!pw) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s is not exist\n&quot;</span>, username);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pw-&gt;pw_name = %s\n&quot;</span>, pw-&gt;pw_name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pw-&gt;pw_passwd = %s\n&quot;</span>, pw-&gt;pw_passwd);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pw-&gt;pw_uid = %d\n&quot;</span>, pw-&gt;pw_uid);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pw-&gt;pw_gid = %d\n&quot;</span>, pw-&gt;pw_gid);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pw-&gt;pw_gecos = %s\n&quot;</span>, pw-&gt;pw_gecos);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pw-&gt;pw_dir = %s\n&quot;</span>, pw-&gt;pw_dir);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pw-&gt;pw_shell = %s\n&quot;</span>, pw-&gt;pw_shell);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>下面是 MacOS Big Sur 上的 nobody 用户相关信息。<br>其中<code>/var/empty</code>表明它不拥有任何文件，<code>/usr/bin/false</code>表明它不能登录使用shell</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pw-&gt;pw_name = nobody</span><br><span class="line">pw-&gt;pw_passwd = *</span><br><span class="line">pw-&gt;pw_uid = -2</span><br><span class="line">pw-&gt;pw_gid = -2</span><br><span class="line">pw-&gt;pw_gecos = Unprivileged User</span><br><span class="line">pw-&gt;pw_dir = /var/empty</span><br><span class="line">pw-&gt;pw_shell = /usr/bin/false</span><br></pre></td></tr></table></figure>
-
-<p>在运行oj用户的代码的时候，是以nobody的身份运行的，意味着它的权限非常有限，不能去执行那些危险的代码。</p>
-<h3 id="root-用户"><a href="#root-用户" class="headerlink" title="root 用户"></a>root 用户</h3><p>root用户，即系统的管理员。<br>sandbox程序本身需要 root权限。<br>如何区分呢？<br>将上面的代码中的用户名替换成 root, 输出为：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pw-&gt;</span><span class="language-bash">pw_name = root</span></span><br><span class="line"><span class="meta prompt_">pw-&gt;</span><span class="language-bash">pw_passwd = *</span></span><br><span class="line"><span class="meta prompt_">pw-&gt;</span><span class="language-bash">pw_uid = 0</span></span><br><span class="line"><span class="meta prompt_">pw-&gt;</span><span class="language-bash">pw_gid = 0</span></span><br><span class="line"><span class="meta prompt_">pw-&gt;</span><span class="language-bash">pw_gecos = System Administrator</span></span><br><span class="line"><span class="meta prompt_">pw-&gt;</span><span class="language-bash">pw_dir = /var/root</span></span><br><span class="line"><span class="meta prompt_">pw-&gt;</span><span class="language-bash">pw_shell = /bin/sh</span></span><br></pre></td></tr></table></figure>
-<p>发现uid、gid 均为 0。<br>于是在运行沙箱之前判定一下程序的执行者的uid、gid是不是 root 用户即可。</p>
-<h2 id="资源限制"><a href="#资源限制" class="headerlink" title="资源限制"></a>资源限制</h2><h3 id="setuid-x2F-setgid"><a href="#setuid-x2F-setgid" class="headerlink" title="setuid&#x2F;setgid"></a>setuid&#x2F;setgid</h3><ul>
-<li><p>background infomation<br>内核为每个进程维护的三个UID值。<br>这三个UID分别是实际用户ID(real uid)、有效用户ID(effective uid)、保存的设置用户ID(saved set-user ID)。<br>其中 real uid 指的是运行某程序的实际用户ID（登录shell的那个用户的uid）；<br>effective uid 指的是指当前进程是以哪个用户ID来运行的；<br>保存的设置用户ID就是有效用户ID的一个副本，与SUID权限有关。<br>一般情况下 real uid 和 effective uid 相同，但是使用<code>setuid</code>、<code>chmod +s</code>之后，二者就不一定相同了。</p>
-</li>
-<li><p><code>setuid</code>函数定义</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">setuid</span><span class="params">(<span class="type">uid_t</span> uid)</span>;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>函数说明：<br>+（1） 如果进程具有超级用户权限，那么 <code>setuid(uid_t uid)</code>会将三种 uid 全部设置成参数uid；<br> (启动sandbox其实就是要求以root身份启动的)</p>
-<ul>
-<li>(2) 如果 uid 等于 real uid 或者 saved set-user ID, 那么只把 effective uid 修改成 uid；</li>
-<li>(3) 两种情况都不满组足，返回 -1 , errno被设置为 EPERM。</li>
-</ul>
-</li>
-<li><p>返回值<br>执行成功则返回0； 失败则返回-1, 错误代码存于errno.</p>
-</li>
-<li><p>使用场景</p>
-<ul>
-<li>降低权限，比如在sandbox中通过让程序以 nobody 的身份来运行。</li>
-<li>提高权限，但是最好注意在使用完 root 权限后建议马上执行setuid(getuid())，来抛弃root 权限，避免不必要的风险。</li>
-</ul>
-</li>
-</ul>
-<h3 id="setrlimit-x2F-getrlimit"><a href="#setrlimit-x2F-getrlimit" class="headerlink" title="setrlimit&#x2F;getrlimit"></a>setrlimit&#x2F;getrlimit</h3><ul>
-<li><p>头文件:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/resource.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-</li>
-<li><p>函数说明:<br>获取或设定资源使用限制。<br>每种资源都有相关的软硬限制:<strong>软限制</strong>是内核强加给相应资源的限制值，<strong>硬限制</strong>是软限制的最大值。<br>非授权调用进程只可以将其软限制指定为0~硬限制范围中的某个值，同时能不可逆转地降低其硬限制。<br>授权进程可以任意改变其软硬限制。<br>RLIM_INFINITY的值表示不对资源限制。</p>
-</li>
-<li><p>函数定义</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">getrlimit</span><span class="params">(<span class="type">int</span> resource, <span class="keyword">struct</span> rlimit *rlim)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">setrlimit</span><span class="params">(<span class="type">int</span> resource, <span class="type">const</span> <span class="keyword">struct</span> rlimit *rlim)</span>;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>resource：可能的选择有</p>
-<ul>
-<li>RLIMIT_AS &#x2F;&#x2F; 进程的最大虚内存空间，字节为单位。</li>
-<li>RLIMIT_CORE &#x2F;&#x2F; 内核转存文件的最大长度。</li>
-<li>RLIMIT_CPU &#x2F;&#x2F; 最大允许的CPU使用时间，秒为单位。当进程达到软限制，内核将给其发送<strong>SIGXCPU</strong>信号，这一信号的默认行为是终止进程的执行。<br>然而，可以捕捉信号，处理句柄可将控制返回给主程序。<br>如果进程继续耗费CPU时间，核心会以每秒一次的频率给其发送SIGXCPU信号。<br>如果达到硬限制，那时将给进程发送 SIGKILL信号终止其执行。</li>
-<li>RLIMIT_DATA &#x2F;&#x2F; 进程数据段的最大值。</li>
-<li>RLIMIT_FSIZE &#x2F;&#x2F; 进程可建立的文件的最大长度。如果进程试图超出这一限制时，核心会给其发送<strong>SIGXFSZ</strong>信号，默认情况下将终止进程的执行。</li>
-<li>RLIMIT_LOCKS &#x2F;&#x2F; 进程可建立的锁和租赁的最大值。</li>
-<li>RLIMIT_MEMLOCK &#x2F;&#x2F; 进程可锁定在内存中的最大数据量，字节为单位。</li>
-<li>RLIMIT_MSGQUEUE &#x2F;&#x2F; 进程可为POSIX消息队列分配的最大字节数。</li>
-<li>RLIMIT_NICE &#x2F;&#x2F; 进程可通过setpriority() 或 nice()调用设置的最大完美值。</li>
-<li>RLIMIT_NOFILE &#x2F;&#x2F; 指定比进程可打开的最大文件描述词大一的值，超出此值，将会产生EMFILE错误。</li>
-<li>RLIMIT_NPROC &#x2F;&#x2F; 用户可拥有的最大进程数。</li>
-<li>RLIMIT_RTPRIO &#x2F;&#x2F; 进程可通过sched_setscheduler 和 sched_setparam设置的最大实时优先级。</li>
-<li>RLIMIT_SIGPENDING &#x2F;&#x2F; 用户可拥有的最大挂起信号数。</li>
-<li>RLIMIT_STACK &#x2F;&#x2F; 最大的进程栈，以字节为单位。</li>
-</ul>
-<p>rlimit：描述资源软硬限制的结构体，原型如下</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rlimit</span> &#123;</span></span><br><span class="line">	<span class="type">rlim_t</span>  rlim_cur;               <span class="comment">/* current (soft) limit 软限制 */</span></span><br><span class="line">	<span class="type">rlim_t</span>  rlim_max;               <span class="comment">/* maximum value for rlim_cur 硬限制 */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-<ul>
-<li><p>返回值<br><strong>成功执行时，返回 0 。失败返回 -1</strong> 。<br>errno被设为以下的某个值：</p>
-<ul>
-<li>EFAULT：rlim指针指向的空间不可访问</li>
-<li>EINVAL：参数无效</li>
-<li>EPERM：增加资源限制值时，权能不允许</li>
-</ul>
-</li>
-<li><p>参考链接：<br><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/getrlimit.2.html">getrlimit(2) — Linux manual page</a></p>
-</li>
-</ul>
-<h1 id="使用seccomp限制syscall"><a href="#使用seccomp限制syscall" class="headerlink" title="使用seccomp限制syscall"></a>使用seccomp限制syscall</h1><h2 id="什么是seccomp"><a href="#什么是seccomp" class="headerlink" title="什么是seccomp"></a>什么是seccomp</h2><p>seccomp（全称 <strong>secure computing mode</strong>）是linux kernel从2.6.23版本开始所支持的一种安全机制。<br>seccomp是一种<strong>内核中的安全机制</strong>,正常情况下,程序可以使用所有的syscall,这是不安全的。<br>比如劫持程序流后通过execve的syscall来<code>getshell</code>。<br>通过seccomp我们可以在程序中禁用掉某些syscall,这样就算劫持了程序流也只能调用部分的syscall了.</p>
-<p><strong>通过seccomp，我们限制程序使用某些系统调用，这样可以减少系统的暴露面，同时是程序进入一种“安全”的状态。</strong><br>详细介绍可参考seccomp内核文档(见参考链接)。</p>
-<h2 id="如何使用seccomp"><a href="#如何使用seccomp" class="headerlink" title="如何使用seccomp"></a>如何使用seccomp</h2><p>seccomp可以通过系统调用ptrctl(2)或者通过系统调用seccomp(2)开启，前提是内核配置中开启了CONFIG_SECCOMP和CONFIG_SECCOMP_FILTER。</p>
-<p>seccomp支持两种模式：<strong>SECCOMP_MODE_STRICT</strong> 和 <strong>SECCOMP_MODE_FILTER</strong>。</p>
-<ul>
-<li>在SECCOMP_MODE_STRICT模式下，进程不能使用<code>read(2)</code>、<code>write(2)</code>、<code>_exit(2)</code>和<code>sigreturn(2)</code>以外的其他系统调用。</li>
-<li>在SECCOMP_MODE_FILTER模式下，可以利用BerkeleyPacket Filter配置哪些系统调用及它们的参数可以被进程使用。</li>
-</ul>
-<h2 id="如何查看是否使用了seccomp"><a href="#如何查看是否使用了seccomp" class="headerlink" title="如何查看是否使用了seccomp"></a>如何查看是否使用了seccomp</h2><p>通常有两种方法：<br>利用<code>prctl(2)</code>的PR_GET_SECCOMP的参数获取当前进程的seccomp状态。</p>
-<ul>
-<li>返回值0表示没有使用seccomp;</li>
-<li>返回值2表示使用了seccomp并处于SECCOMP_MODE_FILTER模式； </li>
-<li>其他情况进程会被SIGKILL信号杀死。</li>
-</ul>
-<p>从Linux3.8开始，可以利用&#x2F;proc&#x2F;$pid&#x2F;status中的Seccomp字段查看。如果没有seccomp字段，说明内核不支持seccomp。</p>
-<ul>
-<li><p>举例:<br>查看mysql服务的seccomp的状态，发现并没有进入安全限制模式。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/`pidof mysqld`/status</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输出</span></span><br><span class="line">Name:	mysqld</span><br><span class="line">......</span><br><span class="line">Seccomp:	0</span><br><span class="line">Seccomp_filters:	0</span><br></pre></td></tr></table></figure>
-<p>在sandbox环境下执行 python3 脚本，<br>查看次进程的seccomp的状态，发现进程处于SECCOMP_MODE_FILTER模式 。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Name:	python3</span><br><span class="line">......</span><br><span class="line">Seccomp:	2</span><br><span class="line">Seccomp_filters:	1</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>代码示例<br>使用 <code>syscall</code> 调用 execve，如果没有安全限制的话，会正常进入 shell</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;seccomp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    scmp_filter_ctx ctx; <span class="comment">// scmp 过滤上下文</span></span><br><span class="line">    ctx = seccomp_init(SCMP_ACT_ALLOW); <span class="comment">// 初始化过滤状态为允许所有系统调用</span></span><br><span class="line">    seccomp_rule_add(ctx, SCMP_ACT_KILL, SCMP_SYS(execve), <span class="number">0</span>); <span class="comment">// 添加需要限制的系统调用</span></span><br><span class="line">    seccomp_load(ctx); <span class="comment">// 装载上下文</span></span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> *filename = <span class="string">&quot;/bin/sh&quot;</span>;</span><br><span class="line">    <span class="type">char</span> *argv[] = &#123;<span class="string">&quot;/bin/sh&quot;</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    <span class="type">char</span> *envp[] = &#123;<span class="literal">NULL</span>&#125;;</span><br><span class="line"></span><br><span class="line">    syscall(SYS_execve, filename, argv, envp); <span class="comment">// execve</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>编译</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -o ban ban.c -l seccomp</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">须先实现安装</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sudo apt install libseccomp-dev libseccomp2 seccomp</span></span><br></pre></td></tr></table></figure>
-<p>运行程序</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~/桌面$ ./ban</span><br><span class="line">错误的系统调用 (核心已转储) # Bad system call (core dumped)</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="api-rule"><a href="#api-rule" class="headerlink" title="api rule"></a>api rule</h2><h3 id="SCMP-SYS"><a href="#SCMP-SYS" class="headerlink" title="SCMP_SYS"></a>SCMP_SYS</h3><p>根据系统调用名获取系统调用号，虽然你可以直接使用 <code>__NR_syscall</code> 直接指定，但是为了跨平台最好使用它获取。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">SCMP_SYS</span><span class="params">(syscall_name)</span>;</span><br></pre></td></tr></table></figure>
-
-<h3 id="scmp-filter-ctx"><a href="#scmp-filter-ctx" class="headerlink" title="scmp_filter_ctx"></a>scmp_filter_ctx</h3><p>结构体定义</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">void</span> * scmp_filter_ctx;</span><br></pre></td></tr></table></figure>
-<p>seccmp的过滤器上下文，保存、传递了我们传入的系统调用过滤条件。</p>
-<h3 id="seccomp-init"><a href="#seccomp-init" class="headerlink" title="seccomp_init"></a>seccomp_init</h3><ul>
-<li><p>函数说明:<br>seccomp_init的作用就是初始化 scmp_filter_ctx结构。<br>需要注意的是，任何其他libseccomp中的函数调用，必须在seccomp_init之后。</p>
-</li>
-<li><p>函数定义</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scmp_filter_ctx <span class="title function_">seccomp_init</span><span class="params">(<span class="type">uint32_t</span> def_action)</span>; </span><br></pre></td></tr></table></figure>
-</li>
-<li><p>返回值<br>成功返回scmp_filter_ctx（过滤器上下文） ctx；<br>失败返回NULL</p>
-</li>
-<li><p>参数说明<br>def_action用于指定默认行为，有效动作值如下：（当线程调用了<code>seccomp</code>过滤规则中没有相关配置规则的系统调用时触发）</p>
-<ul>
-<li>SCMP_ACT_KILL<br>线程将会被内核以SIGSYS信号终止；</li>
-<li>SCMP_ACT_KILL_PROCESS<br>整个进程被终止；</li>
-<li>SCMP_ACT_TRAP<br>线程将会抛出一个SIGSYS信号；</li>
-<li>SCMP_ACT_ERRNO(uint16_t errno)<br>线程调用与筛选规则匹配的系统调用时，它将收到一个errno的返回值；</li>
-<li>SCMP_ACT_TRACE(uint16_t msg_num)<br>略</li>
-<li>SCMP_ACT_LOG<br>不会对调用系统调用的线程产生任何影响，但系统调用会被记录到日志。</li>
-<li>SCMP_ACT_ALLOW<br>不会对调用系统调用的线程产生任何影响。</li>
-</ul>
-</li>
-</ul>
-<h3 id="seccomp-rule-addXXX"><a href="#seccomp-rule-addXXX" class="headerlink" title="seccomp_rule_addXXX"></a>seccomp_rule_addXXX</h3><h4 id="函数说明"><a href="#函数说明" class="headerlink" title="函数说明:"></a>函数说明:</h4><p>  这个函数组都会向当前seccomp过滤器添加新的过滤规则。</p>
-<blockquote>
-<p>调用应用程序提供的所有过滤器规则被组合成一个联合，并带有额外的逻辑来消除冗余的系统调用过滤器。<br>例如，如果添加了一条规则，该规则允许给定的系统调用具有一组特定的参数值，<br>然后又添加了一条规则，该规则允许相同的系统调用而不管参数值如何，<br>那么第一个更具体的规则将有效地从过滤器中删除第二个更通用的规则。</p>
-</blockquote>
-<h4 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a>函数定义</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">seccomp_rule_add</span><span class="params">(scmp_filter_ctx ctx, <span class="type">uint32_t</span> action,</span></span><br><span class="line"><span class="params">                            <span class="type">int</span> syscall, <span class="type">unsigned</span> <span class="type">int</span> arg_cnt, ...)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">seccomp_rule_add_exact</span><span class="params">(scmp_filter_ctx ctx, <span class="type">uint32_t</span> action,</span></span><br><span class="line"><span class="params">                                  <span class="type">int</span> syscall, <span class="type">unsigned</span> <span class="type">int</span> arg_cnt, ...)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">seccomp_rule_add_array</span><span class="params">(scmp_filter_ctx ctx,</span></span><br><span class="line"><span class="params">                                  <span class="type">uint32_t</span> action, <span class="type">int</span> syscall,</span></span><br><span class="line"><span class="params">                                  <span class="type">unsigned</span> <span class="type">int</span> arg_cnt,</span></span><br><span class="line"><span class="params">                                  <span class="type">const</span> <span class="keyword">struct</span> scmp_arg_cmp *arg_array)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">seccomp_rule_add_exact_array</span><span class="params">(scmp_filter_ctx ctx,</span></span><br><span class="line"><span class="params">                                        <span class="type">uint32_t</span> action, <span class="type">int</span> syscall,</span></span><br><span class="line"><span class="params">                                        <span class="type">unsigned</span> <span class="type">int</span> arg_cnt,</span></span><br><span class="line"><span class="params">                                        <span class="type">const</span> <span class="keyword">struct</span> scmp_arg_cmp *arg_array)</span>;</span><br></pre></td></tr></table></figure>
-
-
-<h4 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h4><ul>
-<li><ol>
-<li>action有效动作值如下：（当线程调用了<code>seccomp</code>过滤规则中有相关配置规则的系统调用时触发）</li>
-</ol>
-<ul>
-<li>SCMP_ACT_KILL<br>线程将会被内核终止；</li>
-<li>SCMP_ACT_KILL_PROCESS<br>整个进程被终止；</li>
-<li>SCMP_ACT_TRAP<br>线程将会抛出一个SIGSYS信号；</li>
-<li>SCMP_ACT_ERRNO(uint16_t errno)<br>线程调用与筛选规则匹配的系统调用时，它将收到一个errno的返回值；</li>
-<li>SCMP_ACT_TRACE(uint16_t msg_num)<br>略</li>
-<li>SCMP_ACT_LOG<br>会对调用系统调用的线程产生任何影响，但系统调用会被记录到日志。</li>
-<li>SCMP_ACT_ALLOW<br>不会对调用系统调用的线程产生任何影响（也就是允许调用这个system call）。</li>
-<li>SCMP_ACT_NOTIFY<br>略</li>
-</ul>
-</li>
-<li><ol start="2">
-<li>arg_cnt 指定规则配置的系统调用的参数的匹配情况的个数（因为后面是一个变长数组）</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>边长数组的元素是 <code>scmp_arg_cmp</code> 结构体，定义如下。</li>
-</ol>
-</li>
-</ul>
-<p>系统调用的参数比较规则相关定义：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Comparison operators</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">scmp_compare</span> &#123;</span></span><br><span class="line">	_SCMP_CMP_MIN = <span class="number">0</span>,</span><br><span class="line">	SCMP_CMP_NE = <span class="number">1</span>,		<span class="comment">/**&lt; not equal */</span></span><br><span class="line">	SCMP_CMP_LT = <span class="number">2</span>,		<span class="comment">/**&lt; less than */</span></span><br><span class="line">	SCMP_CMP_LE = <span class="number">3</span>,		<span class="comment">/**&lt; less than or equal */</span></span><br><span class="line">	SCMP_CMP_EQ = <span class="number">4</span>,		<span class="comment">/**&lt; equal */</span></span><br><span class="line">	SCMP_CMP_GE = <span class="number">5</span>,		<span class="comment">/**&lt; greater than or equal */</span></span><br><span class="line">	SCMP_CMP_GT = <span class="number">6</span>,		<span class="comment">/**&lt; greater than */</span></span><br><span class="line">	SCMP_CMP_MASKED_EQ = <span class="number">7</span>,		<span class="comment">/**&lt; masked equality */</span></span><br><span class="line">	_SCMP_CMP_MAX,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Argument datum</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">uint64_t</span> <span class="type">scmp_datum_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Argument / Value comparison definition</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">scmp_arg_cmp</span> &#123;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> arg;	<span class="comment">/**&lt; argument number, starting at 0 */</span></span><br><span class="line">	<span class="class"><span class="keyword">enum</span> <span class="title">scmp_compare</span> <span class="title">op</span>;</span>	<span class="comment">/**&lt; the comparison op, e.g. SCMP_CMP_* */</span></span><br><span class="line">	<span class="type">scmp_datum_t</span> datum_a;</span><br><span class="line">	<span class="type">scmp_datum_t</span> datum_b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>有效比较操作值（ op ）如下：</p>
-<ul>
-<li><p>SCMP_CMP_NE<br>参数值不等于基准值时匹配，例如：<br>SCMP_CMP( arg , SCMP_CMP_NE , datum )</p>
-</li>
-<li><p>SCMP_CMP_LT<br>参数值小于基准值时匹配，例如：<br>SCMP_CMP( arg , SCMP_CMP_LT , datum )</p>
-</li>
-<li><p>SCMP_CMP_LE<br>参数值小于或等于基准值时匹配，例如：<br>SCMP_CMP( arg , SCMP_CMP_LE , datum )</p>
-</li>
-<li><p>SCMP_CMP_EQ<br>参数值等于基准值时匹配，例如：<br>SCMP_CMP( arg , SCMP_CMP_EQ , datum )</p>
-</li>
-<li><p>SCMP_CMP_GE<br>参数值大于或等于基准值时匹配，例如：<br>SCMP_CMP( arg , SCMP_CMP_GE , datum )</p>
-</li>
-<li><p>SCMP_CMP_GT<br>参数值大于基准值时匹配，例如：<br>SCMP_CMP( arg , SCMP_CMP_GT , datum )</p>
-</li>
-<li><p>SCMP_CMP_MASKED_EQ<br>当掩码参数值等于掩码基准值时匹配，例如：<br>SCMP_CMP( arg , SCMP_CMP_MASKED_EQ , mask , datum )</p>
-</li>
-</ul>
-<p>注意，scmp_arg_cmp 此结构不能直接生成，需要调用它提供的宏生成，有如下宏：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_CMP</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> arg,</span></span><br><span class="line"><span class="params">                                    <span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A0</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A1</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A2</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A3</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A4</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A5</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_CMP64</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> arg,</span></span><br><span class="line"><span class="params">                                    <span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A0_64</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A1_64</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A2_64</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A3_64</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A4_64</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A5_64</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_CMP32</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> arg,</span></span><br><span class="line"><span class="params">                                    <span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A0_32</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A1_32</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A2_32</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A3_32</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A4_32</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line">       <span class="keyword">struct</span> scmp_arg_cmp <span class="title function_">SCMP_A5_32</span><span class="params">(<span class="keyword">enum</span> scmp_compare op, ...)</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>解释一下上面的这么多宏的功能分类依据，A{0-5}中的0、1、2、3、4、5用于指定系统调用的那个参数，<br>32还是64自然是指定32位机器还是64位机器，<br>SCMP_CMP的第一个参数<code>unsigned int arg</code>的功能就是<code>A&#123;$arg_num&#125;</code>中的<code>$arg_num</code>，<br>所有宏的第一个参数<code>op</code>就是用于指定比较的规则，如上已经介绍过。</p>
-<h4 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h4><p>函数成功时返回零；<br>失败时返回负的errno值。</p>
-<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><p>1. </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(open), <span class="number">1</span>, SCMP_CMP(<span class="number">1</span>, SCMP_CMP_MASKED_EQ, O_WRONLY | O_RDWR, <span class="number">0</span>))</span><br></pre></td></tr></table></figure>
-<p>指定<code>open(const *path, int oflags)</code>系统调用的<code>oflags</code>参数如果既没有O_WRONLY，也没有O_RDWR（二进制对应位），就是允许的，<br>换言之这条规则禁用掉了 open的 w、rw。</p>
-<h3 id="seccomp-load"><a href="#seccomp-load" class="headerlink" title="seccomp_load"></a>seccomp_load</h3><ul>
-<li><p>函数说明:<br>将ctx提供的seccomp过滤器加载到内核中；<br>如果函数成功，新的 seccomp 过滤器将在函数返回时处于活动状态</p>
-</li>
-<li><p>函数定义</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">seccomp_load</span><span class="params">(scmp_filter_ctx ctx)</span>;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>返回值<br>成功时返回0，失败时返回以下错误码：<br>-ECANCELED<br>  There was a system failure beyond the control of the<br>library.<br>-EFAULT<br>  Internal libseccomp failure.<br>-EINVAL<br>  Invalid input, either the context or architecture token is invalid.<br>-ENOMEM<br>  The library was unable to allocate enough memory.<br>-ESRCH<br>  Unable to load the filter due to thread issues.</p>
-</li>
-</ul>
-<h3 id="seccomp-release-3"><a href="#seccomp-release-3" class="headerlink" title="seccomp_release(3)"></a>seccomp_release(3)</h3><ul>
-<li><p>函数说明:<br>释放ctx 中的 seccomp 过滤器结构的内存，该过滤器首先由seccomp_init(3)或seccomp_reset(3)初始化，<br>并释放与给定 seccomp 过滤器上下文关联的任何内存。<br>加载到内核中的任何 seccomp过滤器不受影响。</p>
-</li>
-<li><p>函数定义</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">seccomp_release</span><span class="params">(scmp_filter_ctx ctx)</span>;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p>  <a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/prctl/seccomp_filter.txt">Secure Computing with filters</a><br>  <a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man3/seccomp_init.3.html">seccomp_init(3)</a><br>  <a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man3/seccomp_rule_add.3.html">seccomp_rule_add(3)</a><br>  <a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man3/seccomp_load.3.html">seccomp_load(3)</a><br>  <a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man3/seccomp_release.3.html">seccomp_release(3)</a></p>
-<blockquote>
-<p>参考链接</p>
-<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%B2%99%E7%9B%92_(%E9%9B%BB%E8%85%A6%E5%AE%89%E5%85%A8)">沙箱安全</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/10/LinkLayer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/10/LinkLayer/" class="post-title-link" itemprop="url">LinkLayer</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-10 20:53:24" itemprop="dateCreated datePublished" datetime="2021-12-10T20:53:24+08:00">2021-12-10</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/10/IP%20%E5%8D%8F%E8%AE%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94DNS%E3%80%81NAT%E3%80%81ICMP%E3%80%81DHCP%E3%80%81ARP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/10/IP%20%E5%8D%8F%E8%AE%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94DNS%E3%80%81NAT%E3%80%81ICMP%E3%80%81DHCP%E3%80%81ARP/" class="post-title-link" itemprop="url">IP 协议相关技术——DNS、NAT、ICMP、DHCP、ARP</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-10 00:42:13" itemprop="dateCreated datePublished" datetime="2021-12-10T00:42:13+08:00">2021-12-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-03-16 17:13:07" itemprop="dateModified" datetime="2022-03-16T17:13:07+08:00">2022-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h1><blockquote>
-<p>注意DNS是应用层的协议，不是网络层的协议。</p>
-</blockquote>
-<h2 id="DNS简介"><a href="#DNS简介" class="headerlink" title="DNS简介"></a>DNS简介</h2><p>DNS（Domain Name System）是域名系统的英文缩写，是一种组织成域层次结构的计算机和网络服务命名系统，用于 TCP&#x2F;IP 网络。</p>
-<h2 id="DNS-作用"><a href="#DNS-作用" class="headerlink" title="DNS 作用"></a>DNS 作用</h2><p>通常我们有两种方式识别主机：通过主机名或者 IP 地址。人们喜欢便于记忆的主机名表示，而路由器则喜欢定长的、有着层次结构的 IP 地址。为了满足这些不同的偏好，我们就需要一种能够进行主机名到 IP 地址转换的目录服务，<strong>域名系统作为将域名和 IP 地址相互映射的一个分布式数据库</strong>，能够使人更方便地访问互联网。</p>
-<h2 id="DNS-域名解析原理"><a href="#DNS-域名解析原理" class="headerlink" title="DNS 域名解析原理"></a>DNS 域名解析原理</h2><p>DNS 采用了分布式的设计方案，其域名空间采用一种树形的层次结构：</p>
-<p><img src="/2021/12/10/IP%20%E5%8D%8F%E8%AE%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94DNS%E3%80%81NAT%E3%80%81ICMP%E3%80%81DHCP%E3%80%81ARP/dns.png"></p>
-<p>上图展示了 DNS 服务器的部分层次结构，从上到下依次为<strong>根域名服务器</strong>、<strong>顶级域名服务器</strong>和<strong>权威域名服务器</strong>。</p>
-<ol>
-<li><p>域名服务器在因特网上有13个，大部分位于北美洲。</p>
-</li>
-<li><p>第二层为顶级域服务器，这些服务器负责顶级域名（如 com、org、net、edu）和所有国家的顶级域名（如uk、fr、ca 和 jp）。</p>
-</li>
-<li><p>在第三层为权威 DNS 服务器，因特网上具有公共可访问主机（例如 Web 服务器和邮件服务器）的每个组织机构必须提供公共可访问的 DNS 记录，这些记录由组织机构的权威 DNS 服务器负责保存，这些记录将这些主机的名称映射为 IP 地址。</p>
-</li>
-</ol>
-<p>所以域名的层级关系类似⼀个树状结构：</p>
-<ul>
-<li><p>根 DNS 服务器</p>
-</li>
-<li><p>顶级域 DNS 服务器（com）</p>
-</li>
-<li><p>权威 DNS 服务器（server.com）</p>
-</li>
-</ul>
-<p>除此之外，还有一类重要的 DNS 服务器，叫做<strong>本地 DNS 服务器</strong>。本地 DNS 服务器严格来说不在 DNS 服务器的层次结构中，但它对 DNS 层次结构是很重要的。</p>
-<p>一般来说，<strong>每个网络服务提供商（ISP） 都有一台本地 DNS 服务器</strong>。<strong>当主机与某个 ISP 相连时，该 ISP 提供一台主机的 IP 地址，该主机具有一台或多台其本地 DNS 服务器的 IP 地址</strong>。主机的本地 DNS 服务器通常和主机距离较近，<strong>当主机发起 DNS 请求时，该请求被发送到本地 DNS 服务器，它起着代理的作用，并将该请求转发到 DNS 服务器层次结构中</strong>。</p>
-<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><img src="dns2.png" style="zoom:30%;" />
-
-<p>我们以一个例子来了解 DNS 的工作原理，假设主机 A（IP 地址为 abc.xyz.edu） 想知道主机 B 的 IP 地址 （def.mn.edu）。</p>
-<ol>
-<li>主机 A 首先<strong>向它的本地 DNS 服务器发送一个 DNS 查询报文</strong>。该查询报文含有被转换的主机名 def.mn.edu</li>
-<li>本地 DNS 服务器<strong>将该报文转发到根 DNS 服务器</strong>；</li>
-<li>根 DNS 服务器注意到查询的 IP 地址前缀为 edu 后向本地 DNS 服务器<strong>返回负责 edu 的顶级域名服务器的 IP 地址列表</strong>。</li>
-<li>该本地 DNS 服务器则再次向这些顶级域名服务器发送查询报文。该顶级域名服务器注意到 mn.edu 的前缀，并<strong>用权威域名服务器的 IP 地址进行响应</strong>。</li>
-<li>通常情况下，顶级域名服务器并不总是知道每台主机的权威 DNS 服务器的 IP 地址，而只知道中间的某个服务器，该中间 DNS 服务器依次能找到用于相应主机的 IP 地址，我们假设中间经历了权威服务器 ① 和 ②，最后<strong>找到了负责 def.mn.edu 的权威 DNS 服务器</strong> ③</li>
-<li>之后，<strong>本地 DNS 服务器直接向该服务器发送查询报文</strong>从而获得主机 B 的IP 地址。</li>
-</ol>
-<p>在上图中，IP 地址的查询其实经历了两种查询方式，分别是递归查询和迭代查询。</p>
-<p><strong>域名解析查询的两种方式</strong></p>
-<p>DNS查询有两种方式：<strong>递归</strong>和<strong>迭代</strong>。</p>
-<ul>
-<li><p>DNS客户端设置使用的DNS服务器一般都是递归服务器，它负责全权处理客户端的DNS查询请求，直到返回最终结果。</p>
-</li>
-<li><p>DNS服务器之间一般采用迭代查询方式。</p>
-</li>
-</ul>
-<h2 id="DNS-为什么用-UDP"><a href="#DNS-为什么用-UDP" class="headerlink" title="DNS 为什么用 UDP"></a>DNS 为什么用 UDP</h2><h3 id="综合使用TCP和UDP"><a href="#综合使用TCP和UDP" class="headerlink" title="综合使用TCP和UDP"></a>综合使用TCP和UDP</h3><p>更正确的答案是 DNS 既使用 TCP 又使用 UDP。</p>
-<p>当进行区域传送（<strong>主域名服务器向辅助域名服务器传送变化的那部分数据</strong>）时会使用 TCP，因为数据同步传送的数据量比一个请求和应答的数据量要多，而 TCP 允许的报文长度更长，因此为了保证数据的正确性，会使用基于可靠连接的 TCP。（DNS服务器与服务器之间用TCP）</p>
-<p>udp适用于小包，无上下文的情况，好处是开销小。很容易理解，udp查询就是一问一答，url和ip地址都是很短的字符串，都不会超过一个包。</p>
-<p>当客户端向 DNS 服务器查询域名 ( 域名解析) 的时候，一般返回的内容不会超过 <strong>DNS 报文的最大长度，即 512 字节</strong>。用 UDP 传输时，不需要经过 TCP 三次握手的过程，从而大大提高了响应速度，但这要求域名解析器和域名服务器都必须自己处理超时和重传从而保证可靠性。</p>
-<h3 id="历史发展"><a href="#历史发展" class="headerlink" title="历史发展"></a>历史发展</h3><p>当年内容贫乏，硬件性能低下。认为主机查询的动作频次低，数据量少。用TCP短连结握手和挥手的开销比查询还高。用长连接服务器又承受不住。UDP是很好的选择。</p>
-<p>互联网起来后DNS频率急剧增加，所以又加上了TCP版本。</p>
-<p>随着恶意的DNS污染出现后，DNS又升级了TLS版本。</p>
-<h3 id="无需TCP的可靠传输（省去握手挥手开销）"><a href="#无需TCP的可靠传输（省去握手挥手开销）" class="headerlink" title="无需TCP的可靠传输（省去握手挥手开销）"></a>无需TCP的可靠传输（省去握手挥手开销）</h3><ol>
-<li>第一，传输包的大小。首先我们知道tcp要做的事很简单，就是要保证一个可靠及高效的服务。所谓可靠，那就是比如说，本要发的包丢了，那就重传，目的尽量保证这个包到达对端。但是你如果包很大，你每次都整体重传，那肯定不满足高效的原则了（tcp做的很大一部分工作也就是把需要丢的包重传而不是每次整体重传）。基于此，dns查询的包基本大小就是固定的，就是一个包的大小，如果丢了那就再传一次就得了，根本不需要tcp的这种可靠传输。</li>
-<li>第二，如果只是传输一个包大小，再来几个握手来几个挥手，就太得不偿失了。</li>
-<li>第三，dns查询，本身一个查询，对端就会给一个回复，这个回复就可以当做是一个响应。已经能满足dns查询的这种需求了。</li>
-</ol>
-<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039759438"><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039759438">DNS劫持如何避免和解决?</a></a></p>
-<h1 id="ARP-地址解析协议"><a href="#ARP-地址解析协议" class="headerlink" title="ARP 地址解析协议"></a>ARP 地址解析协议</h1><p>地址解析协议（英语：Address Resolution Protocol，缩写：ARP）是一个通过解析网络层地址来找寻数据链路层地址的网络传输协议，它在IPv4中极其重要。</p>
-<p>在IPv6中<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%82%BB%E5%B1%85%E5%8F%91%E7%8E%B0%E5%8D%8F%E8%AE%AE">邻居发现协议</a>（NDP）用于代替地址解析协议（ARP）。</p>
-<h2 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h2><p>在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BB%A5%E5%A4%AA%E7%BD%91">以太网</a>协议中规定，<strong>同一局域网中的一台主机要和另一台主机进行直接通信，必须要知道目标主机的MAC地址</strong>。而在TCP&#x2F;IP协议中，网络层和传输层只关心目标主机的IP地址。</p>
-<p>这就导致在以太网中使用IP协议时，数据链路层的以太网协议接到上层IP协议提供的数据中，只包含目的主机的IP地址。于是需要一种方法，<strong>根据目的主机的IP地址，获得其<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/MAC%E5%9C%B0%E5%9D%80">MAC地址</a>。这就是ARP协议要做的事情</strong>。所谓<strong>地址解析（address resolution）</strong>就是主机在发送帧前将目标IP地址转换成目标MAC地址的过程。</p>
-<p>另外，当发送主机和目的主机不在同一个<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%B1%80%E5%9F%9F%E7%BD%91">局域网</a>中时，即便知道对方的MAC地址，两者也不能直接通信，必须经过<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B7%AF%E7%94%B1">路由</a>转发才可以。所以<strong>此时，发送主机通过ARP协议获得的将不是目的主机的真实MAC地址，而是一台可以通往局域网外的路由器的MAC地址</strong>。于是此后发送主机发往目的主机的所有帧，都将发往该路由器，通过它向外发送。这种情况称为委托ARP或<strong>ARP代理（ARP Proxy）</strong>。</p>
-<p>在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%82%B9%E5%AF%B9%E7%82%B9%E5%8D%8F%E8%AE%AE">点对点链路</a>中不使用ARP，实际上在<strong>点对点网络</strong>中也不使用MAC地址，因为在此类网络中分别已经获取了对端的IP地址。</p>
-<h2 id="数据包结构"><a href="#数据包结构" class="headerlink" title="数据包结构"></a>数据包结构</h2><p>为了把IP地址映射到48位以太网地址用于传输，需要一个体现地址转换协议的包格式。</p>
-<h3 id="以太网链路层"><a href="#以太网链路层" class="headerlink" title="以太网链路层"></a>以太网链路层</h3><ul>
-<li>目标以太网地址：目标MAC地址。FF:FF:FF:FF:FF:FF （二进制全1）为广播地址。</li>
-<li>源以太网地址：发送方MAC地址。</li>
-<li>帧类型：以太类型，ARP为0x0806。</li>
-</ul>
-<h3 id="以太网报文数据"><a href="#以太网报文数据" class="headerlink" title="以太网报文数据"></a>以太网报文数据</h3><ul>
-<li>硬件类型：如以太网（0x0001）、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%B0%81%E5%8C%85%E7%84%A1%E7%B7%9A%E9%9B%BB">分组无线网</a>。</li>
-<li>协议类型：如<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE">网际协议</a>(IP)（0x0800）、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/IPv6">IPv6</a>（0x86DD）。</li>
-<li>硬件地址长度：每种硬件地址的字节长度，一般为6（以太网）。</li>
-<li>协议地址长度：每种协议地址的字节长度，一般为4（IPv4）。</li>
-<li>操作码：1为ARP请求，2为ARP应答，3为<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%80%86%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE">RARP</a>请求，4为RARP应答。</li>
-<li><strong>源硬件地址</strong>：n个字节，n由硬件地址长度得到，一般为发送方MAC地址。</li>
-<li><strong>源协议地址</strong>：m个字节，m由协议地址长度得到，一般为发送方IP地址。</li>
-<li><strong>目标硬件地址</strong>：n个字节，n由硬件地址长度得到，一般为目标MAC地址。</li>
-<li><strong>目标协议地址</strong>：m个字节，m由协议地址长度得到，一般为目标IP地址。</li>
-</ul>
-<table class="wikitable" style="text-align:center;">
-<tbody><tr>
-<th>长度(位)</th>
-<th>48</th>
-<th>48</th>
-<th>16</th>
-<th>16</th>
-<th>16</th>
-<th>8</th>
-<th>8</th>
-<th>16</th>
-<th>48</th>
-<th>32</th>
-<th>48</th>
-<th>32
-</th></tr>
-<tr>
-<td style="min-height:60px;"><b>数据类型</b></td>
-<td style="width:96px;">目标以太网地址</td>
-<td style="width:96px;">源以太网地址</td>
-<td style="width:32px;">帧类型</td>
-<td style="width:32px;">硬件类型</td>
-<td style="width:32px;">协议类型</td>
-<td style="width:16px;">硬件地址长度</td>
-<td style="width:16px;">协议地址长度</td>
-<td style="width:32px;">操作码</td>
-<td style="width:96px;">源硬件地址</td>
-<td style="width:64px;">源协议地址</td>
-<td style="width:96px;">目标硬件地址</td>
-<td style="width:64px;">目标协议地址
-</td></tr>
-<tr>
-<td><b>组成</b></td>
-<td colspan="3">14字节 以太网首部</td>
-<td colspan="9">28字节 ARP请求/应答
-</td></tr></tbody></table>
-
-
-<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>在每台安装有TCP&#x2F;IP协议的电脑或路由器里都有一个<strong>ARP缓存表，表里的IP地址与MAC地址是一对应的</strong>。</p>
-<p>以主机A（192.168.38.10）向主机B（192.168.38.11）发送数据为例。</p>
-<ol>
-<li>当发送数据时，主机A会<strong>先在自己的ARP缓存表中寻找是否有目标IP地址</strong>。如果找到就知道目标MAC地址为（00-BB-00-62-C2-02），直接把目标MAC地址写入帧里面发送就可。</li>
-<li>如果在ARP缓存表中没有找到相对应的IP地址，<strong>主机A就会在网络上发送一个广播（ARP request），目标MAC地址是“FF.FF.FF.FF.FF.FF”</strong>，这表示向同一网段内的所有主机发出这样的询问：“192.168.38.11的MAC地址是什么？”</li>
-<li><strong>网络上其他主机并不响应ARP询问，只有主机B接收到这个帧时，才向主机A做出这样的回应</strong>（ARP response）：“192.168.38.11的MAC地址是00-BB-00-62-C2-02”，此回应以单播方式。这样，主机A就知道主机B的MAC地址，它就可以向主机B发送信息。同时它<strong>还更新自己的ARP高速缓存</strong>（ARP cache），下次再向主机B发送信息时，直接从ARP缓存表里查找就可。</li>
-</ol>
-<p>ARP缓存表采用老化机制，在一段时间内如果表中的某一行没有使用，就会被删除，这样可减少缓存表的长度，加快查询速度。</p>
-<h2 id="免费ARP（gratuitous-ARP）"><a href="#免费ARP（gratuitous-ARP）" class="headerlink" title="免费ARP（gratuitous ARP）"></a>免费ARP（gratuitous ARP）</h2><p>主机发送ARP查询（广播）自己的IP地址，当ARP功能被开启或者是端口初始配置完成，主机向网络发送免费ARP来<strong>查询自己的IP地址确认地址唯一可用</strong>。</p>
-<p>作用：</p>
-<ol>
-<li><strong>确定网络中是否有其他主机使用了IP地址</strong>，如果有应答则产生错误消息。</li>
-<li><strong>免费ARP可以做更新ARP缓存用</strong>，网络中的其他主机收到该广播则在缓存中更新条目，收到该广播的主机无论是否存在与IP地址相关的条目都会强制更新，如果存在旧条目则会将MAC更新为广播包中的MAC。</li>
-</ol>
-<blockquote>
-<p>也就是主动告诉其他主机自己的IP和Mac地址的对应关系，以供更新之用。</p>
-</blockquote>
-<blockquote>
-<p>参考<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8%E8%AE%AE">ARP</a></p>
-</blockquote>
-<h1 id="NAT（网络地址转换）"><a href="#NAT（网络地址转换）" class="headerlink" title="NAT（网络地址转换）"></a>NAT（网络地址转换）</h1><p>NAT（Network Address Translation），即<strong>网络地址转换</strong>，它是一种把内部私有网络地址翻译成公有网络 IP 地址的技术。该技术不仅能解决 IP 地址不足的问题，而且还能隐藏和保护网络内部主机，从而避免来自外部网络的攻击。</p>
-<p>NAT 的实现方式主要有三种：</p>
-<ul>
-<li>静态转换（Basic NAT）：<strong>内部私有 IP 地址和公有 IP 地址是一对一的关系</strong>，并且不会发生改变。通过静态转换，可以实现外部网络对内部网络特定设备的访问，这种方式原理简单，但当某一共有 IP 地址被占用时，跟这个 IP 绑定的内部主机将无法访问 Internet。</li>
-<li>动态转换：采用动态转换的方式时，<strong>私有 IP 地址每次转化成的公有 IP 地址是不唯一的</strong>。当私有 IP 地址被授权访问 Internet 时会被随机转换成一个合法的公有 IP 地址。当 ISP 通过的合法 IP 地址数量略少于网络内部计算机数量时，可以采用这种方式。</li>
-<li><strong>端口多路复用</strong>（NAPT）：该方式将外出数据包的源端口进行端口转换，<strong>通过端口多路复用的方式，实现内部网络所有主机共享一个合法的外部 IP 地址进行 Internet 访问</strong>，从而最大限度地节约 IP 地址资源。同时，该方案可以隐藏内部网络中的主机，从而有效避免来自 Internet 的攻击。</li>
-</ul>
-<p>NAPT维护一个带有IP以及端口号的NAT表，结构如下。</p>
-<table>
-<thead>
-<tr>
-<th align="center">内网IP</th>
-<th align="center">外网IP</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">192.168.1.55:5566</td>
-<td align="center">219.152.168.222:9200</td>
-</tr>
-<tr>
-<td align="center">192.168.1.59:80</td>
-<td align="center">219.152.168.222:9201</td>
-</tr>
-<tr>
-<td align="center">192.168.1.59:4465</td>
-<td align="center">219.152.168.222:9202</td>
-</tr>
-</tbody></table>
-<p>支持端口转换的NAT可以分为两类：<strong>源地址转换</strong>和<strong>目的地址转换</strong>。</p>
-<p>前一种情形下发起连接的计算机的IP地址将会被重写，使得内网主机发出的数据包能够到达外网主机。</p>
-<p>后一种情况下被连接计算机的IP地址将被重写，使得外网主机发出的数据包能够到达内网主机。</p>
-<p>实际上，<strong>以上两种方式通常会一起被使用以支持双向通信</strong>。</p>
-<p>如何支持这样的一对多的映射关系呢？就是利用发送端的源端口来进行的。</p>
-<h1 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h1><p><strong>动态主配置协议</strong>（英语：<strong>D</strong>ynamic <strong>H</strong>ost <strong>C</strong>onfiguration <strong>P</strong>rotocol，缩写：<strong>DHCP</strong>），是一个用于<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BD%91%E9%99%85%E5%8D%8F%E8%AE%AE">IP</a>网络的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE">网络协议</a>，位于<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B">OSI模型</a>的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E5%B1%82">应用层</a>，使用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE">UDP</a>协议工作，主要有两个用途：</p>
-<ul>
-<li><strong>用于内部网或网络服务供应商自动分配IP地址给用户</strong>；</li>
-<li>用于内部网管理员对所有电脑作中央管理。</li>
-</ul>
-<blockquote>
-<p> 我们的电脑通常都是通过 DHCP 动态获取 IP 地址，⼤⼤省去了配 IP 信息繁琐的过程。</p>
-</blockquote>
-<h2 id="DHCP工作步骤"><a href="#DHCP工作步骤" class="headerlink" title="DHCP工作步骤"></a>DHCP工作步骤</h2><ol>
-<li><strong>发现</strong> ：客户端⾸先发起 <strong>DHCP</strong> 发现报⽂（<strong>DHCP DISCOVER</strong>） 的 IP 数据报，由于客户端没有 IP 地址，也不知道</li>
-</ol>
-<p>DHCP 服务器的地址，所以使⽤的是 UDP ⼴播通信，其使⽤的⼴播⽬的地址是 255.255.255.255（端⼝</p>
-<p>67） 并且使⽤ 0.0.0.0（端⼝ 68） 作为源 IP 地址。DHCP 客户端将该 IP 数据报传递给链路层，链路层然后</p>
-<p>将帧⼴播到所有的⽹络中设备。</p>
-<ol start="2">
-<li><p><strong>提供</strong> ：DHCP 服务器收到 DHCP 发现报⽂时，⽤ <strong>DHCP</strong> 提供报⽂（<strong>DHCP OFFER</strong>） 向客户端做出响应。该报⽂仍然使⽤ IP ⼴播地址 255.255.255.255，该报⽂信息携带服务器提供可租约的 IP 地址、⼦⽹掩码、默认⽹关、DNS 服务器以及 <strong>IP</strong> 地址租⽤期。</p>
-</li>
-<li><p><strong>请求</strong> ：客户端收到⼀个或多个服务器的 DHCP 提供报⽂后，从中选择⼀个服务器，并向选中的服务器发送 <strong>DHCP</strong> 请求报⽂（<strong>DHCP REQUEST</strong>进⾏响应，回显配置的参数。</p>
-</li>
-<li><p><strong>确认</strong> ：最后，服务端⽤ <strong>DHCP ACK</strong> 报⽂对 DHCP 请求报⽂进⾏响应，应答所要求的参数。</p>
-</li>
-</ol>
-<p>⼀旦客户端收到 DHCP ACK 后，交互便完成了，并且<strong>客户端能够在租⽤期内使⽤ DHCP 服务器分配的 IP 地址</strong>。</p>
-<p><strong>如果租约的 DHCP IP 地址快到期时，客户端会向服务器发送 DHCP 请求报⽂</strong>：</p>
-<ul>
-<li><p>服务器如果同意继续租⽤，则⽤ DHCP ACK 报⽂进⾏应答，客户端就会延⻓租期。</p>
-</li>
-<li><p>服务器如果不同意继续租⽤，则⽤ DHCP NACK 报⽂，客户端就要停⽌使⽤租约的 IP 地址。</p>
-</li>
-</ul>
-<p>可以发现，DHCP 交互中，全程都是使⽤ <strong>UDP</strong> ⼴播通信。</p>
-<h2 id="DHCP中继"><a href="#DHCP中继" class="headerlink" title="DHCP中继"></a>DHCP中继</h2><blockquote>
-<p> 如果 DHCP 服务器和客户端不是在同⼀个局域⽹内，路由器⼜不会转发⼴播包，那不是每个⽹络都要配⼀个 DHCP 服务器？</p>
-</blockquote>
-<img src="dhcp.png" style="zoom:60%;" />
-
-
-
-<p>所以，为了解决这⼀问题，就出现了 <strong>DHCP中继代理</strong>。有了 DHCP 中继代理以后，对不同⽹段的 <strong>IP</strong> 地址分配也可以由⼀个 <strong>DHCP</strong> 服务器统⼀进⾏管理。DHCP 客户端会向 DHCP 中继代理发送 DHCP 请求包，⽽ <strong>DHCP 中继代理在收到这个⼴播包以后，再以单播的形式发给 DHCP 服务器</strong>。</p>
-<p>服务器端收到该包以后再向 DHCP 中继代理返回应答，并由 DHCP 中继代理将此包⼴播给 DHCP 客户端 。</p>
-<p>因此，DHCP 服务器即使不在同⼀个链路上也可以实现统⼀分配和管理IP地址。</p>
-<h1 id="ICMP"><a href="#ICMP" class="headerlink" title="ICMP"></a>ICMP</h1><p><strong>ICMP</strong>（Internet Control Message Protocol）是<strong>因特网控制报文协议</strong>，主要是实现 IP 协议中未实现的部分功能，是一种网络层协议。</p>
-<p><strong>该协议并不传输数据，只传输控制信息来辅助网络层通信</strong>。</p>
-<p>路由器严密监视Internet的操作，当路由器处理一个数据包发生意外的时候，可通过Internet控制消息协议向数据包的源端报告有关事件。</p>
-<p>其主要的功能是验证网络是否畅通（确认接收方是否成功接收到 IP 数据包）以及辅助 IP 协议实现可靠传输（若发生 IP 丢包，ICMP 会通知发送方 IP 数据包被丢弃的原因，之后发送方会进行相应的处理）。</p>
-<p>最重要的消息类型：</p>
-<ol>
-<li>目的地不可达：数据包无法传递，原因如不能定位一个目标，或者设置了DF但却遇到了小数据包网络；</li>
-<li>超时：当TTL达到0而被丢弃时，路由器发送超时消息；</li>
-<li>参数问题：在头字段中检测到一个非法字段；</li>
-<li>源抑制：抑制包，可以用于拥塞控制（但现在很少使用）；</li>
-<li>重定向：一个数据包被错误的路由；</li>
-<li>响应请求与应答：检查一台机器是否存活；</li>
-<li>请求&#x2F;应答时间戳：与上面类似不过要求带上时间戳。</li>
-</ol>
-<h2 id="ICMP应用"><a href="#ICMP应用" class="headerlink" title="ICMP应用"></a>ICMP应用</h2><ul>
-<li><p>Ping<br>Ping（Packet Internet Groper），即<strong>因特网包探测器</strong>，是一种工作在网络层的服务命令，主要用于测试网络连接量。本地主机通过向目的主机发送 ICMP Echo 请求报文，目的主机收到之后会发送 Echo 响应报文，Ping 会根据时间和成功响应的次数估算出数据包往返时间以及丢包率从而推断网络是否通畅、运行是否正常等。</p>
-</li>
-<li><p>TraceRoute<br>TraceRoute 是 ICMP 的另一个应用，其<strong>主要用来跟踪一个分组从源点耗费最少 TTL 到达目的地的路径</strong>。TraceRoute 通过逐渐增大 TTL 值并重复发送数据报来实现其功能，首先，TraceRoute 会发送一个 TTL 为 1 的 IP 数据报到目的地，当路径上的第一个路由器收到这个数据报时，它将 TTL 的值减 1，此时 TTL &#x3D; 0，所以路由器会将这个数据报丢掉，并返回一个差错报告报文，之后源主机会接着发送一个 TTL 为 2 的数据报，并重复此过程，直到数据报能够刚好到达目的主机。此时 TTL &#x3D; 0，因此目的主机要向源主机发送 ICMP 终点不可达差错报告报文，之后源主机便知道了到达目的主机所经过的路由器 IP 地址以及到达每个路由器的往返时间。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/09/Redis%E9%AB%98%E5%8F%AF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/09/Redis%E9%AB%98%E5%8F%AF%E7%94%A8/" class="post-title-link" itemprop="url">Redis高可用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-09 20:45:27" itemprop="dateCreated datePublished" datetime="2021-12-09T20:45:27+08:00">2021-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-10 21:56:33" itemprop="dateModified" datetime="2021-12-10T21:56:33+08:00">2021-12-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在介绍哨兵之前，首先从宏观角度回顾一下Redis实现高可用相关的技术。它们包括：持久化、复制、哨兵和集群，其主要作用和解决的问题是：</p>
-<ul>
-<li>持久化：持久化是最简单的高可用方法(有时甚至不被归为高可用的手段)，主要作用是数据备份，即将数据存储在硬盘，保证数据不会因进程退出而丢失。</li>
-<li>复制：复制是高可用Redis的基础，哨兵和集群都是在复制基础上实现高可用的。复制主要实现了数据的多机备份，以及对于读操作的负载均衡和简单的故障恢复。缺陷：故障恢复无法自动化；写操作无法负载均衡；存储能力受到单机的限制。</li>
-<li>哨兵：在复制的基础上，哨兵实现了自动化的故障恢复。缺陷：写操作无法负载均衡；存储能力受到单机的限制。</li>
-<li>集群：通过集群，Redis解决了写操作无法负载均衡，以及存储能力受到单机限制的问题，实现了较为完善的高可用方案。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/09/Redis-%E5%93%A8%E5%85%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/09/Redis-%E5%93%A8%E5%85%B5/" class="post-title-link" itemprop="url">Redis-哨兵</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-09 20:43:29" itemprop="dateCreated datePublished" datetime="2021-12-09T20:43:29+08:00">2021-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-12 15:18:32" itemprop="dateModified" datetime="2021-12-12T15:18:32+08:00">2021-12-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>Redis主从复制的作用有数据热备、负载均衡、故障恢复等；但主从复制存在的一个问题是故障恢复无法自动化。本文将要介绍的哨兵，它基于Redis主从复制，主要作用便是解决主节点故障恢复的自动化问题，进一步提高系统的高可用性。</p>
-</blockquote>
-<h2 id="部署哨兵节点"><a href="#部署哨兵节点" class="headerlink" title="部署哨兵节点"></a>部署哨兵节点</h2><p><strong>哨兵节点本质上是特殊的Redis节点</strong>，它的两个基本功能是<strong>监控</strong>和<strong>故障转移</strong>。</p>
-<p>新建一个配置文件<code>sentinel.conf</code>,内容为</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sentinel monitor mymaster ip port quorum</span></span><br><span class="line">sentinel monitor mymaster 192.168.92.128 6379 2</span><br></pre></td></tr></table></figure>
-
-
-
-<p>其中，sentinel monitor mymaster 192.168.92.128 6379 2 配置的含义是：</p>
-<p>该哨兵节点监控192.168.92.128:6379这个主节点，该主节点的名称是mymaster，最后的2表示最低通过票数，与主节点的故障判定有关：至少需要2个哨兵节点同意，才能判定主节点故障并进行故障转移。</p>
-<p>注意，在配置哨兵监控一个系统的时候，只需要配置其监控主数据库即可，哨兵会自动发现所有复制该主库的从库。</p>
-<p>哨兵节点的启动有两种方式，二者作用是完全相同的：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-sentinel sentinel-26379.conf</span><br><span class="line">redis-server sentinel-26379.conf --sentinel</span><br></pre></td></tr></table></figure>
-
-
-<p>哨兵系统的搭建过程，有几点需要注意：</p>
-<p>（1）哨兵系统中的主从节点，与普通的主从节点并没有什么区别，故障发现和转移是由哨兵来控制和完成的。</p>
-<p>（2）哨兵节点本质上是redis节点。</p>
-<p>（3）<strong>每个哨兵节点，只需要配置监控主节点</strong>，便可以自动发现其他的哨兵节点和从节点。</p>
-<p>（4）在哨兵节点启动和故障转移阶段，各个节点的配置文件会被重写(config rewrite)。</p>
-<h2 id="Jedis使用哨兵"><a href="#Jedis使用哨兵" class="headerlink" title="Jedis使用哨兵"></a>Jedis使用哨兵</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">testSentinel</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">         <span class="type">String</span> <span class="variable">masterName</span> <span class="operator">=</span> <span class="string">&quot;mymaster&quot;</span>;</span><br><span class="line">         Set&lt;String&gt; sentinels = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">         sentinels.add(<span class="string">&quot;192.168.92.128:26379&quot;</span>);</span><br><span class="line">         sentinels.add(<span class="string">&quot;192.168.92.128:26380&quot;</span>);</span><br><span class="line">         sentinels.add(<span class="string">&quot;192.168.92.128:26381&quot;</span>);</span><br><span class="line"> </span><br><span class="line">         <span class="type">JedisSentinelPool</span> <span class="variable">pool</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JedisSentinelPool</span>(masterName, sentinels); <span class="comment">//初始化过程做了很多工作</span></span><br><span class="line">         <span class="type">Jedis</span> <span class="variable">jedis</span> <span class="operator">=</span> pool.getResource();</span><br><span class="line">         jedis.set(<span class="string">&quot;key1&quot;</span>, <span class="string">&quot;value1&quot;</span>);</span><br><span class="line">         pool.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>Jedis客户端对哨兵提供了很好的支持。如上述代码所示，我们只需要向Jedis提供哨兵节点集合和masterName，构造JedisSentinelPool对象；然后便可以像使用普通redis连接池一样来使用了：通过pool.getResource()获取连接，执行具体的命令。</p>
-<p>在整个过程中，我们的代码<strong>不需要显式的指定主节点的地址</strong>，就可以连接到主节点；</p>
-<p>代码中对故障转移没有任何体现，就可以<strong>在哨兵完成故障转移后自动的切换主节点</strong>。</p>
-<p>之所以可以做到这一点，是因为在JedisSentinelPool的构造器中，进行了相关的工作；主要包括以下两点：</p>
-<p>（1）<strong>遍历哨兵节点，获取主节点信息：</strong>遍历哨兵节点，通过其中一个哨兵节点+masterName获得主节点的信息；该功能是通过调用哨兵节点的sentinel get-master-addr-by-name命令实现，该命令示例如下：</p>
-<p>一旦获得主节点信息，停止遍历（因此一般来说遍历到第一个哨兵节点，循环就停止了）。</p>
-<p>（2）<strong>增加对哨兵的监听：</strong>这样当<strong>发生故障转移时，客户端便可以收到哨兵的通知</strong>，从而完成主节点的切换。具体做法是：<strong>利用redis提供的发布订阅功能，为每一个哨兵节点开启一个单独的线程，订阅哨兵节点的+switch-master频道，当收到消息时，重新初始化连接池</strong>。</p>
-<p><strong>需要注意的是，哨兵只是配置提供者，而不是代理</strong>。</p>
-<h2 id="哨兵的原理"><a href="#哨兵的原理" class="headerlink" title="哨兵的原理"></a>哨兵的原理</h2><p>关于哨兵的原理，关键是了解以下几个概念。</p>
-<h3 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h3><h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><p>每个哨兵节点维护了3个定时任务。定时任务的功能分别如下：1. 通过向主从节点发送info命令获取最新的主从结构；2. 通过发布订阅功能获取其他哨兵节点的信息；3. 通过向其他节点发送ping命令进行心跳检测，判断是否下线。</p>
-<ol>
-<li><p><strong>每10秒哨兵会向主数据库和从数据库发送Info命令</strong>。发送Info命令是的哨兵能够获得主节点的相关信息，并能够获得到从节点的信息，从而<strong>实现对新节点的自动发现</strong>。</p>
-</li>
-<li><p><strong>每2秒哨兵向主数据库和从数据库的__sentinel__:hello频道发送自己的信息</strong> ，用于分享和获取同样监控此数据库的哨兵节点的信息。当其他节点受到信息后，会判断发消息的哨兵节点是否是新发现的节点，如果是则会加入哨兵列表。</p>
-</li>
-<li><p><strong>每30秒会向主数据库、从数据库和其他哨兵节点发送PING命令</strong>。此命令的作用就是用于<strong>定时监控这些数据库和哨兵节点有没有停止服务</strong>，很关键的一点。</p>
-</li>
-</ol>
-<h3 id="主观下线和客观下线"><a href="#主观下线和客观下线" class="headerlink" title="主观下线和客观下线"></a>主观下线和客观下线</h3><ul>
-<li><p>主观下线：在心跳检测的定时任务中，如果其他节点超过一定时间没有回复，哨兵节点就会将其进行主观下线。顾名思义，<strong>主观下线的意</strong>思是一个哨兵节点“主观地”判断下线，也就是哨兵它自己认为一个节点下线了，但还没有得到其他节点的认同；与主观下线相对应的是客观下线。</p>
-</li>
-<li><p>客观下线：哨兵节点在对主节点进行主观下线后，会通过<code>sentinel is-master-down-by-addr</code>命令询问其他哨兵节点该主节点的状态；<strong>如果判断主节点下线的哨兵数量达到一定数值，则对该主节点进行客观下线</strong>。</p>
-</li>
-</ul>
-<p>需要特别注意的是，<strong>客观下线是主节点才有的概念</strong>；<strong>如果从节点和哨兵节点发生故障，被哨兵主观下线后，不会再有后续的客观下线和故障转移操作</strong>。</p>
-<h3 id="选举领导者哨兵节点"><a href="#选举领导者哨兵节点" class="headerlink" title="选举领导者哨兵节点"></a>选举领导者哨兵节点</h3><p>当主节点被判断客观下线以后，各个哨兵节点会进行协商，选举出一个领导者哨兵节点，并由该领导者节点对其进行故障转移操作。</p>
-<p>监视该主节点的所有哨兵都有可能被选为领导者，选举使用的算法是Raft算法。</p>
-<p>使用Raft算法选举领头哨兵的过程如下：</p>
-<ol>
-<li>发现主数据库客观下线的哨兵节点（称为节点A），向每个哨兵节点发送命令，要求对方选自己称为领导者哨兵。</li>
-<li>如果目标哨兵节点没有选过其他人，则会同意将A设置成领头节点。</li>
-<li>如果A发现有超过半数且超过quorum参数值的哨兵节点同意选自己为领导者节点，则A成功成为领导者节点。</li>
-<li>当有多个哨兵节点同时参选领头节点的时候，则会出现任何节点都不能当选的情况，这个时候每个参选节点都等待一个随机时间重新发起参选请求，进行下一轮选举，直到选举成功。</li>
-</ol>
-<p><strong>注意：每次选举出来的最多只会选出一个领头哨兵。</strong></p>
-<h3 id="故障恢复"><a href="#故障恢复" class="headerlink" title="故障恢复"></a>故障恢复</h3><p>选举出的领导者哨兵，开始进行故障恢复操作，该操作大体可以分为3个步骤： </p>
-<ol>
-<li><strong>在从节点中选择新的主节点</strong>：选择的原则是，<strong>首先过滤掉不健康的从节点；然后选择优先级最高的从节点(由slave-priority指定)；如果优先级无法区分，则选择复制偏移量最大的从节点；如果仍无法区分，则选择runid最小的从节点</strong>。（健康状态–&gt;优先级–&gt;复制偏移量–&gt;runid）</li>
-<li><strong>更新主从状态</strong>：<strong>通过slaveof no one命令，让选出来的从节点成为主节点</strong>；并<strong>通过slaveof命令让其他节点成为其从节点</strong>。</li>
-<li><strong>将已经下线的主节点(如localhost:6379)设置为新的主节点的从节点</strong>，当localhost:6379重新上线后，它会成为新的主节点的从节点。</li>
-</ol>
-<p>通过上述几个关键概念，可以基本了解哨兵的工作原理。为了更形象的说明，下图展示了领导者哨兵节点的日志，包括从节点启动到完成故障转移。</p>
-<p><img src="/2021/12/09/Redis-%E5%93%A8%E5%85%B5/Redis-%E5%93%A8%E5%85%B51.png"></p>
-<h2 id="配置与实践建议"><a href="#配置与实践建议" class="headerlink" title="配置与实践建议"></a>配置与实践建议</h2><h3 id="参数配置"><a href="#参数配置" class="headerlink" title="参数配置"></a>参数配置</h3><p>下面介绍与哨兵相关的几个配置。</p>
-<ol>
-<li>sentinel monitor {masterName} {masterIp} {masterPort} {quorum}</li>
-</ol>
-<p>sentinel monitor是哨兵最核心的配置，在前文讲述部署哨兵节点时已说明，其中：masterName指定了主节点名称，masterIp和masterPort指定了主节点地址<strong>，quorum是判断主节点客观下线的哨兵数量阈值</strong>：当判定主节点下线的哨兵数量达到quorum时，对主节点进行客观下线。<strong>quorum建议取值为N&#x2F;2 + 1（其中 N 为哨兵节点的数量）</strong>。</p>
-<ol start="2">
-<li>sentinel down-after-milliseconds {masterName} {time}</li>
-</ol>
-<p>sentinel down-after-milliseconds与主观下线的判断有关：<strong>哨兵使用ping命令对其他节点进行心跳检测，如果其他节点超过down-after-milliseconds配置的时间没有回复，哨兵就会将其进行主观下线</strong>。该配置对主节点、从节点和哨兵节点的主观下线判定都有效。</p>
-<p>down-after-milliseconds的默认值是30000，即30s；可以根据不同的网络环境和应用要求来调整：值越大，对主观下线的判定会越宽松，好处是误判的可能性小，坏处是故障发现和故障转移的时间变长，客户端等待的时间也会变长。例如，如果应用对可用性要求较高，则可以将值适当调小，当故障发生时尽快完成转移；如果网络环境相对较差，可以适当提高该阈值，避免频繁误判。</p>
-<ol start="3">
-<li>sentinel parallel-syncs {masterName} {number}</li>
-</ol>
-<p>sentinel parallel-syncs与故障转移之后从节点的复制有关，<strong>规定了每次向新的主节点发起复制操作的从节点个数</strong>。例如，假设主节点切换完成之后，有3个从节点要向新的主节点发起复制；如果parallel-syncs&#x3D;1，则从节点会一个一个开始复制；如果parallel-syncs&#x3D;3，则3个从节点会一起开始复制。</p>
-<p>parallel-syncs取值越大，从节点完成复制的时间越快，但是对主节点的网络负载、硬盘负载造成的压力也越大；应根据实际情况设置。例如，如果主节点的负载较低，而从节点对服务可用的要求较高，可以适量增加parallel-syncs取值。parallel-syncs的默认值是1。</p>
-<ol start="4">
-<li>sentinel failover-timeout {masterName} {time}</li>
-</ol>
-<p>sentinel failover-timeout与故障转移超时的判断有关，但是<strong>该参数不是用来判断整个故障恢复阶段的超时</strong>，而是其几个子阶段的超时，例如如果<strong>从节点晋升为主节点时间超过timeout</strong>，或<strong>从节点向新的主节点发起复制操作的时间</strong>(不包括复制数据的时间)超过timeout，都会导致故障转移超时失败。</p>
-<p>failover-timeout的默认值是180000，即180s；如果超时，则下一次该值会变为原来的2倍。</p>
-<h3 id="实践建议"><a href="#实践建议" class="headerlink" title="实践建议"></a>实践建议</h3><p>（1）<strong>哨兵节点的数量应不止一个</strong>，一方面增加哨兵节点的冗余，避免哨兵本身成为高可用的瓶颈；另一方面减少对下线的误判。此外，<strong>这些不同的哨兵节点应部署在不同的物理机上</strong>。</p>
-<p>（2）<strong>哨兵节点的数量应该是奇数</strong>，便于哨兵通过投票做出“决策”：领导者选举的决策、客观下线的决策等。</p>
-<p>（3）<strong>各个哨兵节点的配置应一致</strong>，包括硬件、参数等；此外，所有节点都应该使用ntp或类似服务，保证时间准确、一致。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/09/undolog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/09/undolog/" class="post-title-link" itemprop="url">MySQL —— Undo log</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-09 18:47:10" itemprop="dateCreated datePublished" datetime="2021-12-09T18:47:10+08:00">2021-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-11 01:53:31" itemprop="dateModified" datetime="2021-12-11T01:53:31+08:00">2021-12-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="undo-log的作用"><a href="#undo-log的作用" class="headerlink" title="undo log的作用"></a>undo log的作用</h2><p>为了保证事务的原子性，InnoDB引入了undo日志，undo日志记载了回滚操作所需的内容。</p>
-<p>undo是<strong>逻辑日志</strong>，只是将数据库逻辑地恢复到原来的样子；所有修改都被逻辑地取消了，但是数据结构和页本身在回滚之后可能不大相同。</p>
-<p>undo log有两个作用：<strong>提供回滚</strong>和**多版本并发控制(MVCC)**。</p>
-<h2 id="事务id"><a href="#事务id" class="headerlink" title="事务id"></a>事务id</h2><p>在事务在对表中的记录进行修改的时候，会为这个事务分配一个唯一的事务id，这个事务id是递增的，所以事务id越小越先执行。未被分配事务id的事务的id默认是0。</p>
-<h2 id="各种类型的Undo-log"><a href="#各种类型的Undo-log" class="headerlink" title="各种类型的Undo log"></a>各种类型的Undo log</h2><p>InnoDB对不同场景的设计了不同类型的undo日志，比如TRX_UNDO_INSERT_REC, TRX_UNDO_DEL_MARK_REC.</p>
-<p>TRX_UNDO_UPD_EXIST_REC等等。</p>
-<p>除了insert产生的undo日志中没有roll_pointer字段，其他的一般都有roll_pointer这个字段，这个字段就支撑了回滚和MVCC的功能。</p>
-<p><img src="/2021/12/09/undolog/undolog.png"></p>
-<h2 id="Undo-log-的管理"><a href="#Undo-log-的管理" class="headerlink" title="Undo log 的管理"></a>Undo log 的管理</h2><p>类型为FIL_PAGE_UNDO_LOG的页面，是专门用来存储undo日志的，不妨称为Undo页面。</p>
-<p>一个事务写的undo日志可能在一个页面中放不下，所以MySQL使用链表来组织这些undo页面。</p>
-<p>在一个事务执行过程中，最多分配4个页面链表，</p>
-<p>分别是</p>
-<ol>
-<li>针对普通表的insert undo 链表；</li>
-<li>针对普通表的update undo 链表；</li>
-<li>针对临时表的insert undo 链表；</li>
-<li>针对临时表的update undo 链表；</li>
-</ol>
-<p>每个undo页面链表都对应一个Undo Log Segment。Undo页面链表的第一个页中有一个名为Undo Log Segment Header的部分，用来存储关于这个段的信息。</p>
-<p>同一个事务向一个undo链表写入的undo日志算是一个组，每个组都以一个Undo Log Header 部分开头。</p>
-<h2 id="undo及redo如何记录事务"><a href="#undo及redo如何记录事务" class="headerlink" title="undo及redo如何记录事务"></a>undo及redo如何记录事务</h2><h3 id="Undo-Redo事务的简化过程"><a href="#Undo-Redo事务的简化过程" class="headerlink" title="Undo + Redo事务的简化过程"></a>Undo + Redo事务的简化过程</h3><p>假设有A、B两个数据，值分别为1,2，开始一个事务，事务的操作内容为：把1修改为3，2修改为4，那么实际的记录如下（简化）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">A.事务开始.</span><br><span class="line">B.记录A=1到undo log.</span><br><span class="line">C.修改A=3.</span><br><span class="line">D.记录A=3到redo log.</span><br><span class="line">E.记录B=2到undo log.</span><br><span class="line">F.修改B=4.</span><br><span class="line">G.记录B=4到redo log.</span><br><span class="line">H.将redo log写入磁盘。</span><br><span class="line">I.事务提交</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意是先写 undo log，再操作，最后再写redo log</strong></p>
-<h3 id="崩溃恢复"><a href="#崩溃恢复" class="headerlink" title="崩溃恢复"></a>崩溃恢复</h3><p>前面说到未提交的事务和回滚了的事务也会记录Redo Log，因此在进行恢复时,这些事务要进行特殊的的处理。有2种不同的恢复策略：</p>
-<ul>
-<li>进行恢复时，只重做已经提交了的事务。</li>
-<li>进行恢复时，<strong>重做所有事务包括未提交的事务和回滚了的事务，然后通过Undo Log回滚那些未提交的事务</strong>。</li>
-</ul>
-<p>MySQL数据库InnoDB存储引擎使用了B策略, InnoDB存储引擎中的恢复机制有几个特点：</p>
-<ul>
-<li><p><strong>在重做Redo Log时，并不关心事务性</strong>。 恢复时，没有BEGIN，也没有COMMIT,ROLLBACK的行为。也不关心每个日志是哪个事务的。尽管事务ID等事务相关的内容会记入Redo Log，这些内容只是被当作要操作的数据的一部分。</p>
-</li>
-<li><p>使用B策略就<strong>必须要将Undo Log持久化</strong>，而且<strong>必须要在写Redo Log之前将对应的Undo Log写入磁盘</strong>。Undo和Redo Log的这种关联，使得持久化变得复杂起来。</p>
-<p>为了降低复杂度，<strong>InnoDB将Undo Log看作数据，因此记录Undo Log的操作也会记录到redo log中</strong>。</p>
-<p><strong>这样undo log就可以像数据一样缓存起来</strong>，<strong>而不用在redo log之前写入磁盘了</strong>。</p>
-<p>包含Undo Log操作的Redo Log，看起来是这样的：</p>
-</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">记录1: &lt;trx1, Undo log insert &lt;undo_insert …&gt;&gt; # 记录的 undo-log</span><br><span class="line">记录2: &lt;trx1, insert …&gt; # 重做日志本身</span><br><span class="line">记录3: &lt;trx2, Undo log insert &lt;undo_update …&gt;&gt;</span><br><span class="line">记录4: &lt;trx2, update …&gt;</span><br><span class="line">记录5: &lt;trx3, Undo log insert &lt;undo_delete …&gt;&gt;</span><br><span class="line">记录6: &lt;trx3, delete …&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>到这里，还有一个问题没有弄清楚。既然Redo没有事务性，那岂不是会重新执行被回滚了的事务？<br>确实是这样。同时Innodb也会将事务回滚时的操作也记录到redo log中。<strong>回滚操作本质上也是对数据进行修改，因此回滚时对数据的操作也会记录到Redo Log中</strong>。</p>
-<p><strong>一个回滚了的事务的Redo Log</strong>，看起来是这样的：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">记录1: &lt;trx1, Undo log insert &lt;undo_insert …&gt;&gt; # 记录的 undo-log</span><br><span class="line">记录2: &lt;trx1, insert A…&gt; # 重做日志本身</span><br><span class="line">记录3: &lt;trx1, Undo log insert &lt;undo_update …&gt;&gt;</span><br><span class="line">记录4: &lt;trx1, update B…&gt;</span><br><span class="line">记录5: &lt;trx1, Undo log insert &lt;undo_delete …&gt;&gt;</span><br><span class="line">记录6: &lt;trx1, delete C…&gt;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下面是对应的回滚操作</span></span><br><span class="line">记录7: &lt;trx1, insert C&gt; </span><br><span class="line">记录8: &lt;trx1, update B to old value&gt;</span><br><span class="line">记录9: &lt;trx1, delete A&gt;</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>一个被回滚了的事务在恢复时的操作就是先redo再undo，因此不会破坏数据的一致性</strong>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/09/redolog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/09/redolog/" class="post-title-link" itemprop="url">MySQL —— Redo log</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-09 18:47:05" itemprop="dateCreated datePublished" datetime="2021-12-09T18:47:05+08:00">2021-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-11 01:05:41" itemprop="dateModified" datetime="2021-12-11T01:05:41+08:00">2021-12-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="RedoLog介绍"><a href="#RedoLog介绍" class="headerlink" title="RedoLog介绍"></a>RedoLog介绍</h1><h2 id="引言——MySQL如何做到事务的持久性"><a href="#引言——MySQL如何做到事务的持久性" class="headerlink" title="引言——MySQL如何做到事务的持久性"></a>引言——MySQL如何做到事务的持久性</h2><p>MySQL中如何修改数据呢，先从磁盘中加载数据页到InnoDB buffer pool中，然后从InnoDB buffer pool 中取出页面，进行读写操作。</p>
-<p>那么如何做到事务的持久性呢，也就是说如何确保InnoDB buffer pool中的脏页一定会被刷新到磁盘从而做到持久化呢？</p>
-<p>一种最简单的方法，在事务提交成功之前，确保脏页被刷新到磁盘，换句话说，只有在脏页写到磁盘上之后，事务提交才算成功。</p>
-<p>不过这种方案有缺点：</p>
-<ol>
-<li><strong>每次都刷新一个完整的页到磁盘性能开销很大</strong>。比如，一个页面中只有几个字节被修改的时候，刷新完整的页面到磁盘很浪费。</li>
-<li><strong>磁盘的随机IO很慢</strong>，一个事务修改的很多页面可能并不相邻，这个时候每个事务结束前都这样同步刷新的磁盘随机IO代价很大。</li>
-</ol>
-<p>MySQL采取的做法是，仅仅记录下那些修改的操作，譬如<strong>修改某个表空间的某个页面的某个偏移量的某几个字节</strong>，然后将这样的记录及时写到文件中。然后每次事务提交前只需要刷新这样的日志文件到磁盘即可。</p>
-<p>而这样的日志文件就是 <strong>rodo log</strong> 了。</p>
-<p>刷新redo-log而不是完整的数据页到磁盘的好处有：</p>
-<ol>
-<li>redo日志相对来讲比较紧凑，占用的空间比较小；</li>
-<li>redo日志是顺序写入磁盘的，磁盘的顺序IO效率很高。</li>
-</ol>
-<h2 id="redo日志格式"><a href="#redo日志格式" class="headerlink" title="redo日志格式"></a>redo日志格式</h2><p>redo log 包括两部分：</p>
-<ol>
-<li><p>一个是内存中的日志缓冲(redo log buffer)；</p>
-</li>
-<li><p>另一个是磁盘上的日志文件(redo log file)。</p>
-</li>
-</ol>
-<p>下面依次介绍</p>
-<ol>
-<li>type：这条redo日志的格式；</li>
-<li>space ID：表空间 ID；</li>
-<li>page number：页号；</li>
-<li>data：这条redo日志的具体内容。</li>
-</ol>
-<p>具体来说redo日志的种类有非常多，这里就不细谈了。</p>
-<p>挖个坑。</p>
-<h2 id="Mini-transaction-的概念"><a href="#Mini-transaction-的概念" class="headerlink" title="Mini-transaction 的概念"></a>Mini-transaction 的概念</h2><p>MySQL对底层页面的一次原子性的访问成为一个Mini-Transaction（MTR）</p>
-<p>一个MTR产生多个redo日志。</p>
-<p>之所以把它成为迷你的一个事务，是因为在进行崩溃恢复的时候需要把这一组redo日志作为一个不可分割的整体来处理。</p>
-<img src="mtr.png" style="zoom:30%;" />
-
-
-
-<h2 id="redo日志的管理"><a href="#redo日志的管理" class="headerlink" title="redo日志的管理"></a>redo日志的管理</h2><h3 id="log-block"><a href="#log-block" class="headerlink" title="log block"></a>log block</h3><p>redo日志放在大小为512字节的log block 中。每一个block被分为 3 部分：</p>
-<ul>
-<li>log block header</li>
-<li>log block body</li>
-<li>log block trailer</li>
-</ul>
-<p>而真正的redo日志是被放在占用 496 字节的 block body 中的。</p>
-<h3 id="redo-log-buffer"><a href="#redo-log-buffer" class="headerlink" title="redo log buffer"></a>redo log buffer</h3><p>为了解决磁盘速度过慢的问题，写入redo日志也不是直接立即写到磁盘中的。</p>
-<p>于是，MySQL向操作系统申请了一大片内存，称为redo 日志缓冲区，也成为 redo buffer，</p>
-<p>一个redo buffer有若干的 log block 构成。可以指定<code>innodb_log_buffer_size</code>来指定 log buffer 的大小。</p>
-<p>向 log buffer 中写入redo日志也是顺序写入的。</p>
-<h2 id="redo-log的刷盘时机"><a href="#redo-log的刷盘时机" class="headerlink" title="redo log的刷盘时机"></a>redo log的刷盘时机</h2><p>redo日志总留在log buffer中，总是不安全的，只要没有写到稳定的存储介质（磁盘、固定硬盘等等）中就不能保证持久性。</p>
-<p>那么在什么情况下，redo日志会被写到磁盘上呢？</p>
-<ol>
-<li><p>事务提交时：道理很好理解，事务提交还没有将redo log 刷盘就无法做到持久性；</p>
-</li>
-<li><p>log buffer 空间不足时：log buffer 这块内存总是有限大小的，那么在redo log不够使用时，也需要即使把redo log 刷新到磁盘。InnoDB在日志量达到总容量的额50% 时，就会刷盘；</p>
-</li>
-<li><p>后台线程定时刷新；</p>
-</li>
-<li><p>正常关闭服务器时；</p>
-</li>
-<li><p>做checkpoint时。</p>
-</li>
-</ol>
-<h2 id="redo日志文件"><a href="#redo日志文件" class="headerlink" title="redo日志文件"></a>redo日志文件</h2><p>之前谈的所有的redo log其实都是内存性的结构，那么存在在稳定介质中的便是 redo日志文件了。</p>
-<p>磁盘上的日志文件不止一个，而是以一个日志文件组的形式出现，一个日志文件组由多个日志文件组成，名字形式为”ib_logfile[数字]”。<br>每个日志文件的大小由<code>innodb_log_file_size</code>指定，默认是 48 MB。<br>日志文件组文件的个数由<code>innodb_log_files_in_group</code>指定，默认是2个。</p>
-<p>所以，总体的日志文件的大小便是<strong>innodb_log_file_size*innodb_log_files_in_group</strong>，</p>
-<p>如果以循环的方法向redo日志文件中写入数据，那岂不是新写入的会覆盖旧写入的吗？</p>
-<p>如何解决这个问题，MySQL提出了 checkpoint的概念（后面或介绍）。</p>
-<p>每个日志的文件格式是一样的，日志组内的其他的日志文件也是具有相同的格式。</p>
-<p>前2048个字节存储一些管理信息，后面的字节，实际上就是对内存中的log buffer的镜像。</p>
-<h2 id="log-sequence-number相关"><a href="#log-sequence-number相关" class="headerlink" title="log-sequence-number相关"></a>log-sequence-number相关</h2><h3 id="lsn"><a href="#lsn" class="headerlink" title="lsn"></a>lsn</h3><p>InndoDB设计了名为lsn的全局变量，用来记录当前已经写入的<strong>lsn</strong>值，初始值为8704，然后不断递增。</p>
-<p>lsn指的是写入的redo 日志量，这包括了写到了 log buffer 中但没有刷新到磁盘的redo日志。</p>
-<h3 id="flushed-to-disk-lsn"><a href="#flushed-to-disk-lsn" class="headerlink" title="flushed_to_disk_lsn"></a>flushed_to_disk_lsn</h3><p>相应的，InndoDB设计者提出了一个表示刷新到磁盘中的redo日志量的全局变量<strong>flushed_to_disk_lsn</strong>。</p>
-<p>一开始，lsn等于flushed_to_disk_lsn，随着系统的运行，redo日志不断写入log buffer，但又没有即使刷盘，那么flushed_to_disk_lsn便和lsn拉开了差距。</p>
-<h3 id="checkpoint-lsn"><a href="#checkpoint-lsn" class="headerlink" title="checkpoint_lsn"></a>checkpoint_lsn</h3><p>redo日志的大小总是有限的，那么就有必要对其进行重复利用。</p>
-<p>具体的，如果redo日志对应的脏页已经刷新到磁盘，那么此时就没有必要再去保留这样的redo日志，</p>
-<p>于是InnodB使用<strong>checkpoint_lsn</strong>表示当前系统中可以被覆盖redo日志总量是多少，这个变量的初始值也是8704。</p>
-<p>MySQL中有后台线程在脏页刷新到磁盘的时候执行一次checkpoint操作，就是查看是否可以增加checkpoint_lsn（但是不是说只要刷新脏页就一定执行一次checkpoint操作）。</p>
-<h2 id="innodb-flush-log-at-trx-commit"><a href="#innodb-flush-log-at-trx-commit" class="headerlink" title="innodb_flush_log_at_trx_commit"></a>innodb_flush_log_at_trx_commit</h2><p>它的取值有3种：</p>
-<ul>
-<li>0 ：事务提交时不会立即向磁盘同步redo日志。这样会加快处理速度，但是失去持久性这一保证，不可取。</li>
-<li>1 ：事务提交时必须将redo日志同步到磁盘，这样可以保证事务的持久性。默认值就是1。</li>
-<li>2：这是一个折中的选择，事务提交的时候需要同步到操作系统的写磁盘的缓冲区，但不一定要真正写到磁盘上。所以，如果数据库挂了，但是操作系统还没挂，持久性还是可以保证的；反之，持久性还是无法保证。</li>
-</ul>
-<h1 id="崩溃恢复"><a href="#崩溃恢复" class="headerlink" title="崩溃恢复"></a>崩溃恢复</h1><p>redo日志最重要的甚至是唯一的功能就是在数据库崩溃的时候提供数据恢复的保证了。</p>
-<p>崩溃恢复的时候先找到恢复的起点。然后顺着日志文件就可以将数据正确恢复起来。</p>
-<p>但是这个过程可以加快。</p>
-<p>为了避免页面的随机IO，可以实现将redo文件的所有redo文件按照<strong>spaceID和pageNumber</strong><br>为键，然后组织成一张哈希表，然后遍历这张hash表就可以一次性完成对一个页面的恢复。<br>当然，同一个页面的redo日志必须安装时间顺序排序。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/09/Raft/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/09/Raft/" class="post-title-link" itemprop="url">Raft</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-09 13:58:09" itemprop="dateCreated datePublished" datetime="2021-12-09T13:58:09+08:00">2021-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-03-29 04:13:13" itemprop="dateModified" datetime="2022-03-29T04:13:13+08:00">2022-03-29</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>参考</p>
-<p><a target="_blank" rel="noopener" href="https://zinglix.xyz/2020/06/25/raft/">https://zinglix.xyz/2020/06/25/raft/</a></p>
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ZmRS9Gjh9P-4lPLZ9jWk_A">https://mp.weixin.qq.com/s/ZmRS9Gjh9P-4lPLZ9jWk_A</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/13/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/15/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-
-<div class="copyright">
-  &copy; 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
-
-    </div>
-  </footer>
-
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-
-
-
-
-  
-
-
-
-
-
 </body>
+
 </html>

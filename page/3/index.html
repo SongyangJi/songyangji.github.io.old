@@ -1,1611 +1,950 @@
 <!DOCTYPE html>
+
+
 <html lang="zh-CN">
+
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+     JsyBlog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/images/ayer.png" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  
+<link rel="stylesheet" href="/css/custom.css">
 
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-
-    <meta property="og:type" content="website">
-<meta property="og:title" content="JsyBlog">
-<meta property="og:url" content="http://example.com/page/3/index.html">
-<meta property="og:site_name" content="JsyBlog">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="SongyangJi">
-<meta name="twitter:card" content="summary">
-
-
-<link rel="canonical" href="http://example.com/page/3/">
-
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/3/index.html","title":""}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>JsyBlog</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
   
 
+  
 
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
+</html>
 
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      
+<section class="cover">
+    
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="/images/cover1.jpg" alt="image frame" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">JsyBlog</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+        <img
+          src="/images/ayer.svg"
+          class="cover-logo"
+          alt="JsyBlog"
+        />
+        
+      </div>
     </div>
   </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">JsyBlog</h1>
-      <i class="logo-line"></i>
-    </a>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
   </div>
+</section>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '让风吹干流过的泪和汗，总有一天我有属于我的天'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 70,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
+<div id="main">
+  <section class="outer">
+  
+  
+  
+
+<div class="notice" style="margin-top:50px">
+    <i class="ri-heart-fill"></i>
+    <div class="notice-content" id="broad"></div>
+</div>
+<script type="text/javascript">
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("broad").innerHTML = data.hitokoto;
+        })
+        .catch(console.error)
+</script>
+
+<style>
+    .notice {
+        padding: 20px;
+        border: 1px dashed #e6e6e6;
+        color: #969696;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #fbfbfb50;
+        border-radius: 10px;
+    }
+
+    .notice i {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        padding-right: 10px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+
+    .notice-content {
+        display: initial;
+        vertical-align: middle;
+    }
+</style>
+  
+  <article class="articles">
+    
+    
+    
+    
+    <article
+  id="post-GCC参数详解"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/30/GCC%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/"
+    >GCC参数详解</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/30/GCC%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/" class="article-date">
+  <time datetime="2022-11-30T14:39:32.000Z" itemprop="datePublished">2022-11-30</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/C/">C</a>
+  </div>
+   
     </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li></ul>
+
+    </footer>
   </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-GoLang-Cgo"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/30/GoLang-Cgo/"
+    >GoLang-Cgo</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/30/GoLang-Cgo/" class="article-date">
+  <time datetime="2022-11-30T14:27:44.000Z" itemprop="datePublished">2022-11-30</time>
+</a>    
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-GoLang-Channel"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/30/GoLang-Channel/"
+    >GoLang-Channel</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/30/GoLang-Channel/" class="article-date">
+  <time datetime="2022-11-30T07:36:30.000Z" itemprop="datePublished">2022-11-30</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Go/">Go</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-LeetCode并发编程题"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/30/LeetCode%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%A2%98/"
+    >LeetCode并发编程题</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/30/LeetCode%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%A2%98/" class="article-date">
+  <time datetime="2022-11-29T18:33:13.000Z" itemprop="datePublished">2022-11-30</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="tag">并发编程</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-GoLang-错误处理"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/30/GoLang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/"
+    >GoLang-错误处理</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/30/GoLang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" class="article-date">
+  <time datetime="2022-11-29T16:06:14.000Z" itemprop="datePublished">2022-11-30</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Go/">Go</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-GoLang-接口"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/29/GoLang-%E6%8E%A5%E5%8F%A3/"
+    >GoLang-接口</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/29/GoLang-%E6%8E%A5%E5%8F%A3/" class="article-date">
+  <time datetime="2022-11-28T18:04:22.000Z" itemprop="datePublished">2022-11-29</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Go/">Go</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-GoLang-方法"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/28/GoLang-%E6%96%B9%E6%B3%95/"
+    >GoLang-方法</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/28/GoLang-%E6%96%B9%E6%B3%95/" class="article-date">
+  <time datetime="2022-11-28T14:04:25.000Z" itemprop="datePublished">2022-11-28</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Go/">Go</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-GoLang-数据结构"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/27/GoLang-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"
+    >GoLang-数据结构</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/27/GoLang-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="article-date">
+  <time datetime="2022-11-26T16:38:28.000Z" itemprop="datePublished">2022-11-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Go/">Go</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-GoLang-函数"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/25/GoLang-%E5%87%BD%E6%95%B0/"
+    >GoLang-函数</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/25/GoLang-%E5%87%BD%E6%95%B0/" class="article-date">
+  <time datetime="2022-11-25T07:50:38.000Z" itemprop="datePublished">2022-11-25</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Go/">Go</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-GoLang-表达式"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/11/24/GoLang-%E8%A1%A8%E8%BE%BE%E5%BC%8F/"
+    >GoLang-运算符、流程控制</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/11/24/GoLang-%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="article-date">
+  <time datetime="2022-11-24T07:00:17.000Z" itemprop="datePublished">2022-11-24</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Go/">Go</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
+  </nav>
+  
+</section>
 </div>
 
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2023
+        <i class="ri-heart-fill heart_icon"></i> SongyangJi
       </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
   </ul>
 </nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
 </div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
   </div>
 </div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
 
     </div>
-  </div>
 
-</header>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
         
-  
-  <aside class="sidebar">
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
+
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
 
-    <div class="sidebar-inner sidebar-overview-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
 
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-        </div>
-        <!--/noindex-->
 
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">SongyangJi</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">237</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">42</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">109</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/30/GCC%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/30/GCC%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">GCC参数详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-11-30 22:39:32 / 修改时间：22:45:59" itemprop="dateCreated datePublished" datetime="2022-11-30T22:39:32+08:00">2022-11-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="gcc工作步骤"><a href="#gcc工作步骤" class="headerlink" title="gcc工作步骤"></a>gcc工作步骤</h3><p>gcc 与 g++ 分别是 gnu 的 c &amp; c++ 编译器 gcc&#x2F;g++ 在执行编译工作的时候，总共需要4步：</p>
-<ul>
-<li>1、预处理,生成 .i 的文件[预处理器cpp]</li>
-<li>2、将预处理后的文件转换成汇编语言, 生成文件 .s [编译器egcs]</li>
-<li>3、有汇编变为目标代码(机器代码)生成 .o 的文件[汇编器as]</li>
-<li>4、连接目标代码, 生成可执行程序 [链接器ld]</li>
-</ul>
-<h3 id="参数详解"><a href="#参数详解" class="headerlink" title="参数详解"></a>参数详解</h3><p><strong>-x language filename</strong></p>
-<p>设定文件所使用的语言, 使后缀名无效, 对以后的多个有效。也就是根据约定 C 语言的后缀名称是 .c 的，而 C++ 的后缀名是 .C 或者 .cpp, 如果你很个性，决定你的 C 代码文件的后缀名是 .pig 哈哈，那你就要用这个参数, 这个参数对他后面的文件名都起作用，除非到了下一个参数的使用。 可以使用的参数吗有下面的这些：’c’, ‘objective-c’, ‘c-header’, ‘c++’, ‘cpp-output’, ‘assembler’, 与 ‘assembler-with-cpp’。</p>
-<p>看到英文，应该可以理解的。</p>
-<p>例子用法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -x c hello.pig </span><br></pre></td></tr></table></figure>
-
-<p>　　</p>
-<p><strong>-x none filename</strong></p>
-<p>关掉上一个选项，也就是让gcc根据文件名后缀，自动识别文件类型 。</p>
-<p>例子用法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -x c hello.pig -x none hello2.c </span><br></pre></td></tr></table></figure>
-
-<p>　　</p>
-<p><strong>-c</strong></p>
-<p>只激活预处理,编译,和汇编,也就是他只把程序做成obj文件</p>
-<p>例子用法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -c hello.c </span><br></pre></td></tr></table></figure>
-
-<p>他将生成 .o 的 obj 文件</p>
-<p><strong>-S</strong></p>
-<p>只激活预处理和编译，就是指把文件编译成为汇编代码。</p>
-<p>例子用法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -S hello.c </span><br></pre></td></tr></table></figure>
-
-<p>他将生成 .s 的汇编代码，你可以用文本编辑器察看。</p>
-<p><strong>-E</strong></p>
-<p>只激活预处理,这个不生成文件, 你需要把它重定向到一个输出文件里面。</p>
-<p>例子用法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -E hello.c &gt; pianoapan.txt </span><br><span class="line">gcc -E hello.c | more </span><br></pre></td></tr></table></figure>
-
-<p>慢慢看吧, 一个 hello word 也要与处理成800行的代码。</p>
-<p><strong>-o</strong></p>
-<p>制定目标名称, 默认的时候, gcc 编译出来的文件是 a.out, 很难听, 如果你和我有同感，改掉它, 哈哈。</p>
-<p>例子用法:</p>
-<p>　　</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -o hello.exe hello.c (哦,windows用习惯了) </span><br><span class="line">　　gcc -o hello.asm -S hello.c</span><br></pre></td></tr></table></figure>
-
-<p><strong>-pipe</strong></p>
-<p>　　</p>
-<p>使用管道代替编译中临时文件, 在使用非 gnu 汇编工具的时候, 可能有些问题。</p>
-<p>　　</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -pipe -o hello.exe hello.c </span><br></pre></td></tr></table></figure>
-
-<p><strong>-ansi</strong></p>
-<p>关闭 gnu c中与 ansi c 不兼容的特性, 激活 ansi c 的专有特性（包括禁止一些 asm inline typeof 关键字, 以及 UNIX,vax 等预处理宏）。</p>
-<p><strong>-fno-asm</strong></p>
-<p>此选项实现 ansi 选项的功能的一部分，它禁止将 asm, inline 和 typeof 用作关键字。</p>
-<p>　　　　</p>
-<p><strong>-fno-strict-prototype</strong></p>
-<p>只对 g++ 起作用, 使用这个选项, g++ 将对不带参数的函数,都认为是没有显式的对参数的个数和类型说明,而不是没有参数。</p>
-<p>而 gcc 无论是否使用这个参数, 都将对没有带参数的函数, 认为城没有显式说明的类型。</p>
-<p>　　</p>
-<p><strong>-fthis-is-varialble</strong></p>
-<p>就是向传统 c++ 看齐, 可以使用 this 当一般变量使用。</p>
-<p>　　</p>
-<p><strong>-fcond-mismatch</strong></p>
-<p>允许条件表达式的第二和第三参数类型不匹配, 表达式的值将为 void 类型。</p>
-<p>　　</p>
-<p><strong>-funsigned-char 、-fno-signed-char、-fsigned-char 、-fno-unsigned-char</strong></p>
-<p>这四个参数是对 char 类型进行设置, 决定将 char 类型设置成 unsigned char(前两个参数)或者 signed char(后两个参数)。</p>
-<p>　　</p>
-<p><strong>-include file</strong></p>
-<p>包含某个代码,简单来说,就是便以某个文件,需要另一个文件的时候,就可以用它设定,功能就相当于在代码中使用 **#include<filename>**。</p>
-<p>例子用法:</p>
-<p>　　</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello.c -include /root/pianopan.h </span><br></pre></td></tr></table></figure>
-
-<p>　　</p>
-<p><strong>-imacros file</strong></p>
-<p>　　</p>
-<p>将 file 文件的宏, 扩展到 gcc&#x2F;g++ 的输入文件, 宏定义本身并不出现在输入文件中。</p>
-<p>　　</p>
-<p><strong>-Dmacro</strong></p>
-<p>相当于 C 语言中的 <strong>#define macro</strong></p>
-<p>　　</p>
-<p><strong>-Dmacro&#x3D;defn</strong></p>
-<p>相当于 C 语言中的 <strong>#define macro&#x3D;defn</strong></p>
-<p>　　</p>
-<p><strong>-Umacro</strong></p>
-<p>相当于 C 语言中的 <strong>#undef macro</strong></p>
-<p><strong>-undef</strong></p>
-<p>　　</p>
-<p>取消对任何非标准宏的定义</p>
-<p>　　</p>
-<p><strong>-Idir</strong></p>
-<p>在你是用 <strong>#include “file”</strong> 的时候, gcc&#x2F;g++ 会先在当前目录查找你所制定的头文件, 如果没有找到, 他回到默认的头文件目录找, 如果使用 -I 制定了目录,他会先在你所制定的目录查找, 然后再按常规的顺序去找。</p>
-<p>对于 #include<file>, gcc&#x2F;g++ 会到 -I 制定的目录查找, 查找不到, 然后将到系统的默认的头文件目录查找 。</p>
-<p>　　</p>
-<p><strong>-I-</strong></p>
-<p>　　</p>
-<p>就是取消前一个参数的功能, 所以一般在 -Idir 之后使用。</p>
-<p>　　</p>
-<p><strong>-idirafter dir</strong></p>
-<p>在 -I 的目录里面查找失败, 讲到这个目录里面查找。</p>
-<p>　　</p>
-<p><strong>-iprefix prefix 、-iwithprefix dir</strong></p>
-<p>一般一起使用, 当 -I 的目录查找失败, 会到 prefix+dir 下查找</p>
-<p>　　</p>
-<p><strong>-nostdinc</strong></p>
-<p>　　</p>
-<p>使编译器不再系统默认的头文件目录里面找头文件, 一般和 -I 联合使用,明确限定头文件的位置。</p>
-<p>　　</p>
-<p><strong>-nostdin C++</strong></p>
-<p>　</p>
-<p>规定不在 g++ 指定的标准路经中搜索, 但仍在其他路径中搜索, 此选项在创 libg++ 库使用 。</p>
-<p>　　</p>
-<p><strong>-C</strong></p>
-<p>　</p>
-<p>在预处理的时候, 不删除注释信息, 一般和-E使用, 有时候分析程序，用这个很方便的。</p>
-<p>　　</p>
-<p><strong>-M</strong></p>
-<p>　</p>
-<p>生成文件关联的信息。包含目标文件所依赖的所有源代码你可以用 <strong>gcc -M hello.c</strong> 来测试一下，很简单。</p>
-<p>　　</p>
-<p><strong>-MM</strong></p>
-<p>　</p>
-<p>和上面的那个一样，但是它将忽略由 <strong>#include<file></strong> 造成的依赖关系。 　　</p>
-<p><strong>-MD</strong></p>
-<p>　</p>
-<p>和-M相同，但是输出将导入到.d的文件里面 　　</p>
-<p><strong>-MMD</strong></p>
-<p>　</p>
-<p>和 -MM 相同，但是输出将导入到 .d 的文件里面。</p>
-<p>　　</p>
-<p><strong>-Wa,option</strong></p>
-<p>　</p>
-<p>此选项传递 option 给汇编程序; 如果 option 中间有逗号, 就将 option 分成多个选项, 然 后传递给会汇编程序。</p>
-<p>　　</p>
-<p><strong>-Wl.option</strong></p>
-<p>　</p>
-<p>此选项传递 option 给连接程序; 如果 option 中间有逗号, 就将 option 分成多个选项, 然 后传递给会连接程序。</p>
-<p>　　</p>
-<p><strong>-llibrary</strong></p>
-<p>　</p>
-<p>制定编译的时候使用的库</p>
-<p>　　</p>
-<p>例子用法</p>
-<p>　　</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -lcurses hello.c</span><br></pre></td></tr></table></figure>
-
-<p>　　</p>
-<p>使用 ncurses 库编译程序</p>
-<p>　　</p>
-<p><strong>-Ldir</strong></p>
-<p>　　</p>
-<p>制定编译的时候，搜索库的路径。比如你自己的库，可以用它制定目录，不然编译器将只在标准库的目录找。这个dir就是目录的名称。</p>
-<p>　　</p>
-<p><strong>-O0 、-O1 、-O2 、-O3</strong></p>
-<p>　　</p>
-<p>编译器的优化选项的 4 个级别，-O0 表示没有优化, -O1 为默认值，-O3 优化级别最高。</p>
-<p>　 　 　　</p>
-<p><strong>-g</strong></p>
-<p>　　</p>
-<p>只是编译器，在编译的时候，产生调试信息。</p>
-<p>　　</p>
-<p><strong>-gstabs</strong></p>
-<p>　　</p>
-<p>此选项以 stabs 格式声称调试信息, 但是不包括 gdb 调试信息。</p>
-<p>　　</p>
-<p><strong>-gstabs+</strong></p>
-<p>　　</p>
-<p>此选项以 stabs 格式声称调试信息, 并且包含仅供 gdb 使用的额外调试信息。</p>
-<p>　　</p>
-<p><strong>-ggdb</strong></p>
-<p>　　</p>
-<p>此选项将尽可能的生成 gdb 的可以使用的调试信息。</p>
-<p><strong>-static</strong></p>
-<p>　　</p>
-<p>此选项将禁止使用动态库，所以，编译出来的东西，一般都很大，也不需要什么动态连接库，就可以运行。</p>
-<p><strong>-share</strong></p>
-<p>　</p>
-<p>此选项将尽量使用动态库，所以生成文件比较小，但是需要系统由动态库。</p>
-<p><strong>-traditional</strong></p>
-<p>　　</p>
-<p>试图让编译器支持传统的C语言特性。</p>
-<p>GCC 是 GNU 的 C 和 C++ 编译器。实际上，GCC 能够编译三种语言：C、C++ 和 Object C（C 语言的一种面向对象扩展）。利用 gcc 命令可同时编译并连接 C 和 C++ 源程序。</p>
-<p>如果你有两个或少数几个 C 源文件，也可以方便地利用 GCC 编译、连接并生成可执行文件。例如，假设你有两个源文件 main.c 和 factorial.c 两个源文件，现在要编 译生成一个计算阶乘的程序。</p>
-<p>factorial.c 文件代码</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">factorial</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> factorial(n - <span class="number">1</span>) * n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>main.c 文件代码</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">factorial</span><span class="params">(<span class="type">int</span> n)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="keyword">if</span> (argc &lt; <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Usage: %s n\n&quot;</span>, argv[<span class="number">0</span>]);  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;  <span class="keyword">else</span>  &#123;</span><br><span class="line">        n = atoi(argv[<span class="number">1</span>]);  <span class="built_in">printf</span>(<span class="string">&quot;Factorial of %d is %d.\n&quot;</span>, n, factorial(n));</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>利用如下的命令可编译生成可执行文件，并执行程序：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gcc -o factorial main.c factorial.c</span> </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./factorial 5</span> </span><br><span class="line">Factorial of 5 is 120. </span><br></pre></td></tr></table></figure>
-
-<p>GCC 可同时用来编译 C 程序和 C++ 程序。一般来说，C 编译器通过源文件的后缀名来判断是 C 程序还是 C++ 程序。在 Linux 中，C 源文件的后缀名为 .c，而 C++ 源文件的后缀名为 .C 或 .cpp。但是，gcc 命令只能编译 C++ 源文件，而不能自动和 C++ 程序使用的库连接。因此，通常使用 g++ 命令来完成 C++ 程序的编译和连接，该程序会自动调用 gcc 实现编译。假设我们有一个如下的 C++ 源文件（hello.c）：</p>
-<p>hello.c 文件代码</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>  void main (void)  &#123;  　cout &lt;&lt; <span class="string">&quot;Hello, world!&quot;</span> &lt;&lt; endl;  &#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>则可以如下调用 g++ 命令编译、连接并生成可执行文件：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ -o hello hello.c</span> </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./hello</span> </span><br><span class="line">Hello, world! </span><br></pre></td></tr></table></figure>
-
-<h3 id="gcc-命令的常用选项"><a href="#gcc-命令的常用选项" class="headerlink" title="gcc 命令的常用选项"></a>gcc 命令的常用选项</h3><table>
-<thead>
-<tr>
-<th align="left">选项</th>
-<th align="left">解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">-ansi</td>
-<td align="left">只支持 ANSI 标准的 C 语法。这一选项将禁止 GNU C 的某些特色， 例如 asm 或 typeof 关键词。</td>
-</tr>
-<tr>
-<td align="left">-c</td>
-<td align="left">只编译并生成目标文件。</td>
-</tr>
-<tr>
-<td align="left">-DMACRO</td>
-<td align="left">以字符串”1”定义 MACRO 宏。</td>
-</tr>
-<tr>
-<td align="left">-DMACRO&#x3D;DEFN</td>
-<td align="left">以字符串”DEFN”定义 MACRO 宏。</td>
-</tr>
-<tr>
-<td align="left">-E</td>
-<td align="left">只运行 C 预编译器。</td>
-</tr>
-<tr>
-<td align="left">-g</td>
-<td align="left">生成调试信息。GNU 调试器可利用该信息。</td>
-</tr>
-<tr>
-<td align="left">-IDIRECTORY</td>
-<td align="left">指定额外的头文件搜索路径DIRECTORY。</td>
-</tr>
-<tr>
-<td align="left">-LDIRECTORY</td>
-<td align="left">指定额外的函数库搜索路径DIRECTORY。</td>
-</tr>
-<tr>
-<td align="left">-lLIBRARY</td>
-<td align="left">连接时搜索指定的函数库LIBRARY。</td>
-</tr>
-<tr>
-<td align="left">-m486</td>
-<td align="left">针对 486 进行代码优化。</td>
-</tr>
-<tr>
-<td align="left">-o FILE</td>
-<td align="left">生成指定的输出文件。用在生成可执行文件时。</td>
-</tr>
-<tr>
-<td align="left">-O0</td>
-<td align="left">不进行优化处理。</td>
-</tr>
-<tr>
-<td align="left">-O 或 -O1</td>
-<td align="left">优化生成代码。</td>
-</tr>
-<tr>
-<td align="left">-O2</td>
-<td align="left">进一步优化。</td>
-</tr>
-<tr>
-<td align="left">-O3</td>
-<td align="left">比 -O2 更进一步优化，包括 inline 函数。</td>
-</tr>
-<tr>
-<td align="left">-shared</td>
-<td align="left">生成共享目标文件。通常用在建立共享库时。</td>
-</tr>
-<tr>
-<td align="left">-static</td>
-<td align="left">禁止使用共享连接。</td>
-</tr>
-<tr>
-<td align="left">-UMACRO</td>
-<td align="left">取消对 MACRO 宏的定义。</td>
-</tr>
-<tr>
-<td align="left">-w</td>
-<td align="left">不生成任何警告信息。</td>
-</tr>
-<tr>
-<td align="left">-Wall</td>
-<td align="left">生成所有警告信息。</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/30/GoLang-Cgo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/30/GoLang-Cgo/" class="post-title-link" itemprop="url">GoLang-Cgo</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-11-30 22:27:44 / 修改时间：22:28:14" itemprop="dateCreated datePublished" datetime="2022-11-30T22:27:44+08:00">2022-11-30</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://bastengao.com/blog/2017/12/go-cgo-c.html">https://bastengao.com/blog/2017/12/go-cgo-c.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://go.dev/blog/cgo">https://go.dev/blog/cgo</a></p>
-<p><a target="_blank" rel="noopener" href="https://pkg.go.dev/cmd/cgo">https://pkg.go.dev/cmd/cgo</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/30/GoLang-Channel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/30/GoLang-Channel/" class="post-title-link" itemprop="url">GoLang-Channel</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-11-30 15:36:30 / 修改时间：23:34:25" itemprop="dateCreated datePublished" datetime="2022-11-30T15:36:30+08:00">2022-11-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="使用channel构建信号量"><a href="#使用channel构建信号量" class="headerlink" title="使用channel构建信号量"></a>使用channel构建信号量</h1><h2 id="与Java中Semaphore的差别"><a href="#与Java中Semaphore的差别" class="headerlink" title="与Java中Semaphore的差别"></a>与Java中Semaphore的差别</h2>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/30/LeetCode%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/30/LeetCode%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%A2%98/" class="post-title-link" itemprop="url">LeetCode并发编程题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-11-30 02:33:13 / 修改时间：19:51:55" itemprop="dateCreated datePublished" datetime="2022-11-30T02:33:13+08:00">2022-11-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">并发编程</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="1114-按序打印"><a href="#1114-按序打印" class="headerlink" title="1114. 按序打印"></a>1114. 按序打印</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Condition;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Lock;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="type">Lock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="variable">firstFinished</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">Condition</span> <span class="variable">firstCondition</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="variable">secondFinished</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">Condition</span> <span class="variable">secondCondition</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Foo</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">first</span><span class="params">(Runnable printFirst)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="comment">// printFirst.run() outputs &quot;first&quot;. Do not change or remove this line.</span></span><br><span class="line">        printFirst.run();</span><br><span class="line">        firstCondition.signal();</span><br><span class="line">        firstFinished = <span class="literal">true</span>;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">second</span><span class="params">(Runnable printSecond)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">if</span>(!firstFinished)&#123;</span><br><span class="line">            firstCondition.await();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// printSecond.run() outputs &quot;second&quot;. Do not change or remove this line.</span></span><br><span class="line">        printSecond.run();</span><br><span class="line">        secondCondition.signal();</span><br><span class="line">        secondFinished = <span class="literal">true</span>;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">third</span><span class="params">(Runnable printThird)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">if</span>(!secondFinished) &#123;</span><br><span class="line">            secondCondition.await();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// printThird.run() outputs &quot;third&quot;. Do not change or remove this line.</span></span><br><span class="line">        printThird.run();</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Foo <span class="keyword">struct</span> &#123;</span><br><span class="line">	firstReady  <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">	secondReady <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newFoo</span><span class="params">()</span></span> *Foo &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;Foo&#123;</span><br><span class="line">		firstReady:  <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;),</span><br><span class="line">		secondReady: <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;),</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(foo *Foo)</span></span> first() &#123;</span><br><span class="line">	<span class="built_in">println</span>(<span class="string">&quot;first&quot;</span>)</span><br><span class="line">	foo.firstReady &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(foo *Foo)</span></span> second() &#123;</span><br><span class="line">	&lt;-foo.firstReady</span><br><span class="line">	<span class="built_in">println</span>(<span class="string">&quot;second&quot;</span>)</span><br><span class="line">	foo.secondReady &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(foo *Foo)</span></span> third() &#123;</span><br><span class="line">	&lt;-foo.secondReady</span><br><span class="line">	<span class="built_in">println</span>(<span class="string">&quot;third&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">solve</span><span class="params">(foo *Foo)</span></span> &#123;</span><br><span class="line">	wg := sync.WaitGroup&#123;&#125;</span><br><span class="line">	wg.Add(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> wg.Done()</span><br><span class="line">		foo.third()</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> wg.Done()</span><br><span class="line">		foo.second()</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> wg.Done()</span><br><span class="line">		foo.first()</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		foo := newFoo()</span><br><span class="line">		solve(foo)</span><br><span class="line">		<span class="built_in">println</span>()</span><br><span class="line">		time.Sleep(time.Second)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="1117-H2O-生成"><a href="#1117-H2O-生成" class="headerlink" title="1117. H2O 生成"></a>1117. H2O 生成</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/building-h2o/">https://leetcode.cn/problems/building-h2o/</a></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Condition;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Lock;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">H2O</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">Lock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> numOfO;</span><br><span class="line">    <span class="type">int</span> numOfH; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="type">Condition</span> <span class="variable">oCondition</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line">    <span class="type">Condition</span> <span class="variable">hCondition</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">H2O</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">ableGenerate</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> numOfO == <span class="number">1</span> &amp;&amp; numOfH == <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">reset</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.numOfO = <span class="built_in">this</span>.numOfH = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hydrogen</span><span class="params">(Runnable releaseHydrogen)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (numOfH == <span class="number">2</span>) &#123;</span><br><span class="line">                hCondition.await();</span><br><span class="line">            &#125;</span><br><span class="line">            numOfH++;</span><br><span class="line">            releaseHydrogen.run();</span><br><span class="line">            <span class="keyword">if</span> (ableGenerate()) &#123;</span><br><span class="line">                reset();</span><br><span class="line">                oCondition.signalAll();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">oxygen</span><span class="params">(Runnable releaseOxygen)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (numOfO == <span class="number">1</span>) &#123;</span><br><span class="line">                oCondition.await();</span><br><span class="line">            &#125;</span><br><span class="line">            releaseOxygen.run();</span><br><span class="line">            numOfO++;</span><br><span class="line">            <span class="keyword">if</span> (ableGenerate()) &#123;</span><br><span class="line">                reset();</span><br><span class="line">                hCondition.signalAll();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	H = <span class="string">&quot;h&quot;</span></span><br><span class="line">	O = <span class="string">&quot;o&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> H2OGenerator <span class="keyword">struct</span> &#123;</span><br><span class="line">	hydrogen <span class="keyword">chan</span> <span class="type">string</span></span><br><span class="line">	oxygen   <span class="keyword">chan</span> <span class="type">string</span></span><br><span class="line">	h2o      <span class="keyword">chan</span> <span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newH2OGenerator</span><span class="params">()</span></span> *H2OGenerator &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;H2OGenerator&#123;</span><br><span class="line">		hydrogen: <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">string</span>, <span class="number">2</span>),</span><br><span class="line">		oxygen:   <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">string</span>, <span class="number">1</span>),</span><br><span class="line">		h2o:      <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">string</span>, <span class="number">3</span>), <span class="comment">// this cap only must be greater than or equal 3</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(g *H2OGenerator)</span></span> GeneratorH2O() &#123;</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			g.hydrogen &lt;- H</span><br><span class="line">			g.h2o &lt;- H</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			g.oxygen &lt;- O</span><br><span class="line">			g.h2o &lt;- O</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	h20Flow := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">string</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			res := <span class="string">&quot;&quot;</span></span><br><span class="line">			<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ &#123;</span><br><span class="line">				res += &lt;-g.h2o</span><br><span class="line">			&#125;</span><br><span class="line">			h20Flow &lt;- res</span><br><span class="line">			&lt;-g.hydrogen</span><br><span class="line">			&lt;-g.hydrogen</span><br><span class="line">			&lt;-g.oxygen</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// checker</span></span><br><span class="line">	<span class="function"><span class="keyword">func</span><span class="params">(flow &lt;-<span class="keyword">chan</span> <span class="type">string</span>)</span></span> &#123;</span><br><span class="line">		ok := <span class="function"><span class="keyword">func</span><span class="params">(s <span class="type">string</span>)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">			<span class="keyword">var</span> hCounter, oCounter <span class="type">int</span></span><br><span class="line">			<span class="keyword">for</span> _, c := <span class="keyword">range</span> s &#123;</span><br><span class="line">				<span class="keyword">if</span> c == <span class="string">&#x27;h&#x27;</span> &#123;</span><br><span class="line">					hCounter++</span><br><span class="line">				&#125; <span class="keyword">else</span> <span class="keyword">if</span> c == <span class="string">&#x27;o&#x27;</span> &#123;</span><br><span class="line">					oCounter++</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> hCounter == <span class="number">2</span> &amp;&amp; oCounter == <span class="number">1</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> e := <span class="keyword">range</span> flow &#123;</span><br><span class="line">			<span class="keyword">if</span> ok(e) &#123;</span><br><span class="line">				<span class="comment">//fmt.Println(e)</span></span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="built_in">panic</span>(fmt.Sprintf(<span class="string">&quot;h20-generator working wrong, res = %s&quot;</span>, e))</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//time.Sleep(time.Second)</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;(h20Flow)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	newH2OGenerator().GeneratorH2O()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p>3个channel实际上就是3个信号量，向channel里发送元素实际上对应信号量的acquire，接收元素对应release。</p>
-<p>这3个信号量的操作顺序实际上就是并发屏障。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">S1 = Semaphore(1)</span><br><span class="line">S2 = Semaphore(2)</span><br><span class="line">S3 = Semaphore(3)</span><br><span class="line"></span><br><span class="line">goroutine1 -&gt; &#123;</span><br><span class="line">    S1.P()</span><br><span class="line">    S3.P()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">goroutine2 -&gt; &#123;</span><br><span class="line">    S2.P()</span><br><span class="line">    S3.P()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">goroutine3 -&gt; &#123;</span><br><span class="line">    S3.V()</span><br><span class="line">    S3.V()</span><br><span class="line">    S3.V()</span><br><span class="line">    </span><br><span class="line">    S1.V()</span><br><span class="line">    S2.V()</span><br><span class="line">    S2.V()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<blockquote>
-<p>注意，这里使用channel实现的信号量的V操作和java中的Semaphore的release操作语义不一致！</p>
-</blockquote>
-<h1 id="1115-交替打印-FooBar"><a href="#1115-交替打印-FooBar" class="headerlink" title="1115. 交替打印 FooBar"></a>1115. 交替打印 FooBar</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FooBar</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> n;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="variable">available</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">FooBar</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.n = n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">foo</span><span class="params">(Runnable printFoo)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (<span class="built_in">this</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (available) &#123;</span><br><span class="line">                    <span class="built_in">this</span>.wait();</span><br><span class="line">                &#125;</span><br><span class="line">                printFoo.run();</span><br><span class="line">                <span class="built_in">this</span>.notify();</span><br><span class="line">                <span class="built_in">this</span>.available = !<span class="built_in">this</span>.available;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">bar</span><span class="params">(Runnable printBar)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (<span class="built_in">this</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!available) &#123;</span><br><span class="line">                    <span class="built_in">this</span>.wait();</span><br><span class="line">                &#125;</span><br><span class="line">                printBar.run();</span><br><span class="line">                <span class="built_in">this</span>.notify();</span><br><span class="line">                <span class="built_in">this</span>.available = !<span class="built_in">this</span>.available;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> FooBar <span class="keyword">struct</span> &#123;</span><br><span class="line">	n        <span class="type">int</span></span><br><span class="line">	fooReady <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">	barReady <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newFooBar</span><span class="params">(n <span class="type">int</span>)</span></span> *FooBar &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;FooBar&#123;</span><br><span class="line">		n:        n,</span><br><span class="line">		fooReady: <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;),</span><br><span class="line">		barReady: <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;),</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(fooBar *FooBar)</span></span> foo() &#123;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; fooBar.n; i++ &#123;</span><br><span class="line">		&lt;-fooBar.fooReady</span><br><span class="line">		<span class="built_in">print</span>(<span class="string">&quot;foo&quot;</span>)</span><br><span class="line">		fooBar.barReady &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(fooBar *FooBar)</span></span> bar() &#123;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; fooBar.n; i++ &#123;</span><br><span class="line">		&lt;-fooBar.barReady</span><br><span class="line">		<span class="built_in">print</span>(<span class="string">&quot;bar&quot;</span>)</span><br><span class="line">		<span class="keyword">if</span> i != fooBar.n<span class="number">-1</span> &#123; <span class="comment">// notice sync channel&#x27;s feature, receive must match send</span></span><br><span class="line">			fooBar.fooReady &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">solve</span><span class="params">(fooBar *FooBar)</span></span> &#123;</span><br><span class="line">	wg := sync.WaitGroup&#123;&#125;</span><br><span class="line">	wg.Add(<span class="number">2</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> wg.Done()</span><br><span class="line">		fooBar.bar()</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> wg.Done()</span><br><span class="line">		fooBar.foo()</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	fooBar.fooReady &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		foo := newFooBar(<span class="number">10</span>)</span><br><span class="line">		solve(foo)</span><br><span class="line">		<span class="built_in">println</span>()</span><br><span class="line">		time.Sleep(time.Second)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/30/GoLang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/30/GoLang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">GoLang-错误处理</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-11-30 00:06:14" itemprop="dateCreated datePublished" datetime="2022-11-30T00:06:14+08:00">2022-11-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 19:33:47" itemprop="dateModified" datetime="2022-12-04T19:33:47+08:00">2022-12-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testPanic</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">	<span class="built_in">println</span>(a[<span class="number">5</span>])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// other&#x27;s code, maybe panic</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">boringTask</span><span class="params">(i <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> wg.Done()</span><br><span class="line">	time.Sleep(time.Second * time.Duration(i))</span><br><span class="line">	<span class="keyword">if</span> i == <span class="number">2</span> &#123;</span><br><span class="line">		testPanic()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">println</span>(<span class="string">&quot;end:&quot;</span>, i)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	tasks := <span class="number">5</span></span><br><span class="line">	wg.Add(tasks)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; tasks; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> boringTask(i)</span><br><span class="line">	&#125;</span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>错误的做法：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	tasks := <span class="number">5</span></span><br><span class="line">	wg.Add(tasks)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; tasks; i++ &#123;</span><br><span class="line">		<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">				<span class="keyword">if</span> err := <span class="built_in">recover</span>(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">					fmt.Printf(<span class="string">&quot;err=%v\n&quot;</span>, err)</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;()</span><br><span class="line">			<span class="keyword">go</span> boringTask(i)</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testPanic</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">	<span class="built_in">println</span>(a[<span class="number">5</span>])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// other&#x27;s code, maybe panic</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">boringTask</span><span class="params">(param <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> wg.Done()</span><br><span class="line">	time.Sleep(time.Second * time.Duration(param))</span><br><span class="line">	<span class="keyword">if</span> param == <span class="number">2</span> &#123;</span><br><span class="line">		testPanic()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">println</span>(<span class="string">&quot;end:&quot;</span>, param)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 自己包裹一下</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">boringTaskWrapper</span><span class="params">(param <span class="type">int</span>)</span></span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="keyword">if</span> err := <span class="built_in">recover</span>(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">				fmt.Printf(<span class="string">&quot;err=%v\n&quot;</span>, err)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;()</span><br><span class="line">		boringTask(param)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	tasks := <span class="number">5</span></span><br><span class="line">	wg.Add(tasks)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; tasks; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> boringTaskWrapper(i)()</span><br><span class="line">	&#125;</span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/29/GoLang-%E6%8E%A5%E5%8F%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/29/GoLang-%E6%8E%A5%E5%8F%A3/" class="post-title-link" itemprop="url">GoLang-接口</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-11-29 02:04:22" itemprop="dateCreated datePublished" datetime="2022-11-29T02:04:22+08:00">2022-11-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 19:33:45" itemprop="dateModified" datetime="2022-12-04T19:33:45+08:00">2022-12-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> FormatError <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(*FormatError)</span></span> Error() <span class="type">string</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;format error&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> fe *FormatError = <span class="literal">nil</span></span><br><span class="line">	<span class="keyword">if</span> fe != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;to 1&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> e <span class="type">error</span> = fe</span><br><span class="line">	<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;to 2&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/28/GoLang-%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/28/GoLang-%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">GoLang-方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-11-28 22:04:25" itemprop="dateCreated datePublished" datetime="2022-11-28T22:04:25+08:00">2022-11-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 19:33:50" itemprop="dateModified" datetime="2022-12-04T19:33:50+08:00">2022-12-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> N <span class="type">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(n N)</span></span> testVal() &#123;</span><br><span class="line">	n++</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%p, %v\n&quot;</span>, &amp;n, n)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(n *N)</span></span> testPointer() &#123;</span><br><span class="line">	*n++</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%p, %v\n&quot;</span>, n, *n)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> n N = <span class="number">0</span></span><br><span class="line">	n.testVal()</span><br><span class="line">	n.testPointer()</span><br><span class="line"></span><br><span class="line">	p := &amp;n</span><br><span class="line">	p.testVal()</span><br><span class="line">	p.testPointer()</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">&quot;%p, %v\n&quot;</span>, &amp;n, n)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;reflect&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> S <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> T <span class="keyword">struct</span> &#123;</span><br><span class="line">    S</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(S)</span></span> SVal() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(*S)</span></span> SPtr() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(T)</span></span> TVal() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(*T)</span></span> TPtr() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">methodSet</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    t := reflect.TypeOf(v)</span><br><span class="line">    <span class="keyword">for</span> i, n := <span class="number">0</span>, t.NumMethod(); i &lt; n; i++ &#123;</span><br><span class="line">        method := t.Method(i)</span><br><span class="line">        fmt.Println(method.Name, method.Type)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> t T</span><br><span class="line">    </span><br><span class="line">    methodSet(t)</span><br><span class="line">    <span class="built_in">println</span>(<span class="string">&quot;-------&quot;</span>)</span><br><span class="line">    methodSet(&amp;t)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>Go语言里定义的方法集的规则是：<br> 从值的角度来看规则</p>
-<table>
-<thead>
-<tr>
-<th>Values</th>
-<th>Methods Receivers</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>T</td>
-<td>(t T)</td>
-</tr>
-<tr>
-<td>*T</td>
-<td>(t T) and (t *T)</td>
-</tr>
-</tbody></table>
-<p>T类型的值的方法集只包含值接收者声明的方法。而指向T类型的指针的方法集既包含值接收者声明的方法，也包含指针接收者声明的方法。</p>
-<p>从接收者的角度来看规则</p>
-<table>
-<thead>
-<tr>
-<th>Values</th>
-<th>Methods Receivers</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>(t T)</td>
-<td>T and *T</td>
-</tr>
-<tr>
-<td>(t *T)</td>
-<td>*T</td>
-</tr>
-</tbody></table>
-<p>使用指针接收者来实现一个接口，那么只有指向那个类型的指针才能够实现对应的接口。如果使用值接收者来实现一个接口，那么那个类型的值和指针都能够实现对应的接口。</p>
-<p>作者：不会写代码的程序猿<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1a5c68fa4009">https://www.jianshu.com/p/1a5c68fa4009</a><br>来源：简书<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-<p><strong>空指针</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> X <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(x *X)</span></span> test() &#123;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;test() : %p&quot;</span>, x)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> x *X = <span class="literal">nil</span></span><br><span class="line">	x.test()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> X <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line">=</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(x X)</span></span> test() &#123;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;test() : %p&quot;</span>, x)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> x *X = <span class="literal">nil</span></span><br><span class="line">	x.test()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/27/GoLang-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/27/GoLang-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">GoLang-数据结构</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-11-27 00:38:28" itemprop="dateCreated datePublished" datetime="2022-11-27T00:38:28+08:00">2022-11-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 19:33:52" itemprop="dateModified" datetime="2022-12-04T19:33:52+08:00">2022-12-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [...]<span class="type">int</span>&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	s := a[:]</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">	fmt.Println(s)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="keyword">range</span> s &#123;</span><br><span class="line">		s[i] += <span class="number">100</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">	fmt.Println(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>输出</p>
-<p>[0 1 2]<br>[0 1 2]<br>[100 101 102]<br>[100 101 102]</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/25/GoLang-%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/25/GoLang-%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">GoLang-函数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-11-25 15:50:38" itemprop="dateCreated datePublished" datetime="2022-11-25T15:50:38+08:00">2022-11-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-04 19:33:55" itemprop="dateModified" datetime="2022-12-04T19:33:55+08:00">2022-12-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>使用<code>func</code>定义函数。</p>
-<p>go中的函数有如下特点（优缺点皆有）</p>
-<ol>
-<li><p>无须前置声明</p>
-</li>
-<li><p>不支持命名嵌套定义</p>
-</li>
-<li><p><strong>不支持同名函数重载！（overload）</strong></p>
-</li>
-<li><p>不支持默认参数</p>
-</li>
-<li><p>支持不定长变参</p>
-</li>
-<li><p><strong>支持多返回值</strong></p>
-</li>
-<li><p><strong>支持命名返回值</strong></p>
-</li>
-<li><p><strong>支持匿名函数和闭包</strong></p>
-</li>
-</ol>
-<p>函数属于第一类对象，具有相同签名（参数列表和返回值列表）的视作同一类型。</p>
-<blockquote>
-<p>第一类对象值得是可以运行时动态创建，可以用作函数的参数、返回值，可以存入变量的实体。</p>
-</blockquote>
-<p>函数只能判断是否为nil，不支持其它任何比较操作。</p>
-<p>一些小例子</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;strconv&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f1</span><span class="params">()</span></span> &#123; <span class="comment">// 无参、无返回值</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f3</span><span class="params">(x <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f4</span><span class="params">()</span></span> *<span class="type">int</span> &#123; <span class="comment">// 返回指针也是安全的</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f5</span><span class="params">(x <span class="type">int</span>)</span></span> (<span class="type">int</span>, <span class="type">string</span>) &#123; <span class="comment">// 多返回值</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>, <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f6</span><span class="params">()</span></span> (res <span class="type">int</span>, mes <span class="type">string</span>) &#123; <span class="comment">// 命名返回值</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>, <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> myHandler <span class="function"><span class="keyword">func</span><span class="params">(param <span class="type">string</span>)</span></span> (code <span class="type">int</span>, msg <span class="type">string</span>) <span class="comment">// 定义一个函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数作为返回值</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">chooseStrategy</span><span class="params">(code <span class="type">int</span>)</span></span> myHandler &#123;</span><br><span class="line">	<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="type">int</span>]myHandler</span><br><span class="line">	<span class="keyword">return</span> m[code]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数作为参数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">exec</span><span class="params">(handler myHandler, param <span class="type">string</span>)</span></span> <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span> &#123;</span><br><span class="line">	i, s := handler(param)</span><br><span class="line">	<span class="comment">//m := make(map[string]string)</span></span><br><span class="line">	m := <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>&#123;<span class="string">&quot;code&quot;</span>: strconv.Itoa(i), <span class="string">&quot;msg&quot;</span>: s&#125;</span><br><span class="line">	<span class="keyword">return</span> m</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h1><p>相邻的同类型参数可合并:</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(x, y <span class="type">int</span>, s1, s2 <span class="type">string</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="参数的传递方式"><a href="#参数的传递方式" class="headerlink" title="参数的传递方式"></a>参数的传递方式</h2><p>在go中，不管是指针，基本类型，引用类型还是其他类型参数，都是<strong>值拷贝传递</strong>。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(a [2]<span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="built_in">println</span>(&amp;a)</span><br><span class="line">	a[<span class="number">0</span>]++</span><br><span class="line">	a[<span class="number">1</span>]++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [<span class="number">2</span>]<span class="type">int</span>&#123;<span class="number">0</span>, <span class="number">0</span>&#125;</span><br><span class="line">	<span class="built_in">println</span>(&amp;a)</span><br><span class="line">	f(a)</span><br><span class="line">	<span class="built_in">println</span>(&amp;a)</span><br><span class="line">	<span class="keyword">for</span> _, i := <span class="keyword">range</span> a &#123;</span><br><span class="line">		<span class="built_in">println</span>(i)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">0x14000096f48</span></span><br><span class="line"><span class="comment">0x14000096f38</span></span><br><span class="line"><span class="comment">0x14000096f48</span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>数组是值类型。</p>
-</blockquote>
-<h2 id="指针参数性能更好吗？"><a href="#指针参数性能更好吗？" class="headerlink" title="指针参数性能更好吗？"></a>指针参数性能更好吗？</h2><blockquote>
-<p>这个问题对于java用户来说其实不算问题，因为java除了8种基本数据类型外都是对象，传递的时候都是对象的引用。</p>
-</blockquote>
-<p>对于go的话，也不能说使用指针传递就一定更好。</p>
-<p>首先，使用指针参数好处是避免了大对象的复制。</p>
-<h2 id="变参"><a href="#变参" class="headerlink" title="变参"></a>变参</h2>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/24/GoLang-%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/24/GoLang-%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">GoLang-运算符、流程控制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-11-24 15:00:17" itemprop="dateCreated datePublished" datetime="2022-11-24T15:00:17+08:00">2022-11-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-11-30 02:04:51" itemprop="dateModified" datetime="2022-11-30T02:04:51+08:00">2022-11-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h1><h2 id="自增"><a href="#自增" class="headerlink" title="自增"></a>自增</h2><ol>
-<li>只能后置，不允许前置</li>
-<li>只能作为单独语句，不可以作为表达式</li>
-</ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x := <span class="number">1</span></span><br><span class="line">x++</span><br><span class="line">++x <span class="comment">// error</span></span><br><span class="line">y := x++ <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>指针是一个专门用来保存地址的整形变量。</p>
-<p>go语言的指针相比于c中的指针有很大的限制和改变。</p>
-<ol>
-<li><strong>支持相等</strong>运算符，但是<strong>不支持加减法和类型转换</strong>。</li>
-<li>不使用<code>-&gt;</code>访问成员，而是使用<code>.</code></li>
-<li>不是所有对象都能使用<code>&amp;</code>获得其地址。</li>
-</ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x := <span class="number">1</span></span><br><span class="line"><span class="keyword">var</span> p *<span class="type">int</span> = &amp;x</span><br><span class="line">fmt.Println(x, p)</span><br><span class="line"><span class="comment">//p++ // Invalid operation: p++ (non-numeric type *int)</span></span><br><span class="line"><span class="comment">//p += 2 // Invalid operation: p += 2 (mismatched types *int and untyped int)</span></span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span>)</span><br><span class="line">m[<span class="string">&quot;1&quot;</span>] = <span class="number">1</span></span><br><span class="line">m[<span class="string">&quot;2&quot;</span>] = <span class="number">2</span></span><br><span class="line"><span class="built_in">println</span>(m, &amp;m) <span class="comment">// 0x1400005e180 0x1400000e028 为什么不一样？0x1400005e180引用着map</span></span><br><span class="line">fmt.Println(m, &amp;m) <span class="comment">// map[1:1 2:2] &amp;map[1:1 2:2]</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-<h3 id="unsafe-Pointer和uintptr"><a href="#unsafe-Pointer和uintptr" class="headerlink" title="unsafe.Pointer和uintptr"></a>unsafe.Pointer和uintptr</h3><h3 id="零长度对象"><a href="#零长度对象" class="headerlink" title="零长度对象"></a>零长度对象</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a, b <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">pa := &amp;a</span><br><span class="line">pb := &amp;b</span><br><span class="line"><span class="built_in">println</span>(pa)</span><br><span class="line"><span class="built_in">println</span>(pb)</span><br><span class="line"><span class="built_in">println</span>(pa == pb) <span class="comment">// 结果和具体实现有关</span></span><br><span class="line"></span><br><span class="line">p1 := unsafe.Pointer(pa)</span><br><span class="line">p2 := unsafe.Pointer(pb)</span><br><span class="line"><span class="keyword">var</span> p1ptr <span class="type">uintptr</span> = <span class="type">uintptr</span>(p1)</span><br><span class="line"><span class="keyword">var</span> p2ptr <span class="type">uintptr</span> = <span class="type">uintptr</span>(p2)</span><br><span class="line"><span class="built_in">println</span>(p1ptr)</span><br><span class="line"><span class="built_in">println</span>(p2ptr)</span><br><span class="line"><span class="built_in">println</span>(p1ptr == p2ptr) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<p>0x14000096f58<br>0x14000096f58<br>false<br>1374390153048<br>1374390153048<br>true</p>
-<p><strong>零长度对象</strong>的地址如何分配看具体实现，总之<strong>肯定不为nil</strong>，换言之它拥有合法的内存地址。</p>
-<h3 id="二级指针"><a href="#二级指针" class="headerlink" title="二级指针"></a>二级指针</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x := <span class="number">1</span></span><br><span class="line">px := &amp;x</span><br><span class="line">ppx := &amp;px <span class="comment">// var pxx **int = &amp;px</span></span><br><span class="line">fmt.Println(x, &amp;x)</span><br><span class="line">fmt.Println(px, &amp;px, *px)</span><br><span class="line">fmt.Println(ppx, &amp;ppx, *ppx)</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><p>对于复合类型（数组、切片、字典、结构体）的初始化而言，有一些语法限制。</p>
-<ol>
-<li>初始化表达式必须有类型标签；</li>
-<li>左花括号必须在类型尾部，不能另起一行；</li>
-<li>多个成员以逗号分隔；</li>
-</ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> data <span class="keyword">struct</span> &#123;</span><br><span class="line">	x <span class="type">int</span></span><br><span class="line">	s <span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">d := data&#123; <span class="comment">// 初始化表达式必须有类型标签</span></span><br><span class="line">	<span class="number">1</span>,</span><br><span class="line">	<span class="string">&quot;s&quot;</span>, <span class="comment">// 逗号不能省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h1><h2 id="if-else"><a href="#if-else" class="headerlink" title="if-else"></a>if-else</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">t</span><span class="params">()</span></span> <span class="type">int</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   x := <span class="number">1</span></span><br><span class="line">   <span class="keyword">if</span> x &gt; <span class="number">1</span> &#123; <span class="comment">// </span></span><br><span class="line">      </span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">   </span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="keyword">if</span> a, b := t(), t(); a &lt; b &#123;</span><br><span class="line">      </span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">a, b, c := <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span></span><br><span class="line"><span class="keyword">switch</span> x := foo(); x &#123; <span class="comment">// 支持局部变量初始化</span></span><br><span class="line"><span class="keyword">case</span> a: <span class="comment">// 支持非常量</span></span><br><span class="line">    <span class="built_in">println</span>(a)</span><br><span class="line"><span class="keyword">case</span> b:</span><br><span class="line">    <span class="built_in">println</span>(b)</span><br><span class="line"><span class="keyword">case</span> c:</span><br><span class="line">    <span class="built_in">println</span>(c)</span><br><span class="line"><span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">    <span class="built_in">println</span>(<span class="number">4</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>: <span class="comment">// 支持多case合并</span></span><br><span class="line">    <span class="built_in">println</span>(<span class="string">&quot;5 &lt;= x &lt;= 7&quot;</span>)</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">println</span>(<span class="string">&quot;8 &lt;= x&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>无需显式使用break</strong>，这是和Java中的switch最大的区别。</p>
-<p>如果需要Java中的switch中<strong>贯通后续</strong>的效果，可以使用<code>fallthrough</code>关键字（后续就不再匹配条件表达式，注意执行下一个case），同时使用<code>break</code>拦截fallthrough。 </p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">a, b, c := <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span></span><br><span class="line"><span class="keyword">switch</span> x := foo(); x &#123; <span class="comment">// 支持局部变量初始化</span></span><br><span class="line"><span class="keyword">case</span> a: <span class="comment">// 支持非常量</span></span><br><span class="line">    <span class="built_in">println</span>(a)</span><br><span class="line"><span class="keyword">case</span> b:</span><br><span class="line">    <span class="built_in">println</span>(b)</span><br><span class="line">    <span class="keyword">if</span> b &gt; <span class="number">1</span> &#123;</span><br><span class="line">       <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">fallthrough</span></span><br><span class="line"><span class="keyword">case</span> c:</span><br><span class="line">    <span class="built_in">println</span>(c)</span><br><span class="line"><span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">    <span class="built_in">println</span>(<span class="number">4</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>: <span class="comment">// 支持多case合并</span></span><br><span class="line">    <span class="built_in">println</span>(<span class="string">&quot;5 &lt;= x &lt;= 7&quot;</span>)</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">println</span>(<span class="string">&quot;8 &lt;= x&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="for"><a href="#for" class="headerlink" title="for"></a>for</h2><p>for循环的几种形式：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> x := <span class="number">10</span></span><br><span class="line"> <span class="keyword">for</span> x &gt; <span class="number">0</span> &#123;</span><br><span class="line">   x--</span><br><span class="line"> &#125;</span><br><span class="line">   </span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">	<span class="comment">// endless loop</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="literal">true</span> &#123;</span><br><span class="line">	<span class="comment">// endless loop</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="for-range"><a href="#for-range" class="headerlink" title="for-range"></a>for-range</h3><p>可以使用<code>for-range</code>完成可迭代对象的数据遍历，支持<strong>字符串、数组、数组指针、切片、字典、通道</strong>，返回索引，键值数据。</p>
-<table>
-<thead>
-<tr>
-<th>Data-type</th>
-<th>1st value</th>
-<th>2nd value</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>string</td>
-<td>index</td>
-<td>s[index]</td>
-</tr>
-<tr>
-<td>array</td>
-<td>index</td>
-<td>v[index]</td>
-</tr>
-<tr>
-<td>map</td>
-<td>key</td>
-<td>value</td>
-</tr>
-<tr>
-<td>channel</td>
-<td>element</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>这里只演示string和array 的遍历，后面的具体再介绍。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">&quot;abcdef&quot;</span></span><br><span class="line"><span class="keyword">for</span> i, c := <span class="keyword">range</span> str &#123;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;s[%d] = %c i.e. %c\n&quot;</span>, i, str[i], c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>for-range类似于java中的for-each语句，但是由于语言底层本身的区别，二者还是有不同的。</p>
-<p>比如，range数组和数组指针是有差别的。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f1</span><span class="params">()</span></span> &#123;</span><br><span class="line">	data := [<span class="number">3</span>]<span class="type">string</span>&#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>&#125;</span><br><span class="line">	<span class="keyword">for</span> i, s := <span class="keyword">range</span> data &#123;</span><br><span class="line">		<span class="keyword">if</span> i == <span class="number">0</span> &#123;</span><br><span class="line">			data[<span class="number">0</span>] += <span class="string">&quot;a&quot;</span></span><br><span class="line">			data[<span class="number">1</span>] += <span class="string">&quot;b&quot;</span></span><br><span class="line">			data[<span class="number">2</span>] += <span class="string">&quot;c&quot;</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">println</span>(i, s, data[i]) <span class="comment">// 这里输出的s都是改变之前的data的复制品中的元素</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f2</span><span class="params">()</span></span> &#123;</span><br><span class="line">	data := [<span class="number">3</span>]<span class="type">string</span>&#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>&#125;</span><br><span class="line">	<span class="keyword">for</span> i, s := <span class="keyword">range</span> &amp;data &#123;</span><br><span class="line">		<span class="keyword">if</span> i == <span class="number">0</span> &#123;</span><br><span class="line">			data[<span class="number">0</span>] += <span class="string">&quot;a&quot;</span></span><br><span class="line">			data[<span class="number">1</span>] += <span class="string">&quot;b&quot;</span></span><br><span class="line">			data[<span class="number">2</span>] += <span class="string">&quot;c&quot;</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">println</span>(i, s, data[i])</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	f1()</span><br><span class="line">	<span class="built_in">println</span>()</span><br><span class="line">	f2()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">0 1 1a</span></span><br><span class="line"><span class="comment">1 2 2b</span></span><br><span class="line"><span class="comment">2 3 3c</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">0 1 1a</span></span><br><span class="line"><span class="comment">1 2b 2b</span></span><br><span class="line"><span class="comment">2 3c 3c</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>range会复制目标数据，比如range一个数组时其实遍历的是复制的那个数组。不过，字符串、切片是个很小的结构体，字典和通道本身是指针封装，它们的复制成本都很小，无需担心。</strong></p>
-<p>返回部分元素。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">data := [<span class="number">3</span>]<span class="type">string</span>&#123;<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>&#125;</span><br><span class="line"><span class="keyword">for</span> i := <span class="keyword">range</span> data &#123;</span><br><span class="line">    <span class="keyword">if</span> i == <span class="number">0</span> &#123;</span><br><span class="line">        data[<span class="number">0</span>] += <span class="string">&quot;a&quot;</span></span><br><span class="line">        data[<span class="number">1</span>] += <span class="string">&quot;b&quot;</span></span><br><span class="line">        data[<span class="number">2</span>] += <span class="string">&quot;c&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _, s := <span class="keyword">range</span> data &#123;</span><br><span class="line">    <span class="built_in">println</span>(s)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="keyword">range</span> data &#123; <span class="comment">// 仅迭代，不返回。可以用来执行清空channel</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="continue、break"><a href="#continue、break" class="headerlink" title="continue、break"></a>continue、break</h2><p>continue 仅用于 for 循环。</p>
-<p>break可以用于for、switch，还可以用于<code>select</code>语句（后面详细介绍）</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/4/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-
-<div class="copyright">
-  &copy; 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
-
-    </div>
-  </footer>
-
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-
-
-
-
-  
-
-
-
-
-
 </body>
+
 </html>

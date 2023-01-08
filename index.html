@@ -1,1274 +1,940 @@
 <!DOCTYPE html>
+
+
 <html lang="zh-CN">
+
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+     JsyBlog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/images/ayer.png" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  
+<link rel="stylesheet" href="/css/custom.css">
 
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-
-    <meta property="og:type" content="website">
-<meta property="og:title" content="JsyBlog">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="JsyBlog">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="SongyangJi">
-<meta name="twitter:card" content="summary">
-
-
-<link rel="canonical" href="http://example.com/">
-
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"index.html","title":""}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>JsyBlog</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
   
 
+  
 
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
+</html>
 
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      
+<section class="cover">
+    
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="/images/cover1.jpg" alt="image frame" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">JsyBlog</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+        <img
+          src="/images/ayer.svg"
+          class="cover-logo"
+          alt="JsyBlog"
+        />
+        
+      </div>
     </div>
   </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">JsyBlog</h1>
-      <i class="logo-line"></i>
-    </a>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
   </div>
+</section>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '让风吹干流过的泪和汗，总有一天我有属于我的天'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 70,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
+<div id="main">
+  <section class="outer">
+  
+  
+  
+
+<div class="notice" style="margin-top:50px">
+    <i class="ri-heart-fill"></i>
+    <div class="notice-content" id="broad"></div>
+</div>
+<script type="text/javascript">
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("broad").innerHTML = data.hitokoto;
+        })
+        .catch(console.error)
+</script>
+
+<style>
+    .notice {
+        padding: 20px;
+        border: 1px dashed #e6e6e6;
+        color: #969696;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #fbfbfb50;
+        border-radius: 10px;
+    }
+
+    .notice i {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        padding-right: 10px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+
+    .notice-content {
+        display: initial;
+        vertical-align: middle;
+    }
+</style>
+  
+  <article class="articles">
+    
+    
+    
+    
+    <article
+  id="post-《刷题——链表》"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/09/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E9%93%BE%E8%A1%A8%E3%80%8B/"
+    >《刷题——链表》</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/09/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E9%93%BE%E8%A1%A8%E3%80%8B/" class="article-date">
+  <time datetime="2023-01-08T20:28:05.000Z" itemprop="datePublished">2023-01-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/">算法题</a>
+  </div>
+   
     </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
   </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-《刷题——二分》"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/09/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E4%BA%8C%E5%88%86%E3%80%8B/"
+    >《刷题——二分》</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/09/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E4%BA%8C%E5%88%86%E3%80%8B/" class="article-date">
+  <time datetime="2023-01-08T20:27:52.000Z" itemprop="datePublished">2023-01-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/">算法题</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Kafka高性能"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/09/Kafka%E9%AB%98%E6%80%A7%E8%83%BD/"
+    >Kafka高性能</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/09/Kafka%E9%AB%98%E6%80%A7%E8%83%BD/" class="article-date">
+  <time datetime="2023-01-08T18:43:20.000Z" itemprop="datePublished">2023-01-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">消息中间件</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kafka/" rel="tag">Kafka</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Message-Queue/" rel="tag">Message Queue</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Kafka配置参数"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/09/Kafka%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/"
+    >Kafka配置参数</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/09/Kafka%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/" class="article-date">
+  <time datetime="2023-01-08T16:25:00.000Z" itemprop="datePublished">2023-01-09</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">消息中间件</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kafka/" rel="tag">Kafka</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Message-Queue/" rel="tag">Message Queue</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-分布式锁"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/08/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/"
+    >分布式锁</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/08/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" class="article-date">
+  <time datetime="2023-01-08T14:42:53.000Z" itemprop="datePublished">2023-01-08</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-《刷题——接雨水》"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/08/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4%E3%80%8B/"
+    >《刷题——来接雨水啦》</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/08/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4%E3%80%8B/" class="article-date">
+  <time datetime="2023-01-08T13:38:07.000Z" itemprop="datePublished">2023-01-08</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/">算法题</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-HTTP——重定向那些事儿"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/04/HTTP%E2%80%94%E2%80%94%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/"
+    >HTTP——重定向那些事儿</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/04/HTTP%E2%80%94%E2%80%94%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/" class="article-date">
+  <time datetime="2023-01-03T17:54:04.000Z" itemprop="datePublished">2023-01-04</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-位运算常用API"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/02/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B8%B8%E7%94%A8API/"
+    >位运算常用API</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/02/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B8%B8%E7%94%A8API/" class="article-date">
+  <time datetime="2023-01-02T12:43:20.000Z" itemprop="datePublished">2023-01-02</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-《刷题——动态规划》"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/01/01/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E3%80%8B/"
+    >《刷题——动态规划》</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/01/01/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E3%80%8B/" class="article-date">
+  <time datetime="2022-12-31T18:51:04.000Z" itemprop="datePublished">2023-01-01</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/">算法题</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-《刷题——栈》"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/12/31/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E6%A0%88%E3%80%8B/"
+    >《刷题——栈》</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/12/31/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E6%A0%88%E3%80%8B/" class="article-date">
+  <time datetime="2022-12-31T11:32:45.000Z" itemprop="datePublished">2022-12-31</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/">算法题</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+  </nav>
+  
+</section>
 </div>
 
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2023
+        <i class="ri-heart-fill heart_icon"></i> SongyangJi
       </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
   </ul>
 </nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
 </div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
   </div>
 </div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
 
     </div>
-  </div>
 
-</header>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
         
-  
-  <aside class="sidebar">
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
+
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
 
-    <div class="sidebar-inner sidebar-overview-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
 
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-        </div>
-        <!--/noindex-->
 
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">SongyangJi</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">237</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">42</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">109</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/09/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E9%93%BE%E8%A1%A8%E3%80%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/09/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E9%93%BE%E8%A1%A8%E3%80%8B/" class="post-title-link" itemprop="url">《刷题——链表》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-01-09 04:28:05 / 修改时间：04:43:54" itemprop="dateCreated datePublished" datetime="2023-01-09T04:28:05+08:00">2023-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">算法题</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/09/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E4%BA%8C%E5%88%86%E3%80%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/09/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E4%BA%8C%E5%88%86%E3%80%8B/" class="post-title-link" itemprop="url">《刷题——二分》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-01-09 04:27:52 / 修改时间：04:52:57" itemprop="dateCreated datePublished" datetime="2023-01-09T04:27:52+08:00">2023-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">算法题</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/09/Kafka%E9%AB%98%E6%80%A7%E8%83%BD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/09/Kafka%E9%AB%98%E6%80%A7%E8%83%BD/" class="post-title-link" itemprop="url">Kafka高性能</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-01-09 02:43:20 / 修改时间：05:43:59" itemprop="dateCreated datePublished" datetime="2023-01-09T02:43:20+08:00">2023-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="宏观架构层面"><a href="#宏观架构层面" class="headerlink" title="宏观架构层面"></a>宏观架构层面</h1><h2 id="利用Partition实现并行处理"><a href="#利用Partition实现并行处理" class="headerlink" title="利用Partition实现并行处理"></a>利用Partition实现并行处理</h2><h3 id="Partition提供并行处理的能力"><a href="#Partition提供并行处理的能力" class="headerlink" title="Partition提供并行处理的能力"></a>Partition提供并行处理的能力</h3><p>Kafka是一个Pub-Sub的消息系统，无论是发布还是订阅，都须指定Topic。如《<a target="_blank" rel="noopener" href="http://www.jasongj.com/2015/03/10/KafkaColumn1">Kafka设计解析（一）- Kafka背景及架构介绍</a>》一文所述，Topic只是一个逻辑的概念。每个Topic都包含一个或多个Partition，不同Partition可位于不同节点。同时Partition在物理上对应一个本地文件夹，每个Partition包含一个或多个Segment，每个Segment包含一个数据文件和一个与之对应的索引文件。在逻辑上，可以把一个Partition当作一个非常长的数组，可通过这个“数组”的索引（offset）去访问其数据。</p>
-<p>一方面，由于不同Partition可位于不同机器，因此可以充分利用集群优势，实现机器间的并行处理。另一方面，由于Partition在物理上对应一个文件夹，即使多个Partition位于同一个节点，也可通过配置让同一节点上的不同Partition置于不同的disk drive上，从而实现磁盘间的并行处理，充分发挥多磁盘的优势。</p>
-<p>利用多磁盘的具体方法是，将不同磁盘mount到不同目录，然后在server.properties中，将<code>log.dirs</code>设置为多目录（用逗号分隔）。Kafka会自动将所有Partition尽可能均匀分配到不同目录也即不同目录（也即不同disk）上。</p>
-<p>注：虽然物理上最小单位是Segment，但Kafka并不提供同一Partition内不同Segment间的并行处理。因为对于写而言，每次只会写Partition内的一个Segment，而对于读而言，也只会顺序读取同一Partition内的不同Segment。</p>
-<h3 id="Partition是最小并发粒度"><a href="#Partition是最小并发粒度" class="headerlink" title="Partition是最小并发粒度"></a>Partition是最小并发粒度</h3><p>如同《<a target="_blank" rel="noopener" href="http://www.jasongj.com/2015/08/09/KafkaColumn4">Kafka设计解析（四）- Kafka Consumer设计解析</a>》一文所述，多Consumer消费同一个Topic时，同一条消息只会被同一Consumer Group内的一个Consumer所消费。而数据并非按消息为单位分配，而是以Partition为单位分配，也即同一个Partition的数据只会被一个Consumer所消费（在不考虑Rebalance的前提下）。</p>
-<p>如果Consumer的个数多于Partition的个数，那么会有部分Consumer无法消费该Topic的任何数据，也即当Consumer个数超过Partition后，增加Consumer并不能增加并行度。</p>
-<p>简而言之，Partition个数决定了可能的最大并行度。如下图所示，由于Topic 2只包含3个Partition，故group2中的Consumer 3、Consumer 4、Consumer 5 可分别消费1个Partition的数据，而Consumer 6消费不到Topic 2的任何数据。</p>
-<p><img src="http://www.jasongj.com/img/kafka/KafkaColumn6/kafka-consumer.png" alt="Kafka高性能/kafka-consumer.png"></p>
-<p>以Spark消费Kafka数据为例，如果所消费的Topic的Partition数为N，则有效的Spark最大并行度也为N。即使将Spark的Executor数设置为N+M，最多也只有N个Executor可同时处理该Topic的数据。</p>
-<h2 id="ISR实现可用性与数据一致性的动态平衡"><a href="#ISR实现可用性与数据一致性的动态平衡" class="headerlink" title="ISR实现可用性与数据一致性的动态平衡"></a>ISR实现可用性与数据一致性的动态平衡</h2><h3 id="CAP理论"><a href="#CAP理论" class="headerlink" title="CAP理论"></a>CAP理论</h3><p>CAP理论是指，分布式系统中，一致性、可用性和分区容忍性最多只能同时满足两个。</p>
-<p>*<strong>一致性*</strong></p>
-<ul>
-<li>通过某个节点的写操作结果对后面通过其它节点的读操作可见</li>
-<li>如果更新数据后，并发访问情况下后续读操作可立即感知该更新，称为强一致性</li>
-<li>如果允许之后部分或者全部感知不到该更新，称为弱一致性</li>
-<li>若在之后的一段时间（通常该时间不固定）后，一定可以感知到该更新，称为最终一致性</li>
-</ul>
-<p>*<strong>可用性*</strong></p>
-<ul>
-<li>任何一个没有发生故障的节点必须在有限的时间内返回合理的结果</li>
-</ul>
-<p>*<strong>分区容忍性*</strong></p>
-<ul>
-<li>部分节点宕机或者无法与其它节点通信时，各分区间还可保持分布式系统的功能</li>
-</ul>
-<p>一般而言，都要求保证分区容忍性。所以在CAP理论下，更多的是需要在可用性和一致性之间做权衡。</p>
-<h3 id="常用数据复制及一致性方案"><a href="#常用数据复制及一致性方案" class="headerlink" title="常用数据复制及一致性方案"></a>常用数据复制及一致性方案</h3><p>*<strong>Master-Slave*</strong></p>
-<ul>
-<li>RDBMS的读写分离即为典型的Master-Slave方案</li>
-<li>同步复制可保证强一致性但会影响可用性</li>
-<li>异步复制可提供高可用性但会降低一致性</li>
-</ul>
-<p>*<strong>WNR*</strong></p>
-<ul>
-<li>主要用于去中心化的分布式系统中。DynamoDB与Cassandra即采用此方案或其变种</li>
-<li>N代表总副本数，W代表每次写操作要保证的最少写成功的副本数，R代表每次读至少要读取的副本数</li>
-<li>当W+R&gt;N时，可保证每次读取的数据至少有一个副本拥有最新的数据</li>
-<li>多个写操作的顺序难以保证，可能导致多副本间的写操作顺序不一致。Dynamo通过向量时钟保证最终一致性</li>
-</ul>
-<p>*<strong>Paxos及其变种*</strong></p>
-<ul>
-<li>Google的Chubby，Zookeeper的原子广播协议（Zab），RAFT等</li>
-</ul>
-<p>*<strong>基于ISR的数据复制方案*</strong><br>如《<a target="_blank" rel="noopener" href="http://www.jasongj.com/2015/04/24/KafkaColumn2/#ACK%E5%89%8D%E9%9C%80%E8%A6%81%E4%BF%9D%E8%AF%81%E6%9C%89%E5%A4%9A%E5%B0%91%E4%B8%AA%E5%A4%87%E4%BB%BD"> Kafka High Availability（上）</a>》一文所述，Kafka的数据复制是以Partition为单位的。而多个备份间的数据复制，通过Follower向Leader拉取数据完成。从一这点来讲，Kafka的数据复制方案接近于上文所讲的Master-Slave方案。不同的是，Kafka既不是完全的同步复制，也不是完全的异步复制，而是基于ISR的动态复制方案。</p>
-<p>ISR，也即In-sync Replica。每个Partition的Leader都会维护这样一个列表，该列表中，包含了所有与之同步的Replica（包含Leader自己）。每次数据写入时，只有ISR中的所有Replica都复制完，Leader才会将其置为Commit，它才能被Consumer所消费。</p>
-<p>这种方案，与同步复制非常接近。但不同的是，这个ISR是由Leader动态维护的。如果Follower不能紧“跟上”Leader，它将被Leader从ISR中移除，待它又重新“跟上”Leader后，会被Leader再次加加ISR中。每次改变ISR后，Leader都会将最新的ISR持久化到Zookeeper中。</p>
-<p>至于如何判断某个Follower是否“跟上”Leader，不同版本的Kafka的策略稍微有些区别。</p>
-<ul>
-<li>对于0.8.*版本，如果Follower在<code>replica.lag.time.max.ms</code>时间内未向Leader发送Fetch请求（也即数据复制请求），则Leader会将其从ISR中移除。如果某Follower持续向Leader发送Fetch请求，但是它与Leader的数据差距在<code>replica.lag.max.messages</code>以上，也会被Leader从ISR中移除。</li>
-<li>从0.9.0.0版本开始，<code>replica.lag.max.messages</code>被移除，故Leader不再考虑Follower落后的消息条数。另外，Leader不仅会判断Follower是否在<code>replica.lag.time.max.ms</code>时间内向其发送Fetch请求，同时还会考虑Follower是否在该时间内与之保持同步。</li>
-<li>0.10.* 版本的策略与0.9.*版一致</li>
-</ul>
-<p>对于0.8.*版本的<code>replica.lag.max.messages</code>参数，很多读者曾留言提问，既然只有ISR中的所有Replica复制完后的消息才被认为Commit，那为何会出现Follower与Leader差距过大的情况。原因在于，Leader并不需要等到前一条消息被Commit才接收后一条消息。事实上，Leader可以按顺序接收大量消息，最新的一条消息的Offset被记为LEO（Log end offset）。而只有被ISR中所有Follower都复制过去的消息才会被Commit，Consumer只能消费被Commit的消息，最新被Commit的Offset被记为High watermark。换句话说，LEO 标记的是Leader所保存的最新消息的offset，而High watermark标记的是最新的可被消费的（已同步到ISR中的Follower）消息。而Leader对数据的接收与Follower对数据的复制是异步进行的，因此会出现Hight watermark与LEO存在一定差距的情况。0.8.*版本中<code>replica.lag.max.messages</code>限定了Leader允许的该差距的最大值。</p>
-<p>Kafka基于ISR的数据复制方案原理如下图所示。<br><img src="http://www.jasongj.com/img/kafka/KafkaColumn6/kafka-replication.png" alt="Kafka Replication"></p>
-<p>如上图所示，在第一步中，Leader A总共收到3条消息，故其high watermark为3，但由于ISR中的Follower只同步了第1条消息（m1），故只有m1被Commit，也即只有m1可被Consumer消费。此时Follower B与Leader A的差距是1，而Follower C与Leader A的差距是2，均未超过默认的<code>replica.lag.max.messages</code>，故得以保留在ISR中。在第二步中，由于旧的Leader A宕机，新的Leader B在<code>replica.lag.time.max.ms</code>时间内未收到来自A的Fetch请求，故将A从ISR中移除，此时ISR&#x3D;{B，C}。同时，由于此时新的Leader B中只有2条消息，并未包含m3（m3从未被任何Leader所Commit），所以m3无法被Consumer消费。第四步中，Follower A恢复正常，它先将宕机前未Commit的所有消息全部删除，然后从最后Commit过的消息的下一条消息开始追赶新的Leader B，直到它“赶上”新的Leader，才被重新加入新的ISR中。</p>
-<h3 id="使用ISR方案的原因"><a href="#使用ISR方案的原因" class="headerlink" title="使用ISR方案的原因"></a>使用ISR方案的原因</h3><ul>
-<li>由于Leader可移除不能及时与之同步的Follower，故与同步复制相比可避免最慢的Follower拖慢整体速度，也即ISR提高了系统可用性。</li>
-<li>ISR中的所有Follower都包含了所有Commit过的消息，而只有Commit过的消息才会被Consumer消费，故从Consumer的角度而言，ISR中的所有Replica都始终处于同步状态，从而与异步复制方案相比提高了数据一致性。</li>
-<li>ISR可动态调整，极限情况下，可以只包含Leader，极大提高了可容忍的宕机的Follower的数量。与<code>Majority Quorum</code>方案相比，容忍相同个数的节点失败，所要求的总节点数少了近一半。</li>
-</ul>
-<h3 id="ISR相关配置说明"><a href="#ISR相关配置说明" class="headerlink" title="ISR相关配置说明"></a>ISR相关配置说明</h3><ul>
-<li>Broker的<code>min.insync.replicas</code>参数指定了Broker所要求的ISR最小长度，默认值为1。也即极限情况下ISR可以只包含Leader。但此时如果Leader宕机，则该Partition不可用，可用性得不到保证。</li>
-<li>只有被ISR中所有Replica同步的消息才被Commit，但Producer发布数据时，Leader并不需要ISR中的所有Replica同步该数据才确认收到数据。Producer可以通过<code>acks</code>参数指定最少需要多少个Replica确认收到该消息才视为该消息发送成功。<code>acks</code>的默认值是1，即Leader收到该消息后立即告诉Producer收到该消息，此时如果在ISR中的消息复制完该消息前Leader宕机，那该条消息会丢失。而如果将该值设置为0，则Producer发送完数据后，立即认为该数据发送成功，不作任何等待，而实际上该数据可能发送失败，并且Producer的Retry机制将不生效。更推荐的做法是，将<code>acks</code>设置为<code>all</code>或者<code>-1</code>，此时只有ISR中的所有Replica都收到该数据（也即该消息被Commit），Leader才会告诉Producer该消息发送成功，从而保证不会有未知的数据丢失。</li>
-</ul>
-<h1 id="具体实现层面"><a href="#具体实现层面" class="headerlink" title="具体实现层面"></a>具体实现层面</h1><h2 id="高效使用磁盘"><a href="#高效使用磁盘" class="headerlink" title="高效使用磁盘"></a>高效使用磁盘</h2><h3 id="顺序写磁盘"><a href="#顺序写磁盘" class="headerlink" title="顺序写磁盘"></a>顺序写磁盘</h3><p>根据《<a target="_blank" rel="noopener" href="http://deliveryimages.acm.org/10.1145/1570000/1563874/jacobs3.jpg">一些场景下顺序写磁盘快于随机写内存</a>》所述，将写磁盘的过程变为顺序写，可极大提高对磁盘的利用率。</p>
-<p>Kafka的整个设计中，Partition相当于一个非常长的数组，而Broker接收到的所有消息顺序写入这个大数组中。同时Consumer通过Offset顺序消费这些数据，并且不删除已经消费的数据，从而避免了随机写磁盘的过程。</p>
-<p>由于磁盘有限，不可能保存所有数据，实际上作为消息系统Kafka也没必要保存所有数据，需要删除旧的数据。而这个删除过程，并非通过使用“读-写”模式去修改文件，而是将Partition分为多个Segment，每个Segment对应一个物理文件，通过删除整个文件的方式去删除Partition内的数据。这种方式清除旧数据的方式，也避免了对文件的随机写操作。</p>
-<p>通过如下代码可知，Kafka删除Segment的方式，是直接删除Segment对应的整个log文件和整个index文件而非删除文件中的部分内容。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Delete this log segment from the filesystem.</span><br><span class="line"> *</span><br><span class="line"> * @throws KafkaStorageException if the delete fails.</span><br><span class="line"> */</span><br><span class="line">def delete() &#123;</span><br><span class="line">  val deletedLog = log.delete()</span><br><span class="line">  val deletedIndex = index.delete()</span><br><span class="line">  val deletedTimeIndex = timeIndex.delete()</span><br><span class="line">  if(!deletedLog &amp;&amp; log.file.exists)</span><br><span class="line">    throw new KafkaStorageException(&quot;Delete of log &quot; + log.file.getName + &quot; failed.&quot;)</span><br><span class="line">  if(!deletedIndex &amp;&amp; index.file.exists)</span><br><span class="line">    throw new KafkaStorageException(&quot;Delete of index &quot; + index.file.getName + &quot; failed.&quot;)</span><br><span class="line">  if(!deletedTimeIndex &amp;&amp; timeIndex.file.exists)</span><br><span class="line">    throw new KafkaStorageException(&quot;Delete of time index &quot; + timeIndex.file.getName + &quot; failed.&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="充分利用Page-Cache"><a href="#充分利用Page-Cache" class="headerlink" title="充分利用Page Cache"></a>充分利用Page Cache</h3><p>使用Page Cache的好处如下</p>
-<ul>
-<li>I&#x2F;O Scheduler会将连续的小块写组装成大块的物理写从而提高性能</li>
-<li>I&#x2F;O Scheduler会尝试将一些写操作重新按顺序排好，从而减少磁盘头的移动时间</li>
-<li>充分利用所有空闲内存（非JVM内存）。如果使用应用层Cache（即JVM堆内存），会增加GC负担</li>
-<li>读操作可直接在Page Cache内进行。如果消费和生产速度相当，甚至不需要通过物理磁盘（直接通过Page Cache）交换数据</li>
-<li>如果进程重启，JVM内的Cache会失效，但Page Cache仍然可用</li>
-</ul>
-<p>Broker收到数据后，写磁盘时只是将数据写入Page Cache，并不保证数据一定完全写入磁盘。从这一点看，可能会造成机器宕机时，Page Cache内的数据未写入磁盘从而造成数据丢失。但是这种丢失只发生在机器断电等造成操作系统不工作的场景，而这种场景完全可以由Kafka层面的Replication机制去解决。如果为了保证这种情况下数据不丢失而强制将Page Cache中的数据Flush到磁盘，反而会降低性能。也正因如此，Kafka虽然提供了<code>flush.messages</code>和<code>flush.ms</code>两个参数将Page Cache中的数据强制Flush到磁盘，但是Kafka并不建议使用。</p>
-<p>如果数据消费速度与生产速度相当，甚至不需要通过物理磁盘交换数据，而是直接通过Page Cache交换数据。同时，Follower从Leader Fetch数据时，也可通过Page Cache完成。下图为某Partition的Leader节点的网络&#x2F;磁盘读写信息。</p>
-<p><img src="http://www.jasongj.com/img/kafka/KafkaColumn6/kafka_IO.png" alt="Kafka I/O page cache"></p>
-<p>从上图可以看到，该Broker每秒通过网络从Producer接收约35MB数据，虽然有Follower从该Broker Fetch数据，但是该Broker基本无读磁盘。这是因为该Broker直接从Page Cache中将数据取出返回给了Follower。</p>
-<h3 id="支持多Disk-Drive"><a href="#支持多Disk-Drive" class="headerlink" title="支持多Disk Drive"></a>支持多Disk Drive</h3><p>Broker的<code>log.dirs</code>配置项，允许配置多个文件夹。如果机器上有多个Disk Drive，可将不同的Disk挂载到不同的目录，然后将这些目录都配置到<code>log.dirs</code>里。Kafka会尽可能将不同的Partition分配到不同的目录，也即不同的Disk上，从而充分利用了多Disk的优势。</p>
-<h2 id="零拷贝"><a href="#零拷贝" class="headerlink" title="零拷贝"></a>零拷贝</h2><p>Kafka中存在大量的网络数据持久化到磁盘（Producer到Broker）和磁盘文件通过网络发送（Broker到Consumer）的过程。这一过程的性能直接影响Kafka的整体吞吐量。</p>
-<h3 id="传统模式下的四次拷贝与四次上下文切换"><a href="#传统模式下的四次拷贝与四次上下文切换" class="headerlink" title="传统模式下的四次拷贝与四次上下文切换"></a>传统模式下的四次拷贝与四次上下文切换</h3><p>以将磁盘文件通过网络发送为例。传统模式下，一般使用如下伪代码所示的方法先将文件数据读入内存，然后通过Socket将内存中的数据发送出去。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">buffer = File.read</span><br><span class="line">Socket.send(buffer)</span><br></pre></td></tr></table></figure>
-
-
-
-<p>这一过程实际上发生了四次数据拷贝。首先通过系统调用将文件数据读入到内核态Buffer（DMA拷贝），然后应用程序将内存态Buffer数据读入到用户态Buffer（CPU拷贝），接着用户程序通过Socket发送数据时将用户态Buffer数据拷贝到内核态Buffer（CPU拷贝），最后通过DMA拷贝将数据拷贝到NIC Buffer。同时，还伴随着四次上下文切换，如下图所示。</p>
-<p><img src="http://www.jasongj.com/img/kafka/KafkaColumn6/BIO.png" alt="BIO 四次拷贝 四次上下文切换"></p>
-<h3 id="sendfile和transferTo实现零拷贝"><a href="#sendfile和transferTo实现零拷贝" class="headerlink" title="sendfile和transferTo实现零拷贝"></a>sendfile和transferTo实现零拷贝</h3><p>Linux 2.4+内核通过<code>sendfile</code>系统调用，提供了零拷贝。数据通过DMA拷贝到内核态Buffer后，直接通过DMA拷贝到NIC Buffer，无需CPU拷贝。这也是零拷贝这一说法的来源。除了减少数据拷贝外，因为整个读文件-网络发送由一个<code>sendfile</code>调用完成，整个过程只有两次上下文切换，因此大大提高了性能。零拷贝过程如下图所示。</p>
-<p><img src="http://www.jasongj.com/img/kafka/KafkaColumn6/NIO.png" alt="BIO 零拷贝 两次上下文切换"></p>
-<p>从具体实现来看，Kafka的数据传输通过TransportLayer来完成，其子类<code>PlaintextTransportLayer</code>通过<a target="_blank" rel="noopener" href="http://www.jasongj.com/java/nio_reactor/">Java NIO</a>的FileChannel的<code>transferTo</code>和<code>transferFrom</code>方法实现零拷贝，如下所示。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public long transferFrom(FileChannel fileChannel, long position, long count) throws IOException &#123;</span><br><span class="line">    return fileChannel.transferTo(position, count, socketChannel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>注：</strong> <code>transferTo</code>和<code>transferFrom</code>并不保证一定能使用零拷贝。实际上是否能使用零拷贝与操作系统相关，如果操作系统提供<code>sendfile</code>这样的零拷贝系统调用，则这两个方法会通过这样的系统调用充分利用零拷贝的优势，否则并不能通过这两个方法本身实现零拷贝。</p>
-<h2 id="减少网络开销"><a href="#减少网络开销" class="headerlink" title="减少网络开销"></a>减少网络开销</h2><h3 id="批处理"><a href="#批处理" class="headerlink" title="批处理"></a>批处理</h3><p>批处理是一种常用的用于提高I&#x2F;O性能的方式。对Kafka而言，批处理既减少了网络传输的Overhead，又提高了写磁盘的效率。</p>
-<p>Kafka 0.8.1及以前的Producer区分同步Producer和异步Producer。同步Producer的send方法主要分两种形式。一种是接受一个KeyedMessage作为参数，一次发送一条消息。另一种是接受一批KeyedMessage作为参数，一次性发送多条消息。而对于异步发送而言，无论是使用哪个send方法，实现上都不会立即将消息发送给Broker，而是先存到内部的队列中，直到消息条数达到阈值或者达到指定的Timeout才真正的将消息发送出去，从而实现了消息的批量发送。</p>
-<p>Kafka 0.8.2开始支持新的Producer API，将同步Producer和异步Producer结合。虽然从send接口来看，一次只能发送一个ProducerRecord，而不能像之前版本的send方法一样接受消息列表，但是send方法并非立即将消息发送出去，而是通过<code>batch.size</code>和<code>linger.ms</code>控制实际发送频率，从而实现批量发送。</p>
-<p>由于每次网络传输，除了传输消息本身以外，还要传输非常多的网络协议本身的一些内容（称为Overhead），所以将多条消息合并到一起传输，可有效减少网络传输的Overhead，进而提高了传输效率。</p>
-<p>从<a target="_blank" rel="noopener" href="http://www.jasongj.com/img/kafka/KafkaColumn6/kafka_IO.png">零拷贝章节的图</a>中可以看到，虽然Broker持续从网络接收数据，但是写磁盘并非每秒都在发生，而是间隔一段时间写一次磁盘，并且每次写磁盘的数据量都非常大（最高达到718MB&#x2F;S）。</p>
-<h3 id="数据压缩降低网络负载"><a href="#数据压缩降低网络负载" class="headerlink" title="数据压缩降低网络负载"></a>数据压缩降低网络负载</h3><p>Kafka从0.7开始，即支持将数据压缩后再传输给Broker。除了可以将每条消息单独压缩然后传输外，Kafka还支持在批量发送时，将整个Batch的消息一起压缩后传输。数据压缩的一个基本原理是，重复数据越多压缩效果越好。因此将整个Batch的数据一起压缩能更大幅度减小数据量，从而更大程度提高网络传输效率。</p>
-<p>Broker接收消息后，并不直接解压缩，而是直接将消息以压缩后的形式持久化到磁盘。Consumer Fetch到数据后再解压缩。因此Kafka的压缩不仅减少了Producer到Broker的网络传输负载，同时也降低了Broker磁盘操作的负载，也降低了Consumer与Broker间的网络传输量，从而极大得提高了传输效率，提高了吞吐量。</p>
-<h3 id="高效的序列化方式"><a href="#高效的序列化方式" class="headerlink" title="高效的序列化方式"></a>高效的序列化方式</h3><p>Kafka消息的Key和Payload（或者说Value）的类型可自定义，只需同时提供相应的序列化器和反序列化器即可。因此用户可以通过使用快速且紧凑的序列化-反序列化方式（如Avro，Protocal Buffer）来减少实际网络传输和磁盘存储的数据规模，从而提高吞吐率。这里要注意，如果使用的序列化方法太慢，即使压缩比非常高，最终的效率也不一定高。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/09/Kafka%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/09/Kafka%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/" class="post-title-link" itemprop="url">Kafka配置参数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-01-09 00:25:00 / 修改时间：04:47:53" itemprop="dateCreated datePublished" datetime="2023-01-09T00:25:00+08:00">2023-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Producer主要消息配置"><a href="#Producer主要消息配置" class="headerlink" title="Producer主要消息配置"></a>Producer主要消息配置</h1><ol>
-<li>buffer.memory 缓冲消息的缓冲区大小（默认值32MB）</li>
-<li>retries <strong>可重试异常的自动重试次数</strong></li>
-<li>batch.size 当一个batch满的时候，producer会发送此batch的所有消息（默认值16KB）</li>
-<li>linger.ms 发送消息的延迟时间（即使batch没有满，也会发送消息，和batch.size配合使用）</li>
-<li>max.request.size 控制producer单条消息的大小</li>
-<li>request.timeout.ms broker需要在此规定时间内返回处理结果</li>
-</ol>
-<p>为合理使用kafka的缓冲区和批处理机制，一般情况下，buffer.memory &gt; batch.size &gt; max.request.size。</p>
-<h1 id="Consumer主要消息配置"><a href="#Consumer主要消息配置" class="headerlink" title="Consumer主要消息配置"></a>Consumer主要消息配置</h1><table>
-<thead>
-<tr>
-<th><strong>参数</strong></th>
-<th><strong>默认值</strong></th>
-<th><strong>推荐值</strong></th>
-<th><strong>说明</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>auto.commit.enable</td>
-<td>TRUE</td>
-<td>FALSE</td>
-<td>如果为真，consumer所fetch的消息的offset将会自动的同步到zookeeper。这项提交的offset将在进程无法提供服务时，由新的consumer使用。约束： 设置为false后，需要先成功消费再提交，这样可以避免消息丢失。</td>
-</tr>
-<tr>
-<td>auto.offset.reset</td>
-<td>latest</td>
-<td>earliest</td>
-<td>没有初始化offset或者offset被删除时，可以设置以下值：earliest：自动复位offset为最早 latest：自动复位offset为最新none：如果没有发现offset则向消费者抛出异常anything else：向消费者抛出异常。</td>
-</tr>
-<tr>
-<td>connections.max.idle.ms</td>
-<td>600000</td>
-<td>30000</td>
-<td>空连接的超时时间（单位为ms），设置为30000可以在网络异常场景下减少请求卡顿的时间。</td>
-</tr>
-</tbody></table>
-<ul>
-<li>earliest<br>当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费</li>
-<li>latest<br>当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据</li>
-<li>none<br>topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常</li>
-</ul>
-<h1 id="发消息不丢配置"><a href="#发消息不丢配置" class="headerlink" title="发消息不丢配置"></a>发消息不丢配置</h1><ol>
-<li>block.on.buffer.full &#x3D; true</li>
-<li>acks &#x3D; all</li>
-<li>retries &#x3D; MAX_VALUE</li>
-<li>max.in.flight.requests.per.connection &#x3D; 1</li>
-<li>使用KafkaProducer.send(record, callback)</li>
-<li>callback逻辑中显式关闭producer：close(0) </li>
-<li>unclean.leader.election.enable&#x3D;false</li>
-<li>replication.factor &#x3D; 3 </li>
-<li>min.insync.replicas &#x3D; 2</li>
-<li>replication.factor &gt; min.insync.replicas</li>
-<li>enable.auto.commit&#x3D;false</li>
-</ol>
-<h2 id="Producer端"><a href="#Producer端" class="headerlink" title="Producer端"></a>Producer端</h2><ul>
-<li>block.on.buffer.full &#x3D; true  尽管该参数在0.9.0.0已经被标记为“deprecated”，但鉴于它的含义非常直观，所以这里还是显式设置它为true，使得producer将一直等待缓冲区直至其变为可用。否则如果producer生产速度过快耗尽了缓冲区，producer将抛出异常</li>
-<li>acks&#x3D;all  很好理解，所有follower都响应了才认为消息提交成功，即 ‘committed’</li>
-<li>retries &#x3D; MAX 无限重试，直到你意识到出现了问题</li>
-<li>max.in.flight.requests.per.connection &#x3D; 1 限制客户端在单个broker连接上能够发送的未响应请求的个数。设置此值是1表示kafka broker在响应请求之前client不能再向同一个broker发送请求。注意：设置此参数是为了避免消息乱序</li>
-<li>使用KafkaProducer.send(record, callback)而不是send(record)方法 ，自定义回调逻辑处理消息发送失败</li>
-<li>callback逻辑中最好显式关闭producer：close(0) 注意：设置此参数是为了避免消息乱序</li>
-</ul>
-<p><strong>关于acks</strong>:</p>
-<table>
-<thead>
-<tr>
-<th><strong>acks</strong></th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>0</strong></td>
-<td>Producer 往集群发送数据不需要等到集群的返回，不确保消息发送成功。安全性最低但是效率最高。</td>
-</tr>
-<tr>
-<td><strong>1</strong></td>
-<td>Producer 往集群发送数据只要 Leader 应答就可以发送下一条，只确保 Leader 接收成功。</td>
-</tr>
-<tr>
-<td><strong>-1 或 all</strong></td>
-<td>Producer 往集群发送数据需要所有的ISR Follower 都完成从 Leader 的同步才会发送下一条，确保 Leader 发送成功和所有的副本都成功接收。安全性最高，但是效率最低。</td>
-</tr>
-</tbody></table>
-<h2 id="Broker配置"><a href="#Broker配置" class="headerlink" title="Broker配置"></a>Broker配置</h2><ul>
-<li>unclean.leader.election.enable&#x3D;false  关闭unclean leader选举，即不允许非ISR中的副本被选举为leader，以避免数据丢失</li>
-<li>replication.factor &gt;&#x3D; 3  这个完全是个人建议了，参考了Hadoop及业界通用的三备份原则</li>
-<li>min.insync.replicas &gt; 1 消息至少要被写入到ISR中的这么多副本才算成功，也是提升数据持久性的一个参数。与acks配合使用</li>
-<li>保证replication.factor &gt; min.insync.replicas  如果两者相等，当一个副本挂掉了分区也就没法正常工作了。通常设置replication.factor &#x3D; min.insync.replicas + 1即可</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/#configuration">官网参考配置</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/08/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/08/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" class="post-title-link" itemprop="url">分布式锁</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-01-08 22:42:53 / 修改时间：22:44:26" itemprop="dateCreated datePublished" datetime="2023-01-08T22:42:53+08:00">2023-01-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://songyangji.github.io/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">Redis实现分布式锁</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/08/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4%E3%80%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/08/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4%E3%80%8B/" class="post-title-link" itemprop="url">《刷题——来接雨水啦》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-01-08 21:38:07 / 修改时间：22:20:44" itemprop="dateCreated datePublished" datetime="2023-01-08T21:38:07+08:00">2023-01-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">算法题</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="接雨水"><a href="#接雨水" class="headerlink" title="接雨水"></a>接雨水</h1><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/trapping-rain-water/">42. 接雨水</a></p>
-<blockquote>
-<p>给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。<br>输入：height &#x3D; [0,1,0,2,1,0,1,3,2,1,2,1]<br>输出：6<br>解释：上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。 </p>
-</blockquote>
-<blockquote>
-<p>输入：height &#x3D; [4,2,0,3,2,5]<br>输出：9</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210316192431665.png" alt="在这里插入图片描述"></p>
-<h2 id="按列枚举"><a href="#按列枚举" class="headerlink" title="按列枚举"></a>按列枚举</h2><h3 id="暴力法"><a href="#暴力法" class="headerlink" title="暴力法"></a>暴力法</h3><p>枚举每一个”凹坑”，然后向后向右找最高的柱子二者间的最小值。<br>二者间的较小值减去这个“坑”的高度就是存储的水。<br>时间复杂度$O(n^2)$</p>
-<p>注意，这里的“水”的累加，是按竖着的方块计算的。<br>如下图：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">trap</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; height)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = height.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(n&lt;=<span class="number">2</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;n<span class="number">-1</span>;i++) &#123;</span><br><span class="line">            <span class="type">int</span> h1 = <span class="number">0</span>, h2 = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=i;j&gt;=<span class="number">0</span>;j--) h1 = <span class="built_in">max</span>(h1,height[j]);</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=i;j&lt;n;j++) h2 = <span class="built_in">max</span>(h2,height[j]);</span><br><span class="line">            ans += <span class="built_in">min</span>(h1,h2) - height[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h3 id="前缀（后缀）最大"><a href="#前缀（后缀）最大" class="headerlink" title="前缀（后缀）最大"></a>前缀（后缀）最大</h3><p>类似于前缀和的思想，预处理一下。<br>时间复杂度:$O(n)$</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">trap</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; height)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> ans = <span class="number">0</span>,n = height.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(n&lt;=<span class="number">2</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">lm</span><span class="params">(n)</span>,<span class="title">rm</span><span class="params">(n)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(i == <span class="number">0</span>) lm[i] = height[i];</span><br><span class="line">            <span class="keyword">else</span> lm[i] = <span class="built_in">max</span>(lm[i<span class="number">-1</span>],height[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">if</span>(i == n<span class="number">-1</span>) rm[i] = height[i];</span><br><span class="line">            <span class="keyword">else</span> rm[i] = <span class="built_in">max</span>(rm[i+<span class="number">1</span>],height[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">            ans += <span class="built_in">min</span>(lm[i],rm[i])-height[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h3><p>上面是从左向右遍历来累加水柱。<br>如果考虑从左右两边来遍历的话，就可以这样解决。<br>记 leftmax, rightmax 分别为从左到右遍历、从右到左遍历的最大值，<br>而left、right 分别是从左到右、从右到左的指针，</p>
-<p><strong>这个时候 ，left的水柱对答案对贡献的为  $min(leftmax,rightmax)$;<br>但是此时leftmax的值已经求出，但是rightmax的值尚未求出，所以，如果此时leftmax小于等于rightmax的话，left的水柱对答案的贡献就知道了，然后更新leftmax，left右移。<br>反之亦然。</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">trap</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; height)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> lmax = <span class="number">0</span>, rmax = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> n = height.<span class="built_in">size</span>(), l = <span class="number">0</span>, r = n - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (l &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">if</span> (lmax &gt; rmax) &#123;</span><br><span class="line">                ans += <span class="built_in">max</span>(rmax - height[r], <span class="number">0</span>);</span><br><span class="line">                rmax = <span class="built_in">max</span>(rmax, height[r--]);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                ans += <span class="built_in">max</span>(lmax - height[l], <span class="number">0</span>);</span><br><span class="line">                lmax = <span class="built_in">max</span>(lmax, height[l++]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="按行枚举"><a href="#按行枚举" class="headerlink" title="按行枚举"></a>按行枚举</h2><p>换一种分割思路，将“水”按行进行划分。如下图：</p>
-<h3 id="暴力法-1"><a href="#暴力法-1" class="headerlink" title="暴力法"></a>暴力法</h3><p>时间复杂度：$O(maxH*n)$</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">trap</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; height)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> ans = <span class="number">0</span>,n = height.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(n&lt;=<span class="number">2</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> maxH = *<span class="built_in">max_element</span>(height.<span class="built_in">begin</span>(),height.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> h = <span class="number">0</span>; h &lt; maxH ; h++)&#123;</span><br><span class="line">            vector&lt;<span class="type">int</span>&gt; v;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(height[i]&gt;h)&#123;</span><br><span class="line">                    v.<span class="built_in">push_back</span>(i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;v.<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">                ans += v[i] - v[i<span class="number">-1</span>] <span class="number">-1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="单调栈"><a href="#单调栈" class="headerlink" title="单调栈"></a>单调栈</h3><p>时间复杂度：$O(n)$</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">trap</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; height)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> n = height.<span class="built_in">size</span>();</span><br><span class="line">        stack&lt;<span class="type">int</span>&gt; st;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(!st.<span class="built_in">empty</span>() &amp;&amp; height[i] &gt; height[st.<span class="built_in">top</span>()])&#123;</span><br><span class="line">                <span class="type">int</span> h = height[st.<span class="built_in">top</span>()];</span><br><span class="line">                st.<span class="built_in">pop</span>();</span><br><span class="line">                <span class="keyword">if</span>(!st.<span class="built_in">empty</span>())&#123;</span><br><span class="line">                    ans += ( <span class="built_in">min</span>(height[i],height[st.<span class="built_in">top</span>()]) - h)*(i - st.<span class="built_in">top</span>() - <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;   </span><br><span class="line">            st.<span class="built_in">push</span>(i);   </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="接雨水II"><a href="#接雨水II" class="headerlink" title="接雨水II"></a>接雨水II</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/trapping-rain-water-ii/">407. 接雨水 II</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/trapping-rain-water-ii/solutions/1079738/jie-yu-shui-ii-by-leetcode-solution-vlj3/">题解</a></p>
-<p>一圈一圈地拓展最外层：每次用最矮的柱子去拓展。</p>
-<p>形象地说，根据木桶原理，装水的多少由最短的木板决定，而现在就是不断地加厚桶壁！</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">210</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> dx[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">-1</span>&#125;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> dy[] = &#123;<span class="number">1</span>, <span class="number">0</span>, <span class="number">-1</span>, <span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Node</span>&#123;</span><br><span class="line">        <span class="type">int</span> h, x, y;</span><br><span class="line">        <span class="type">bool</span> <span class="keyword">operator</span>&lt;(<span class="type">const</span> Node&amp; node) <span class="type">const</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> h &gt; node.h;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">trapRainWater</span><span class="params">(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; g)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> m = g.<span class="built_in">size</span>(), n = g[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span> (m &lt; <span class="number">3</span> || n &lt; <span class="number">3</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        priority_queue&lt;Node&gt; pq;</span><br><span class="line">        <span class="type">bool</span> vis[N][N]&#123;&#125;;</span><br><span class="line">        <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 将最外围的边框入小根堆</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">            pq.<span class="built_in">push</span>(&#123;g[<span class="number">0</span>][j],<span class="number">0</span>, j&#125;);</span><br><span class="line">            pq.<span class="built_in">push</span>(&#123;g[m - <span class="number">1</span>][j], m - <span class="number">1</span>, j&#125;);</span><br><span class="line">            vis[<span class="number">0</span>][j] = vis[m - <span class="number">1</span>][j] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; m - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            pq.<span class="built_in">push</span>(&#123;g[i][<span class="number">0</span>], i, <span class="number">0</span>&#125;);</span><br><span class="line">            pq.<span class="built_in">push</span>(&#123;g[i][n<span class="number">-1</span>], i, n - <span class="number">1</span>&#125;);</span><br><span class="line">            vis[i][<span class="number">0</span>] = vis[i][n - <span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (!pq.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            Node node = pq.<span class="built_in">top</span>();</span><br><span class="line">            pq.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="type">int</span> h = node.h;</span><br><span class="line">            <span class="type">int</span> x = node.x;</span><br><span class="line">            <span class="type">int</span> y = node.y;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt; <span class="number">4</span>; k++) &#123;</span><br><span class="line">                <span class="type">int</span> nx = x + dx[k];</span><br><span class="line">                <span class="type">int</span> ny = y + dy[k];</span><br><span class="line">                <span class="keyword">if</span> (nx &gt;= <span class="number">0</span> &amp;&amp; nx &lt; m &amp;&amp; ny &gt;= <span class="number">0</span> &amp;&amp; ny &lt; n &amp;&amp; !vis[nx][ny]) &#123;</span><br><span class="line">                    ans += <span class="built_in">max</span>(<span class="number">0</span>, h - g[nx][ny]);</span><br><span class="line">                    pq.<span class="built_in">push</span>(&#123;<span class="built_in">max</span>(h, g[nx][ny]), nx, ny&#125;);</span><br><span class="line">                    vis[nx][ny] = <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/04/HTTP%E2%80%94%E2%80%94%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/04/HTTP%E2%80%94%E2%80%94%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/" class="post-title-link" itemprop="url">HTTP——重定向那些事儿</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-01-04 01:54:04 / 修改时间：02:14:18" itemprop="dateCreated datePublished" datetime="2023-01-04T01:54:04+08:00">2023-01-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Redirections">https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Redirections</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.lishunyang.com/2020/06/redirect.html">https://blog.lishunyang.com/2020/06/redirect.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/traditional/p/15374126.html">https://www.cnblogs.com/traditional/p/15374126.html</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/02/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B8%B8%E7%94%A8API/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/02/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%B8%B8%E7%94%A8API/" class="post-title-link" itemprop="url">位运算常用API</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-01-02 20:43:20" itemprop="dateCreated datePublished" datetime="2023-01-02T20:43:20+08:00">2023-01-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-03 20:35:11" itemprop="dateModified" datetime="2023-01-03T20:35:11+08:00">2023-01-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 将某一位变成 1</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">bitTo1</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> bit)</span> </span>&#123;</span><br><span class="line">    x |= <span class="number">1</span> &lt;&lt; bit</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将某一位变成 0 </span></span><br><span class="line"><span class="type">void</span> <span class="built_in">bitTo0</span>(<span class="type">int</span> x, <span class="type">int</span> bit) &#123;</span><br><span class="line">    x &amp;= ~(<span class="number">1</span> &lt;&lt; bit)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// y 是否是 x 的子集</span></span><br><span class="line"><span class="type">bool</span> <span class="built_in">checkSubset</span>(<span class="type">int</span> y,<span class="type">int</span> x)&#123;</span><br><span class="line">    <span class="keyword">return</span> x-(x^y) == y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// lowbit运算,求出最后一个的二进制状态下的1对应的十进制数值</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">lowbit</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x&amp;-x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 统计 1 的个数</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">count</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(x&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        cnt++;</span><br><span class="line">        x -= <span class="built_in">lowbit</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> _count(<span class="type">int</span> x)&#123;</span><br><span class="line">    <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(x&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(x&amp;<span class="number">1</span>) cnt++;</span><br><span class="line">        x &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 枚举子集</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">subsets</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=x;i;i=(i<span class="number">-1</span>)&amp;x)&#123;</span><br><span class="line">        cnt++;</span><br><span class="line">        cout&lt;&lt;i&lt;&lt;endl;</span><br><span class="line">        cout&lt;&lt;(<span class="built_in">checkSubset</span>(i,x)?<span class="built_in">to_string</span>(i)+<span class="string">&quot;是&quot;</span>+<span class="built_in">to_string</span>(x)+<span class="string">&quot;的子集&quot;</span>:<span class="string">&quot;error&quot;</span>)&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 空集也是子集,所以还要加1</span></span><br><span class="line">    cnt++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">subsets</span>(<span class="number">123</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/01/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E3%80%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/01/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E3%80%8B/" class="post-title-link" itemprop="url">《刷题——动态规划》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-01-01 02:51:04 / 修改时间：05:13:18" itemprop="dateCreated datePublished" datetime="2023-01-01T02:51:04+08:00">2023-01-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">算法题</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
     
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/31/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E6%A0%88%E3%80%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/12/31/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E6%A0%88%E3%80%8B/" class="post-title-link" itemprop="url">《刷题——栈》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-12-31 19:32:45" itemprop="dateCreated datePublished" datetime="2022-12-31T19:32:45+08:00">2022-12-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-01 03:20:09" itemprop="dateModified" datetime="2023-01-01T03:20:09+08:00">2023-01-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">算法题</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/decode-string/description/">394. 字符串解码</a></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">string <span class="title">decodeString</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        stack&lt;<span class="type">int</span>&gt; ns;</span><br><span class="line">        vector&lt;string&gt; ss;</span><br><span class="line">        <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> len = s.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">while</span> (i &lt; len) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s[i] &lt;= <span class="string">&#x27;9&#x27;</span> &amp;&amp; s[i] &gt;= <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">                <span class="type">int</span> n = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">while</span> (i &lt; len &amp;&amp; s[i] &lt;= <span class="string">&#x27;9&#x27;</span> &amp;&amp; s[i] &gt;= <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">                    n = n * <span class="number">10</span> + s[i++] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                ns.<span class="built_in">push</span>(n);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s[i] == <span class="string">&#x27;[&#x27;</span>) &#123;</span><br><span class="line">                ss.<span class="built_in">push_back</span>(<span class="string">&quot;[&quot;</span>);</span><br><span class="line">                ++i;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s[i] == <span class="string">&#x27;]&#x27;</span>) &#123;</span><br><span class="line">                string res;</span><br><span class="line">                string tmp;</span><br><span class="line">                <span class="type">int</span> idx = ss.<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">while</span>(idx &gt;= <span class="number">0</span> &amp;&amp; ss[idx] != <span class="string">&quot;[&quot;</span>) &#123;</span><br><span class="line">                    --idx;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> j = idx + <span class="number">1</span>; j &lt; ss.<span class="built_in">size</span>(); ++j) &#123;</span><br><span class="line">                    tmp += ss[j];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">while</span> (ss.<span class="built_in">back</span>() != <span class="string">&quot;[&quot;</span>) ss.<span class="built_in">pop_back</span>();</span><br><span class="line">                ss.<span class="built_in">pop_back</span>();</span><br><span class="line">                <span class="type">int</span> count = ns.<span class="built_in">top</span>();</span><br><span class="line">                ns.<span class="built_in">pop</span>();</span><br><span class="line">                <span class="keyword">while</span> (count--) &#123;</span><br><span class="line">                    res += tmp;</span><br><span class="line">                &#125;</span><br><span class="line">                ss.<span class="built_in">push_back</span>(res);</span><br><span class="line">                ++i;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                string tmp;</span><br><span class="line">                tmp += s[i++];</span><br><span class="line">                ss.<span class="built_in">push_back</span>(tmp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        string ans;</span><br><span class="line">        <span class="keyword">for</span> (string &amp;tmp: ss) &#123; </span><br><span class="line">            ans += tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-
-<div class="copyright">
-  &copy; 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
-
-    </div>
-  </footer>
-
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-
-
-
-
-  
-
-
-
-
-
 </body>
+
 </html>

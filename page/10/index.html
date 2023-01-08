@@ -1,1460 +1,936 @@
 <!DOCTYPE html>
+
+
 <html lang="zh-CN">
+
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+     JsyBlog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/images/ayer.png" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  
+<link rel="stylesheet" href="/css/custom.css">
 
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-
-    <meta property="og:type" content="website">
-<meta property="og:title" content="JsyBlog">
-<meta property="og:url" content="http://example.com/page/10/index.html">
-<meta property="og:site_name" content="JsyBlog">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="SongyangJi">
-<meta name="twitter:card" content="summary">
-
-
-<link rel="canonical" href="http://example.com/page/10/">
-
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/10/index.html","title":""}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>JsyBlog</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
   
 
+  
 
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
+</html>
 
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      
+<section class="cover">
+    
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="/images/cover1.jpg" alt="image frame" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">JsyBlog</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+        <img
+          src="/images/ayer.svg"
+          class="cover-logo"
+          alt="JsyBlog"
+        />
+        
+      </div>
     </div>
   </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">JsyBlog</h1>
-      <i class="logo-line"></i>
-    </a>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
   </div>
+</section>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '让风吹干流过的泪和汗，总有一天我有属于我的天'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 70,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
+<div id="main">
+  <section class="outer">
+  
+  
+  
+
+<div class="notice" style="margin-top:50px">
+    <i class="ri-heart-fill"></i>
+    <div class="notice-content" id="broad"></div>
+</div>
+<script type="text/javascript">
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("broad").innerHTML = data.hitokoto;
+        })
+        .catch(console.error)
+</script>
+
+<style>
+    .notice {
+        padding: 20px;
+        border: 1px dashed #e6e6e6;
+        color: #969696;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #fbfbfb50;
+        border-radius: 10px;
+    }
+
+    .notice i {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        padding-right: 10px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+
+    .notice-content {
+        display: initial;
+        vertical-align: middle;
+    }
+</style>
+  
+  <article class="articles">
+    
+    
+    
+    
+    <article
+  id="post-ulimit"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/04/26/ulimit/"
+    >ulimit</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/04/26/ulimit/" class="article-date">
+  <time datetime="2022-04-26T13:29:48.000Z" itemprop="datePublished">2022-04-26</time>
+</a>    
     </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/" rel="tag">资源限制</a></li></ul>
+
+    </footer>
   </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Redis-pipeline"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/04/15/Redis-pipeline/"
+    >Redis的pipeline</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/04/15/Redis-pipeline/" class="article-date">
+  <time datetime="2022-04-15T10:03:53.000Z" itemprop="datePublished">2022-04-15</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-curl模板"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/04/14/curl%E6%A8%A1%E6%9D%BF/"
+    >curl模板</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/04/14/curl%E6%A8%A1%E6%9D%BF/" class="article-date">
+  <time datetime="2022-04-14T06:16:29.000Z" itemprop="datePublished">2022-04-14</time>
+</a>    
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-StartDocker"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/04/03/StartDocker/"
+    >Docker入门</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/04/03/StartDocker/" class="article-date">
+  <time datetime="2022-04-03T10:16:01.000Z" itemprop="datePublished">2022-04-03</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-服务注册与发现"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/03/29/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/"
+    >服务注册与发现</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/03/29/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/" class="article-date">
+  <time datetime="2022-03-28T19:51:11.000Z" itemprop="datePublished">2022-03-29</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-装饰者模式和Java中IO流"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/03/27/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E5%92%8CJava%E4%B8%ADIO%E6%B5%81/"
+    >装饰者模式和Java中IO流</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/03/27/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E5%92%8CJava%E4%B8%ADIO%E6%B5%81/" class="article-date">
+  <time datetime="2022-03-27T13:29:37.000Z" itemprop="datePublished">2022-03-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Bean的生命周期"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/03/22/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"
+    >Spring Bean的生命周期</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/03/22/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="article-date">
+  <time datetime="2022-03-22T07:27:26.000Z" itemprop="datePublished">2022-03-22</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Redis缓存淘汰策略"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/03/21/Redis%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/"
+    >Redis缓存淘汰策略</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/03/21/Redis%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="article-date">
+  <time datetime="2022-03-21T14:43:17.000Z" itemprop="datePublished">2022-03-21</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-JVM类加载机制"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/03/21/JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"
+    >JVM类加载机制</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/03/21/JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" class="article-date">
+  <time datetime="2022-03-20T18:53:12.000Z" itemprop="datePublished">2022-03-21</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-大文件排序"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/"
+    >大文件排序</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2022-03-20T15:16:05.000Z" itemprop="datePublished">2022-03-20</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/">工程向算法</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/9/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/11/">下一页</a>
+  </nav>
+  
+</section>
 </div>
 
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2023
+        <i class="ri-heart-fill heart_icon"></i> SongyangJi
       </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
   </ul>
 </nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
 </div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
   </div>
 </div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
 
     </div>
-  </div>
 
-</header>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
         
-  
-  <aside class="sidebar">
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
+
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
 
-    <div class="sidebar-inner sidebar-overview-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
 
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-        </div>
-        <!--/noindex-->
 
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">SongyangJi</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">237</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">42</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">109</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/26/ulimit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/26/ulimit/" class="post-title-link" itemprop="url">ulimit</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-04-26 21:29:48 / 修改时间：21:47:03" itemprop="dateCreated datePublished" datetime="2022-04-26T21:29:48+08:00">2022-04-26</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="ulimit"><a href="#ulimit" class="headerlink" title="ulimit"></a>ulimit</h1><p>  系统性能一直是一个受关注的话题，如何通过最简单的设置来实现最有效的性能调优，如何在有限资源的条件下保证程序的运作，ulimit 是我们在处理这些问题时，经常使用的一种<strong>简单手段</strong>。ulimit 是一种 Linux 系统的内键功能，它具有一套参数集，用于为由<strong>它生成的 shell进程及其子进程</strong>的资源使用设置限制。</p>
-<h2 id="ulimit命令"><a href="#ulimit命令" class="headerlink" title="ulimit命令"></a>ulimit命令</h2><p>ulimit 通过一些参数选项来管理不同种类的系统资源。<br>ulimit 命令的格式为：ulimit [options] [limit]</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">选项 含义</span><br><span class="line"> </span><br><span class="line">-a 显示当前系统所有的limit资源信息。 </span><br><span class="line"> </span><br><span class="line">-H 设置硬资源限制，一旦设置不能增加。例如：ulimit – Hs 64；限制硬资源，线程栈大小为 64K。</span><br><span class="line"> </span><br><span class="line">-S 设置软资源限制，设置后可以增加，但是不能超过硬资源设置。例如：ulimit – Sn 32；限制软资源，32 个文件描述符。</span><br><span class="line"> </span><br><span class="line">-c 最大的core文件的大小，以 blocks 为单位。例如：ulimit – c unlimited； 对生成的 core 文件的大小不进行限制。</span><br><span class="line"> </span><br><span class="line">-f 进程可以创建文件的最大值，以blocks 为单位.例如：ulimit – f 2048；限制进程可以创建的最大文件大小为 2048 blocks。</span><br><span class="line"> </span><br><span class="line">-d 进程最大的数据段的大小，以Kbytes 为单位。例如：ulimit -d unlimited；对进程的数据段大小不进行限制。</span><br><span class="line"> </span><br><span class="line">-m 最大内存大小，以Kbytes为单位。例如：ulimit – m unlimited；对最大内存不进行限制。</span><br><span class="line"> </span><br><span class="line">-n 可以打开的最大文件描述符的数量。例如：ulimit – n 128；限制最大可以使用 128 个文件描述符</span><br><span class="line"> </span><br><span class="line">-s 线程栈大小，以Kbytes为单位。例如:ulimit – s 512；限制线程栈的大小为 512 Kbytes。</span><br><span class="line"> </span><br><span class="line">-p 管道缓冲区的大小，以Kbytes 为单位。例如ulimit – p 512；限制管道缓冲区的大小为 512 Kbytes。</span><br><span class="line"> </span><br><span class="line">-u 用户最大可用的进程数。例如 limit – u 65536；限制用户最多可以使用 65536个进程。</span><br><span class="line"> </span><br><span class="line">-v 进程最大可用的虚拟内存，以Kbytes 为单位。ulimit – v 200000；限制最大可用的虚拟内存为 200000 Kbytes。</span><br><span class="line"> </span><br><span class="line">-t 最大CPU占用时间，以秒为单位。ulimit – t unlimited；对最大的 CPU 占用时间不进行限制。</span><br><span class="line"> </span><br><span class="line">-l 最大可加锁内存大小，以Kbytes 为单位。</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用ulimit的几种方案"><a href="#使用ulimit的几种方案" class="headerlink" title="使用ulimit的几种方案"></a>使用ulimit的几种方案</h2><h3 id="在用户的启动脚本中"><a href="#在用户的启动脚本中" class="headerlink" title="在用户的启动脚本中"></a>在用户的启动脚本中</h3><pre><code>    如果用户使用的是 bash，就可以在用户的目录下的 .bashrc 文件中，加入 ulimit – u 64，来限制用户最多可以使用 64 个进程。此外，可以在与 .bashrc 功能相当的启动脚本中加入 ulimt。
-</code></pre>
-<h3 id="在应用程序的启动脚本中"><a href="#在应用程序的启动脚本中" class="headerlink" title="在应用程序的启动脚本中"></a>在应用程序的启动脚本中</h3><p>如果用户要对某个应用程序 myapp 进行限制，可以写一个简单的脚本 startmyapp。</p>
-<p>ulimit – s 512<br>myapp</p>
-<p>以后只要通过脚本 startmyapp 来启动应用程序，就可以限制应用程序 myapp 的线程栈大小为 512K。</p>
-<h3 id="直接在控制台输入"><a href="#直接在控制台输入" class="headerlink" title="直接在控制台输入"></a>直接在控制台输入</h3><p>ulimit – p 256 </p>
-<p>限制管道的缓冲区为 256K。</p>
-<h3 id="修改所有-linux-用户的环境变量文件："><a href="#修改所有-linux-用户的环境变量文件：" class="headerlink" title="修改所有 linux 用户的环境变量文件："></a>修改所有 linux 用户的环境变量文件：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line"></span><br><span class="line">ulimit -u 10000</span><br><span class="line"></span><br><span class="line">ulimit -n 4096</span><br><span class="line"></span><br><span class="line">ulimit -d unlimited</span><br><span class="line"></span><br><span class="line">ulimit -m unlimited</span><br><span class="line"></span><br><span class="line">ulimit -s unlimited</span><br><span class="line"></span><br><span class="line">ulimit -t unlimited</span><br><span class="line"></span><br><span class="line">ulimit -v unlimited</span><br></pre></td></tr></table></figure>
-<p> 保存后运行#source &#x2F;etc&#x2F;profile 使其生效</p>
-<h3 id="也可以针对单个用户的-bash-profile设置："><a href="#也可以针对单个用户的-bash-profile设置：" class="headerlink" title="也可以针对单个用户的.bash_profile设置："></a>也可以针对单个用户的.bash_profile设置：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi ~./.bash_profile</span><br><span class="line"></span><br><span class="line">ulimit -n 1024</span><br></pre></td></tr></table></figure>
-<p>重新登陆ok</p>
-<h2 id="限制资源的作用范围"><a href="#限制资源的作用范围" class="headerlink" title="限制资源的作用范围"></a>限制资源的作用范围</h2><p>ulimit 作为对资源使用限制的一种工作，是有其作用范围的。那么，它限制的对象是单个用户，单个进程，还是整个系统呢？事实上，ulimit 限制的是当前 shell 进程以及其派生的子进程。举例来说，如果用户同时运行了两个 shell 终端进程，只在其中一个环境中执行了 ulimit – s 100，则该 shell 进程里创建文件的大小收到相应的限制，而同时另一个 shell终端包括其上运行的子程序都不会受其影响。</p>
-<h3 id="针对用户永久生效"><a href="#针对用户永久生效" class="headerlink" title="针对用户永久生效"></a>针对用户永久生效</h3><p>那么，是否有针对某个具体用户的资源加以限制的方法呢？答案是有的，方法是通过修改系统的 &#x2F;etc&#x2F;security&#x2F;limits.conf配置文件。该文件不仅能限制指定用户的资源使用，还能限制指定组的资源使用。该文件的每一行都是对限定的一个描述。<br>imits.conf的格式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;domain&gt;                  &lt;type&gt;      &lt;item&gt;     &lt;value&gt; </span><br><span class="line">username|@groupname       type        resource          limit</span><br></pre></td></tr></table></figure>
-<p>domain：username|@groupname：设置需要被限制的用户名，组名前面加@和用户名区别。也可以用通配符*来做所有用户的限制。</p>
-<p>type：有 soft，hard 和 -，soft 指的是当前系统生效的设置值。hard 表明系统中所能设定的最大值。soft 的最大值不能超过hard的值。用 – 就表明同时设置了 soft 和 hard 的值。</p>
-<p>resource：<br>    core – 限制内核文件的大小<br>    date – 最大数据大小<br>    fsize – 最大文件大小<br>    memlock – 最大锁定内存地址空间<br>    nofile – 打开文件的最大数目<br>    rss – 最大持久设置大小<br>    stack – 最大栈大小<br>    cpu – 以分钟为单位的最多 CPU 时间<br>    noproc – 进程的最大数目（系统的最大进程数）<br>    as – 地址空间限制<br>    maxlogins – 此用户允许登录的最大数目<br>要使 limits.conf 文件配置生效，必须要确保 pam_limits.so 文件被加入到启动文件中。<br>查看 &#x2F;etc&#x2F;pam.d&#x2F;login 文件中有：session required &#x2F;lib&#x2F;security&#x2F;pam_limits.so</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/15/Redis-pipeline/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/15/Redis-pipeline/" class="post-title-link" itemprop="url">Redis的pipeline</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-15 18:03:53" itemprop="dateCreated datePublished" datetime="2022-04-15T18:03:53+08:00">2022-04-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <img src="redis_mget.png" alt="redis_mget" style="zoom:50%;" />
-
-
-
-<img src="redis_pipeline.png" alt="redis_pipeline" style="zoom:50%;" />
-
-
-
-
-
-<ul>
-<li><p>普通请求：等待上一条命令应答后再执行，中间不仅仅多了RTT，而且还频繁的调用系统IO，发送网络请求</p>
-</li>
-<li><p>mget：节省RTT，但是前面的key需要等待最后一个key回复</p>
-</li>
-<li><p>pineline：节省RTT，减少IO调用次数</p>
-</li>
-</ul>
-<p>RTT(Round-Trip Time): 往返时延。在计算机网络中它是一个重要的性能指标，表示从发送端发送数据开始，到发送端收到来自接收端的确认（接收端收到数据后便立即发送确认），总共经历的时延。</p>
-<p>RTT&#x3D;传播时延（往返哒）+排队时延（路由器和交换机的）+数据处理时延（应用程序的）。</p>
-<h1 id="Pipeline实现原理"><a href="#Pipeline实现原理" class="headerlink" title="Pipeline实现原理"></a>Pipeline实现原理</h1><p>pipeline管道操作是需要客户端与服务端的支持，客户端将命令写入缓冲，最后再通过exec命令发送给服务端，服务端通过命令拆分，逐个执行返回结果。</p>
-<p>​    </p>
-<p>pipeline通过减少客户端与redis的通信次数来实现降低往返延时时间，而且Pipeline 实现的原理是队列，而队列的原理是时先进先出，这样就保证数据的顺序性。</p>
-<h1 id="Pipeline适用场景"><a href="#Pipeline适用场景" class="headerlink" title="Pipeline适用场景"></a>Pipeline适用场景</h1><p>  Pipeline在某些场景下非常有用，比如有多个command需要被”及时的”提交，而且他们对相应结果没有互相依赖，而且对结果响应也无需立即获得，那么pipeline就可以充当这种”批处理”的工具；而且在一定程度上，可以较大的提升性能,性能提升的原因主要是TCP链接中较少了”交互往返”的时间。</p>
-<p> 不过在编码时请注意，pipeline期间将”独占”链接，此期间将不能进行非”管道”类型的其他操作，直到pipeline关闭；比如在上述代码中间，使用jedis.set(key,value)等操作都将抛出异常。</p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904127001001991">https://juejin.cn/post/6844904127001001991</a></p>
-<p><a target="_blank" rel="noopener" href="https://redis.io/docs/manual/pipelining/">https://redis.io/docs/manual/pipelining/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/curl%E6%A8%A1%E6%9D%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/14/curl%E6%A8%A1%E6%9D%BF/" class="post-title-link" itemprop="url">curl模板</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-14 14:16:29" itemprop="dateCreated datePublished" datetime="2022-04-14T14:16:29+08:00">2022-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-28 11:40:33" itemprop="dateModified" datetime="2022-05-28T11:40:33+08:00">2022-05-28</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -H &quot;Content-type: application/json&quot; -X POST </span><br><span class="line">-d &#x27;$json&#x27; &#x27;$url&#x27;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">curl文件下载</span><br><span class="line">curl将下载文件输出到stdout，将进度信息输出到stderr，不显示进度信息使用–silent 选项。</span><br><span class="line"></span><br><span class="line">1. curl URL --silent</span><br><span class="line">这条命令是将下载文件输出到终端，所有下载的数据都被写入到stdout。</span><br><span class="line"></span><br><span class="line">2. curl URL --silent -O</span><br><span class="line">使用选项 -O 将下载的数据写入到文件，必须使用文件的绝对地址。</span><br><span class="line"></span><br><span class="line">3. curl URL -o filename --progress</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">######################################## 100.0%</span></span></span><br><span class="line">选项 -o 将下载数据写入到指定名称的文件中，并使用 –progress 显示进度条。</span><br></pre></td></tr></table></figure>
-
-
-
-<p>比如:<code>curl http://211.87.224.233:9999/file/sftp/sdu-weblab.helloworld.jingtao.tar.gz -o sdu-weblab.helloworld.jingtao.tar.gz  </code></p>
-<p>${var##*&#x2F;}</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/03/StartDocker/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/03/StartDocker/" class="post-title-link" itemprop="url">Docker入门</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-03 18:16:01" itemprop="dateCreated datePublished" datetime="2022-04-03T18:16:01+08:00">2022-04-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-10-18 18:58:37" itemprop="dateModified" datetime="2022-10-18T18:58:37+08:00">2022-10-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>系列文章</p>
-<p><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/%E7%94%B1%E6%B5%85%E5%85%A5%E6%B7%B1%E5%90%83%E9%80%8F%20Docker-%E5%AE%8C">由浅入深吃透Docker</a></p>
-<p>Docker 是<strong>一个用于开发、发布和运行应用程序的开放平台</strong>。Docker 使您能够<strong>将应用程序与基础架构分离</strong>，以便您可以快速交付软件。使用 Docker，您可以像管理应用程序一样管理基础设施。通过利用 Docker 快速交付、测试和部署代码的方法，您可以显着减少编写代码和在生产环境中运行之间的延迟。</p>
-<h2 id="我可以使用-Docker-做什么？"><a href="#我可以使用-Docker-做什么？" class="headerlink" title="我可以使用 Docker 做什么？"></a>我可以使用 Docker 做什么？</h2><ul>
-<li><strong>快速、一致地交付您的应用程序</strong><br>Docker 通过允许开发人员使用提供应用程序和服务的本地容器在标准化环境中工作来简化开发生命周期。</li>
-</ul>
-<p>也就是说，<strong>容器的概念非常适合持续集成和持续交付 (CI&#x2F;CD) 工作流程。</strong></p>
-<ul>
-<li><strong>响应式部署和扩展</strong></li>
-</ul>
-<p>Docker 基于容器的平台允许高度可移植的工作负载。Docker 容器可以在开发人员的本地笔记本电脑、数据中心的物理或虚拟机、云提供商或混合环境中运行。</p>
-<p>Docker 的可移植性和轻量级特性还使得动态管理工作负载、根据业务需求<strong>近乎实时地扩展或拆除应用程序和服务变得容易</strong>。</p>
-<ul>
-<li><strong>在相同硬件上运行更多工作负载</strong><blockquote>
-<p>Docker 是轻量级和快速的。它为基于管理程序的虚拟机提供了一种可行且经济高效的替代方案，因此您可以使用更多的计算容量来实现业务目标。Docker 非常适合高密度环境下需要用更少资源完成更多工作的中小型部署。</p>
-</blockquote>
-</li>
-</ul>
-<p>也就是说，相比对docker更加可靠。</p>
-<h2 id="Docker-architecture"><a href="#Docker-architecture" class="headerlink" title="Docker architecture"></a>Docker architecture</h2><p>Docker 使用客户端-服务器架构。Docker客户端与 Docker守护进程对话，后者负责构建、运行和分发 Docker 容器的繁重工作。Docker 客户端和守护程序可以在同一系统上运行，或者您可以将 Docker 客户端连接到远程 Docker 守护程序。Docker 客户端和守护程序使用 REST API，通过 UNIX 套接字或网络接口进行通信。另一个 Docker 客户端是 Docker Compose，它允许您使用由一组容器组成的应用程序。</p>
-<p><img src="/2022/04/03/StartDocker/architecture.svg" alt="Docker Architecture Diagram"></p>
-<h3 id="The-Docker-daemon（Docker-守护进程）"><a href="#The-Docker-daemon（Docker-守护进程）" class="headerlink" title="The Docker daemon（Docker 守护进程）"></a>The Docker daemon（Docker 守护进程）</h3><p>Docker 守护程序 ( <code>dockerd</code>) 侦听 Docker API 请求并管理 Docker 对象，例如 images, containers, networks, and volumes（镜像、容器、网络和数据卷）。守护进程还可以与其他守护进程通信以管理 Docker 服务。</p>
-<h3 id="The-Docker-client"><a href="#The-Docker-client" class="headerlink" title="The Docker client"></a>The Docker client</h3><p>Docker 客户端 ( <code>docker</code>) 是许多 Docker 用户与 Docker 交互的主要方式。当您使用诸如<code>docker run</code>之类的命令时，客户端会将这些命令发送到<code>dockerd</code>执行它们。该<code>docker</code>命令使用 Docker API。Docker 客户端可以与多个守护进程通信。</p>
-<h3 id="Docker-Desktop"><a href="#Docker-Desktop" class="headerlink" title="Docker Desktop"></a>Docker Desktop</h3><p>Docker Desktop 是一个易于安装的应用程序，适用于您的 Mac 或 Windows 环境，使您能够构建和共享容器化应用程序和微服务。Docker Desktop 包括 Docker 守护程序 ( <code>dockerd</code>)、Docker 客户端 ( <code>docker</code>)、Docker Compose、Docker Content Trust、Kubernetes 和 Credential Helper。</p>
-<h3 id="Docker-registries（注册中心）"><a href="#Docker-registries（注册中心）" class="headerlink" title="Docker registries（注册中心）"></a>Docker registries（注册中心）</h3><p>Docker<em>注册中心</em>存储 Docker 镜像。</p>
-<p>Docker Hub 是一个任何人都可以使用的公共注册中心，并且 Docker 默认配置为在 Docker Hub 上查找镜像。您甚至可以运行自己的私有注册中心。</p>
-<p>当您使用<code>docker pull</code> or <code>docker run</code>命令时，将从您配置的注册中心中提取所需的镜像。</p>
-<p>当您使用该<code>docker push</code>命令时，您的镜像会被推送到您配置的注册中心中。</p>
-<h3 id="Docker-objects"><a href="#Docker-objects" class="headerlink" title="Docker objects"></a>Docker objects</h3><h4 id="Images（镜像）"><a href="#Images（镜像）" class="headerlink" title="Images（镜像）"></a>Images（镜像）</h4><p><em>镜像</em>是一个只读模板，其中包含创建 Docker 容器的指令。</p>
-<p>通常，一个镜像基于另一个镜像，并带有一些额外的自定义。例如，您可以基于<code>ubuntu</code>映像构建一个自己的映像 ，而这个自定义的镜像安装了 Apache Web Server和自己的应用程序，以及使得应用程序运行所需的配置信息。</p>
-<p>你可以创建自己的镜像，也可以只使用其他人创建并在注册中心中发布的镜像。 </p>
-<p>要构建您自己的镜像，你需要使用简单的语法创建一个<em>Dockerfile</em> ，这个docker file便是用于定义创建和运行镜像所需的步骤。</p>
-<p>Dockerfile 中的每条指令都会在映像中创建一个层（layer）。当您更改 Dockerfile 并重建映像时，仅重建那些已更改的层。与其他虚拟化技术相比，这是使映像如此轻量、小巧和快速的部分原因。</p>
-<h4 id="Containers"><a href="#Containers" class="headerlink" title="Containers"></a>Containers</h4><p><em>容器</em>是镜像的可运行实例。</p>
-<p>您可以<strong>使用 Docker API 或 CLI 创建、启动、停止、移动或删除（create, start, stop, move, or delete）容器</strong>。您可以将容器连接到一个或多个网络，将存储附加到它，甚至可以根据其当前状态创建新映像。</p>
-<p>默认情况下，一个容器与其他容器及其主机的隔离相对较好。您可以控制容器的网络、存储或其他底层子系统与其他容器或主机的隔离程度。</p>
-<p><strong>容器由其映像以及您在创建或启动它时提供给它的配置选项定义</strong>。</p>
-<p>当容器被移除时，任何未存储在持久存储介质中的状态更改都会消失。</p>
-<h5 id="示例docker-run命令"><a href="#示例docker-run命令" class="headerlink" title="示例docker run命令"></a>示例<code>docker run</code>命令</h5><p>以下命令运行一个<code>ubuntu</code>容器，以交互方式附加到您的本地命令行会话，然后运行<code>/bin/bash</code>.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -t ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
-
-<p>当您运行此命令时，会发生以下情况（假设您使用的是默认注册中心配置）：</p>
-<ol>
-<li>如果您在本地没有<code>ubuntu</code>映像，Docker 会从您配置的注册中心中提取它，就像您<code>docker pull ubuntu</code>手动运行一样。</li>
-<li>Docker 会创建一个新容器，就像您<code>docker container create</code> 手动运行命令一样。</li>
-<li>Docker 为容器分配一个读写文件系统，作为它的最后一层。这允许正在运行的容器在其本地文件系统中创建或修改文件和目录。</li>
-<li>Docker 创建了一个网络接口来将容器连接到默认网络，因为您没有指定任何网络选项（这是一个默认行为）。这包括为容器分配 IP 地址。默认情况下，容器可以使用主机的网络连接连接到外部网络。</li>
-<li>Docker 启动容器并执行<code>/bin/bash</code>. 因为容器以交互方式运行并附加到您的终端（由于<code>-i</code>and<code>-t</code> 标志），您可以在输出记录到终端时使用键盘提供输入。</li>
-<li>当您键入<code>exit</code>终止<code>/bin/bash</code>命令时，容器会停止但不会被删除。您可以重新启动或删除它。</li>
-</ol>
-<h2 id="底层技术"><a href="#底层技术" class="headerlink" title="底层技术"></a>底层技术</h2><p>Docker 是用Go 编写的，并利用 Linux 内核的几个特性来提供其功能。Docker 使用一种称为<code>namespaces</code>的技术来提供隔离的工作空间（也就是所说的<em>容器</em>的概念）。当您运行容器时，Docker 会为该容器创建一组 <em>命名空间。</em></p>
-<p>这些命名空间提供了一层隔离。容器的每个方面都在单独的命名空间中运行，并且它的访问权限仅限于该命名空间。</p>
-<blockquote>
-<p>参考</p>
-<p><a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/overview/">https://docs.docker.com/get-started/overview/</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/29/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/29/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/" class="post-title-link" itemprop="url">服务注册与发现</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-03-29 03:51:11 / 修改时间：03:54:51" itemprop="dateCreated datePublished" datetime="2022-03-29T03:51:11+08:00">2022-03-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="服务注册与发现基本原理"><a href="#服务注册与发现基本原理" class="headerlink" title="服务注册与发现基本原理"></a>服务注册与发现基本原理</h1><p>服务注册与发现是分为注册和发现两个关键的步骤。</p>
-<p><strong>服务注册</strong>：服务进程在注册中心注册自己的元数据信息。通常包括主机和端口号，有时还有身份验证信息，协议，版本号，以及运行环境的信息。</p>
-<p><strong>服务发现</strong>：客户端服务进程向注册中心发起查询，来获取服务的信息。服务发现的一个重要作用就是提供给客户端一个可用的服务列表。</p>
-<h2 id="服务注册"><a href="#服务注册" class="headerlink" title="服务注册"></a>服务注册</h2><p>注册是服务自己要负责注册与注销的工作。当服务启动后注册线程向注册中心注册，当服务下线时注销自己</p>
-<h2 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h2><p>服务发现分为客户端发现和代理发现。</p>
-<p><strong>客户端发现</strong></p>
-<p>客户端发现是指客户端负责向注册中心查询可用服务地址，获取到所有的可用实例地址列表后客户端根据负载均衡算法选择一个实例发起请求调用。</p>
-<p>这种方式非常直接，客户端可以控制负载均衡算法。</p>
-<p>但是缺点也很明显，获取实例地址、负载均衡等逻辑与服务的业务逻辑耦合在一起，如果服务发现或者负载平衡有变化，那么所有的服务都要修改重新上线。</p>
-<p><strong>代理发现</strong></p>
-<p>代理发现是指新增一个路由服务负责服务发现获取可用的实例列表，服务消费者如果需要调用服务A的一个实例可以直接将请求发往路由服务，路由服务根据配置好的负载均衡算法从可用的实例列表中选择一个实例将请求转发过去即可。</p>
-<p>如果发现实例不可用，路由服务还可以自行重试，服务消费者完全不用感知。</p>
-<h2 id="心跳机制"><a href="#心跳机制" class="headerlink" title="心跳机制"></a>心跳机制</h2><p>如果服务有多个实例，其中一个实例出现宕机，注册中心是可以实时感知到，并且将该实例信息从列表中移出，也称为摘机。</p>
-<p>如何实现摘机？业界比较常用的方式是通过心跳检测的方式实现，心跳检测有<strong>主动</strong>和<strong>被动</strong>两种方式。</p>
-<p><strong>被动检测</strong>是指服务主动向注册中心发送心跳消息，时间间隔可自定义，比如配置5秒发送一次，注册中心如果在三个周期内比如说15秒内没有收到实例的心跳消息，就会将该实例从列表中移除。</p>
-<p><strong>主动检测</strong>是注册中心主动发起，每隔几秒中会给所有列表中的服务实例发送心跳检测消息，如果多个周期内未发送成功或未收到回复就会主动移除该实例。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/27/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E5%92%8CJava%E4%B8%ADIO%E6%B5%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/27/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E5%92%8CJava%E4%B8%ADIO%E6%B5%81/" class="post-title-link" itemprop="url">装饰者模式和Java中IO流</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-27 21:29:37" itemprop="dateCreated datePublished" datetime="2022-03-27T21:29:37+08:00">2022-03-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-15 14:12:18" itemprop="dateModified" datetime="2022-09-15T14:12:18+08:00">2022-09-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="1-1-什么是装饰者模式"><a href="#1-1-什么是装饰者模式" class="headerlink" title="1.1 什么是装饰者模式"></a>1.1 什么是装饰者模式</h2><p><strong>装饰者模式指的是在不必改变原类文件和使用继承的情况下，动态地扩展一个对象的功能</strong>。</p>
-<p>它是通过创建一个包装对象，也就是装饰者来包裹真实的对象。<br>所以装饰者可以动态地将责任附加到对象上。若要扩展功能，装饰者提供了比继承更有弹性的方案。</p>
-<blockquote>
-<p>装饰者模式，就是在原有的基类的基础上，给对象添加一些额外的职能，对对象进行包装和修饰，以此来展示出一个更为复杂的、功能更为齐全的新对象。装饰者模式跟子类继承的方式非常类似，都是在基类的基础上拓展功能，但是比基类更加的灵活，也符合多组合、少继承的设计原则，避免对象之间的耦合。</p>
-</blockquote>
-<h2 id="1-2-装饰者模式组成结构"><a href="#1-2-装饰者模式组成结构" class="headerlink" title="1.2 装饰者模式组成结构"></a>1.2 装饰者模式组成结构</h2><ul>
-<li>抽象构件 (Component)：给出抽象接口或抽象类，以规范准备接收附加功能的对象。</li>
-<li>具体构件 (ConcreteComponent)：定义将要接收附加功能的类。</li>
-<li>抽象装饰 (Decorator)：装饰者共同要实现的接口，也可以是抽象类。</li>
-<li>具体装饰 (ConcreteDecorator)：持有一个 Component 对象，负责给构件对象“贴上”附加的功能。</li>
-</ul>
-<h2 id="1-3-装饰者模式-UML-图解"><a href="#1-3-装饰者模式-UML-图解" class="headerlink" title="1.3 装饰者模式 UML 图解"></a>1.3 装饰者模式 UML 图解</h2><p><img src="/2022/03/27/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F%E5%92%8CJava%E4%B8%ADIO%E6%B5%81/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8FUML.png"></p>
-<h2 id="1-4-装饰者模式应用场景"><a href="#1-4-装饰者模式应用场景" class="headerlink" title="1.4 装饰者模式应用场景"></a>1.4 装饰者模式应用场景</h2><ul>
-<li>需要扩展一个类的功能，或给一个类添加附加职责。</li>
-<li>需要动态的给一个对象添加功能，这些功能可以再动态的撤销。</li>
-<li><strong>需要增加由一些基本功能的排列组合而产生的非常大量的功能，从而使继承关系变的不现实。</strong></li>
-<li><strong>当不能采用生成子类的方法进行扩充时。可能有大量独立的扩展，为支持每一种组合将产生大量的子类，使得子类数目呈爆炸性增长。</strong></li>
-</ul>
-<h2 id="1-5-装饰者模式特点"><a href="#1-5-装饰者模式特点" class="headerlink" title="1.5 装饰者模式特点"></a>1.5 装饰者模式特点</h2><ul>
-<li><strong>装饰者对象和具体构件有相同的接口</strong>。这样客户端对象就能以和真实对象相同的方式和装饰对象交互。</li>
-<li><strong>可以使用一个或多个装饰对象包装一个对象</strong>。</li>
-<li>装饰者对象包含一个具体构件的引用（reference）。</li>
-<li>装饰者对象接受所有来自客户端的请求。它把这些请求转发给具体构件。</li>
-<li>装饰者对象可以在转发这些请求以前或以后动态增加一些功能。</li>
-</ul>
-<h2 id="1-6-装饰者模式的优缺点"><a href="#1-6-装饰者模式的优缺点" class="headerlink" title="1.6 装饰者模式的优缺点"></a>1.6 装饰者模式的优缺点</h2><p>装饰者模式与继承关系的目的都是要扩展对象的功能，但是 Decorator 可以提供比继承更多的灵活性。<br>通过使用不同的具体装饰类以及这些装饰类的排列组合，设计者可以创造出很多不同行为的组合。<br>缺点</p>
-<p>这种比继承更加灵活机动的特性，也同时意味着更加多的复杂性。<br>装饰模式会导致设计中出现许多小类 (I&#x2F;O 类中就是这样)，如果过度使用，会使程序变得很复杂。<br>装饰模式是针对抽象组件（Component）类型编程。但是，如果你要针对具体组件编程时，就应该重新思考你的应用架构，以及装饰者是否合适。</p>
-<h2 id="装饰器和代理模式的区别"><a href="#装饰器和代理模式的区别" class="headerlink" title="装饰器和代理模式的区别"></a>装饰器和代理模式的区别</h2><blockquote>
-<p>对装饰器模式来说，装饰者（Decorator）和被装饰者（Decoratee）都实现一个接口。对代理模式来说，代理类（Proxy Class）和真实处理的类（Real Class）都实现同一个接口。此外，不论我们使用哪一个模式，都可以很容易地在真实对象的方法前面或者后面加上自定义的方法。</p>
-<p>在上面的例子中，装饰器模式是使用的调用者从外部传入的被装饰对象（coffee），调用者只想要你把他给你的对象装饰（加强）一下。而代理模式使用的是代理对象在自己的构造方法里面new的一个被代理的对象，不是调用者传入的。调用者不知道你找了其他人，他也不关心这些事，只要你把事情做对了即可。</p>
-<p>装饰器模式关注于在一个对象上动态地添加方法，而代理模式关注于控制对对象的访问。换句话说，<strong>用代理模式，代理类可以对它的客户隐藏一个对象的具体信息。因此当使用代理模式的时候，我们常常在一个代理类中创建一个对象的实例；当使用装饰器模式的时候，我们通常的做法是将原始对象作为一个参数传给装饰器的构造器。</strong></p>
-<p>装饰器模式和代理模式的使用场景不一样，</p>
-<p>比如IO流使用的是<strong>装饰者模式，可以层层增加功能</strong>；而代理模式则<strong>一般是用于增加特殊的功能，有些动态代理不支持多层嵌套</strong>。</p>
-<p>代理和装饰其实从另一个角度更容易去理解两个模式的区别：代理更多的是强调对对象的访问控制，比如说，访问A对象的查询功能时，访问B对象的更新功能时，访问C对象的删除功能时，都需要判断对象是否登陆，那么我需要将判断用户是否登陆的功能抽提出来，并对A对象、B对象和C对象进行代理，使访问它们时都需要去判断用户是否登陆，简单地说就是将某个控制访问权限应用到多个对象上；而装饰器更多的强调给对象加强功能，比如说要给只会唱歌的A对象添加跳舞功能，添加说唱功能等，简单地说就是将多个功能附加在一个对象上。</p>
-<p>所以，<strong>代理模式注重的是对对象的某一功能的流程把控和辅助</strong>，它可以控制对象做某些事，重心是为了借用对象的功能完成某一流程，而非对象功能如何。而<strong>装饰模式注重的是对对象功能的扩展，不关心外界如何调用，只注重对对象功能加强，装饰后还是对象本身</strong>。</p>
-</blockquote>
-<blockquote>
-<p><strong>总结</strong></p>
-<p>对于代理类，如何调用对象的某一功能是思考重点，而不需要兼顾对象的所有功能；对于装饰类，如何扩展对象的某一功能是思考重点，同时也需要兼顾对象的其他功能，因为再怎么装饰，本质也是对象本身，要担负起对象应有的职责，被装饰者的职责一旦增加，作为装饰类也需要有相应的扩展，必然会造成编码的负担。</p>
-<p>设计模式本身是为了提升代码的可扩展性，灵活应用即可，不必生搬硬套，非要分出个所以然来，装饰器模式和代理模式的区别也是如此。</p>
-</blockquote>
-<blockquote>
-<p>参考</p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904205723910151">https://juejin.cn/post/6844904205723910151</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hustzw07/article/details/80795855">https://blog.csdn.net/hustzw07/article/details/80795855</a></p>
-<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016508992">https://segmentfault.com/a/1190000016508992</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/22/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/22/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="post-title-link" itemprop="url">Spring Bean的生命周期</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-22 15:27:26" itemprop="dateCreated datePublished" datetime="2022-03-22T15:27:26+08:00">2022-03-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-05 13:02:16" itemprop="dateModified" datetime="2022-09-05T13:02:16+08:00">2022-09-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="一张图解释"><a href="#一张图解释" class="headerlink" title="一张图解释"></a>一张图解释</h2><p><img src="/2022/03/22/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/bean-life.jpg"></p>
-<p>对于 Spring Bean 的生命周期来说：</p>
-<ul>
-<li>实例化 Instantiation</li>
-<li>属性赋值 Populate</li>
-<li>初始化 Initialization</li>
-<li>销毁 Destruction</li>
-</ul>
-<h2 id="Spring-Bean-的生命周期的扩展点"><a href="#Spring-Bean-的生命周期的扩展点" class="headerlink" title="Spring Bean 的生命周期的扩展点"></a>Spring Bean 的生命周期的扩展点</h2><p>Spring Bean 的生命周期的扩展点超级多，老周这里不可能全部列出来，只说核心的扩展点。这也就是为什么 Spring 的扩展性很好的原因，开了很多的口子，尽可能让某个功能高内聚松耦合，用户需要哪个功能就用哪个，而不是直接来一个大而全的东西。</p>
-<p><strong>3.1 Bean 自身的方法</strong></p>
-<p>比如构造函数、getter&#x2F;setter 以及 init-method 和 destory-method 所指定的方法等，</p>
-<p>也就对应着上文说的实例化 -&gt; 属性赋值 -&gt; 初始化 -&gt; 销毁四个阶段。</p>
-<p><strong>3.2 容器级的方法（BeanPostProcessor 一系列接口）</strong></p>
-<p>主要是后处理器方法，比如下图的 <code>InstantiationAwareBeanPostProcessor</code>、<code>BeanPostProcessor</code> 接口方法。这些接口的实现类是独立于 Bean 的，并且会注册到 Spring 容器中。在 Spring 容器创建任何 Bean 的时候，这些后处理器都会发生作用。</p>
-<p>DEMO</p>
-<p><img src="/2022/03/22/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9Fdemo.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>1、Bean自身的方法：这个包括了Bean本身调用的方法和通过配置文件中<bean>的init-method和destory-method指定的方法。<br>2、Bean级生命周期接口方法：这个包括了BeanNameAware、BeanFactoryAware、InitializingBean和DisposableBean等接口方法。<br>3、容器级生命周期接口方法：这个包括了InstantiationAwareBeanPostProcessor和BeanPostProcessor这两个接口实现，一般称它们的实现类为”后处理器“。<br>4、工厂后置处理接口方法：BeanFactoryPostProcessor,BeanDefinitionRegistryPostProcessor,等等非常有用的工厂后处理器接口的方法。工厂后处理器也是容器级的。在应用上下文装配配置文件之后立即调用。</p>
-</blockquote>
-<h2 id="Bean的后置处理器"><a href="#Bean的后置处理器" class="headerlink" title="Bean的后置处理器"></a>Bean的后置处理器</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/9862127/what-is-the-difference-between-beanpostprocessor-and-init-destroy-method-in-spri">https://stackoverflow.com/questions/9862127/what-is-the-difference-between-beanpostprocessor-and-init-destroy-method-in-spri</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/duanxz/p/3750725.html">https://www.cnblogs.com/duanxz/p/3750725.html</a></p>
-</blockquote>
-<h3 id="BeanFactoryPostProcessor、BeanPostProcessor"><a href="#BeanFactoryPostProcessor、BeanPostProcessor" class="headerlink" title="BeanFactoryPostProcessor、BeanPostProcessor"></a>BeanFactoryPostProcessor、BeanPostProcessor</h3><p>在容器实际实例化任何其它的bean之前读取配置元数据，并有可能修改它。</p>
-<p><strong>区别</strong>：BeanFactoryPostProcessor 仅仅对 bean definitions 发生关系，不能对bean instances 交互，对bean instances 的交互，由BeanPostProcessor的实现来处理。</p>
-<p><strong>执行顺序</strong>：</p>
-<p>BeanFactoryPostProcessor的回调比BeanPostProcessor要早。</p>
-<h3 id="BeanPostProcessor、InitializingBean"><a href="#BeanPostProcessor、InitializingBean" class="headerlink" title="BeanPostProcessor、InitializingBean"></a>BeanPostProcessor、InitializingBean</h3><p><strong>区别</strong>：</p>
-<p>BeanPostProcessor针对的多个bean的后置处理逻辑，而InitializingBean#afterPropertiesSet、@PostConstruct、@init-method都是针对单个bean的后置处理。</p>
-<p><strong>执行顺序</strong>：</p>
-<p><img src="https://images2015.cnblogs.com/blog/285763/201702/285763-20170217204812410-1546305822.png"></p>
-<p>如上图，指定的先后顺序如下：</p>
-<ol>
-<li><p>BeanPostProcessor#postProcessBeforeInitialization</p>
-</li>
-<li><ul>
-<li><p>@PostConstruct</p>
-</li>
-<li><p>InitializingBean#afterPropertiesSet</p>
-</li>
-<li><p>init-method defined in XML</p>
-</li>
-</ul>
-</li>
-<li><p>BeanPostProcessor#postProcessAfterInitialization</p>
-</li>
-</ol>
-<blockquote>
-<p>参考<br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000040365130">一文读懂 Spring Bean 的生命周期</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/21/Redis%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/21/Redis%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="post-title-link" itemprop="url">Redis缓存淘汰策略</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-03-21 22:43:17 / 修改时间：23:04:46" itemprop="dateCreated datePublished" datetime="2022-03-21T22:43:17+08:00">2022-03-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>Redis 使用的时内存空间来存储数据的，避免业务应用从后端数据库中读取数据，可以提升应用的响应速度。但是内存空间毕竟有限，随着我们存储数据的不断增长，要缓存的数据量越来越大，当超过了我们的内存大小时，该怎么办呢？</p>
-</blockquote>
-<p>Redis 4.0 之前一共实现了 6 种内存淘汰策略，在 4.0 之后，又增加了 2 种策略。我们可以按照是否会进行数据淘汰把它们分成两类：</p>
-<ul>
-<li>不进行数据淘汰的策略，只有 noeviction 这一种。</li>
-<li>会进行淘汰的 7 种其他策略。会进行淘汰的 7 种策略，我们可以再进一步根据淘汰候选数据集的范围把它们分成两类：</li>
-<li><ul>
-<li>在设置了过期时间的数据中进行淘汰，包括 volatile-random、volatile-ttl、volatile-lru、volatile-lfu（Redis 4.0 后新增）四种。</li>
-<li>在所有数据范围内进行淘汰，包括 allkeys-lru、allkeys-random、allkeys-lfu（Redis 4.0 后新增）三种。</li>
-</ul>
-</li>
-</ul>
-<p>具体如下：</p>
-<ul>
-<li>noeviction：直接返回错误，不进行数据淘汰</li>
-<li>volatile-ttl：表示在设置可过期时间的键值对中，<strong>根据过期时间的先后进行淘汰数据，越早被过期的数据</strong>，越先被淘汰</li>
-<li>volatile-random：从名字可以看出来，就是在设置了过期时间的键值对中，随机淘汰数据。</li>
-<li>volatile-lru：根据 lru 算法进行数据的淘汰</li>
-<li>volatile-lfu：根据lfu算法进行数据的淘汰</li>
-<li>allkeys-random：在全部的键值对数据中，进行数据的随机淘汰。</li>
-<li>allkeys-lru：在全部的键值对数据中，根据 lru 算法进行数据的淘汰。</li>
-<li>allkeys-lfu：在全部的键值对数据中，根据 lfu 算法进行数据的淘汰。</li>
-</ul>
-<p><strong>默认情况下，Redis 在使用的内存空间超过 maxmemory 值时，并不会淘汰数据，也就是设定的 noeviction 策略。对应到 Redis 缓存，也就是指，一旦缓存被写满了，再有写请求来时，Redis 不再提供服务，而是直接返回错误。</strong></p>
-<p>其中LRU算法的大家都比较熟悉了，LFU算法是在 LRU 算法的基础上，同时考虑了数据的访问时效性和数据的访问次数。参考链接<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/lfu-cache/">LFU</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/21/JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/21/JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">JVM类加载机制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-21 02:53:12" itemprop="dateCreated datePublished" datetime="2022-03-21T02:53:12+08:00">2022-03-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h1><p>类的加载过程非常复杂，主要有这几个过程：<strong>加载、链接（验证、准备、解析）、初始化</strong>。这些术语很多地方都出现过，我们不需要死记硬背，而应该要了解它背后的原理和要做的事情。</p>
-<p>如图所示。大多数情况下，类会按照图中给出的顺序进行加载。</p>
-<p><img src="/2022/03/21/JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/jvm_load_class.jpg"></p>
-<h2 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h2><p>包含了加载、验证、准备、解析和初始化这 5 个阶段。</p>
-<h3 id="1-加载"><a href="#1-加载" class="headerlink" title="1. 加载"></a>1. 加载</h3><p>加载是类加载的一个阶段，注意不要混淆。</p>
-<p>加载过程完成以下三件事：</p>
-<ul>
-<li>通过一个类的全限定名来获取定义此类的二进制字节流。</li>
-<li>将这个字节流所代表的<strong>静态存储结构</strong>转化为方法区的<strong>运行时存储结构</strong>。</li>
-<li>在内存中<strong>生成一个代表这个类的 Class 对象</strong>，作为方法区这个类的各种数据的访问入口。</li>
-</ul>
-<p>其中二进制字节流可以从以下方式中获取：</p>
-<ul>
-<li>从 ZIP 包读取，这很常见，最终成为日后 JAR、EAR、WAR 格式的基础。</li>
-<li>从网络中获取，这种场景最典型的应用是 Applet。</li>
-<li><strong>运行时计算生成</strong>，这种场景使用得最多得就是<strong>动态代理技术</strong>，在 java.lang.reflect.Proxy 中，就是用了 ProxyGenerator.generateProxyClass 的代理类的二进制字节流。</li>
-<li>由其他文件生成，典型场景是 JSP 应用，即由 JSP 文件生成对应的 Class 类。</li>
-<li>从数据库读取，这种场景相对少见，例如有些中间件服务器（如 SAP Netweaver）可以选择把程序安装到数据库中来完成程序代码在集群间的分发。</li>
-</ul>
-<h3 id="2-验证"><a href="#2-验证" class="headerlink" title="2. 验证"></a>2. 验证</h3><p>确保 Class 文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全。</p>
-<ul>
-<li>文件格式验证：验证字节流是否符合 Class 文件格式的规范，并且能被当前版本的虚拟机处理。</li>
-<li>元数据验证：对字节码描述的信息进行语义分析，以保证其描述的信息符合 Java 语言规范的要求。</li>
-<li>字节码验证：通过数据流和控制流分析，确保程序语义是合法、符合逻辑的。</li>
-<li>符号引用验证：发生在虚拟机将符号引用转换为直接引用的时候，对类自身以外（常量池中的各种符号引用）的信息进行匹配性校验。</li>
-</ul>
-<h3 id="3-准备"><a href="#3-准备" class="headerlink" title="3. 准备"></a>3. 准备</h3><p>类变量是被 static 修饰的变量，<strong>准备阶段为类变量分配内存并设置初始值</strong>，使用的是方法区的内存。</p>
-<p>实例变量不会在这阶段分配内存，它将会在对象实例化时随着对象一起分配在 Java 堆中。（实例化不是类加载的一个过程，类加载发生在所有实例化操作之前，并且类加载只进行一次，实例化可以进行多次）</p>
-<p>初始值一般为 0 值，例如下面的类变量 value 被初始化为 0 而不是 123。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">value</span> <span class="operator">=</span> <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>如果类变量是常量，那么会按照表达式来进行初始化，而不是赋值为 0。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">value</span> <span class="operator">=</span> <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="4-解析"><a href="#4-解析" class="headerlink" title="4. 解析"></a>4. 解析</h3><p>将常量池的符号引用替换为直接引用的过程。</p>
-<p><del>最复杂，暂时跳过。</del></p>
-<p>解析在类加载中是非常非常重要的一环，是将符号引用替换为直接引用的过程。这句话非常的拗口，其实理解起来也非常的简单。</p>
-<p><strong>符号引用</strong>是一种定义，可以是任何字面上的含义，而<strong>直接引用</strong>就是<strong>直接指向目标的指针、相对偏移量</strong>。</p>
-<p>直接引用的对象都存在于内存中，你可以把通讯录里的女友手机号码，类比为符号引用，把面对面和你吃饭的人，类比为直接引用。</p>
-<p>解析阶段负责把整个类激活，串成一个可以找到彼此的网，过程非常重要。那这个阶段都做了哪些工作呢？大体可以分为：</p>
-<ul>
-<li>类或接口的解析</li>
-<li>类方法解析</li>
-<li>接口方法解析</li>
-<li>字段解析</li>
-</ul>
-<p>我们来看几个经常发生的异常，就与这个阶段有关。</p>
-<ul>
-<li><code>java.lang.NoSuchFieldError</code> 根据继承关系从下往上，找不到相关字段时的报错。</li>
-<li><code>java.lang.IllegalAccessError</code> 字段或者方法，访问权限不具备时的错误。</li>
-<li><code>java.lang.NoSuchMethodError</code> 找不到相关方法时的错误。</li>
-</ul>
-<p>解析过程保证了相互引用的完整性，把继承与组合推进到运行时。</p>
-<h3 id="5-初始化"><a href="#5-初始化" class="headerlink" title="5. 初始化"></a>5. 初始化</h3><p><strong>初始化阶段才真正开始执行类中的定义的 Java 程序代码</strong>。</p>
-<p>初始化阶段即虚拟机执行类构造器 <code>&lt;clinit&gt;() </code>方法的过程。</p>
-<p><strong>在准备阶段，类变量已经赋过一次系统要求的初始值，而在初始化阶段，根据程序员通过程序制定的主观计划去初始化类变量和其它资源</strong>。</p>
-<p><code>&lt;clinit&gt;()</code> 方法具有以下特点：</p>
-<ul>
-<li>是<strong>由编译器自动收集类中所有类变量的赋值动作和静态语句块（static{} 块）中的语句合并产生的</strong>，编译器收集的顺序由语句在源文件中出现的顺序决定。特别注意的是，静态语句块只能访问到定义在它之前的类变量，定义在它之后的类变量只能赋值，不能访问。例如以下代码：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        i = <span class="number">0</span>;                <span class="comment">// 给变量赋值可以正常编译通过</span></span><br><span class="line">        System.out.print(i);  <span class="comment">// 这句编译器会提示“非法向前引用”</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>与类的构造函数（或者说实例构造器<code>&lt;init&gt;()</code>）不同，不需要显式的调用父类的构造器。虚拟机会自动保证<strong>在子类的 <code>&lt;clinit&gt;()</code> 方法运行之前，父类的 <code>&lt;clinit&gt;() </code>方法已经执行结束</strong>。因此虚拟机中第一个执行<code> &lt;clinit&gt;()</code> 方法的类肯定为 java.lang.Object。</li>
-<li>由于父类的 <code>&lt;clinit&gt;()</code>方法先执行，也就意味着<strong>父类中定义的静态语句块要优于子类的变量赋值操作</strong>。例如以下代码：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Parent</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">A</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        A = <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Sub</span> <span class="keyword">extends</span> <span class="title class_">Parent</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">B</span> <span class="operator">=</span> A;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">     System.out.println(Sub.B);  <span class="comment">// 输出结果是父类中的静态变量 A 的值，也就是 2。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<ul>
-<li><code>&lt;clinit&gt;()</code> 方法对于类或接口不是必须的，如果一个类中不包含静态语句块，也没有对类变量的赋值操作，编译器可以不为该类生成<code> &lt;clinit&gt;()</code> 方法。</li>
-<li>接口中不可以使用静态语句块，但仍然有类变量初始化的赋值操作，因此接口与类一样都会生成 <code>&lt;clinit&gt;()</code> 方法。但接口与类不同的是，执行接口的 <code>&lt;clinit&gt;()</code> 方法不需要先执行父接口的 <code>&lt;clinit&gt;()</code> 方法。只有当父接口中定义的变量使用时，父接口才会初始化。另外，接口的实现类在初始化时也一样不会执行接口的 <code>&lt;clinit&gt;()</code> 方法。</li>
-<li><strong>虚拟机会保证一个类的 <code>&lt;clinit&gt;()</code> 方法在多线程环境下被正确的加锁和同步</strong>，<strong>如果多个线程同时初始化一个类，只会有一个线程执行这个类的 <code>&lt;clinit&gt;()</code> 方法</strong>，其它线程都会阻塞等待，直到活动线程执行 <code>&lt;clinit&gt;()</code> 方法完毕。如果在一个类的 <code>&lt;clinit&gt;()</code> 方法中有耗时的操作，就可能造成多个线程阻塞，在实际过程中此种阻塞很隐蔽。</li>
-</ul>
-<blockquote>
-<ol>
-<li>static 语句块，只能访问到定义在 static 语句块之前的变量。所以下面的代码是无法通过编译的。</li>
-<li>JVM 会保证在子类的初始化方法执行之前，父类的初始化方法已经执行完毕。</li>
-</ol>
-</blockquote>
-<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><blockquote>
-<p>如果你在项目代码里，写一个 java.lang 的包，然后改写 String 类的一些行为，编译后，发现并不能生效。JRE 的类当然不能轻易被覆盖，否则会被别有用心的人利用，这就太危险了。</p>
-<p>那类加载器是如何保证这个过程的安全性呢？其实，它是有着严格的等级制度的。</p>
-</blockquote>
-<p>类加载器，实现类的加载动作。在 <strong>Java 虚拟机外部实现</strong>，以便让应用程序自己决定如何去获取所需要的类。</p>
-<h3 id="类与类加载器"><a href="#类与类加载器" class="headerlink" title="类与类加载器"></a>类与类加载器</h3><p>两个类相等：类本身相等，并且使用同一个类加载器进行加载。这是因为每一个类加载器都拥有一个独立的类名称空间。</p>
-<p>这里的相等，包括类的 Class 对象的 equals() 方法、isAssignableFrom() 方法、isInstance() 方法的返回结果为 true，也包括使用 instanceof 关键字做对象所属关系判定结果为 true。</p>
-<h3 id="类加载器分类"><a href="#类加载器分类" class="headerlink" title="类加载器分类"></a>类加载器分类</h3><p>从 Java 虚拟机的角度来讲，只存在以下两种不同的类加载器：</p>
-<ul>
-<li>启动类加载器（Bootstrap ClassLoader），这个类加载器用 C++ 实现，是虚拟机自身的一部分；</li>
-<li>所有其他类的加载器，这些类由 Java 实现，独立于虚拟机外部，并且全都继承自抽象类 java.lang.ClassLoader。</li>
-</ul>
-<p>从 Java 开发人员的角度看，类加载器可以划分得更细致一些：</p>
-<ul>
-<li>启动类加载器（Bootstrap ClassLoader）此类加载器负责将存放在 <JAVA_HOME>\lib 目录中的，或者被 -Xbootclasspath 参数所指定的路径中的，并且是虚拟机识别的（仅按照文件名识别，如 rt.jar，名字不符合的类库即使放在 lib 目录中也不会被加载）类库加载到虚拟机内存中。启动类加载器无法被 Java 程序直接引用，用户在编写自定义类加载器时，如果需要把加载请求委派给启动类加载器，直接使用 null 代替即可。</li>
-<li>扩展类加载器（Extension ClassLoader）这个类加载器是由 ExtClassLoader（sun.misc.Launcher$ExtClassLoader）实现的。它负责将 <JAVA_HOME>&#x2F;lib&#x2F;ext 或者被 java.ext.dir 系统变量所指定路径中的所有类库加载到内存中，开发者可以直接使用扩展类加载器。</li>
-<li>应用程序类加载器（Application ClassLoader）这个类加载器是由 AppClassLoader（sun.misc.Launcher$AppClassLoader）实现的。由于这个类加载器是 ClassLoader 中的 getSystemClassLoader() 方法的返回值，因此一般称为系统类加载器。它负责加载用户类路径（ClassPath）上所指定的类库，开发者可以直接使用这个类加载器，如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。</li>
-</ul>
-<h3 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h3><blockquote>
-<p>但你有没有想过，“类加载的双亲委派机制，双亲在哪里？明明都是单亲？”</p>
-<p>我们还是用一张图来讲解。可以看到，除了启动类加载器，每一个加载器都有一个parent，并没有所谓的双亲。但是由于翻译的问题，这个叫法已经非常普遍了，一定要注意背后的差别。</p>
-</blockquote>
-<p>应用程序都是由三种类加载器相互配合进行加载的，如果有必要，还可以加入自己定义的类加载器。</p>
-<p>下图展示的类加载器之间的层次关系，称为类加载器的双亲委派模型（Parents Delegation Model）。该模型要求除了顶层的启动类加载器外，其余的类加载器都应有自己的父类加载器。这里类加载器之间的父子关系一般通过组合（Composition）关系来实现，而不是通过继承（Inheritance）的关系实现。</p>
-<img src="class_loader.jpg" style="zoom:50%;" />
-
-
-
-
-<p><strong>（一）工作过程</strong></p>
-<p>一个类加载器首先将类加载请求传送到父类加载器，只有当父类加载器无法完成类加载请求时才尝试加载。</p>
-<p><strong>（二）好处</strong></p>
-<p>使得 Java 类随着它的类加载器一起具有一种带有优先级的层次关系，从而使得基础类得到统一。</p>
-<p>例如 java.lang.Object 存放在 rt.jar 中，如果编写另外一个 java.lang.Object 的类并放到 ClassPath 中，程序可以编译通过。因为双亲委派模型的存在，所以在 rt.jar 中的 Object 比在 ClassPath 中的 Object 优先级更高，因为 rt.jar 中的 Object 使用的是启动类加载器，而 ClassPath 中的 Object 使用的是应用程序类加载器。正因为 rt.jar 中的 Object 优先级更高，因为程序中所有的 Object 都是这个 Object。</p>
-<p><strong>（三）实现</strong></p>
-<p>以下是抽象类 java.lang.ClassLoader 的代码片段，其中的 loadClass() 方法运行过程如下：先检查类是否已经加载过，如果没有则让父类加载器去加载。当父类加载器加载失败时抛出 ClassNotFoundException，此时尝试自己去加载。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">ClassLoader</span> &#123;</span><br><span class="line">    <span class="comment">// The parent class loader for delegation</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ClassLoader parent;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Class&lt;?&gt; loadClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        <span class="keyword">return</span> loadClass(name, <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="type">boolean</span> resolve) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (getClassLoadingLock(name)) &#123;</span><br><span class="line">            <span class="comment">// First, check if the class has already been loaded</span></span><br><span class="line">            Class&lt;?&gt; c = findLoadedClass(name);</span><br><span class="line">            <span class="keyword">if</span> (c == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (parent != <span class="literal">null</span>) &#123;</span><br><span class="line">                        c = parent.loadClass(name, <span class="literal">false</span>);</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        c = findBootstrapClassOrNull(name);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                    <span class="comment">// ClassNotFoundException thrown if class not found</span></span><br><span class="line">                    <span class="comment">// from the non-null parent class loader</span></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (c == <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="comment">// If still not found, then invoke findClass in order</span></span><br><span class="line">                    <span class="comment">// to find the class.</span></span><br><span class="line">                    c = findClass(name);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (resolve) &#123;</span><br><span class="line">                resolveClass(c);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> c;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ClassNotFoundException</span>(name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="自定义类加载器实现"><a href="#自定义类加载器实现" class="headerlink" title="自定义类加载器实现"></a>自定义类加载器实现</h3><p>FileSystemClassLoader 是自定义类加载器，继承自 java.lang.ClassLoader，用于加载文件系统上的类。它首先根据类的全名在文件系统上查找类的字节代码文件（.class 文件），然后读取该文件内容，最后通过 defineClass() 方法来把这些字节代码转换成 java.lang.Class 类的实例。</p>
-<p><strong>java.lang.ClassLoader 类的方法<code>loadClass()</code> 实现了双亲委派模型的逻辑（换言之，你可以通过override去打破双亲委派模型）</strong>，因此自定义类加载器一般不去重写它，而是通过重写 findClass() 方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FileSystemClassLoader</span> <span class="keyword">extends</span> <span class="title class_">ClassLoader</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String rootDir;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">FileSystemClassLoader</span><span class="params">(String rootDir)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.rootDir = rootDir;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        <span class="type">byte</span>[] classData = getClassData(name);</span><br><span class="line">        <span class="keyword">if</span> (classData == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ClassNotFoundException</span>();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> defineClass(name, classData, <span class="number">0</span>, classData.length);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">byte</span>[] getClassData(String className) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> classNameToPath(className);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">InputStream</span> <span class="variable">ins</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(path);</span><br><span class="line">            <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">            <span class="type">int</span> <span class="variable">bufferSize</span> <span class="operator">=</span> <span class="number">4096</span>;</span><br><span class="line">            <span class="type">byte</span>[] buffer = <span class="keyword">new</span> <span class="title class_">byte</span>[bufferSize];</span><br><span class="line">            <span class="type">int</span> bytesNumRead;</span><br><span class="line">            <span class="keyword">while</span> ((bytesNumRead = ins.read(buffer)) != -<span class="number">1</span>) &#123;</span><br><span class="line">                baos.write(buffer, <span class="number">0</span>, bytesNumRead);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> baos.toByteArray();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">classNameToPath</span><span class="params">(String className)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> rootDir + File.separatorChar</span><br><span class="line">                + className.replace(<span class="string">&#x27;.&#x27;</span>, File.separatorChar) + <span class="string">&quot;.class&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="一些自定义加载器"><a href="#一些自定义加载器" class="headerlink" title="一些自定义加载器"></a>一些自定义加载器</h3><h4 id="案例一：tomcat"><a href="#案例一：tomcat" class="headerlink" title="案例一：tomcat"></a>案例一：tomcat</h4><img src="tomcat_class_loader.jpg" style="zoom:80%;" />
-
-
-
-<p>我们看到，前面3个类加载和默认的一致，CommonClassLoader、CatalinaClassLoader、SharedClassLoader和WebappClassLoader则是Tomcat自己定义的类加载器，它们分别加载&#x2F;common&#x2F;*、&#x2F;server&#x2F;*、&#x2F;shared&#x2F;*（在tomcat 6之后已经合并到根目录下的lib目录下）和&#x2F;WebApp&#x2F;WEB-INF&#x2F;*中的Java类库。其中WebApp类加载器和Jsp类加载器通常会存在多个实例，每一个Web应用程序对应一个WebApp类加载器，每一个JSP文件对应一个Jsp类加载器。</p>
-<ol>
-<li>commonLoader：Tomcat最基本的类加载器，加载路径中的class可以被Tomcat容器本身以及各个Webapp访问；</li>
-<li>catalinaLoader：Tomcat容器私有的类加载器，加载路径中的class对于Webapp不可见；</li>
-<li>sharedLoader：各个Webapp共享的类加载器，加载路径中的class对于所有Webapp可见，但是对于Tomcat容器不可见；</li>
-<li>webappClassLoader：各个Webapp私有的类加载器，加载路径中的class只对当前Webapp可见；</li>
-</ol>
-<p><strong>对于一些需要加载的非基础类，会由一个叫作 WebAppClassLoader 的类加载器优先加载。等它加载不到的时候，再交给上层的 ClassLoader 进行加载。这个加载器用来隔绝不同应用的 .class 文件</strong>，</p>
-<p><strong>比如你的两个应用，可能会依赖同一个第三方的不同版本，它们是相互没有影响的</strong>。</p>
-<p><strong>如何在同一个 JVM 里，运行着不兼容的两个版本，当然是需要自定义加载器才能完成的事。</strong></p>
-<p>那么 tomcat 是怎么打破双亲委派机制的呢？可以看图中的 WebAppClassLoader，它加载自己目录下的 .class 文件，并不会传递给父类的加载器。但是，</p>
-<p><strong>它却可以使用 SharedClassLoader 所加载的类</strong>，<strong>实现了共享和分离的功能</strong>。<br>但是你自己写一个 ArrayList，放在应用目录里，tomcat 依然不会加载（因为父类加载器有ArrayList）。它只是自定义的加载器顺序不同，但对于顶层来说，还是一样的。</p>
-<blockquote>
-<p>tomcat 违背了java 推荐的双亲委派模型了吗？<br>答案是：违背了。 我们前面说过：<br>双亲委派模型要求除了顶层的启动类加载器之外，其余的类加载器都应当由自己的父类加载器加载。<br>很显然，tomcat 不是这样实现，tomcat 为了实现隔离性，没有遵守这个约定，每个WebappClassLoader加载自己的目录下的class文件，不会传递给父类加载器。</p>
-</blockquote>
-<h3 id="如何替换-JDK-的类"><a href="#如何替换-JDK-的类" class="headerlink" title="如何替换 JDK 的类"></a>如何替换 JDK 的类</h3><p>让我们回到开始的问题，如何替换 JDK 中的类？比如，我们现在就拿 HashMap为例。</p>
-<p>当 Java 的原生 API 不能满足需求时，比如我们要修改 HashMap 类，就必须要使用到 Java 的 endorsed 技术。我们需要将自己的 HashMap 类，打包成一个 jar 包，然后放到 -Djava.endorsed.dirs 指定的目录中。注意类名和包名，应该和 JDK 自带的是一样的。但是，java.lang 包下面的类除外，因为这些都是特殊保护的。</p>
-<p>因为我们上面提到的双亲委派机制，是无法直接在应用中替换 JDK 的原生类的。但是，有时候又不得不进行一下增强、替换，比如你想要调试一段代码，或者比 Java 团队早发现了一个 Bug。所以，Java 提供了 endorsed 技术，用于替换这些类。这个目录下的 jar 包，会比 rt.jar 中的文件，优先级更高，可以被最先加载到。</p>
-
-      
-    </div>
-
-    
     
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">大文件排序</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-20 23:16:05" itemprop="dateCreated datePublished" datetime="2022-03-20T23:16:05+08:00">2022-03-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-04 00:35:05" itemprop="dateModified" datetime="2023-01-04T00:35:05+08:00">2023-01-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">工程向算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="分割-多路归并"><a href="#分割-多路归并" class="headerlink" title="分割+多路归并"></a>分割+多路归并</h1><p>我们可以将一个很大的文件，切分成很多个小文件，使得每个小文件能够单独的装进内存，并将每个小文件进行内排序（快速排序等等），然后再将多个小文件进行多路归并排序，最终得到一个有序的文件。</p>
-<p>多路归并排序在大数据领域也是常用的算法，常用于海量数据排序。当数据量特别大时，这些数据无法被单个机器内存容纳，它需要被切分位多个集合分别由不同的机器进行内存排序（map过程），然后再进行多路归并算法将来自多个不同机器的数据进行排序（reduce 过程），这是流式多路归并排序。</p>
-<p>多路归并排序的优势在于内存消耗极低，它的内存占用和输入文件的数量成正比，和数据总量无关，数据总量只会线性正比影响排序的时间。</p>
-<p><img src="/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/Large_File_Sorting.jpg" alt="img"></p>
-<h1 id="多路归并的几种方案"><a href="#多路归并的几种方案" class="headerlink" title="多路归并的几种方案"></a>多路归并的几种方案</h1><p>多路归并排序有3种思路，分别是使用堆、胜者树、败者数。</p>
-<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p>从 K 个序列中各取一个元素，并记录每个元素的来源数组，建立一个含 K 个元素的小根堆。此时堆顶就是最小的元素，取出堆顶元素，并从堆顶元素的来源序列中取下一个元素放入堆顶，然后向下调整。在向下调整过程中需要和其两个子结点比较，需要比较 2 次。</p>
-<h2 id="胜者树"><a href="#胜者树" class="headerlink" title="胜者树"></a>胜者树</h2><p>胜者树在向上调整的时候首先需要获得父结点，然后再获得兄弟结点，然后再比较。比堆少一半的比较次数。</p>
-<h2 id="败者树"><a href="#败者树" class="headerlink" title="败者树"></a>败者树</h2><p>败者树在向上调整的时候，只需要获得父结点并比较即可。相较于胜者树，它不必获取兄弟结点了，减小了访存时间。</p>
-<h1 id="使用MapReduce解决"><a href="#使用MapReduce解决" class="headerlink" title="使用MapReduce解决"></a>使用MapReduce解决</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FileSystem;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.IntWritable;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.LongWritable;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Job;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.fs.Path;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.Text;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.input.TextInputFormat;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.net.URI;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: SongyangJi</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span>: 2022/3/20</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sort</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyMapper</span> <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;LongWritable, Text, IntWritable, IntWritable&gt; &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">IntWritable</span> <span class="variable">data</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IntWritable</span>(); <span class="comment">//静态变量了解一下</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">map</span><span class="params">(LongWritable key, Text value, Context context)</span></span><br><span class="line">                <span class="keyword">throws</span> IOException, InterruptedException &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">line</span> <span class="operator">=</span> value.toString();</span><br><span class="line">            data.set(Integer.parseInt(line));</span><br><span class="line">            context.write(data, <span class="keyword">new</span> <span class="title class_">IntWritable</span>(<span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyReducer</span> <span class="keyword">extends</span> <span class="title class_">Reducer</span>&lt;IntWritable, IntWritable, IntWritable, Text&gt; &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Text</span> <span class="variable">word</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Text</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">reduce</span><span class="params">(IntWritable key, Iterable&lt;IntWritable&gt; values, Context context)</span></span><br><span class="line">                <span class="keyword">throws</span> IOException, InterruptedException &#123;</span><br><span class="line">            <span class="keyword">for</span> (IntWritable val : values) &#123;</span><br><span class="line">                context.write(key, <span class="keyword">new</span> <span class="title class_">Text</span>());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line">        <span class="type">Job</span> <span class="variable">job</span> <span class="operator">=</span> Job.getInstance(conf, <span class="string">&quot;Sort&quot;</span>);</span><br><span class="line">        <span class="comment">//run jar class 主方法</span></span><br><span class="line">        job.setJarByClass(Sort.class);</span><br><span class="line">        <span class="comment">//设置map</span></span><br><span class="line">        job.setMapperClass(MyMapper.class);</span><br><span class="line">        job.setMapOutputKeyClass(IntWritable.class);</span><br><span class="line">        job.setMapOutputValueClass(IntWritable.class);</span><br><span class="line">        <span class="comment">//设置reduce</span></span><br><span class="line">        job.setReducerClass(MyReducer.class);</span><br><span class="line">        job.setOutputKeyClass(IntWritable.class);</span><br><span class="line">        job.setOutputValueClass(IntWritable.class);</span><br><span class="line">        <span class="comment">//设置input format</span></span><br><span class="line">        job.setInputFormatClass(TextInputFormat.class);</span><br><span class="line">        <span class="comment">//设置output format</span></span><br><span class="line">        job.setOutputFormatClass(TextOutputFormat.class);</span><br><span class="line">        <span class="comment">// 设置输入输出路径</span></span><br><span class="line">        FileInputFormat.addInputPath(job, <span class="keyword">new</span> <span class="title class_">Path</span>(args[<span class="number">0</span>]));</span><br><span class="line">        FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> <span class="title class_">Path</span>(args[<span class="number">1</span>]));</span><br><span class="line">        System.exit(job.waitForCompletion(<span class="literal">true</span>) ? <span class="number">0</span> : <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>参考</p>
-<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1592913">https://cloud.tencent.com/developer/article/1592913</a></p>
-<p><a target="_blank" rel="noopener" href="https://luisstruggle.github.io/blog/Large_File_Sorting.html">https://luisstruggle.github.io/blog/Large_File_Sorting.html</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/11/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-
-<div class="copyright">
-  &copy; 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
-
-    </div>
-  </footer>
-
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-
-
-
-
-  
-
-
-
-
-
 </body>
+
 </html>
