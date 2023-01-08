@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    SpringBoot整合Kafka |  JsyBlog
+    SpringBoot整合Kafka收发消息 |  JsyBlog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -54,7 +54,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  SpringBoot整合Kafka
+  SpringBoot整合Kafka收发消息
 </h1>
  
 
@@ -101,7 +101,8 @@
 
 
 
-<h1 id="note"><a href="#note" class="headerlink" title="note"></a>note</h1><h2 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h2><p>使用SpringBoot,  一个默认配置的 KafkaAdmin 会被注入，可以直接使用。</p>
+
+<h1 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h1><p>使用SpringBoot,  一个默认配置的 KafkaAdmin 会被注入，可以直接使用。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> KafkaAdmin <span class="title">admin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; configs = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="comment">// configs.put(AdminClientConfig.BOOTSTRAPx_SERVERS_CONFIG, ...); </span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> KafkaAdmin(configs);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
@@ -111,11 +112,11 @@
 
 
 
-<h2 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h2><h3 id="使用KafkaTemplate"><a href="#使用KafkaTemplate" class="headerlink" title="使用KafkaTemplate"></a>使用KafkaTemplate</h3><p>使用<code>KafkaTemplate</code>来发送消息, API</p>
+<h1 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h1><h2 id="使用KafkaTemplate"><a href="#使用KafkaTemplate" class="headerlink" title="使用KafkaTemplate"></a>使用KafkaTemplate</h2><p>使用<code>KafkaTemplate</code>来发送消息, API</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 需要设置默认的主题： public void setDefaultTopic(String defaultTopic)</span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; sendDefault(V data);</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; sendDefault(K key, V data);</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; sendDefault(Integer partition, K key, V data);</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; sendDefault(Integer partition, Long timestamp, K key, V data);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.必须指定主题、值（数据）</span></span><br><span class="line"><span class="comment">// 可以指定分区、键、时间戳</span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; send(String topic, V data);</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; send(String topic, K key, V data);</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; send(String topic, Integer partition, K key, V data);</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; send(String topic, Integer partition, Long timestamp, K key, V data);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3.使用 kafka-clients 提供的 ProducerRecord </span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; send(ProducerRecord&lt;K, V&gt; record);</span><br><span class="line"><span class="comment">// 4.使用 spring 封装提供的 message</span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; send(Message&lt;?&gt; message);</span><br></pre></td></tr></table></figure>
 
 <p>返回值值得注意,<code>ListenableFuture</code>是spring提供的拓展了juc下<code>Future</code>接口的增加了添加了回调功能增强版Future。</p>
-<h3 id="发送模式"><a href="#发送模式" class="headerlink" title="发送模式"></a>发送模式</h3><h3 id="fire-and-forget（发完即忘）"><a href="#fire-and-forget（发完即忘）" class="headerlink" title="fire-and-forget（发完即忘）"></a>fire-and-forget（发完即忘）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafkaTemplate.send(...)</span><br></pre></td></tr></table></figure>
+<h2 id="发送模式"><a href="#发送模式" class="headerlink" title="发送模式"></a>发送模式</h2><h3 id="fire-and-forget（发完即忘）"><a href="#fire-and-forget（发完即忘）" class="headerlink" title="fire-and-forget（发完即忘）"></a>fire-and-forget（发完即忘）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafkaTemplate.send(...)</span><br></pre></td></tr></table></figure>
 
 <p>也就是发完之后完全不做任何处理，发送失败也无所谓，比如传送一些日志的时候。</p>
 <h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>因为返回的是 <code>ListenableFuture</code>，所以可以阻塞式的等待结果。</p>
