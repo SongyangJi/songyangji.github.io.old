@@ -1,936 +1,1658 @@
 <!DOCTYPE html>
-
-
 <html lang="zh-CN">
-
-
 <head>
-  <meta charset="utf-8" />
-    
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>
-     JsyBlog
-  </title>
-  <meta name="generator" content="hexo-theme-ayer">
-  
-  <link rel="shortcut icon" href="/images/ayer.png" />
-  
-  
-<link rel="stylesheet" href="/dist/main.css">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
-  
-<link rel="stylesheet" href="/css/custom.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-  
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-  
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="website">
+<meta property="og:title" content="JsyBlog">
+<meta property="og:url" content="http://example.com/page/6/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="SongyangJi">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/page/6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/6/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JsyBlog</title>
   
 
-  
 
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-</html>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-<body>
-  <div id="app">
-    
-      
-      <canvas width="1777" height="841"
-        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
-      
-    <main class="content on">
-      
-<section class="cover">
-    
-  <div class="cover-frame">
-    <div class="bg-box">
-      <img src="/images/cover1.jpg" alt="image frame" />
-    </div>
-    <div class="cover-inner text-center text-white">
-      <h1><a href="/">JsyBlog</a></h1>
-      <div id="subtitle-box">
-        
-        <span id="subtitle"></span>
-        
-      </div>
-      <div>
-        
-        <img
-          src="/images/ayer.svg"
-          class="cover-logo"
-          alt="JsyBlog"
-        />
-        
-      </div>
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
-  <div class="cover-learn-more">
-    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">JsyBlog</h1>
+      <i class="logo-line"></i>
+    </a>
   </div>
-</section>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
-
-
-<!-- Subtitle -->
-
-  <script>
-    try {
-      var typed = new Typed("#subtitle", {
-        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '让风吹干流过的泪和汗，总有一天我有属于我的天'],
-        startDelay: 0,
-        typeSpeed: 200,
-        loop: true,
-        backSpeed: 70,
-        showCursor: true
-      });
-    } catch (err) {
-      console.log(err)
-    }
-  </script>
-  
-<div id="main">
-  <section class="outer">
-  
-  
-  
-
-<div class="notice" style="margin-top:50px">
-    <i class="ri-heart-fill"></i>
-    <div class="notice-content" id="broad"></div>
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
 </div>
-<script type="text/javascript">
-    fetch('https://v1.hitokoto.cn')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("broad").innerHTML = data.hitokoto;
-        })
-        .catch(console.error)
-</script>
 
-<style>
-    .notice {
-        padding: 20px;
-        border: 1px dashed #e6e6e6;
-        color: #969696;
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        background: #fbfbfb50;
-        border-radius: 10px;
-    }
 
-    .notice i {
-        float: left;
-        color: #999;
-        font-size: 16px;
-        padding-right: 10px;
-        vertical-align: middle;
-        margin-top: -2px;
-    }
 
-    .notice-content {
-        display: initial;
-        vertical-align: middle;
-    }
-</style>
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
   
-  <article class="articles">
-    
-    
-    
-    
-    <article
-  id="post-Zookeeper"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/26/Zookeeper/"
-    >Zookeeper</a> 
-</h2>
- 
+  <aside class="sidebar">
 
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/26/Zookeeper/" class="article-date">
-  <time datetime="2022-09-26T03:01:58.000Z" itemprop="datePublished">2022-09-26</time>
-</a>    
-    </div>
-       
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
 
-   
-    
-</article>
-
-    
-    <article
-  id="post-CountDownLatch、CyclicBarrier、Semaphore"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/26/CountDownLatch%E3%80%81CyclicBarrier%E3%80%81Semaphore/"
-    >CountDownLatch、CyclicBarrier、Semaphore</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/26/CountDownLatch%E3%80%81CyclicBarrier%E3%80%81Semaphore/" class="article-date">
-  <time datetime="2022-09-25T19:53:22.000Z" itemprop="datePublished">2022-09-26</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JUC/">JUC</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-生产者、消费者模式"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/26/%E7%94%9F%E4%BA%A7%E8%80%85%E3%80%81%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%BC%8F/"
-    >生产者、消费者模式</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/26/%E7%94%9F%E4%BA%A7%E8%80%85%E3%80%81%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%BC%8F/" class="article-date">
-  <time datetime="2022-09-25T18:51:27.000Z" itemprop="datePublished">2022-09-26</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-Java线程状态转化"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/"
-    >Java线程基本知识</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/" class="article-date">
-  <time datetime="2022-09-25T09:00:01.000Z" itemprop="datePublished">2022-09-25</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/">Java多线程</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-操作系统——进程调度算法"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/"
-    >操作系统——进程与线程、调度算法</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" class="article-date">
-  <time datetime="2022-09-22T17:47:05.000Z" itemprop="datePublished">2022-09-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-操作系统——页面置换算法"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/"
-    >操作系统——页面置换算法</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/" class="article-date">
-  <time datetime="2022-09-22T17:46:02.000Z" itemprop="datePublished">2022-09-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-Redis大Key问题"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/21/Redis%E5%A4%A7Key%E9%97%AE%E9%A2%98/"
-    >Redis大Key问题</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/21/Redis%E5%A4%A7Key%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2022-09-21T07:14:47.000Z" itemprop="datePublished">2022-09-21</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Redis/">Redis</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-Redis的实战小例子"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/"
-    >Redis的实战小例子</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/" class="article-date">
-  <time datetime="2022-09-21T07:14:47.000Z" itemprop="datePublished">2022-09-21</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Redis/">Redis</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-海量数据问题解决"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"
-    >海量数据问题解决</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="article-date">
-  <time datetime="2022-09-14T17:05:26.000Z" itemprop="datePublished">2022-09-15</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/">工程向算法</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-字典树"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/13/%E5%AD%97%E5%85%B8%E6%A0%91/"
-    >字典树 —— Trie</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/13/%E5%AD%97%E5%85%B8%E6%A0%91/" class="article-date">
-  <time datetime="2022-09-13T08:14:57.000Z" itemprop="datePublished">2022-09-13</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-  </article>
-  
-
-  
-  <nav class="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
   </nav>
-  
-</section>
 </div>
 
-      <footer class="footer">
-  <div class="outer">
-    <ul>
-      <li>
-        Copyrights &copy;
-        2020-2023
-        <i class="ri-heart-fill heart_icon"></i> SongyangJi
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-      </li>
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      <li>
-        <!-- cnzz统计 -->
-        
-        <script type="text/javascript" src=''></script>
-        
-      </li>
-    </ul>
-  </div>
-</footer>
-      <div class="float_btns">
-        <div class="totop" id="totop">
-  <i class="ri-arrow-up-line"></i>
-</div>
-
-<div class="todark" id="todark">
-  <i class="ri-moon-line"></i>
-</div>
-
+        </div>
       </div>
-    </main>
-    <aside class="sidebar on">
-      <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
-  </div>
-  
-  <ul class="nav nav-main">
+    </div>
+
     
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">主页</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">归档</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/categories">分类</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/tags">标签</a>
-    </li>
-    
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      
-      <a class="nav-item-link nav-item-search"  title="搜索">
-        <i class="ri-search-line"></i>
-      </a>
-      
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-    </aside>
-    <script>
-      if (window.matchMedia("(max-width: 768px)").matches) {
-        document.querySelector('.content').classList.remove('on');
-        document.querySelector('.sidebar').classList.remove('on');
-      }
-    </script>
-    <div id="mask"></div>
+  </aside>
 
-<!-- #reward -->
-<div id="reward">
-  <span class="close"><i class="ri-close-line"></i></span>
-  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
-  <div class="reward-box">
-    
-    
-  </div>
-</div>
-    
-<script src="/js/jquery-2.0.3.min.js"></script>
-
-
-<script src="/js/lazyload.min.js"></script>
-
-<!-- Tocbot -->
-
-<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
-<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
-
-<script src="/dist/main.js"></script>
-
-<!-- ImageViewer -->
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
 
     </div>
 
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/26/Zookeeper/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/26/Zookeeper/" class="post-title-link" itemprop="url">Zookeeper</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-26 11:01:58 / 修改时间：11:22:12" itemprop="dateCreated datePublished" datetime="2022-09-26T11:01:58+08:00">2022-09-26</time>
+    </span>
+
+  
 </div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
-
-<script>
-    function viewer_init() {
-        let pswpElement = document.querySelectorAll('.pswp')[0];
-        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
-
-        $imgArr.forEach(($em, i) => {
-            $em.onclick = () => {
-                // slider展开状态
-                // todo: 这样不好，后面改成状态
-                if (document.querySelector('.left-col.show')) return
-                let items = []
-                $imgArr.forEach(($em2, i2) => {
-                    let img = $em2.getAttribute('data-idx', i2)
-                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
-                    let title = $em2.getAttribute('alt')
-                    // 获得原图尺寸
-                    const image = new Image()
-                    image.src = src
-                    items.push({
-                        src: src,
-                        w: image.width || $em2.width,
-                        h: image.height || $em2.height,
-                        title: title
-                    })
-                })
-                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
-                    index: parseInt(i)
-                });
-                gallery.init()
-            }
-        })
-    }
-    viewer_init()
-</script>
-
-<!-- MathJax -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-  });
-
-  MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for(i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-  });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-  var ayerConfig = {
-    mathjax: true
-  }
-</script>
-
-<!-- Katex -->
-
+        </div>
+      </header>
 
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
-        
-            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
-        
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="节点类型"><a href="#节点类型" class="headerlink" title="节点类型"></a>节点类型</h1><p>1.持久节点(PERSISTENT)<br>持久节点，创建后一直存在，直到主动删除此节点。</p>
+<p>2.持久顺序节点(PERSISTENT_SEQUENTIAL)<br>持久顺序节点，创建后一直存在，直到主动删除此节点。在ZK中，每个父节点会为它的第一级子节点维护一份时序，记录每个子节点创建的先后顺序。</p>
+<p>3.临时节点(EPHEMERAL)<br>临时节点在客户端会话失效后节点自动清除。临时节点下面不能创建子节点。</p>
+<p>4.临时顺序节点(EPHEMERAL_SEQUENTIAL)<br>临时节点在客户端会话失效后节点自动清除。临时节点下面不能创建子节点。父节点getChildren会获得顺序的节点列表。</p>
+<h1 id="有哪几种角色"><a href="#有哪几种角色" class="headerlink" title="有哪几种角色"></a>有哪几种角色</h1><ol>
+<li>Leader</li>
+</ol>
+<p>（1）事务请求的唯一调度和处理者，保证集群事务处理的顺序性</p>
+<p>（2）集群内部各服务的调度者</p>
+<ol start="2">
+<li>Follower</li>
+</ol>
+<p>（1）处理客户端的非事务请求，转发事务请求给 Leader 服务器</p>
+<p>（2）参与事务请求 Proposal 的投票</p>
+<p>（3）参与 Leader 选举投票</p>
+<ol start="3">
+<li>Observer</li>
+</ol>
+<p>3.3.0 版本以后引入的一个服务器角色，在不影响集群事务处理能力的基础上提升集群的非事务处理能力</p>
+<p>（1）处理客户端的非事务请求，转发事务请求给 Leader 服务器</p>
+<p>（2）不参与任何形式的投票</p>
+<h1 id="使用案例"><a href="#使用案例" class="headerlink" title="使用案例"></a>使用案例</h1><ul>
+<li>服务注册与订阅（共用节点）</li>
+<li>分布式通知（监听znode）</li>
+<li>服务命名（znode特性）</li>
+<li>数据订阅、发布（watcher）</li>
+<li>分布式锁（临时节点）</li>
+</ul>
+<h2 id="分布式屏障（通知）"><a href="#分布式屏障（通知）" class="headerlink" title="分布式屏障（通知）"></a>分布式屏障（通知）</h2><p>分布式系统使用<em>障碍</em>来阻止对一组节点的处理，直到满足一个条件，此时所有节点都被允许继续进行。在 ZooKeeper 中通过指定一个屏障节点来实现屏障。如果屏障节点存在，则屏障就位。这是伪代码：</p>
+<ol>
+<li>客户端在屏障节点上调用 ZooKeeper API 的<strong>exists()函数，并将</strong><em>watch</em>设置为 true。</li>
+<li>如果**exists()**返回 false，则障碍消失，客户端继续</li>
+<li>否则，如果**exists()**返回 true，则客户端等待 ZooKeeper 为屏障节点发送监视事件。</li>
+<li>当 watch 事件被触发时，客户端重新发出**exists()**调用，再次等待直到屏障节点被移除。</li>
+</ol>
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>全局同步的完全分布式锁，这意味着在任何时间快照中，没有两个客户端认为他们持有相同的锁。这些可以使用 ZooKeeper 来实现。与优先级队列一样，首先定义一个锁节点。</p>
+<blockquote>
+<p>ZooKeeper recipes 目录中现在存在一个 Lock 实现。这与发布工件的发布 - zookeeper-recipes&#x2F;zookeeper-recipes-lock 目录一起分发。</p>
+</blockquote>
+<p>希望获得锁的客户端执行以下操作：</p>
+<ol>
+<li>使用路径名为“ <em>locknode</em> &#x2F;guid-lock-”并设置<em>序列</em>和<em>临时</em>标志调用<strong>create() 。</strong>如果缺少 create() 结果，则需要该<em>guid 。</em>请参阅下面的注释。</li>
+<li><em>在不</em>设置监视标志的情况下在锁定节点上调用**getChildren()**（这对于避免羊群效应很重要）。</li>
+<li>如果在步骤<strong>1</strong>中创建的路径名具有最小的序列号后缀，则客户端具有锁定并且客户端退出协议。</li>
+<li>客户端调用**exists( )**并在锁定目录中的路径上设置了监视标志，并具有下一个最低序列号。</li>
+<li>如果<strong>exists( )<strong>返回null，则转到步骤</strong>2</strong>。否则，请等待上一步的路径名通知，然后再转到第<strong>2</strong>步。</li>
+</ol>
+<p>解锁协议非常简单：希望释放锁的客户端只需删除他们在步骤 1 中创建的节点。</p>
+<p>这里有几点需要注意：</p>
+<ul>
+<li>删除一个节点只会导致一个客户端唤醒，因为每个节点都被一个客户端监视。通过这种方式，您可以避免羊群效应。</li>
+<li>没有轮询或超时。</li>
+<li>由于您实现锁定的方式，很容易看到锁定争用、中断锁定、调试锁定问题等的数量。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
     
 
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
 
-<!-- busuanzi  -->
-
-<!-- ClickLove -->
-
-<!-- ClickBoom1 -->
-
-<!-- ClickBoom2 -->
-
-
-<script src="/js/clickBoom2.js"></script>
-
-
-<!-- CodeCopy -->
-
-
-<link rel="stylesheet" href="/css/clipboard.css">
-
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-<script>
-  function wait(callback, seconds) {
-    var timelag = null;
-    timelag = window.setTimeout(callback, seconds);
-  }
-  !function (e, t, a) {
-    var initCopyCode = function(){
-      var copyHtml = '';
-      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
-      copyHtml += '</button>';
-      $(".highlight .code pre").before(copyHtml);
-      $(".article pre code").before(copyHtml);
-      var clipboard = new ClipboardJS('.btn-copy', {
-        target: function(trigger) {
-          return trigger.nextElementSibling;
-        }
-      });
-      clipboard.on('success', function(e) {
-        let $btn = $(e.trigger);
-        $btn.addClass('copied');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-checkbox-circle-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPIED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-checkbox-circle-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
-      clipboard.on('error', function(e) {
-        e.clearSelection();
-        let $btn = $(e.trigger);
-        $btn.addClass('copy-failed');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-time-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPY FAILED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-time-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
-    }
-    initCopyCode();
-  }(window, document);
-</script>
-
-
-<!-- CanvasBackground -->
-
-
-<script src="/js/dz.js"></script>
 
 
 
     
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/26/CountDownLatch%E3%80%81CyclicBarrier%E3%80%81Semaphore/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/26/CountDownLatch%E3%80%81CyclicBarrier%E3%80%81Semaphore/" class="post-title-link" itemprop="url">CountDownLatch、CyclicBarrier、Semaphore</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-26 03:53:22 / 修改时间：11:37:00" itemprop="dateCreated datePublished" datetime="2022-09-26T03:53:22+08:00">2022-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JUC/" itemprop="url" rel="index"><span itemprop="name">JUC</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h1><p><strong>发令枪</strong>（通知后，一组线程才开始工作）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">CountDownLatch</span> <span class="variable">cdl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CountDownLatch</span>(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> i;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    cdl.await();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;end &quot;</span> + x);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">        Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        cdl.countDown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>屏障</strong>（一组线程完成后，主线程工作）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> <span class="number">5</span>;</span><br><span class="line">        <span class="type">CountDownLatch</span> <span class="variable">cdl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CountDownLatch</span>(N);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> i;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;end &quot;</span> + x);</span><br><span class="line">                cdl.countDown();</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">        cdl.await();</span><br><span class="line">        System.out.println(<span class="string">&quot;end main&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a>CyclicBarrier</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>CountDownLatch: 一个线程(或者多个)， 等待另外N个线程完成某个事情之后才能执行。</p>
+<p>CyclicBarrier: N个线程相互等待，任何一个线程完成之前，所有的线程都必须等待。</p>
+<p>这样应该就清楚一点了，对于CountDownLatch来说，重点是那个“一个线程”, 是它在等待， 而另外那N的线程在把“某个事情”做完之后可以继续等待，可以终止。而对于CyclicBarrier来说，重点是那N个线程，他们之间任何一个没有完成，所有的线程都必须等待。</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1648906">CycliBarriar和CountdownLatch有什么区别</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/26/%E7%94%9F%E4%BA%A7%E8%80%85%E3%80%81%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/26/%E7%94%9F%E4%BA%A7%E8%80%85%E3%80%81%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">生产者、消费者模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-26 02:51:27" itemprop="dateCreated datePublished" datetime="2022-09-26T02:51:27+08:00">2022-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-28 09:59:23" itemprop="dateModified" datetime="2022-09-28T09:59:23+08:00">2022-09-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="使用-Semaphore和循环数组"><a href="#使用-Semaphore和循环数组" class="headerlink" title="使用 Semaphore和循环数组"></a>使用 Semaphore和循环数组</h1><ul>
+<li><strong>使用信号量限制对有限资源的访问</strong></li>
+<li><strong>使用二进制信号量实现锁</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.Semaphore;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: Song yang Ji</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ProjectName</span>: learn-multiThread</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProducerThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="type">int</span> rate;</span><br><span class="line">    MultiProducerConsumer multiProducerConsumer;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ProducerThread</span><span class="params">(<span class="type">int</span> rate, MultiProducerConsumer multiProducerConsumer)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.multiProducerConsumer = multiProducerConsumer;</span><br><span class="line">        <span class="built_in">this</span>.rate = rate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                multiProducerConsumer.produce();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(rate);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConsumerThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="type">int</span> rate;</span><br><span class="line">    MultiProducerConsumer multiProducerConsumer;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ConsumerThread</span><span class="params">(<span class="type">int</span> rate,MultiProducerConsumer multiProducerConsumer)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.rate = rate;</span><br><span class="line">        <span class="built_in">this</span>.multiProducerConsumer = multiProducerConsumer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                multiProducerConsumer.consume();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(rate);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MultiProducerConsumer</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 默认缓冲区的长度</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_BUFFER_SIZE</span> <span class="operator">=</span> <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> bufferSize;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 缓冲数组</span></span><br><span class="line">    <span class="type">char</span>[] bufferArray;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 生产者放置产品的位置、消费者获取产品的位置 (如果是 AtomicInteger， 生产者（消费者）自身就不需要互斥了)</span></span><br><span class="line">    <span class="type">int</span> putPos, pollPos;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 生产者使用缓冲的信号量、消费者消费产品的信号量</span></span><br><span class="line">    Semaphore bufferSemaphore, availableSemaphore;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用二级制信号量实现生产者、消费者各自的互斥锁，（Lock 或者其他锁形式也都是可以的）</span></span><br><span class="line">    Semaphore producerMutex, consumerMutex;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MultiProducerConsumer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(DEFAULT_BUFFER_SIZE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MultiProducerConsumer</span><span class="params">(<span class="type">int</span> bufferSize)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.bufferSize = bufferSize;</span><br><span class="line"></span><br><span class="line">        bufferArray = <span class="keyword">new</span> <span class="title class_">char</span>[bufferSize];</span><br><span class="line"></span><br><span class="line">        bufferSemaphore = <span class="keyword">new</span> <span class="title class_">Semaphore</span>(DEFAULT_BUFFER_SIZE);</span><br><span class="line">        availableSemaphore = <span class="keyword">new</span> <span class="title class_">Semaphore</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        producerMutex = <span class="keyword">new</span> <span class="title class_">Semaphore</span>(<span class="number">1</span>);</span><br><span class="line">        consumerMutex = <span class="keyword">new</span> <span class="title class_">Semaphore</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 生产者生产产品</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">produce</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="comment">// 若缓冲区已满，则阻塞</span></span><br><span class="line">        bufferSemaphore.acquire();</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> pos;</span><br><span class="line">        <span class="comment">// 原子地获取下一个放置的位置</span></span><br><span class="line">        producerMutex.acquire();</span><br><span class="line">        pos = putPos;</span><br><span class="line">        putPos = (putPos + <span class="number">1</span>) % bufferSize; <span class="comment">// 循环下移</span></span><br><span class="line">        <span class="comment">// 唤醒另一个因互斥而阻塞的生产者</span></span><br><span class="line">        producerMutex.release();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 执行生产操作 (可能耗时很大)</span></span><br><span class="line">        <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> (<span class="type">char</span>) ((<span class="type">int</span>) <span class="string">&#x27;A&#x27;</span> + pos);</span><br><span class="line">        bufferArray[pos] = c;</span><br><span class="line">        System.out.printf(<span class="string">&quot;生产者 %s 放置产品 %c 到 buffer[%d]\n&quot;</span>, Thread.currentThread().getName(), c, pos);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 唤醒可能的消费者消费</span></span><br><span class="line">        availableSemaphore.release();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">consume</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="comment">// 若缓冲区暂无产品消费，则阻塞</span></span><br><span class="line">        availableSemaphore.acquire();</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> pos;</span><br><span class="line">        <span class="comment">// 原子地获取下一个消费的位置</span></span><br><span class="line">        consumerMutex.acquire();</span><br><span class="line">        pos = pollPos;</span><br><span class="line">        pollPos = (pollPos + <span class="number">1</span>) % bufferSize; <span class="comment">// 循环下移</span></span><br><span class="line">        <span class="comment">// 唤醒另一个因互斥而阻塞的消费者</span></span><br><span class="line">        consumerMutex.release();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 执行消费操作 (可能耗时很大)</span></span><br><span class="line">        <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> bufferArray[pos];</span><br><span class="line">        System.out.printf(<span class="string">&quot;消费者 %s 在 buffer[%d] 消费产品 %c\n&quot;</span>, Thread.currentThread().getName(), pos, c);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 唤醒可能的生产者继续生产</span></span><br><span class="line">        bufferSemaphore.release();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">MultiProducerConsumer</span> <span class="variable">multiProducerConsumer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MultiProducerConsumer</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= <span class="number">3</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">ProducerThread</span>(i,multiProducerConsumer).start();</span><br><span class="line">        &#125;</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= <span class="number">3</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">ConsumerThread</span>(i,multiProducerConsumer).start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="H2O生成"><a href="#H2O生成" class="headerlink" title="H2O生成"></a>H2O生成</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/building-h2o/">https://leetcode.cn/problems/building-h2o/</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Condition;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Lock;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">H2O</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">Lock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> numOfO; <span class="comment">// O的生产缓冲队列</span></span><br><span class="line">    <span class="type">int</span> numOfH; <span class="comment">// H的生产缓冲队列</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 可以生产O的条件</span></span><br><span class="line">    <span class="type">Condition</span> <span class="variable">oCondition</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line">    <span class="comment">// 可以生产H的条件</span></span><br><span class="line">    <span class="type">Condition</span> <span class="variable">hCondition</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">H2O</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">ableGenerate</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> numOfO == <span class="number">1</span> &amp;&amp; numOfH == <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">reset</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.numOfO = <span class="built_in">this</span>.numOfH = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hydrogen</span><span class="params">(Runnable releaseHydrogen)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (numOfH == <span class="number">2</span>) &#123;</span><br><span class="line">                hCondition.await();</span><br><span class="line">            &#125;</span><br><span class="line">            numOfH++;</span><br><span class="line">            releaseHydrogen.run();</span><br><span class="line">            <span class="keyword">if</span> (ableGenerate()) &#123;</span><br><span class="line">                reset();</span><br><span class="line">                oCondition.signalAll();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">oxygen</span><span class="params">(Runnable releaseOxygen)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (numOfO == <span class="number">1</span>) &#123;</span><br><span class="line">                oCondition.await();</span><br><span class="line">            &#125;</span><br><span class="line">            releaseOxygen.run();</span><br><span class="line">            numOfO++;</span><br><span class="line">            <span class="keyword">if</span> (ableGenerate()) &#123;</span><br><span class="line">                reset();</span><br><span class="line">                hCondition.signalAll();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/" class="post-title-link" itemprop="url">Java线程基本知识</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 17:00:01" itemprop="dateCreated datePublished" datetime="2022-09-25T17:00:01+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-05 00:56:12" itemprop="dateModified" datetime="2023-01-05T00:56:12+08:00">2023-01-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">Java多线程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="多线程使用方式"><a href="#多线程使用方式" class="headerlink" title="多线程使用方式"></a>多线程使用方式</h1><h2 id="1-直接继承Thread"><a href="#1-直接继承Thread" class="headerlink" title="1. 直接继承Thread"></a>1. 直接继承Thread</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;here&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">MyThread</span> <span class="variable">myThread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        myThread.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-实现Runnable"><a href="#2-实现Runnable" class="headerlink" title="2. 实现Runnable"></a>2. 实现Runnable</h2><ol>
+<li>传入Thread</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;here&quot;</span>);</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="2">
+<li>线程池池化</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        Executors.newCachedThreadPool().submit(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;here&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// or lambda</span></span><br><span class="line">        Executors.newCachedThreadPool().submit(() -&gt; System.out.println(<span class="string">&quot;here&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-使用Callable"><a href="#3-使用Callable" class="headerlink" title="3. 使用Callable"></a>3. 使用Callable</h2><ul>
+<li>Callable接口类似于Runnable，需要<strong>实现接口中的call()方法</strong>。但是，Runnable不返回结果，也不能抛出已检查的异常。</li>
+<li>Runnable接口提供run()方法支持用户定义线程的执行体，而Callable中提供call()方法。<ul>
+<li><strong>拥有返回值</strong>。</li>
+<li><strong>允许抛出异常</strong>。</li>
+</ul>
+</li>
+<li>通过泛型我们可以知道，Callable接口中的形参类型需要和call方法返回值类型相同。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.Callable;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Future;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">ExecutorService</span> <span class="variable">pool</span> <span class="operator">=</span> Executors.newCachedThreadPool();</span><br><span class="line">        Future&lt;String&gt; future = pool.submit(<span class="keyword">new</span> <span class="title class_">Callable</span>&lt;String&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> String <span class="title function_">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// or lambda</span></span><br><span class="line"><span class="comment">//        pool.submit(() -&gt; &quot;Hello&quot;);</span></span><br><span class="line">        System.out.println(future.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-使用FutureTask"><a href="#4-使用FutureTask" class="headerlink" title="4. 使用FutureTask"></a>4. 使用FutureTask</h2><p>通过继承关系可以发现，<code>RunnableFuture</code>接口同时继承了<code>Runnable</code>和<code>Future</code>接口，意味着实现<code>RunnableFuture</code>接口的类既是Runnable的是实现类，又是Future的实现类。FutureTask就是充当这样的角色，<strong>它的实例可以作为target传入Thread的构造器中。</strong></p>
+<p>通过查看源码，可以发现<strong>FutureTask内部维护了一个Callable的对象</strong>，可以通过下面的这个构造器初始化Callable对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        FutureTask&lt;String&gt; futureTask = <span class="keyword">new</span> <span class="title class_">FutureTask</span>&lt;&gt;(<span class="keyword">new</span> <span class="title class_">Callable</span>&lt;String&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> String <span class="title function_">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;here&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// 1. Thread</span></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(futureTask).start();</span><br><span class="line">        <span class="comment">// 2. pooled</span></span><br><span class="line">        Executors.newCachedThreadPool().submit(futureTask);</span><br><span class="line">        System.out.println(futureTask.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-使用CompletableFuture"><a href="#5-使用CompletableFuture" class="headerlink" title="5. 使用CompletableFuture"></a>5. 使用CompletableFuture</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903594165026829">https://juejin.cn/post/6844903594165026829</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="状态变化"><a href="#状态变化" class="headerlink" title="状态变化"></a>状态变化</h1><p><code>java.lang.Thread.State</code>枚举类中定义了六种线程的状态，可以调用线程Thread中的<code>getState()</code>方法<strong>获取当前线程的状态</strong>。</p>
+<table>
+<thead>
+<tr>
+<th align="left">线程状态</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">NEW</td>
+<td align="left">尚未启动的线程状态，即线程创建，<strong>还未调用start方法</strong></td>
+</tr>
+<tr>
+<td align="left">RUNNABLE</td>
+<td align="left"><strong>就绪状态</strong>（调用start，等待调度）+<strong>正在运行</strong></td>
+</tr>
+<tr>
+<td align="left">BLOCKED</td>
+<td align="left"><strong>等待监视器锁</strong>时，陷入阻塞状态</td>
+</tr>
+<tr>
+<td align="left">WAITING</td>
+<td align="left">等待状态的线程正在<strong>等待</strong>另一线程执行特定的操作（如notify）</td>
+</tr>
+<tr>
+<td align="left">TIMED_WAITING</td>
+<td align="left">具有<strong>指定等待时间</strong>的等待状态</td>
+</tr>
+<tr>
+<td align="left">TERMINATED</td>
+<td align="left">线程完成执行，<strong>终止状态</strong></td>
+</tr>
+</tbody></table>
+<p><img src="/2022/09/25/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E5%8C%96/java-thread-state-transfer.png"></p>
+<h2 id="一、新建状态-NEW"><a href="#一、新建状态-NEW" class="headerlink" title="一、新建状态(NEW)"></a>一、新建状态(NEW)</h2><p>即用<strong>new关键字</strong>新建一个线程，这个线程就处于<strong>新建状态</strong>。</p>
+<h2 id="二、运行状态-RUNNABLE"><a href="#二、运行状态-RUNNABLE" class="headerlink" title="二、运行状态(RUNNABLE)"></a>二、运行状态(RUNNABLE)</h2><p>操作系统中的就绪和运行两种状态，在Java中统称为RUNNABLE。</p>
+<h3 id="就绪状态（READY"><a href="#就绪状态（READY" class="headerlink" title="就绪状态（READY)"></a>就绪状态（READY)</h3><p>当线程对象调用了<code>start()</code>方法之后，线程处于<strong>就绪状态</strong>，就绪意味着该线程<strong>可以执行</strong>，但具体啥时候执行将取决于JVM里线程调度器的调度。</p>
+<blockquote>
+<p>It is never legal to start a thread more than once. In particular, a thread may not be restarted once it has completed execution.</p>
+</blockquote>
+<ul>
+<li>不允许对一个线程多次使用start。</li>
+<li>线程执行完成之后，不能试图用start将其唤醒。</li>
+</ul>
+<h4 id="其他状态-gt-就绪"><a href="#其他状态-gt-就绪" class="headerlink" title="其他状态 -&gt;就绪"></a>其他状态 -&gt;就绪</h4><ul>
+<li>线程调用start()，新建状态转化为就绪状态。</li>
+<li>线程sleep(long)时间到，等待状态转化为就绪状态。</li>
+<li>阻塞式IO操作结果返回，线程变为就绪状态。</li>
+<li>其他线程调用join()方法，结束之后转化为就绪状态。</li>
+<li>线程对象拿到对象锁之后，也会进入就绪状态。</li>
+</ul>
+<h3 id="运行状态-RUNNING"><a href="#运行状态-RUNNING" class="headerlink" title="运行状态(RUNNING)"></a>运行状态(RUNNING)</h3><p>处于就绪状态的线程获得了CPU之后，<strong>真正开始执行run()方法的线程执行体时</strong>，意味着该线程就已经处于<strong>运行状态</strong>。需要注意的是，<strong>对于单处理器，一个时刻只能有一个线程处于运行状态。</strong><br>对于抢占式策略的系统来说，系统会给每个线程一小段时间处理各自的任务。时间用完之后，系统负责夺回线程占用的资源。下一段时间里，系统会根据一定规则，再次进行调度。</p>
+<p><strong>运行状态转变为就绪状态</strong>的情形：</p>
+<ul>
+<li>线程失去处理器资源。线程不一定完整执行的，执行到一半，说不定就被别的线程抢走了。</li>
+<li>调用yield()静态方法，暂时暂停当前线程，让系统的线程调度器重新调度一次，它自己完全有可能再次运行。</li>
+</ul>
+<p>yield方法的官方解释：</p>
+<blockquote>
+<p>A hint to the scheduler that the current thread is willing to yield its current use of a processor. The scheduler is free to ignore this hint.</p>
+</blockquote>
+<p>提示调度程序，当前线程愿意放弃当前对处理器的使用。这时，<strong>当前线程将会被置为就绪状态</strong>，和其他线程一样等待调度，这时候根据不同<strong>优先级</strong>决定的<strong>概率</strong>，当前线程完全有可能再次抢到处理器资源。</p>
+<h2 id="三、阻塞状态-BLOCKED"><a href="#三、阻塞状态-BLOCKED" class="headerlink" title="三、阻塞状态(BLOCKED)"></a>三、阻塞状态(BLOCKED)</h2><p>阻塞状态表示线程<strong>正等待监视器锁</strong>，而陷入的状态。</p>
+<p>以下场景线程将会阻塞：</p>
+<ul>
+<li>线程等待进入synchronized同步方法。</li>
+<li>线程等待进入synchronized同步代码块。</li>
+</ul>
+<p>线程取得锁，就会从阻塞状态转变为就绪状态。</p>
+<h2 id="四、等待状态-WAITING"><a href="#四、等待状态-WAITING" class="headerlink" title="四、等待状态(WAITING)"></a>四、等待状态(WAITING)</h2><p>进入该状态表示<strong>当前线程需要等待其他线程做出一些的特定的动作</strong>（通知或中断）。</p>
+<h3 id="运行-gt-等待"><a href="#运行-gt-等待" class="headerlink" title="运行-&gt;等待"></a>运行-&gt;等待</h3><ul>
+<li>当前线程运行过程中，其他线程调用<code>join</code>方法，当前线程将会进入等待状态。</li>
+<li>当前线程对象调用<code>wait()</code>方法。<br>-<code>LockSupport.park()</code>：出于线程调度的目的<strong>禁用当前线程</strong>。</li>
+</ul>
+<h3 id="等待-gt-就绪"><a href="#等待-gt-就绪" class="headerlink" title="等待-&gt;就绪"></a>等待-&gt;就绪</h3><ul>
+<li>等待的线程<strong>被其他线程对象唤醒</strong>，<code>notify()</code>和<code>notifyAll()</code>。</li>
+<li><code>LockSupport.unpark(Thread)</code>，与上面park方法对应，给出许可证，<strong>解除等待状态</strong>。</li>
+</ul>
+<h2 id="五、超时等待状态-TIMED-WAITING"><a href="#五、超时等待状态-TIMED-WAITING" class="headerlink" title="五、超时等待状态(TIMED_WAITING)"></a>五、超时等待状态(TIMED_WAITING)</h2><p>区别于<code>WAITING</code>，它可以在<strong>指定的时间</strong>自行返回。</p>
+<h3 id="运行-gt-超时等待"><a href="#运行-gt-超时等待" class="headerlink" title="运行-&gt;超时等待"></a>运行-&gt;超时等待</h3><ul>
+<li>调用静态方法，<code>Thread.sleep(long)</code></li>
+<li>线程对象调用<code>wait(long)</code>方法</li>
+<li>其他线程调用指定时间的<code>join(long)</code>。</li>
+<li><code>LockSupport.parkNanos()</code>。</li>
+<li><code>LockSupport.parkUntil()</code>。</li>
+</ul>
+<p>补充：<br>sleep和yield的不同之处：</p>
+<ul>
+<li>sleep(long)方法会<strong>使线程转入超时等待状态</strong>，时间到了之后才会转入就绪状态。而yield()方法不会将线程转入等待，而是强制线程进入就绪状态。</li>
+<li>使用sleep(long)方法<strong>需要处理异常</strong>，而yield()不用。</li>
+</ul>
+<h3 id="超时等待-gt-就绪"><a href="#超时等待-gt-就绪" class="headerlink" title="超时等待-&gt;就绪"></a>超时等待-&gt;就绪</h3><ul>
+<li>同样的，等待的线程被其他线程对象唤醒，<code>notify()</code>和<code>notifyAll()</code>。</li>
+<li><code>LockSupport.unpark(Thread)</code>。</li>
+</ul>
+<h2 id="六、消亡状态"><a href="#六、消亡状态" class="headerlink" title="六、消亡状态"></a>六、消亡状态</h2><p>即<strong>线程的终止</strong>，表示线程已经执行完毕。前面已经说了，已经消亡的线程不能通过start再次唤醒。</p>
+<ul>
+<li>run()和call()线程执行体中顺利执行完毕，<strong>线程正常终止</strong>。</li>
+<li>线程抛出一个没有捕获的Exception或Error。</li>
+</ul>
+<p>需要注意的是：主线成和子线程互不影响，子线程并不会因为主线程结束就结束。</p>
+<blockquote>
+<p>参考文章</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/summerday152/p/12288671.html">https://www.cnblogs.com/summerday152/p/12288671.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">操作系统——进程与线程、调度算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-23 01:47:05 / 修改时间：15:57:05" itemprop="dateCreated datePublished" datetime="2022-09-23T01:47:05+08:00">2022-09-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="进程状态机"><a href="#进程状态机" class="headerlink" title="进程状态机"></a>进程状态机</h2><p><img src="/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/640.png" alt="图片"></p>
+<ol>
+<li>阻塞一般是当系统执行IO操作时，此时进程进入阻塞状态，等待某个事件的返回。</li>
+<li>挂起是指进程没有占有物理内存，被写到磁盘上了。这时进程状态是挂起状态。</li>
+</ol>
+<blockquote>
+<ol>
+<li><code>阻塞挂起</code>：进程被写入硬盘并等待某个事件的出现。</li>
+<li><code>就绪挂起</code>：进程被写入硬盘，进入内存可直接进入就绪状态。</li>
+</ol>
+</blockquote>
+<h2 id="PCB——进程控制块"><a href="#PCB——进程控制块" class="headerlink" title="PCB——进程控制块"></a>PCB——进程控制块</h2><p>为了描述跟控制进程的运行，系统为每个进程定义了一个数据结构——<code>进程控制块 Process Control Block</code>，它是进程实体的一部分，是操作系统中最重要的记录型数据结构。</p>
+<p>PCB 的作用是<strong>使一个在多道程序环境下不能独立运行的程序，成为一个能独立运行的基本单位，一个能与其它进程并发执行的进程</strong> :</p>
+<ol>
+<li>作为独立运行基本单位的标志；</li>
+<li>实现间断性的运行方式；</li>
+<li>提供进程管理所需要的信息；</li>
+<li>提供进程调度所需要的信息；</li>
+<li>实现与其他进程的同步与通信；</li>
+</ol>
+<h3 id="PCB-信息"><a href="#PCB-信息" class="headerlink" title="PCB 信息"></a>PCB 信息</h3><ol>
+<li><strong>进程标识符</strong>：用于唯一地标识一个进程，一个进程通常有两种标识符：</li>
+</ol>
+<blockquote>
+<ol>
+<li><code>内部进程标识符</code>：标识各个进程，每个进程都有一个并且唯一的标识符，设置内部标识符主要是为了方便系统使用。</li>
+<li><code>外部进程标识符</code>：它由创建者提供，可设置用户标识，以指示拥有该进程的用户。往往是由用户进程在访问该进程时使用。一般为了描述进程的家族关系，还应设置父进程标识及子进程标识。</li>
+</ol>
+</blockquote>
+<ol start="2">
+<li><strong>处理机状态</strong>：由各种寄存器组成。包含许多信息都放在寄存器中，方便程序restart。</li>
+</ol>
+<blockquote>
+<ol>
+<li>通用寄存器、指令计数器、程序状态字PSW、用户栈指针等信息。</li>
+</ol>
+</blockquote>
+<ol start="3">
+<li><strong>进程调度信息</strong></li>
+</ol>
+<blockquote>
+<ol>
+<li>进程状态：指明进程的当前状态，作为进程调度和对换时的依据。</li>
+<li>进程优先级：用于描述进程使用处理机的优先级别的一个整数，优先级高的进程应优先获得处理机</li>
+<li>进程调度所需的其它信息：与所采用的进程调度算法有关，如进程已等待CPU的时间总和、进程已执行的时间总和等。</li>
+<li>事件：指进程由执行状态转变为阻塞状态所等待发生的事件，即阻塞原因。</li>
+</ol>
+</blockquote>
+<ol start="4">
+<li><strong>资源清单</strong></li>
+</ol>
+<blockquote>
+<p>有关内存地址空间或虚拟地址空间的信息，所打开文件的列表和所使用的 I&#x2F;O 设备信息。</p>
+</blockquote>
+<h2 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h2><p><a target="_blank" rel="noopener" href="https://songyangji.gitee.io/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/">Linux进程调度那些事</a></p>
+<h3 id="进程调度原则"><a href="#进程调度原则" class="headerlink" title="进程调度原则"></a>进程调度原则</h3><ol>
+<li><strong>CPU 利用率</strong></li>
+</ol>
+<blockquote>
+<ol>
+<li>CPU利用率 &#x3D; 工作时间 &#x2F; 总时间。</li>
+<li>调度程序应该尽量让 CPU 始终处于忙碌的状态，这可提高 CPU 的利用率。比如当发生IO读取时候，不要傻傻等待，去执行下别的进程。</li>
+</ol>
+</blockquote>
+<ol start="2">
+<li><strong>系统吞吐量</strong></li>
+</ol>
+<blockquote>
+<ol>
+<li>系统吞吐量 &#x3D; 总共完成多少个作业 &#x2F; 总共花费时间。</li>
+<li>长作业的进程会占用较长的 CPU 资源导致降低吞吐量，相反短作业的进程会提升系统吞吐量。</li>
+</ol>
+</blockquote>
+<ol start="3">
+<li><strong>周转时间</strong></li>
+</ol>
+<blockquote>
+<ol>
+<li>周转时间 &#x3D; 作业完成时间 - 作业提交时间。</li>
+<li>平均周转时间 &#x3D; 各作业周转时间和 &#x2F; 作业数</li>
+<li>带权周转时间 &#x3D; 作业周转时间 &#x2F; 作业实际运行时间</li>
+<li>平均带权周转时间 &#x3D; 各作业带权周转时间之和 &#x2F; 作业数</li>
+<li>尽可能使周转时间降低。</li>
+</ol>
+</blockquote>
+<ol start="4">
+<li><strong>等待时间</strong></li>
+</ol>
+<blockquote>
+<ol>
+<li>指的是进程在等待队列中等待的时间，一般也需要尽可能短。</li>
+</ol>
+</blockquote>
+<ol start="5">
+<li><strong>响应时间</strong></li>
+</ol>
+<blockquote>
+<p>响应时间 &#x3D; 系统第一次响应时间 - 用户提交时间，在交互式系统中响应时间是衡量调度算法好坏的主要标准。</p>
+</blockquote>
+<h3 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h3><p><em>FCFS 算法</em>*</p>
+<ol>
+<li>First Come First Severd 先来先服务算法，遵循先来后端原则，每次从就绪队列拿等待时间最久的，运行完毕后再拿下一个。</li>
+<li>该模式对长作业有利，适用 CPU 繁忙型作业的系统，不适用 I&#x2F;O 型作业，因为会导致进程CPU利用率很低。</li>
+</ol>
+<p><strong>SJF 算法</strong></p>
+<ol>
+<li>Shortest Job First 最短作业优先算法，该算法会优先选择运行所需时间最短的进程执行，可提高吞吐量。</li>
+<li>跟FCFS正好相反，对长作业很不利。</li>
+</ol>
+<blockquote>
+<p>最短无法实际衡量，只能估计，很难实际应用。</p>
+</blockquote>
+<p><strong>RR 算法</strong></p>
+<ol>
+<li>Round Robin 时间片轮转算法，操作系统设定了个时间片Quantum，时间片导致每个进程只有在该时间片内才可以运行，这种方式导致每个进程都会均匀的获得执行权。</li>
+<li>时间片一般20ms~50ms，如果太小会导致系统频繁进行上下文切换，太大又可能引起对短的交互请求的响应变差。</li>
+</ol>
+<h2 id="进程与线程的区别"><a href="#进程与线程的区别" class="headerlink" title="进程与线程的区别"></a>进程与线程的区别</h2><h3 id="线程定义"><a href="#线程定义" class="headerlink" title="线程定义"></a>线程定义</h3><blockquote>
+<p>早期操作系统是没有线程概念的，线程是后来加进来的。为啥会有线程呢？那是因为以前在多进程阶段，经常会涉及到进程之间如何通讯，如何共享数据的问题。并且进程关联到PCB的生命周期，管理起来开销较大。为了解决这个问题引入了线程。</p>
+</blockquote>
+<p>线程是进程当中的一个执行流程。<strong>同一个进程内的多个线程之间可以共享进程的代码段、数据段、打开的文件等资源。</strong>同时<strong>每个线程又都有一套独立的寄存器和栈来确保线程的控制流是独立的</strong>。</p>
+<p>在早期的操作系统中都是以<strong>进程作为独⽴运⾏的基本单位</strong>，直到后⾯，计算机科学家们⼜提出了更⼩的能独⽴运⾏的基本单位，也就是线程。</p>
+<p><strong>线程与进程的⽐较如下</strong>：</p>
+<p><strong>进程</strong>：</p>
+<ol>
+<li>是系统进行资源分配和调度的一个独立单位.</li>
+<li>是程序的一次执行，每个进程都有自己的地址空间、内存、数据栈及其他辅助记录运行轨迹的数据</li>
+</ol>
+<p><strong>线程</strong>：</p>
+<ol>
+<li>是进程的一个实体，是CPU调度和分派的基本单位,它是比进程更小的能独立运行的基本单位</li>
+<li>所有的线程运行在同一个进程中，共享相同的运行资源和环境</li>
+<li>线程一般是并发执行的，使得实现了多任务的并行和数据共享。</li>
+</ol>
+<p><strong>进程线程区别</strong>：</p>
+<ol>
+<li>一个线程只能属于一个进程，而一个进程可以有多个线程，但至少有一个线程。</li>
+<li>线程的划分尺度小于进程(资源比进程少)，使得多线程程序的并发性高。</li>
+<li>进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率。</li>
+<li>资源分配给进程，同一进程的所有线程共享该进程的所有资源。</li>
+<li>CPU分配资源给进程，但真正在CPU上运行的是线程。</li>
+<li>线程不能够独立执行，必须依存在进程中。</li>
+</ol>
+<p><strong>Linux特性</strong>：</p>
+<ol>
+<li>Linux中没有真正的线程，因为Linux并没有为线程准备特定的数据结构。在内核看来只有进程而没有线程，在调度时也是当做进程来调度。Linux所谓的线程其实是与其他进程共享资源的进程。但windows中确实有线程。</li>
+<li>Linux中没有的线程，线程是由进程来模拟实现的。</li>
+<li>所以在Linux中在CPU角度看，进程被称作轻量级进程LWP。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">操作系统——页面置换算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-23 01:46:02" itemprop="dateCreated datePublished" datetime="2022-09-23T01:46:02+08:00">2022-09-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-27 08:30:29" itemprop="dateModified" datetime="2022-10-27T08:30:29+08:00">2022-10-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="缺页中断"><a href="#缺页中断" class="headerlink" title="缺页中断"></a>缺页中断</h2><p>当 CPU 访问的⻚⾯不在物理内存时，便会产⽣⼀个缺⻚中断，请求操作系统将所缺⻚调⼊到物理内存。那它与⼀般中断的主要区别在于：<br>缺⻚中断在指令执⾏「期间」产⽣和处理中断信号，⽽⼀般中断在⼀条指令执⾏「完成」后检查和处理中断信号。</p>
+<p>缺⻚中断返回到该指令的开始重新执⾏「该指令」，⽽⼀般中断返回回到该指令的「下⼀个指令」执⾏。</p>
+<ol>
+<li>在 CPU ⾥访问⼀条 Load M 指令，然后 CPU 会去找 M 所对应的⻚表项。</li>
+<li>如果该⻚表项的状态位是「有效的」，那 CPU 就可以直接去访问物理内存了，如果状态位是「⽆效的」，则 CPU 则会发送缺⻚中断请求。</li>
+<li>操作系统收到了缺⻚中断，则会执⾏缺⻚中断处理函数，先会查找该⻚⾯在磁盘中的⻚⾯的位置。</li>
+<li>找到磁盘中对应的⻚⾯后，需要把该⻚⾯换⼊到物理内存中，<strong>但是在换⼊前，需要在物理内存中找空闲⻚</strong>，如果找到空闲⻚，就把⻚⾯换⼊到物理内存中。</li>
+<li>⻚⾯从磁盘换⼊到物理内存完成后，则把⻚表项中的状态位修改为「有效的」。</li>
+<li>最后，CPU 重新执⾏导致缺⻚异常的指令。</li>
+</ol>
+<p>上⾯所说的过程，第 4 步是能在物理内存找到空闲⻚的情况，那如果找不到呢？</p>
+<p>找不到空闲⻚的话，就说明此时内存已满了，这时候，就需要「⻚⾯置换算法」选择⼀个物理⻚，如果该</p>
+<p>物理⻚有被修改过（脏⻚），则把它换出到磁盘，然后把该被置换出去的⻚表项的状态改成「⽆效的」，</p>
+<p>最后把正在访问的⻚⾯装⼊到这个物理⻚中。</p>
+<p>所以，<strong>⻚⾯置换算法的功能</strong>是，<strong>当出现缺⻚异常，需调⼊新⻚⾯⽽内存已满时，选择被置换的物理⻚⾯，</strong></p>
+<p><strong>也就是说选择⼀个物理⻚⾯换出到磁盘，然后把需要访问的⻚⾯换⼊到物理⻚。</strong></p>
+<p>那其算法⽬标则是，<strong>尽可能减少⻚⾯的换⼊换出的次数</strong>，常⻅的⻚⾯置换算法有如下⼏种：</p>
+<p>常⻅的⻚⾯置换算法有如下⼏种：</p>
+<ol>
+<li><p>最佳⻚⾯置换算法（<em>OPT</em>）</p>
+</li>
+<li><p>先进先出置换算法（<em>FIFO</em>）最近最久未使⽤的置换算法（<em>LRU</em>）</p>
+</li>
+<li><p>时钟⻚⾯置换算法（<em>Lock</em>）</p>
+</li>
+<li><p>最不常⽤置换算法（<em>LFU</em>）</p>
+</li>
+</ol>
+<h3 id="最佳⻚⾯置换算法OPT"><a href="#最佳⻚⾯置换算法OPT" class="headerlink" title="最佳⻚⾯置换算法OPT"></a>最佳⻚⾯置换算法OPT</h3><p>最佳⻚⾯置换算法基本思路是，<strong>置换在「未来」最⻓时间不访问的⻚⾯</strong>。</p>
+<p>这很理想，但是实际系统中⽆法实现，因为程序访问⻚⾯时是动态的，我们是⽆法预知每个⻚⾯在「下⼀次」访问前的等待时间。</p>
+<p>所以，最佳⻚⾯置换算法作⽤是为了衡量你的算法的效率，你的算法效率越接近该算法的效率，那么说明你的算法是⾼效的。</p>
+<h3 id="先进先出置换算法FIFO"><a href="#先进先出置换算法FIFO" class="headerlink" title="先进先出置换算法FIFO"></a>先进先出置换算法FIFO</h3><p>既然我们⽆法预知⻚⾯在下⼀次访问前所需的等待时间，那我们可以<strong>选择在内存驻留时间很⻓的⻚⾯进⾏中置换</strong>，这个就是「先进先出置换」算法的思想。</p>
+<h3 id="最近最少使⽤的置换算法LRU"><a href="#最近最少使⽤的置换算法LRU" class="headerlink" title="最近最少使⽤的置换算法LRU"></a>最近最少使⽤的置换算法LRU</h3><p>最近最少使⽤（<em>LRU</em>）的置换算法的基本思路是，发⽣缺⻚时，选择最⻓时间没有被访问的⻚⾯进⾏置换，也就是说，<strong>该算法假设已经很久没有使⽤的⻚⾯很有可能在未来较⻓的⼀段时间内仍然不会被使⽤</strong>。</p>
+<p>这种算法近似最优置换算法，最优置换算法是通过「未来」的使⽤情况来推测要淘汰的⻚⾯，⽽ LRU 则是通过「历史」的使⽤情况来推测要淘汰的⻚⾯。</p>
+<p>虽然 LRU 在理论上是可以实现的，但代价很⾼。为了完全实现 LRU，需要在内存中维护⼀个所有⻚⾯的链表，最近最多使⽤的⻚⾯在表头，最近最少使⽤的⻚⾯在表尾。<br>困难的是，在每次访问内存时都必须要更新「整个链表」。在链表中找到⼀个⻚⾯，删除它，然后把它移动到表头是⼀个⾮常费时的操作。</p>
+<blockquote>
+<p>所以，LRU 虽然看上去不错，但是由于开销⽐较⼤，实际应⽤中⽐较少使⽤。</p>
+</blockquote>
+<h3 id="时钟⻚⾯置换算法——Clock算法"><a href="#时钟⻚⾯置换算法——Clock算法" class="headerlink" title="时钟⻚⾯置换算法——Clock算法"></a>时钟⻚⾯置换算法——Clock算法</h3><p>简单的CLOCK算法是给每一帧关联一个附加位，称为使用位。</p>
+<p>当某一页首次装入主存时，该帧的使用位设置为1;当该页随后再被访问到时，它的使用位也被置为1。</p>
+<p>对于页替换算法，用于替换的候选帧集合看做一个循环缓冲区，并且有一个指针与之相关联。</p>
+<p>当某一页被替换时，该指针被设置成指向缓冲区中的下一帧。当需要替换一页时，操作系统扫描缓冲区，以查找使用位被置为0的一帧。</p>
+<p><strong>每当遇到一个使用位为1的帧时，操作系统就将该位重新置为0；如果在这个过程开始时，缓冲区中所有帧的使用位均为0，则选择遇到的第一个帧替换</strong>；如果所有帧的使用位均为1,则指针在缓冲区中完整地循环一周，把所有使用位都置为0，并且停留在最初的位置上，替换该帧中的页。</p>
+<p>由于该算法循环地检查各页面的情况，故称为CLOCK算法，又称为最近未用(Not Recently Used, NRU)算法。</p>
+<h3 id="改进型的-clock-算法"><a href="#改进型的-clock-算法" class="headerlink" title="改进型的 clock 算法"></a>改进型的 clock 算法</h3><p>CLOCK算法的性能比较接近LRU，而通过增加使用的位数目，可以使得CLOCK算法更加高效。在使用位的基础上再增加一个修改位，则得到改进型的CLOCK置换算法。</p>
+<p>这样，每一帧都处于以下四种情况之一：</p>
+<ol>
+<li>最近未被访问，也未被修改(u&#x3D;0, m&#x3D;0)。</li>
+<li>最近被访问，但未被修改(u&#x3D;1, m&#x3D;0)。</li>
+<li>最近未被访问，但被修改(u&#x3D;0, m&#x3D;1)。</li>
+<li>最近被访问，被修改(u&#x3D;1, m&#x3D;1)。</li>
+</ol>
+<p>改进型的CLOCK算法优于简单CLOCK算法之处在于替换时首选没有变化的页。<strong>由于修改过的页在被替换之前必须写回</strong>，因而这样做会节省时间。</p>
+<h3 id="最不常⽤页面置换算法"><a href="#最不常⽤页面置换算法" class="headerlink" title="最不常⽤页面置换算法"></a>最不常⽤页面置换算法</h3><p>当发⽣缺⻚中断时，选择「访问次数」最少的那个⻚⾯，并将其淘汰。<br>它的实现⽅式是，对每个⻚⾯设置⼀个「访问计数器」，每当⼀个⻚⾯被访问时，该⻚⾯的访问计数器就累加 1。在发⽣缺⻚中断时，淘汰计数器值最⼩的那个⻚⾯。</p>
+<h1 id="页面抖动-颠簸-和工作集-驻留集"><a href="#页面抖动-颠簸-和工作集-驻留集" class="headerlink" title="页面抖动(颠簸)和工作集(驻留集)"></a>页面抖动(颠簸)和工作集(驻留集)</h1><h2 id="页面抖动（颠簸）"><a href="#页面抖动（颠簸）" class="headerlink" title="页面抖动（颠簸）"></a>页面抖动（颠簸）</h2><p>在页面置换过程中的一种最糟糕的情形是，刚刚换出的页面马上又要换入主存，刚刚换入的页面马上就要换出主存，这种频繁的页面调度行为称为抖动，或颠簸。</p>
+<p>如果一个进程在换页上用的时间多于执行时间，那么这个进程就在颠簸。</p>
+<p>频繁的发生缺页中断（抖动），其主要原因是某个进程频繁访问的页面数目高于可用的物理页帧数目。</p>
+<p>虚拟内存技术可以在内存中保留更多的进程以提髙系统效率。在稳定状态，几乎主存的所有空间都被进程块占据，处理机和操作系统可以直接访问到尽可能多的进程。</p>
+<p>但如果管理不当，处理机的大部分时间都将用于交换块，即请求调入页面的操作，而不是执行进程的指令，这就会大大降低系统效率。</p>
+<h2 id="工作集（驻留集）"><a href="#工作集（驻留集）" class="headerlink" title="工作集（驻留集）"></a>工作集（驻留集）</h2><p>工作集（或驻留集）是指在某段时间间隔内，进程要访问的页面集合。</p>
+<p>经常被使用的页面需要在工作集中，而长期不被使用的页面要从工作集中被丢弃。为了防止系统出现抖动现象，需要选择合适的工作集大小。</p>
+<p>工作集模型的原理是：让操作系统跟踪每个进程的工作集，并为进程分配大于其工作集的物理块。</p>
+<p>如果还有空闲物理块，则可以再调一个进程到内存以增加多道程序数。如果所有工作集之和增加以至于超过了可用物理块的总数，那么操作系统会暂停一个进程，将其页面调出并且将其物理块分配给其他进程，防止出现抖动现象。</p>
+<p>正确选择工作集的大小，对存储器的利用率和系统吞吐量的提嵩，都将产生重要影响。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/21/Redis%E5%A4%A7Key%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/21/Redis%E5%A4%A7Key%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">Redis大Key问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-21 15:14:47" itemprop="dateCreated datePublished" datetime="2022-09-21T15:14:47+08:00">2022-09-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-17 10:53:10" itemprop="dateModified" datetime="2022-10-17T10:53:10+08:00">2022-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>参考文章</p>
+<p><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/353223.html">https://help.aliyun.com/document_detail/353223.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/" class="post-title-link" itemprop="url">Redis的实战小例子</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-21 15:14:47" itemprop="dateCreated datePublished" datetime="2022-09-21T15:14:47+08:00">2022-09-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-28 08:49:14" itemprop="dateModified" datetime="2022-09-28T08:49:14+08:00">2022-09-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>最常见的使用方式。</p>
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p><a target="_blank" rel="noopener" href="https://songyangji.gitee.io/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">https://songyangji.gitee.io/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</a></p>
+<h2 id="排行榜"><a href="#排行榜" class="headerlink" title="排行榜"></a>排行榜</h2><p>在线比赛的排行榜。</p>
+<p>使用 zset即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GameService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    RedisTemplate redisTemplate;</span><br><span class="line">    ZSetOperations ops;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">        ops = redisTemplate.opsForZSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">incrUserScoreInGame</span><span class="params">(String gameId, <span class="type">int</span> uid, <span class="type">double</span> addedScore)</span> &#123;</span><br><span class="line">        ops.incrementScore(gameId, uid, addedScore);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addUserWithScore</span><span class="params">(String gameId, <span class="type">int</span> uid, <span class="type">double</span> score)</span> &#123;</span><br><span class="line">        ops.add(gameId, uid, score);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;UserScore&gt; <span class="title function_">getTopK</span><span class="params">(String gameId, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        Set&lt;ZSetOperations.TypedTuple&lt;Integer&gt;&gt; set = ops.rangeWithScores(gameId, <span class="number">0</span>, k - <span class="number">1</span>);</span><br><span class="line">        ArrayList&lt;UserScore&gt; objects = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">assert</span> set != <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">for</span> (ZSetOperations.TypedTuple&lt;Integer&gt; tuple : set) &#123;</span><br><span class="line">            <span class="type">UserScore</span> <span class="variable">userScore</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UserScore</span>(tuple.getValue() == <span class="literal">null</span> ? -<span class="number">1</span> : tuple.getValue() , tuple.getScore() == <span class="literal">null</span> ?<span class="number">0</span> : tuple.getScore());</span><br><span class="line">            objects.add(userScore);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> objects;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>大数据量进行排名时候，分数的累加是具有规律性的，就是说一般不会突然一下子加10000分，减10000分。而是+10，-10。那么可以得出这么一个结论：在一般情况下，前十名的用户是由前1000名（也可以是2000名，结合具体业务来）来产出的。所以给出这样的策略：1.第一次跑批得出前1000名的uid，进行排序，计算出前10名进行展示。2.10分钟内，只统计这1000个uid的分数变化情况，产出10名。3.定时任务10分钟一次跑全量数据跑出最新的1000个uid，计算前10。4.如果遇到大分数累加事件，直接将该用户当前积分和第1000个uid分数进行比较，分数低的uid进行抛弃。</p>
+<p>zset只存10个，每次写入前判断下第10名的value，大于就写入，并存储更新第10名的value，难道不是这样做？</p>
+<h2 id="签到"><a href="#签到" class="headerlink" title="签到"></a>签到</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">testBitMap</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 示例：使用BitMap记录用户本周是否有签到</span></span><br><span class="line">    <span class="keyword">final</span> <span class="type">long</span> <span class="variable">userId</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>().nextLong();</span><br><span class="line">    <span class="comment">// final long userId = 1L;</span></span><br><span class="line">    <span class="comment">// userId高48位用于将用户划分到不同的key，低16位作为位图偏移参数offset;</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">keySign</span> <span class="operator">=</span> <span class="string">&quot;user:sign:&quot;</span> + LocalDate.now().getDayOfWeek() + <span class="string">&quot;:&quot;</span> + (userId &gt;&gt; <span class="number">16</span>);</span><br><span class="line">    <span class="comment">// offset参数必须大于或等于0，小于2^32(bit 映射被限制在 512 MB 之内)</span></span><br><span class="line">    redisTemplate.opsForValue().setBit(keySign, userId &amp; <span class="number">0xffff</span>, <span class="literal">true</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, userId &amp; <span class="number">0xffff</span>));</span><br><span class="line">    System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, (userId + <span class="number">1</span>) &amp; <span class="number">0xffff</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="面对面开房间"><a href="#面对面开房间" class="headerlink" title="面对面开房间"></a>面对面开房间</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/54chensongxia/p/13813533.html">https://www.cnblogs.com/54chensongxia/p/13813533.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/html/html5-geolocation.html">https://www.runoob.com/html/html5-geolocation.html</a></p>
+<p>数据结构：</p>
+<p>6位的房间号 ： 1000，000；</p>
+<p><code>longitude:latitude</code></p>
+<blockquote>
+<p>在经线上，纬度每差1度,实地距离大约为111千米；</p>
+<p>在纬线上，经度每差1度,实际距离为111×cosθ千米。（其中θ表示该纬线的纬度.在不同纬线上,经度每差1度的实际距离是不相等的）。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加一个空间元素,longitude、latitude、member分别是该地理位置的经度、纬度、成员</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这里的成员就是指代具体的业务数据，比如说用户的ID等</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">需要注意的是Redis的纬度有效范围不是[-90,90]而是[-85,85]</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果在添加一个空间元素时，这个元素中的menber已经存在key中，那么GEOADD命令会返回0,相当于更新了这个menber的位置信息</span></span><br><span class="line">GEOADD key longitude latitude member [longitude latitude member]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">用于添加城市的坐标信息</span></span><br><span class="line">geoadd cities:locations 117.12 39.08 tianjin 114.29 38.02 shijiazhuang 118.01 39.38 tangshan 115.29 38.51 baoding</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取地理位置信息</span></span><br><span class="line">geopos key member [member ...]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取天津的坐标</span></span><br><span class="line">geopos cities:locations tianjin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取两个坐标之间的距离</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">unit代表单位，有4个单位值</span></span><br><span class="line">  - m (meter) 代表米</span><br><span class="line">  - km （kilometer）代表千米</span><br><span class="line">  - mi （miles）代表英里</span><br><span class="line">  - ft （ft）代表尺</span><br><span class="line">geodist key member1 member2 [unit]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取天津和保定之间的距离</span></span><br><span class="line">GEODIST cities:locations tianjin baoding km</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取指定位置范围内的地理信息位置集合，此命令可以用于实现附近的人的功能</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">georadius和georadiusbymember两个命令的作用是一样的，都是以一个地理位置为中心算出指定半径内的其他地理信息位置，不同的是georadius命令的中心位置给出了具体的经纬度，georadiusbymember只需给出成员即可。其中radiusm|km|ft|mi是必需参数，指定了半径（带单位），这两个命令有很多可选参数，参数含义如下：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withcoord：返回结果中包含经纬度。</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withdist：返回结果中包含离中心节点位置的距离。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withhash：返回结果中包含geohash，有关geohash后面介绍。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- COUNT count：指定返回结果的数量。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- asc|desc：返回结果按照离中心节点的距离做升序或者降序。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- store key：将返回结果的地理位置信息保存到指定键。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- storedist key：将返回结果离中心节点的距离保存到指定键。</span></span><br><span class="line">georadius key longitude latitude radiusm|km|ft|mi [withcoord] [withdist] [withhash] [COUNT count] [asc|desc] [store key] [storedist key]</span><br><span class="line"></span><br><span class="line">georadiusbymember key member radiusm|km|ft|mi [withcoord] [withdist] [withhash] [COUNT count] [asc|desc] [store key] [storedist key]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取geo <span class="built_in">hash</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Redis使用geohash将二维经纬度转换为一维字符串，geohash有如下特点：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- GEO的数据类型为zset，Redis将所有地理位置信息的geohash存放在zset中。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- 字符串越长，表示的位置更精确，表3-8给出了字符串长度对应的精度，例如geohash长度为9时，精度在2米左右。长度和精度的对应关系，请参考：https://easyreadfs.nosdn.127.net/9F42_CKRFsfc8SUALbHKog==/8796093023252281390</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- 两个字符串越相似，它们之间的距离越近，Redis利用字符串前缀匹配算法实现相关的命令。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- geohash编码和经纬度是可以相互转换的。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- Redis正是使用有序集合并结合geohash的特性实现了GEO的若干命令。</span></span><br><span class="line">geohash key member [member ...]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除操作，GEO没有提供删除成员的命令，但是因为GEO的底层实现是zset，所以可以借用zrem命令实现对地理位置信息的删除。</span></span><br><span class="line">zrem key member</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h1><h2 id="第一种：基于Redis的setnx的操作"><a href="#第一种：基于Redis的setnx的操作" class="headerlink" title="第一种：基于Redis的setnx的操作"></a>第一种：基于Redis的setnx的操作</h2><p>我们在使用Redis的分布式锁的时候，大家都知道是依靠了setnx的指令，在CAS（Compare and swap）的操作的时候，同时给指定的key设置了过期实践（expire），我们在限流的主要目的就是为了在单位时间内，有且仅有N数量的请求能够访问我的代码程序。所以依靠setnx可以很轻松的做到这方面的功能。</p>
+<p>比如我们需要在10秒内限定20个请求，那么我们在setnx的时候可以设置过期时间10，当请求的setnx数量达到20时候即达到了限流效果。代码比较简单就不做展示了。</p>
+<p>当然这种做法的弊端是很多的，比如当统计1-10秒的时候，无法统计2-11秒之内，如果需要统计N秒内的M个请求，那么我们的Redis中需要保持N个key等等问题</p>
+<h2 id="第二种：基于Redis的数据结构zset"><a href="#第二种：基于Redis的数据结构zset" class="headerlink" title="第二种：基于Redis的数据结构zset]"></a>第二种：基于Redis的数据结构zset]</h2><p>其实限流涉及的最主要的就是滑动窗口，上面也提到1-10怎么变成2-11。其实也就是起始值和末端值都各+1即可。</p>
+<p>而我们如果用Redis的list数据结构可以轻而易举的实现该功能</p>
+<p>我们可以将请求打造成一个zset数组，当每一次请求进来的时候，value保持唯一，可以用UUID生成，而score可以用当前时间戳表示，因为score我们可以用来计算当前时间戳之内有多少的请求数量，而zset数据结构也提供了range方法让我们可以很轻易的获取到2个时间戳内有多少请求。</p>
+<p>代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Response <span class="title function_">limitFlow</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">Long</span> <span class="variable">currentTime</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>().getTime();</span><br><span class="line">        System.out.println(currentTime);</span><br><span class="line">        <span class="keyword">if</span>(redisTemplate.hasKey(<span class="string">&quot;limit&quot;</span>)) &#123;</span><br><span class="line">            <span class="type">Integer</span> <span class="variable">count</span> <span class="operator">=</span> redisTemplate.opsForZSet().rangeByScore(<span class="string">&quot;limit&quot;</span>, currentTime -  intervalTime, currentTime).size();        <span class="comment">// intervalTime是限流的时间 </span></span><br><span class="line">            System.out.println(count);</span><br><span class="line">            <span class="keyword">if</span> (count != <span class="literal">null</span> &amp;&amp; count &gt; <span class="number">5</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> Response.ok(<span class="string">&quot;每分钟最多只能访问5次&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        redisTemplate.opsForZSet().add(<span class="string">&quot;limit&quot;</span>,UUID.randomUUID().toString(),currentTime);</span><br><span class="line">        <span class="keyword">return</span> Response.ok(<span class="string">&quot;访问成功&quot;</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过上述代码可以做到滑动窗口的效果，并且能保证每N秒内至多M个请求，缺点就是zset的数据结构会越来越大。实现方式相对也是比较简单的。</p>
+<blockquote>
+<p>基于微服务的思想，构建在 B2C 电商场景下的项目实战。核心技术栈，是 Spring Boot + Dubbo 。未来，会重构成 Spring Cloud Alibaba 。</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/YunaiV/onemall">https://github.com/YunaiV/onemall</a></p>
+</blockquote>
+<h2 id="第三种：基于Redis的令牌桶算法"><a href="#第三种：基于Redis的令牌桶算法" class="headerlink" title="第三种：基于Redis的令牌桶算法"></a>第三种：基于Redis的令牌桶算法</h2><p>提到限流就不得不提到令牌桶算法了。</p>
+<p>令牌桶算法提及到输入速率和输出速率，当输出速率大于输入速率，那么就是超出流量限制了。</p>
+<p>也就是说我们每访问一次请求的时候，可以从Redis中获取一个令牌，如果拿到令牌了，那就说明没超出限制，而如果拿不到，则结果相反。</p>
+<p>依靠上述的思想，我们可以<strong>结合Redis的List数据结构</strong>很轻易的做到这样的代码，只是简单实现</p>
+<p><strong>依靠List的leftPop来获取令牌；</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出令牌</span></span><br><span class="line"><span class="keyword">public</span> Response <span class="title function_">limitFlow2</span><span class="params">(Long id)</span>&#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> redisTemplate.opsForList().leftPop(<span class="string">&quot;limit_list&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span>(result == <span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> Response.ok(<span class="string">&quot;当前令牌桶中无令牌&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Response.ok(articleDescription2);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>再<strong>依靠Java的定时任务，定时往List中rightPush令牌</strong>，当然令牌也需要唯一性，所以我这里还是用UUID进行了生成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 10S的速率往令牌桶中添加UUID，只为保证唯一性</span></span><br><span class="line">    <span class="meta">@Scheduled(fixedDelay = 10_000,initialDelay = 0)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setIntervalTimeTask</span><span class="params">()</span>&#123;</span><br><span class="line">        redisTemplate.opsForList().rightPush(<span class="string">&quot;limit_list&quot;</span>,UUID.randomUUID().toString());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>综上，代码实现起始都不是很难，针对这些限流方式我们可以在AOP或者filter中加入以上代码，用来做到接口的限流，最终保护你的网站。</p>
+<p>Redis其实还有很多其他的用处，他的作用不仅仅是缓存，分布式锁的作用。他的数据结构也不仅仅是只有String，Hash，List，Set，Zset。有兴趣的可以后续了解下他的GeoHash算法；BitMap，HLL以及布隆过滤器数据(Redis4.0之后加入，可以用Docker直接安装redislabs&#x2F;rebloom)结构。</p>
+<blockquote>
+<p> <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/jT0WYISuSoi_hkTmELb7PQ">https://mp.weixin.qq.com/s/jT0WYISuSoi_hkTmELb7PQ</a></p>
+</blockquote>
+<h2 id="第四种：基于Redis的漏桶算法"><a href="#第四种：基于Redis的漏桶算法" class="headerlink" title="第四种：基于Redis的漏桶算法"></a>第四种：基于Redis的漏桶算法</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903982842789896">https://juejin.cn/post/6844903982842789896</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">海量数据问题解决</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-15 01:05:26 / 修改时间：02:09:38" itemprop="dateCreated datePublished" datetime="2022-09-15T01:05:26+08:00">2022-09-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">工程向算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="问题简介"><a href="#问题简介" class="headerlink" title="问题简介"></a>问题简介</h1><p>这里的海量数据问题不是指的一般性的大数据问题，指的是由大量数字、字符串等构成的大数据集，我们需要处理解决如下几种典型的计算问题：计数、排序、去重、交集、TopK等等。</p>
+<p>问题的关键点在于，如此庞大的数据无法一次性放到内存里面，因而处理方案就没有那么简单了。</p>
+<ol>
+<li><p><strong>计数</strong><br> 海量数字，哪个数字出现的次数最多？</p>
+</li>
+<li><p><strong>排序</strong><br> 10G的数字，将其排序。</p>
+</li>
+<li><p><strong>去重</strong></p>
+<p>  海量日志，去除其中重复的数据。</p>
+</li>
+<li><p><strong>交集</strong></p>
+<p>  两个各有20亿行的文件，每一行都只有一个数字，求这两个文件的交集。</p>
+</li>
+<li><p><strong>TopK</strong></p>
+<p>  10G整数求中位数。</p>
+</li>
+</ol>
+<h1 id="典型问题分析"><a href="#典型问题分析" class="headerlink" title="典型问题分析"></a>典型问题分析</h1><h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><p><a target="_blank" rel="noopener" href="https://songyangji.gitee.io/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/">大文件排序</a></p>
+<p>可参考上面的博客。</p>
+<h2 id="去重——海量日志，去除其中重复的数据。"><a href="#去重——海量日志，去除其中重复的数据。" class="headerlink" title="去重——海量日志，去除其中重复的数据。"></a>去重——海量日志，去除其中重复的数据。</h2><blockquote>
+<p> 如果是32位int的话，可以考虑位图bitmap之类的，不过这里我们直接分析更一般性的问题。</p>
+</blockquote>
+<p><strong>哈希文件分片</strong></p>
+<p>首先根据数据量估算一下需要拆分成多少的小文件后可以放在内存里处理。比如1TB的字符串可能需要分成1024个小文件才可以处理。</p>
+<p>对每一条一条数据记录， 根据某种hash规则，求取hash(url) %1024，然后根据所取得的值将数据记录分别存储到1024个小文件（a0~a1023）中。hash结果很集中使得某个文件ai过大，可以再对ai进行二级hash(ai0~ai1024)，这样数据就又被hash到 1024 个不同级别的文件中。  每一个小文件是可以单独进行处理的。</p>
+<blockquote>
+<p>这里有一个小问题，就是上面的处理的方式默认数据基本上均匀分布的，但是如果说某一单个字符串本身就出现了很多很多此，那么二级hash、三级hash都没有用，这个时候需要在最终的放在内存处理前，先对这些hash无法减小数据量的文件进行compact操作，也就是提前去除那些重复字符串。</p>
+</blockquote>
+<h2 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h2><p>计数指的是要计算一条记录出现的次数，这个问题的处理方式本质上和上面的<strong>去重</strong>是一回事的。</p>
+<h2 id="交集"><a href="#交集" class="headerlink" title="交集"></a>交集</h2><h3 id="有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？"><a href="#有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？" class="headerlink" title="有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？"></a>有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？</h3><blockquote>
+<p>解决方案1：hash 分解+ 分而治之 + 归并 的方式：</p>
+</blockquote>
+<p>如果内存中想要存入所有的 url，共需要 50亿 * 64&#x3D; 320G大小空间，所以采用 hash 分解+ 分而治之 + 归并 的方式：</p>
+<p>（1）遍历文件a，对每个 url 根据某种hash规则，求取hash(url) %1024，然后根据所取得的值将 url 分别存储到1024个小文件（a0~a1023）中。这样每个小文件的大约为300M。如果hash结果很集中使得某个文件ai过大，可以再对ai进行二级hash(ai0~ai1024)，这样 url 就被hash到 1024 个不同级别的文件中。对文件b也是相同的处理方式。</p>
+<p>（2）分别比较文件，a0 VS b0，…… ，a1023 VS b1023，求每对小文件中相同的url时：把其中一个小文件的 url 存储到 hashmap 中，然后遍历另一个小文件的每个url，看其是否在刚才构建的 hashmap 中，如果是，那么就是共同的url，存到文件中。</p>
+<p>（3）把1024个文件中的相同 url 合并起来，比如写到文件里。</p>
+<blockquote>
+<p>解决方案2：Bloom filter</p>
+</blockquote>
+<p>如果允许有一定的错误率，可以使用 Bloom filter。<br>将其中一个文件中的 url载入 Bloom filter，然后挨个读取另外一个文件的url，检查是否与Bloom filter，如果是，那么该url应该是共同的url（注意会有一定的错误率）</p>
+<h3 id="现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。"><a href="#现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。" class="headerlink" title="现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。"></a>现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。</h3><p><strong>解决方案</strong>：采用 bitmap 进行问题解决，int 的[最大数]是 2^32 &#x3D; 4G。</p>
+<p>用一个二进制的下标来表示一个 int 值，大概需要4G个bit位，即约4G&#x2F;8 &#x3D; 512M的内存，就可以解决问题了。</p>
+<p>① <strong>首先</strong>遍历文件，将每个文件按照数字的正数，负数标记到2个 bitmap 上，为：正数 bitmapA_positive，负数 bitmapA_negative；</p>
+<p>② <strong>遍历</strong>另外一个文件，生成正数：bitmapB_positive，bitmapB_negative；</p>
+<p>③ 取 bitmapA_positive and bitmapB_positive 得到2个文件的正数的交集，同理得到负数的交集；</p>
+<p>④ 合并，问题解决。</p>
+<h2 id="TopK——10G整数求中位数"><a href="#TopK——10G整数求中位数" class="headerlink" title="TopK——10G整数求中位数"></a>TopK——10G整数求中位数</h2><ol>
+<li><p>分桶法</p>
+<p> 思路：化大为小，把所有数划分到各个小区间，把每个数映射到对应的区间里，对每个区间中数的个数进行计数，数一遍各个区间，看看中位数落在哪个区间，若够小，使用基于内存的算法，否则 继续划分。<br> 具体的：<br> 假设整数是32位的，根据每个整数二进制前的5位，可以划分为32个不同的桶，如果某个桶的个数在内存中放不下，则继续划分，知道内存可以放下为止；然后统计每个桶中的数的个数，就可以中位数一定出现在哪个桶中，而且知道是该桶中第几大数，因为桶的划分是根据二进制前缀来进行划分的，桶之间是排好序的。</p>
+</li>
+<li><p>分治+递归</p>
+<p> 题目说是整数，我们认为是带符号的int,所以4字节，占32位。<br> 假设100亿个数字保存在一个大文件中，依次读一部分文件到内存(不超过内存的限制)，将每个数字用二进制表示，比较二进制的最高位(第32位，符号位，0是正，1是负)，如果数字的最高位为0，则将这个数字写入 file_0文件中；如果最高位为 1，则将该数字写入file_1文件中。<br> 从而将100亿个数字分成了两个文件，假设 file_0文件中有 60亿 个数字，file_1文件中有 40亿 个数字。那么中位数就在 file_0 文件中，并且是 file_0 文件中所有数字排序之后的第 10亿 个数字。（file_1中的数都是负数，file_0中的数都是正数，也即这里一共只有40亿个负数，那么排序之后的第50亿个数一定位于file_0中）<br> 现在，我们只需要处理 file_0 文件了（不需要再考虑file_1文件）。对于 file_0 文件，同样采取上面的措施处理：将file_0文件依次读一部分到内存(不超内存限制)，将每个数字用二进制表示，比较二进制的 次高位（第31位），如果数字的次高位为0，写入file_0_0文件中；如果次高位为1，写入file_0_1文件 中。<br> 现假设 file_0_0文件中有30亿个数字，file_0_1中也有30亿个数字，则中位数就是：file_0_0文件中的数字从小到大排序之后的第10亿个数字。<br> 抛弃file_0_1文件，继续对 file_0_0文件 根据 次次高位(第30位) 划分，假设此次划分的两个文件为：file_0_0_0中有5亿个数字，file_0_0_1中有25亿个数字，那么中位数就是 file_0_0_1文件中的所有数字排序之后的 第 5亿 个数。</p>
+</li>
+</ol>
+<blockquote>
+<p>参考文章</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/GarrettWale/p/14478347.html">https://www.cnblogs.com/GarrettWale/p/14478347.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hustwht/article/details/52181632">https://blog.csdn.net/hustwht/article/details/52181632</a></p>
+<p><a target="_blank" rel="noopener" href="https://guozi149.me/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E7%AE%97%E6%B3%95/100%E4%BA%BF%E6%9D%A1URL%E5%8E%BB%E9%87%8D/">https://guozi149.me/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E7%AE%97%E6%B3%95/100%E4%BA%BF%E6%9D%A1URL%E5%8E%BB%E9%87%8D/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/luxiaoxun/p/14392375.html">https://www.cnblogs.com/luxiaoxun/p/14392375.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/13/%E5%AD%97%E5%85%B8%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/13/%E5%AD%97%E5%85%B8%E6%A0%91/" class="post-title-link" itemprop="url">字典树 —— Trie</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-13 16:14:57" itemprop="dateCreated datePublished" datetime="2022-09-13T16:14:57+08:00">2022-09-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-14 18:21:24" itemprop="dateModified" datetime="2022-09-14T18:21:24+08:00">2022-09-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="字典树介绍"><a href="#字典树介绍" class="headerlink" title="字典树介绍"></a>字典树介绍</h1><p>又称<strong>前缀树</strong>，Trie树，是一种多叉树。典型应用是用于统计，排序和保存大量的字符串（但不仅限于字符串）。它的优点是：利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较。<br>它的最基本的操作是插入一个字符串，和查询。</p>
+<h1 id="存储原理"><a href="#存储原理" class="headerlink" title="存储原理"></a>存储原理</h1><p>多叉树结构：<br>一般的，如果我们想存储一棵一般的树，树的节点可以这样写：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">OrdinaryTrieNode</span>&#123;</span><br><span class="line">	<span class="type">int</span> val;</span><br><span class="line">	vector&lt;OrdinaryTrieNode*&gt; childs;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>而如果是字典树的话：<br>假设字符串仅由大小为<strong>n</strong>的字符集中的字符构成（比如26个小写字母），那么每个节点的字节就可以有<strong>n</strong>个指向。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> size = <span class="number">26</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TrieNode</span>&#123;</span><br><span class="line">	TrieNode* childs[size];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>发现，节点本身并没有存储字符的值。那么如何知道它的后继字符有哪些呢？<br>这个时候，我们可以把将字符映射到一个索引，然后让父节点的<code>childs</code>数组索引存储这个节点。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> c;</span><br><span class="line">TrieNode* parent;</span><br><span class="line">parent-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>] = <span class="keyword">new</span> TrieNode;</span><br></pre></td></tr></table></figure>
+<p>这个时候<code>parent</code>节点就有了一个新的子节点，对应的字符为<code>c</code>;<br>于是，其实我们发现真正字符的信息其实是<strong>存储在父节点与子节点的边上</strong>，<strong>节点本身只是存储着它的子节点</strong>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200614173023837.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODQ2MzI0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>（<del>图来自互联网</del> ）<br>那么怎么知道记录一个字符串的结束呢，比如**字符串<code>aabb</code>**，其实并不代表<code>aab</code>出现在字典树里。<br>根据不同实现，也有不同的解决办法。<br>一种方法是，在结构体里加一个变量，表明这个节点是否是字符串的结尾。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">TrieNode</span>&#123;</span><br><span class="line">	<span class="type">bool</span> isEnd;</span><br><span class="line">	TrieNode* childs[size];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="字典树的静态实现"><a href="#字典树的静态实现" class="headerlink" title="字典树的静态实现"></a>字典树的静态实现</h1><p>数组模拟，下标代替指针。<br>其中，编号为1的节点表示根节点，0表示空指。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> maxnode = maxn*maxlen;  <span class="comment">// 字符串个数*字符串的长度</span></span><br><span class="line"><span class="type">int</span> trie[maxnode][size],tot=<span class="number">1</span>; <span class="comment">// size是字符集的大小，tot保存节点个数</span></span><br><span class="line"><span class="type">bool</span> end[maxnode]  <span class="comment">// 结尾标记</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">idx</span><span class="params">(<span class="type">char</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> c - <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//插入字符串的方法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">char</span>* str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> len = <span class="built_in">strlen</span>(str),p=<span class="number">1</span>;  <span class="comment">//根节点为1</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> id = <span class="built_in">idx</span>(str[i]);</span><br><span class="line">		<span class="keyword">if</span>(!trie[p][id]) <span class="comment">//如果这个节点不存在，新建一个</span></span><br><span class="line">			trie[p][id]= ++tot;</span><br><span class="line">		p = trie[p][id];</span><br><span class="line">	&#125;</span><br><span class="line">	end[p]=<span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//查找字符串的方法</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">find</span><span class="params">(<span class="type">char</span>* str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> len = <span class="built_in">strlen</span>(str),p=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		p = trie[p][<span class="built_in">idx</span>(str[i])];</span><br><span class="line">		<span class="keyword">if</span>(!p) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> end[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="字典树的动态实现"><a href="#字典树的动态实现" class="headerlink" title="字典树的动态实现"></a>字典树的动态实现</h1><p>版本一：<br>其中，析构函数用递归实现。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="built_in">Trie</span>() &#123;</span><br><span class="line">        root = <span class="keyword">new</span> TrieNode;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ~<span class="built_in">Trie</span>()&#123;</span><br><span class="line">        <span class="built_in">destroy</span>(root);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Inserts a word into the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        TrieNode *p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>] == <span class="literal">nullptr</span>)&#123;</span><br><span class="line">                p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>] = <span class="keyword">new</span> TrieNode;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;isEnd = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if the word is in the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">search</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        TrieNode *p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>]==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;isEnd;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if there is any word in the trie that starts with the given prefix. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">startsWith</span><span class="params">(<span class="type">const</span> string &amp;prefix)</span> </span>&#123;</span><br><span class="line">        TrieNode *p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:prefix)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>]==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">TrieNode</span>&#123;    </span><br><span class="line">        <span class="type">bool</span> isEnd = <span class="literal">false</span>;</span><br><span class="line">        TrieNode* childs[<span class="number">26</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    &#125;;</span><br><span class="line">    TrieNode* root ;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">destroy</span><span class="params">(TrieNode* root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root)&#123;</span><br><span class="line">            <span class="keyword">return</span> ;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(TrieNode* pt:root-&gt;childs)&#123;</span><br><span class="line">            <span class="built_in">destroy</span>(pt);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(root)&#123;</span><br><span class="line">            <span class="keyword">delete</span> root;</span><br><span class="line">            root = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>版本2：<br>树的节点用</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span>&#123;</span><br><span class="line">       <span class="type">bool</span> isEnd = <span class="literal">false</span>;</span><br><span class="line">       unordered_map&lt;<span class="type">char</span>,Node*&gt; childs;</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
+<p>其中析构函数用迭代实现（用一个<code>queue&lt;TrieNode&gt;</code>,遍历这棵树就可）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="built_in">Trie</span>() &#123;</span><br><span class="line">        root = <span class="keyword">new</span> Node;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">Trie</span>()&#123;</span><br><span class="line">        queue&lt;Node*&gt; q;</span><br><span class="line">        q.<span class="built_in">push</span>(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            Node* pn = q.<span class="built_in">front</span>();</span><br><span class="line">            q.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">for</span>(unordered_map&lt;<span class="type">char</span>,Node*&gt;::iterator it=pn-&gt;childs.<span class="built_in">begin</span>(); it!=pn-&gt;childs.<span class="built_in">end</span>();it++ )&#123;</span><br><span class="line">                q.<span class="built_in">push</span>(it-&gt;second);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">delete</span> pn;</span><br><span class="line">            pn = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Inserts a word into the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        Node* p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!p-&gt;childs.<span class="built_in">count</span>(c))&#123;</span><br><span class="line">                p-&gt;childs[c] = <span class="keyword">new</span> Node;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c];</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;isEnd = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if the word is in the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">search</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        Node* p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!p-&gt;childs.<span class="built_in">count</span>(c))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;isEnd;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if there is any word in the trie that starts with the given prefix. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">startsWith</span><span class="params">(<span class="type">const</span> string &amp;prefix)</span> </span>&#123;</span><br><span class="line">        Node* p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:prefix)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!p-&gt;childs.<span class="built_in">count</span>(c))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Node</span>&#123;</span><br><span class="line">        <span class="type">bool</span> isEnd = <span class="literal">false</span>;</span><br><span class="line">        unordered_map&lt;<span class="type">char</span>,Node*&gt; childs;</span><br><span class="line">    &#125;;</span><br><span class="line">    Node * root;    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="01Trie介绍"><a href="#01Trie介绍" class="headerlink" title="01Trie介绍"></a>01Trie介绍</h1><p>将数字映射成一个<strong>01串</strong>，如果是一个<code>int</code>数字，就是一个长度为32的01串。<br>然后将这些01串当成字符串插入字典树，这时候字典树的字符集为2（只有0和1）。</p>
+<h2 id="代码部分的几处重要点"><a href="#代码部分的几处重要点" class="headerlink" title="代码部分的几处重要点"></a>代码部分的几处重要点</h2><p>①依次从高位到低位提取出二进制数字<br>注意<code>up</code>是个常量，如果数值是<strong>int</strong>的话，取<strong>30</strong>——最高位是符号位，第二高位就表示$2^{30}$</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=up;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">	<span class="type">int</span> id = (x&gt;&gt;i)&amp;<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>②异或结果的求法（位运算加快速度）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sum = (sum&lt;&lt;<span class="number">1</span>)|<span class="number">1</span>  <span class="comment">// 乘2在加1</span></span><br><span class="line">sum&lt;&lt;=<span class="number">1</span>  <span class="comment">// sum = sum&lt;&lt;1 == sum*2</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="典型例题"><a href="#典型例题" class="headerlink" title="典型例题"></a>典型例题</h2><p><a target="_blank" rel="noopener" href="https://loj.ac/problem/10050">The XOR Largest Pair</a><br>01Trie的典型例题<br>给定n个数字，求任意两个数字异或运算的最大值。</p>
+<ul>
+<li>思路：<br>将数字理解为一个长度为32位的01串，异或运算求最值，应该贪心地从最高位到最低位取不同的数字。</li>
+<li>步骤：<br>将所有数字插入Trie，然后遍历n个数字，对于每个数字从高位到低位， 依次匹配与它不同的数字（没有就匹配相同的）。<br>注意这样贪心是合理的，因为高位的数字影响大于低位数字影响总和。<br>譬如:<br>0x1000 0000 &gt;   0x0111 1111。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stack&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ms0(a) memset(a,0,sizeof(a))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxnode = <span class="number">1e5</span>+<span class="number">5</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> up = <span class="number">30</span>;</span><br><span class="line"><span class="type">int</span> n,d[maxnode],trie[maxnode*<span class="number">32</span>][<span class="number">2</span>],tot=<span class="number">0</span>,ans;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=up;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> id = (x&gt;&gt;i)&amp;<span class="number">1</span>;   <span class="comment">//从高位到低位的获取</span></span><br><span class="line">        <span class="keyword">if</span>(!trie[p][id]) trie[p][id]=++tot;</span><br><span class="line">        p=trie[p][id];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>,sum=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=up;i&gt;=<span class="number">0</span>;i--) <span class="comment">// 从高位到低位</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> id = (x&gt;&gt;i)&amp;<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(trie[p][id^<span class="number">1</span>])</span><br><span class="line">        &#123;</span><br><span class="line">            sum = (sum&lt;&lt;<span class="number">1</span>)|<span class="number">1</span> ;  <span class="comment">// sum=sum*2+1</span></span><br><span class="line">            p = trie[p][id^<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            sum&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">            p=trie[p][id];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;d[i]);</span><br><span class="line">        <span class="built_in">insert</span>(d[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">        ans = <span class="built_in">max</span>(ans,<span class="built_in">find</span>(d[i]));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="Demo——字典树的实现"><a href="#Demo——字典树的实现" class="headerlink" title="Demo——字典树的实现"></a>Demo——字典树的实现</h1><p><strong>NC124</strong> <strong>字典树的实现</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/a55a584bc0ca4a83a272680174be113b?tpId=117&tqId=37818&rp=1&ru=/exam/oj&qru=/exam/oj&sourceUrl=/exam/oj?difficulty=3&judgeStatus=3&page=1&pageSize=50&search=&tab=%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587&topicId=117&difficulty=3&judgeStatus=3&tags=&title=">https://www.nowcoder.com/practice/a55a584bc0ca4a83a272680174be113b?tpId=117&amp;tqId=37818&amp;rp=1&amp;ru=/exam/oj&amp;qru=/exam/oj&amp;sourceUrl=%2Fexam%2Foj%3Fdifficulty%3D3%26judgeStatus%3D3%26page%3D1%26pageSize%3D50%26search%3D%26tab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D117&amp;difficulty=3&amp;judgeStatus=3&amp;tags=&amp;title=</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> id(c) c - <span class="string">&#x27;a&#x27;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">        <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> endCnt = <span class="number">0</span>;</span><br><span class="line">        Node *child[<span class="number">26</span>]&#123;&#125;;</span><br><span class="line">    &#125;;</span><br><span class="line">    Node *root = <span class="keyword">new</span> Node;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(string &amp;s)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:s) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                p-&gt;child[<span class="built_in">id</span>(c)] = <span class="keyword">new</span> Node;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">            p-&gt;cnt++;</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;endCnt++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">remove</span><span class="params">(string &amp;s)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:s) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">            p-&gt;cnt--;</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;endCnt--;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">search</span><span class="params">(string &amp;s)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:s) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;endCnt &gt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">prefixNumber</span><span class="params">(string &amp;pre)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:pre) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param operators string字符串vector&lt;vector&lt;&gt;&gt; the ops</span></span><br><span class="line"><span class="comment">     * @return string字符串vector</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">vector&lt;string&gt; <span class="title">trieU</span><span class="params">(vector&lt;vector&lt;string&gt; &gt; &amp;operators)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        Trie trie;</span><br><span class="line">        vector&lt;string&gt; ans;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;opt: operators) &#123;</span><br><span class="line">            string o = opt[<span class="number">0</span>];</span><br><span class="line">            string s = opt[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (o == <span class="string">&quot;1&quot;</span>) &#123;</span><br><span class="line">                trie.<span class="built_in">add</span>(s);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (o == <span class="string">&quot;2&quot;</span>) &#123;</span><br><span class="line">                trie.<span class="built_in">remove</span>(s);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (o == <span class="string">&quot;3&quot;</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (trie.<span class="built_in">search</span>(s)) &#123;</span><br><span class="line">                    ans.<span class="built_in">emplace_back</span>(<span class="string">&quot;YES&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    ans.<span class="built_in">emplace_back</span>(<span class="string">&quot;NO&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (o == <span class="string">&quot;4&quot;</span>) &#123;</span><br><span class="line">                <span class="type">int</span> num = trie.<span class="built_in">prefixNumber</span>(s);</span><br><span class="line">                ans.<span class="built_in">emplace_back</span>(<span class="built_in">to_string</span>(num));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
-</body>
 
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
 </html>

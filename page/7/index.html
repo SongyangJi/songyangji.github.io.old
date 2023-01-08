@@ -1,942 +1,1369 @@
 <!DOCTYPE html>
-
-
 <html lang="zh-CN">
-
-
 <head>
-  <meta charset="utf-8" />
-    
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>
-     JsyBlog
-  </title>
-  <meta name="generator" content="hexo-theme-ayer">
-  
-  <link rel="shortcut icon" href="/images/ayer.png" />
-  
-  
-<link rel="stylesheet" href="/dist/main.css">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
-  
-<link rel="stylesheet" href="/css/custom.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-  
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-  
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="website">
+<meta property="og:title" content="JsyBlog">
+<meta property="og:url" content="http://example.com/page/7/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="SongyangJi">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/page/7/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/7/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JsyBlog</title>
   
 
-  
 
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-</html>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-<body>
-  <div id="app">
-    
-      
-      <canvas width="1777" height="841"
-        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
-      
-    <main class="content on">
-      
-<section class="cover">
-    
-  <div class="cover-frame">
-    <div class="bg-box">
-      <img src="/images/cover1.jpg" alt="image frame" />
-    </div>
-    <div class="cover-inner text-center text-white">
-      <h1><a href="/">JsyBlog</a></h1>
-      <div id="subtitle-box">
-        
-        <span id="subtitle"></span>
-        
-      </div>
-      <div>
-        
-        <img
-          src="/images/ayer.svg"
-          class="cover-logo"
-          alt="JsyBlog"
-        />
-        
-      </div>
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
-  <div class="cover-learn-more">
-    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">JsyBlog</h1>
+      <i class="logo-line"></i>
+    </a>
   </div>
-</section>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
-
-
-<!-- Subtitle -->
-
-  <script>
-    try {
-      var typed = new Typed("#subtitle", {
-        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '让风吹干流过的泪和汗，总有一天我有属于我的天'],
-        startDelay: 0,
-        typeSpeed: 200,
-        loop: true,
-        backSpeed: 70,
-        showCursor: true
-      });
-    } catch (err) {
-      console.log(err)
-    }
-  </script>
-  
-<div id="main">
-  <section class="outer">
-  
-  
-  
-
-<div class="notice" style="margin-top:50px">
-    <i class="ri-heart-fill"></i>
-    <div class="notice-content" id="broad"></div>
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
 </div>
-<script type="text/javascript">
-    fetch('https://v1.hitokoto.cn')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("broad").innerHTML = data.hitokoto;
-        })
-        .catch(console.error)
-</script>
 
-<style>
-    .notice {
-        padding: 20px;
-        border: 1px dashed #e6e6e6;
-        color: #969696;
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        background: #fbfbfb50;
-        border-radius: 10px;
-    }
 
-    .notice i {
-        float: left;
-        color: #999;
-        font-size: 16px;
-        padding-right: 10px;
-        vertical-align: middle;
-        margin-top: -2px;
-    }
 
-    .notice-content {
-        display: initial;
-        vertical-align: middle;
-    }
-</style>
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
   
-  <article class="articles">
-    
-    
-    
-    
-    <article
-  id="post-Spring如何解决循环依赖"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/05/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/"
-    >Spring如何解决循环依赖</a> 
-</h2>
- 
+  <aside class="sidebar">
 
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/05/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/" class="article-date">
-  <time datetime="2022-09-05T05:05:42.000Z" itemprop="datePublished">2022-09-05</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring/">Spring</a>
-  </div>
-   
-    </div>
-       
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
 
-   
-    
-</article>
-
-    
-    <article
-  id="post-SpringBoot自动装配"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/09/05/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/"
-    >SpringBoot自动装配</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/09/05/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" class="article-date">
-  <time datetime="2022-09-05T03:32:10.000Z" itemprop="datePublished">2022-09-05</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spring/">Spring</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-消息Ack与Offset提交"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/08/25/%E6%B6%88%E6%81%AFAck%E4%B8%8EOffset%E6%8F%90%E4%BA%A4/"
-    >消息Ack与Offset提交</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/08/25/%E6%B6%88%E6%81%AFAck%E4%B8%8EOffset%E6%8F%90%E4%BA%A4/" class="article-date">
-  <time datetime="2022-08-25T07:43:38.000Z" itemprop="datePublished">2022-08-25</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">消息中间件</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-时间轮算法"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/08/24/%E6%97%B6%E9%97%B4%E8%BD%AE%E7%AE%97%E6%B3%95/"
-    >时间轮算法</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/08/24/%E6%97%B6%E9%97%B4%E8%BD%AE%E7%AE%97%E6%B3%95/" class="article-date">
-  <time datetime="2022-08-24T07:35:10.000Z" itemprop="datePublished">2022-08-24</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/">工程向算法</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-限流、降级、熔断"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/08/23/%E9%99%90%E6%B5%81%E3%80%81%E9%99%8D%E7%BA%A7%E3%80%81%E7%86%94%E6%96%AD/"
-    >限流、降级、熔断</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/08/23/%E9%99%90%E6%B5%81%E3%80%81%E9%99%8D%E7%BA%A7%E3%80%81%E7%86%94%E6%96%AD/" class="article-date">
-  <time datetime="2022-08-23T08:27:29.000Z" itemprop="datePublished">2022-08-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%8D%E5%8A%A1%E6%B2%BB%E7%90%86/">服务治理</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-Rabbitmq消息模型"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/08/13/Rabbitmq%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B/"
-    >Rabbitmq消息模型</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/08/13/Rabbitmq%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B/" class="article-date">
-  <time datetime="2022-08-13T15:53:09.000Z" itemprop="datePublished">2022-08-13</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">消息中间件</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Message-Queue/" rel="tag">Message Queue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-Redis的热key问题"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/"
-    >Redis的热key问题</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2022-08-13T15:50:26.000Z" itemprop="datePublished">2022-08-13</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Redis/">Redis</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-面试场景算法题"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/"
-    >面试场景算法</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/" class="article-date">
-  <time datetime="2022-08-12T02:47:21.000Z" itemprop="datePublished">2022-08-12</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/">工程向算法</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-倒排索引"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/08/12/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/"
-    >倒排索引</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/08/12/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/" class="article-date">
-  <time datetime="2022-08-12T02:23:03.000Z" itemprop="datePublished">2022-08-12</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-JUnit和Mockito"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/07/26/JUnit%E5%92%8CMockito/"
-    >JUnit和Mockito</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/07/26/JUnit%E5%92%8CMockito/" class="article-date">
-  <time datetime="2022-07-25T18:03:06.000Z" itemprop="datePublished">2022-07-26</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B5%8B%E8%AF%95/">测试</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-  </article>
-  
-
-  
-  <nav class="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/page/6/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/8/">下一页</a>
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
   </nav>
-  
-</section>
 </div>
 
-      <footer class="footer">
-  <div class="outer">
-    <ul>
-      <li>
-        Copyrights &copy;
-        2020-2023
-        <i class="ri-heart-fill heart_icon"></i> SongyangJi
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-      </li>
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      <li>
-        <!-- cnzz统计 -->
-        
-        <script type="text/javascript" src=''></script>
-        
-      </li>
-    </ul>
-  </div>
-</footer>
-      <div class="float_btns">
-        <div class="totop" id="totop">
-  <i class="ri-arrow-up-line"></i>
-</div>
-
-<div class="todark" id="todark">
-  <i class="ri-moon-line"></i>
-</div>
-
+        </div>
       </div>
-    </main>
-    <aside class="sidebar on">
-      <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
-  </div>
-  
-  <ul class="nav nav-main">
+    </div>
+
     
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">主页</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">归档</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/categories">分类</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/tags">标签</a>
-    </li>
-    
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      
-      <a class="nav-item-link nav-item-search"  title="搜索">
-        <i class="ri-search-line"></i>
-      </a>
-      
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-    </aside>
-    <script>
-      if (window.matchMedia("(max-width: 768px)").matches) {
-        document.querySelector('.content').classList.remove('on');
-        document.querySelector('.sidebar').classList.remove('on');
-      }
-    </script>
-    <div id="mask"></div>
+  </aside>
 
-<!-- #reward -->
-<div id="reward">
-  <span class="close"><i class="ri-close-line"></i></span>
-  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
-  <div class="reward-box">
-    
-    
-  </div>
-</div>
-    
-<script src="/js/jquery-2.0.3.min.js"></script>
-
-
-<script src="/js/lazyload.min.js"></script>
-
-<!-- Tocbot -->
-
-<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
-<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
-
-<script src="/dist/main.js"></script>
-
-<!-- ImageViewer -->
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
 
     </div>
 
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/05/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/05/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/" class="post-title-link" itemprop="url">Spring如何解决循环依赖</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-05 13:05:42 / 修改时间：13:57:39" itemprop="dateCreated datePublished" datetime="2022-09-05T13:05:42+08:00">2022-09-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+        </span>
+    </span>
+
+  
 </div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
-
-<script>
-    function viewer_init() {
-        let pswpElement = document.querySelectorAll('.pswp')[0];
-        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
-
-        $imgArr.forEach(($em, i) => {
-            $em.onclick = () => {
-                // slider展开状态
-                // todo: 这样不好，后面改成状态
-                if (document.querySelector('.left-col.show')) return
-                let items = []
-                $imgArr.forEach(($em2, i2) => {
-                    let img = $em2.getAttribute('data-idx', i2)
-                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
-                    let title = $em2.getAttribute('alt')
-                    // 获得原图尺寸
-                    const image = new Image()
-                    image.src = src
-                    items.push({
-                        src: src,
-                        w: image.width || $em2.width,
-                        h: image.height || $em2.height,
-                        title: title
-                    })
-                })
-                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
-                    index: parseInt(i)
-                });
-                gallery.init()
-            }
-        })
-    }
-    viewer_init()
-</script>
-
-<!-- MathJax -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-  });
-
-  MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for(i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-  });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-  var ayerConfig = {
-    mathjax: true
-  }
-</script>
-
-<!-- Katex -->
-
+        </div>
+      </header>
 
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
-        
-            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
-        
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="三级缓存的设计"><a href="#三级缓存的设计" class="headerlink" title="三级缓存的设计"></a>三级缓存的设计</h2><blockquote>
+<p>这里指的是单例的、非构造依赖的循环引用。很多人都知道Spring用了三层缓存来解决循环依赖，但是不知道其原因，为什么是三级缓存？二级缓存不行吗？一级缓存不可以 ？</p>
+</blockquote>
+<p>Spring 解决循环依赖的核心就是提前暴露对象，而提前暴露的对象就是放置于第二级缓存中。缓存的底层都是Map，至于它们属于第几层是由Spring获取数据顺序以及其作用来表现的。</p>
+<p>三级缓存的说明：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>singletonObjects</code></td>
+<td>一级缓存，存放完整的 Bean。</td>
+</tr>
+<tr>
+<td><code>earlySingletonObjects</code></td>
+<td>二级缓存，存放提前暴露的Bean，Bean 是不完整的，未完成属性注入和执行 初始化（init） 方法。</td>
+</tr>
+<tr>
+<td><code>singletonFactories</code></td>
+<td>三级缓存，存放的是 Bean 工厂，主要是生产 Bean，存放到二级缓存中。</td>
+</tr>
+</tbody></table>
+<h3 id="第一级缓存singletonObjects"><a href="#第一级缓存singletonObjects" class="headerlink" title="第一级缓存singletonObjects"></a>第一级缓存<code>singletonObjects</code></h3><p>1.先说一级缓存<code>singletonObjects</code>。实际上，一级依赖已经可以解决循环依赖的问题，假设两个beanA和beanB相互依赖，beanA被实例化后，放入一级缓存，即使没有进行初始化，但是beanA的引用已经创建（栈到堆的引用已经确定），其他依赖beanB已经可以持有beanA的引用，但是这个bean在没有初始化完成前，其内存（堆）里的字段、方法等还不能正常使用，but，这并不影响对象之间引用持有；这个时候beanA依赖的beanB实例化，beanB可以顺利拿到beanA的引用，完成beanB的实例化与初始化，并放入一级缓存，在beanB完成创建后，beanA通过缓存顺利拿到beanB的引用，至此，循环依赖只需一层缓存就能完成。</p>
+<p>2.一级缓存的关键点在与：bean实例化与初始化的分离。从JVM的角度，实例化后，对象已经存在，其内的属性都是初始默认值，只有在初始化后才会赋值，以及持有其他对象的引用。通过这个特性，在实例化后，我们就可以将对象的引用放入缓存交给需要引用依赖的其他对象，这个过程就是提前暴露。</p>
+<h3 id="第三级缓存singletonFactories"><a href="#第三级缓存singletonFactories" class="headerlink" title="第三级缓存singletonFactories"></a>第三级缓存<code>singletonFactories</code></h3><p>1.上述我们通过一级缓存已经拿到的对象有什么问题？</p>
+<p>根本问题就是，我们拿到的是bean的原始引用，如果我们需要的是bean的代理对象怎么办？Spring里充斥了大量的动态代理模式的架构，典型的AOP就是动态代理模式实现的，再比如我们经常使用的配置类注解<code>@Configuration</code>在缺省情况下（full mode），其内的所有@Bean都是处于动态代理模式，除非手动指定<code>proxyBeanMethods = false</code>将配置转成简略模式（lite mode）。</p>
+<p>2.所以，Spring在bean实例化后，将原始bean放入第三级缓存singletonFactories中，第三级缓存里实际存入的是ObjectFactory接口签名的回调实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 函数签名</span><br><span class="line">addSingletonFactory(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span><br><span class="line">    </span><br><span class="line"># 具体实现由回调决定    </span><br><span class="line">addSingletonFactory(beanName, () -&gt; getEarlyBeanReference(beanName, mbd, bean));</span><br></pre></td></tr></table></figure>
+
+<p>那么如果有动态代理的需求，里面可以埋点进行处理，将原始bean包装后返回。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Object <span class="title function_">getEarlyBeanReference</span><span class="params">(String beanName, RootBeanDefinition mbd, Object bean)</span> &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">exposedObject</span> <span class="operator">=</span> bean;</span><br><span class="line">	<span class="keyword">if</span> (!mbd.isSynthetic() &amp;&amp; hasInstantiationAwareBeanPostProcessors()) &#123;</span><br><span class="line">		<span class="keyword">for</span> (BeanPostProcessor bp : getBeanPostProcessors()) &#123;</span><br><span class="line">			<span class="keyword">if</span> (bp <span class="keyword">instanceof</span> SmartInstantiationAwareBeanPostProcessor) &#123;</span><br><span class="line">				<span class="type">SmartInstantiationAwareBeanPostProcessor</span> <span class="variable">ibp</span> <span class="operator">=</span> (SmartInstantiationAwareBeanPostProcessor) bp;</span><br><span class="line">				exposedObject = ibp.getEarlyBeanReference(exposedObject, beanName);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> exposedObject;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.通过第三级缓存我们可以拿到可能经过包装的对象，解决对象代理封装的问题。</p>
+<h3 id="第二级缓存earlySingletonObjects"><a href="#第二级缓存earlySingletonObjects" class="headerlink" title="第二级缓存earlySingletonObjects"></a>第二级缓存<code>earlySingletonObjects</code></h3><p>1.为什么需要<code>earlySingletonObjects</code>这个二级缓存？并且，如果只有一个缓存的情况下，为什么不直接使用<code>singletonFactories</code>这个缓存，即可实现代理又可以缓存数据。</p>
+<p>2.从软件设计角度考虑，三个缓存代表三种不同的职责，根据单一职责原理，从设计角度就需分离三种职责的缓存，所以形成三级缓存的状态。</p>
+<h2 id="三级缓存的划分及其作用。"><a href="#三级缓存的划分及其作用。" class="headerlink" title="三级缓存的划分及其作用。"></a>三级缓存的划分及其作用。</h2><ol>
+<li><p>一级缓存<code>singletonObjects</code>是完整的bean，它可以被外界任意使用，并且不会有歧义。</p>
+</li>
+<li><p>二级缓存<code>earlySingletonObjects</code>是不完整的bean，没有完成初始化，它与<code>singletonObjects</code>的分离主要是职责的分离以及边界划分，可以试想一个Map缓存里既有完整可使用的bean，也有不完整的，只能持有引用的bean，在复杂度很高的架构中，很容易出现歧义，并带来一些不可预知的错误。</p>
+</li>
+<li><p>三级缓存<code>singletonFactories</code>，其职责就是包装一个bean，有回调逻辑，所以它的作用非常清晰，并且只能处于第三层。</p>
+</li>
+</ol>
+<p>在实际使用中，<strong>要获取一个bean，先从一级缓存一直查找到三级缓存，缓存bean的时候是从三级到一级的顺序保存。</strong></p>
+<p>并且缓存bean的过程中，<strong>三个缓存都是互斥的</strong>，只会保持bean在一个缓存中，而且，<strong>最终都会在一级缓存中</strong>。</p>
+<h3 id="需要自行解决的循环依赖"><a href="#需要自行解决的循环依赖" class="headerlink" title="需要自行解决的循环依赖"></a>需要自行解决的循环依赖</h3><ul>
+<li>多例循环依赖（不是单例模式）</li>
+<li>构造器循环依赖</li>
+<li>@DependsOn产生的循环依赖（@DependsOn注解可以定义在类和方法上，意思是我这个组件要依赖于另一个组件，也就是说被依赖的组件会比该组件先注册到IOC容器中。）</li>
+<li>@Async的循环依赖（<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43944305/article/details/120499084%E3%80%81https://zhuanlan.zhihu.com/p/482514840%EF%BC%89">https://blog.csdn.net/weixin_43944305/article/details/120499084、https://zhuanlan.zhihu.com/p/482514840）</a></li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/asker009/p/14376955.html">Spring Bean 循环依赖为什么需要三级缓存</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6985337310472568839">https://juejin.cn/post/6985337310472568839</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039091691">https://segmentfault.com/a/1190000039091691</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38738238/article/details/123218697">https://blog.csdn.net/weixin_38738238/article/details/123218697</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7046316452801937416">https://juejin.cn/post/7046316452801937416</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
     
 
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
 
-<!-- busuanzi  -->
-
-<!-- ClickLove -->
-
-<!-- ClickBoom1 -->
-
-<!-- ClickBoom2 -->
-
-
-<script src="/js/clickBoom2.js"></script>
-
-
-<!-- CodeCopy -->
-
-
-<link rel="stylesheet" href="/css/clipboard.css">
-
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-<script>
-  function wait(callback, seconds) {
-    var timelag = null;
-    timelag = window.setTimeout(callback, seconds);
-  }
-  !function (e, t, a) {
-    var initCopyCode = function(){
-      var copyHtml = '';
-      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
-      copyHtml += '</button>';
-      $(".highlight .code pre").before(copyHtml);
-      $(".article pre code").before(copyHtml);
-      var clipboard = new ClipboardJS('.btn-copy', {
-        target: function(trigger) {
-          return trigger.nextElementSibling;
-        }
-      });
-      clipboard.on('success', function(e) {
-        let $btn = $(e.trigger);
-        $btn.addClass('copied');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-checkbox-circle-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPIED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-checkbox-circle-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
-      clipboard.on('error', function(e) {
-        e.clearSelection();
-        let $btn = $(e.trigger);
-        $btn.addClass('copy-failed');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-time-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPY FAILED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-time-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
-    }
-    initCopyCode();
-  }(window, document);
-</script>
-
-
-<!-- CanvasBackground -->
-
-
-<script src="/js/dz.js"></script>
 
 
 
     
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/05/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/05/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" class="post-title-link" itemprop="url">SpringBoot自动装配</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-05 11:32:10 / 修改时间：13:05:20" itemprop="dateCreated datePublished" datetime="2022-09-05T11:32:10+08:00">2022-09-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="从SPI到SpringBootAutoConfig"><a href="#从SPI到SpringBootAutoConfig" class="headerlink" title="从SPI到SpringBootAutoConfig"></a>从SPI到SpringBootAutoConfig</h1><p>SPI ，全称为 Service Provider Interface(服务提供者接口)，是一种服务发现机制。它通过在classpath路径下的META-INF&#x2F;services文件夹查找文件，自动加载文件中所定义的类。</p>
+<p>通过某种方式读取<code>spring.factories</code>文件，紧接着把里面所有的自动配置类加载到Spring容器中，然后就可以通过Spring的机制将配置类的@Bean注入到容器中了。</p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000040510401">看完就会的SpringBoot自动装配原理</a></p>
+<p><code>@SpringBootApplication</code><br>-&gt;<code>@EnableAutoConfiguration</code><br>-&gt;<code>AutoConfigurationImportSelector</code><br>-&gt;<code>AutoConfigurationImportSelector#selectImports()</code><br>-&gt; <code>AutoConfigurationImportSelector#getCandidateConfigurations</code><br>-&gt; <code>SpringFactoriesLoader#loadFactoryNames</code><br>-&gt;…<code>SpringFactoriesLoader#loadSpringFactories()</code><br>-&gt;”META-INF&#x2F;spring.factories”</p>
+<p>不光是这个依赖下的META-INF&#x2F;spring.factories被读取到，所有 Spring Boot Starter 下的META-INF&#x2F;spring.factories都会被读取到。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/javaguide/p/springboot-auto-config.html">淘宝一面：“说一下 Spring Boot 自动装配原理呗？”</a></p>
+<p><code>AutoConfigurationImportSelector</code> 类实现了 <code>ImportSelector</code>接口，也就实现了这个接口中的 <code>selectImports</code>方法，该方法主要用于<strong>获取所有符合条件的类的全限定类名，这些类需要被加载到 IoC 容器中</strong>。</p>
+<p><strong>总结</strong></p>
+<p>Spring Boot 通过<code>@EnableAutoConfiguration</code>开启自动装配，通过 SpringFactoriesLoader 最终加载<code>META-INF/spring.factories</code>中的自动配置类实现自动装配，自动配置类其实就是通过<code>@Conditional</code>按需加载的配置类，想要其生效必须引入<code>spring-boot-starter-xxx</code>包实现起步依赖</p>
+<blockquote>
+<p>Spring Boot 提供的条件注解</p>
+<ul>
+<li><code>@ConditionalOnBean</code>：当容器里有指定 Bean 的条件下</li>
+<li><code>@ConditionalOnMissingBean</code>：当容器里没有指定 Bean 的情况下</li>
+<li><code>@ConditionalOnSingleCandidate</code>：当指定 Bean 在容器中只有一个，或者虽然有多个但是指定首选 Bean</li>
+<li><code>@ConditionalOnClass</code>：当类路径下有指定类的条件下</li>
+<li><code>@ConditionalOnMissingClass</code>：当类路径下没有指定类的条件下</li>
+<li><code>@ConditionalOnProperty</code>：指定的属性是否有指定的值</li>
+<li><code>@ConditionalOnResource</code>：类路径是否有指定的值</li>
+<li><code>@ConditionalOnExpression</code>：基于 SpEL 表达式作为判断条件</li>
+<li><code>@ConditionalOnJava</code>：基于 Java 版本作为判断条件</li>
+<li><code>@ConditionalOnJndi</code>：在 JNDI 存在的条件下差在指定的位置</li>
+<li><code>@ConditionalOnNotWebApplication</code>：当前项目不是 Web 项目的条件下</li>
+<li><code>@ConditionalOnWebApplication</code>：当前项目是 Web 项 目的条件下</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/25/%E6%B6%88%E6%81%AFAck%E4%B8%8EOffset%E6%8F%90%E4%BA%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/25/%E6%B6%88%E6%81%AFAck%E4%B8%8EOffset%E6%8F%90%E4%BA%A4/" class="post-title-link" itemprop="url">消息Ack与Offset提交</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-25 15:43:38" itemprop="dateCreated datePublished" datetime="2022-08-25T15:43:38+08:00">2022-08-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="http://dockone.io/article/9820">http://dockone.io/article/9820</a></p>
+<p><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/Kafka%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98/16%20%20%E6%8F%AD%E5%BC%80%E7%A5%9E%E7%A7%98%E7%9A%84%E2%80%9C%E4%BD%8D%E7%A7%BB%E4%B8%BB%E9%A2%98%E2%80%9D%E9%9D%A2%E7%BA%B1.md">https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/Kafka%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98/16%20%20%E6%8F%AD%E5%BC%80%E7%A5%9E%E7%A7%98%E7%9A%84%E2%80%9C%E4%BD%8D%E7%A7%BB%E4%B8%BB%E9%A2%98%E2%80%9D%E9%9D%A2%E7%BA%B1.md</a></p>
+<p><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/Kafka%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98/18%20%20Kafka%E4%B8%AD%E4%BD%8D%E7%A7%BB%E6%8F%90%E4%BA%A4%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF.md">https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/Kafka%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98/18%20%20Kafka%E4%B8%AD%E4%BD%8D%E7%A7%BB%E6%8F%90%E4%BA%A4%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF.md</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/24/%E6%97%B6%E9%97%B4%E8%BD%AE%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/24/%E6%97%B6%E9%97%B4%E8%BD%AE%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">时间轮算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-24 15:35:10" itemprop="dateCreated datePublished" datetime="2022-08-24T15:35:10+08:00">2022-08-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">工程向算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><a href="%E9%9D%A2%E8%AF%95%E5%AE%98%EF%BC%9A%E7%9F%A5%E9%81%93%E6%97%B6%E9%97%B4%E8%BD%AE%E7%AE%97%E6%B3%95%E5%90%97%EF%BC%9F%E5%9C%A8Netty%E5%92%8CKafka%E4%B8%AD%E5%A6%82%E4%BD%95%E5%BA%94%E7%94%A8%E7%9A%84%EF%BC%9F">https://github.com/baicaihenxiao/GitBook-Notes/blob/master/zu-jian/kafka/mian-shi-guan-zhi-dao-shi-jian-lun-suan-fa-ma-zai-netty-he-kafka-zhong-ru-he-ying-yong-de.md</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/luozhiyun/p/12075326.html">时间轮算法（TimingWheel）是如何实现的？</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/23/%E9%99%90%E6%B5%81%E3%80%81%E9%99%8D%E7%BA%A7%E3%80%81%E7%86%94%E6%96%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/23/%E9%99%90%E6%B5%81%E3%80%81%E9%99%8D%E7%BA%A7%E3%80%81%E7%86%94%E6%96%AD/" class="post-title-link" itemprop="url">限流、降级、熔断</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-23 16:27:29" itemprop="dateCreated datePublished" datetime="2022-08-23T16:27:29+08:00">2022-08-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-12 23:04:15" itemprop="dateModified" datetime="2022-09-12T23:04:15+08:00">2022-09-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E6%B2%BB%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">服务治理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/341939685">服务降级与服务熔断区别</a></p>
+<p><a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/2593d1a3b9e1e06cac6502c4f">限流、熔断与降级</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1815254">10张图带你彻底搞懂限流、熔断、服务降级</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/13/Rabbitmq%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/13/Rabbitmq%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">Rabbitmq消息模型</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-13 23:53:09" itemprop="dateCreated datePublished" datetime="2022-08-13T23:53:09+08:00">2022-08-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="基本模型"><a href="#基本模型" class="headerlink" title="基本模型"></a>基本模型</h1><h2 id="单个消费者"><a href="#单个消费者" class="headerlink" title="单个消费者"></a>单个消费者</h2><p><img src="https://www.rabbitmq.com/img/tutorials/python-one-overall.png"></p>
+<h2 id="多个消费者并发消费"><a href="#多个消费者并发消费" class="headerlink" title="多个消费者并发消费"></a>多个消费者并发消费</h2><p><img src="https://www.rabbitmq.com/img/tutorials/python-two.png"><br>如果有多个消费者，它们会共同消费这个队列里的消息，是负载均衡的实现方式，官方称这叫”Work Queues”。</p>
+<p>（而在Kafka、RocketMQ里，这样的消费方式叫ConsumerGroup）</p>
+<p><strong>总结</strong></p>
+<p>根据上面的两张图，我们可以得出这样的结论，这里的队列逻辑上和物理上可以认为是一个，多个生产者并发push，多个消费者并发poll。</p>
+<h1 id="交换机的引入"><a href="#交换机的引入" class="headerlink" title="交换机的引入"></a>交换机的引入</h1><p>虽然基本的mq模型就是上面所述的，但是为了更好地管理消息的路由，各大mq的设计方案各有不同。</p>
+<p>RabbitMq的设计理念是：消费者和<strong>队列</strong>打交道，生产者和<strong>交换机</strong>打交道，<strong>队列</strong>可以<strong>绑定（bind）</strong>到<strong>交换机</strong>上，二者的网络路由关系叫<strong>路由键</strong>。</p>
+<blockquote>
+<p>ps：虽然设计上，生产者只能将消息发到某个exchange，但是为了保持历史兼容，rabbit自己提供了一个default的交换机供你使用，这个交换机叫直连（Direct）交换机。</p>
+</blockquote>
+<h2 id="直连交换机-Direct-Exchange"><a href="#直连交换机-Direct-Exchange" class="headerlink" title="直连交换机(Direct Exchange)"></a>直连交换机(Direct Exchange)</h2><p><img src="https://www.rabbitmq.com/img/tutorials/direct-exchange.png"></p>
+<p>如上图，消息发送到某个直连交换机后，具体要路由到哪个队列，是由生产者发送消息的路由键决定的。</p>
+<blockquote>
+<p>ps：同样，为了历史兼容，如果你使用了默认的交换机，也没有指定路由键，那么默认会使用队列名作为路由键。</p>
+</blockquote>
+<h2 id="扇出交换机-Fanout-Exchange"><a href="#扇出交换机-Fanout-Exchange" class="headerlink" title="扇出交换机(Fanout Exchange)"></a>扇出交换机(Fanout Exchange)</h2><p><img src="https://www.rabbitmq.com/img/tutorials/bindings.png"></p>
+<p>扇出交换机将消息广播到每一个bind的队列上。</p>
+<blockquote>
+<p>ps: 其实这里的fanout的概念就有点像kafka、rocketmq里，不同ConsumerGroup消费topic的概念，也就是说，不用的ConsumerGroup的消费进度是独立的。</p>
+</blockquote>
+<h2 id="主题交换机（Topic-Exchange）"><a href="#主题交换机（Topic-Exchange）" class="headerlink" title="主题交换机（Topic Exchange）"></a>主题交换机（Topic Exchange）</h2><p><img src="https://www.rabbitmq.com/img/tutorials/python-five.png"></p>
+<p>可以理解为<strong>带匹配符的Direct Exchange</strong>，根据路由键来路由到相匹配的队列上，而不是简单地比较是否相等。</p>
+<blockquote>
+<p>参考资料</p>
+<p><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/getstarted.html">https://www.rabbitmq.com/getstarted.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">Redis的热key问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-13 23:50:26" itemprop="dateCreated datePublished" datetime="2022-08-13T23:50:26+08:00">2022-08-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-17 10:52:52" itemprop="dateModified" datetime="2022-10-17T10:52:52+08:00">2022-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>上面提到，所谓热key问题就是，突然有几十万的请求去访问redis上的某个特定key。那么，这样会造成流量过于集中，达到物理网卡上限，从而导致这台redis的服务器宕机。那接下来这个key的请求，就会直接怼到你的数据库上，导致你的服务不可用。</p>
+</blockquote>
+<h2 id="热Key的危害"><a href="#热Key的危害" class="headerlink" title="热Key的危害"></a>热Key的危害</h2><ul>
+<li>流量集中，达到服务器处理上限（<code>CPU</code>、网络 <code>IO</code> 等）；</li>
+<li>会影响在同一个 <code>Redis</code> 实例上其他 <code>Key</code> 的读写请求操作；</li>
+<li>热 <code>Key</code> 请求落到同一个 <code>Redis</code> 实例上，无法通过扩容解决；</li>
+<li>大量 <code>Redis</code> 请求失败，查询操作可能打到数据库，拖垮数据库，导致整个服务不可用。</li>
+</ul>
+<h2 id="如何发现热Key"><a href="#如何发现热Key" class="headerlink" title="如何发现热Key"></a>如何发现热Key</h2><h3 id="凭借业务经验，预估热-Key-出现"><a href="#凭借业务经验，预估热-Key-出现" class="headerlink" title="凭借业务经验，预估热 Key 出现"></a>凭借业务经验，预估热 Key 出现</h3><p>根据业务系统上线的一些活动和功能，我们是可以在某些场景下提前预估热 <code>Key</code> 的出现的，比如业务需要进行一场商品秒杀活动，秒杀商品信息和数量一般都会缓存到 <code>Redis</code> 中，这种场景极有可能出现热 <code>Key</code> 问题的。</p>
+<ul>
+<li>优点：简单，凭经验发现热 <code>Key</code>，提早发现提早处理；</li>
+<li>缺点：没有办法预测所有热 <code>Key</code> 出现，比如某些热点新闻事件，无法提前预测。</li>
+</ul>
+<h3 id="客户端进行收集"><a href="#客户端进行收集" class="headerlink" title="客户端进行收集"></a>客户端进行收集</h3><p>一般我们在连接 <code>Redis</code> 服务器时都要使用专门的 SDK（比如：<code>Java</code> 的客户端工具 <code>Jedis</code>、<code>Redisson</code>），我们可以对客户端工具进行封装，在发送请求前进行收集采集，同时定时把收集到的数据上报到统一的服务进行聚合计算。</p>
+<ul>
+<li>优点：方案简单</li>
+<li>缺点：<ul>
+<li>对客户端代码有一定入侵，或者需要对 <code>SDK</code> 工具进行二次开发；</li>
+<li>没法适应多语言架构，每一种语言的 <code>SDK</code> 都需要进行开发，后期开发维护成本较高。</li>
+</ul>
+</li>
+</ul>
+<h3 id="在代理层进行收集"><a href="#在代理层进行收集" class="headerlink" title="在代理层进行收集"></a>在代理层进行收集</h3><p>如果所有的 <code>Redis</code> 请求都经过 <code>Proxy</code>（代理）的话，可以考虑改动 <code>Proxy</code> 代码进行收集，思路与客户端基本类似。</p>
+<p><img src="https://gitee.com/dongzl/article-images/raw/master/2021/03-Redis-Hot-Key/Redis-Hot-Key-02.png" alt="img"></p>
+<ul>
+<li>优点：对使用方完全透明，能够解决客户端 <code>SDK</code> 的语言异构和版本升级问题；</li>
+<li>缺点：<ul>
+<li>开发成本会比客户端高些；</li>
+<li>并不是所有的 <code>Redis</code> 集群架构中都有 <code>Proxy</code> 代理（使用这种方式必须要部署 <code>Proxy</code>）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用-Redis-自带命令"><a href="#使用-Redis-自带命令" class="headerlink" title="使用 Redis 自带命令"></a>使用 Redis 自带命令</h3><ol>
+<li><strong>hotkeys 参数</strong></li>
+</ol>
+<p><code>Redis</code> 在 <code>4.0.3</code> 版本中添加了 <a target="_blank" rel="noopener" href="https://github.com/redis/redis/pull/4392">hotkeys</a> 查找特性，可以直接利用 <code>redis-cli --hotkeys</code> 获取当前 <code>keyspace</code> 的热点 <code>key</code>，实现上是通过 <code>scan + object freq</code> 完成的。</p>
+<ul>
+<li>优点：无需进行二次开发，能够直接利用现成的工具；</li>
+<li>缺点：<ul>
+<li>由于需要扫描整个 <code>keyspace</code>，实时性上比较差;</li>
+<li>扫描时间与 <code>key</code> 的数量正相关，如果 <code>key</code> 的数量比较多，耗时可能会非常长。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>hotkeys<br><a target="_blank" rel="noopener" href="https://www.zhangbj.com/p/765.html">https://www.zhangbj.com/p/765.html</a></p>
+</blockquote>
+<ol start="2">
+<li><a target="_blank" rel="noopener" href="https://redis.io/commands/monitor">monitor</a> 命令</li>
+</ol>
+<p><code>monitor</code> 命令可以实时抓取出 <code>Redis</code> 服务器接收到的命令，通过 <code>redis-cli monitor</code> 抓取数据，同时结合一些现成的分析工具，比如 <a target="_blank" rel="noopener" href="https://github.com/facebookarchive/redis-faina">redis-faina</a>，统计出热 Key。</p>
+<ul>
+<li>优点：无需进行二次开发，能够直接利用现成的工具；</li>
+<li>缺点：该命令在高并发的条件下，有内存增暴增的隐患，还会降低 <code>Redis</code> 的性能。</li>
+</ul>
+<h3 id="Redis-节点抓包分析"><a href="#Redis-节点抓包分析" class="headerlink" title="Redis 节点抓包分析"></a>Redis 节点抓包分析</h3><p><code>Redis</code> 客户端使用 <code>TCP</code> 协议与服务端进行交互，通信协议采用的是 <code>RESP</code> 协议。自己写程序监听端口，按照 <code>RESP</code> 协议规则解析数据，进行分析。或者我们可以使用一些抓包工具，比如 <code>tcpdump</code> 工具，抓取一段时间内的流量进行解析。</p>
+<ul>
+<li>优点：对 <code>SDK</code> 或者 <code>Proxy</code> 代理层没有入侵；</li>
+<li>缺点：<ul>
+<li>有一定的开发成本；</li>
+<li>热 <code>Key</code> 节点的网络流量和系统负载已经比较高了，抓包可能会导致情况进一步恶化。</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h2><h3 id="增加-Redis-实例副本数量"><a href="#增加-Redis-实例副本数量" class="headerlink" title="增加 Redis 实例副本数量"></a>增加 Redis 实例副本数量</h3><p>对于出现热 <code>Key</code> 的 <code>Redis</code> 实例，我们可以通过水平扩容增加副本数量，将读请求的压力分担到不同副本节点上。</p>
+<p>(通过<strong>主从复制-读写分离</strong>，将读请求分散多个机器上。)</p>
+<h3 id="二级缓存（本地缓存）"><a href="#二级缓存（本地缓存）" class="headerlink" title="二级缓存（本地缓存）"></a>二级缓存（本地缓存）</h3><p>当出现热 <code>Key</code> 以后，把热 <code>Key</code> 加载到系统的 <code>JVM</code> 中。后续针对这些热 <code>Key</code> 的请求，会直接从 <code>JVM</code> 中获取，而不会走到 <code>Redis</code> 层。这些本地缓存的工具很多，比如 <code>Ehcache</code>，或者 <code>Google Guava</code> 中 <code>Cache</code> 工具，或者直接使用 <code>HashMap</code> 作为本地缓存工具都是可以的。</p>
+<p><strong>使用本地缓存需要注意两个问题：</strong></p>
+<ul>
+<li>如果对热 <code>Key</code> 进行本地缓存，需要防止本地缓存过大，影响系统性能；</li>
+<li>需要处理本地缓存和 <code>Redis</code> 集群数据的一致性问题。</li>
+</ul>
+<h3 id="热-Key-备份"><a href="#热-Key-备份" class="headerlink" title="热 Key 备份"></a>热 Key 备份</h3><p>通过前面的分析，我们可以了解到，之所以出现热 <code>Key</code>，是因为有大量的对同一个 <code>Key</code> 的请求落到同一个 <code>Redis</code> 实例上，如果我们可以有办法将这些请求打散到不同的实例上，防止出现流量倾斜的情况，那么热 <code>Key</code> 问题也就不存在了。</p>
+<p>那么如何将对某个热 <code>Key</code> 的请求打散到不同实例上呢？我们就可以通过热 <code>Key</code> 备份的方式，基本的思路就是，我们<strong>可以给热 <code>Key</code> 加上前缀或者后缀，把一个热 <code>Key</code> 的数量变成 <code>Redis</code> 实例个数 <code>N</code> 的倍数 <code>M</code>，从而由访问一个 <code>Redis</code> <code>Key</code> 变成访问 <code>N * M</code> 个 <code>Redis</code> <code>Key</code>。 <code>N * M</code> 个 <code>Redis</code> <code>Key</code> 经过分片分布到不同的实例上，将访问量均摊到所有实例</strong>。</p>
+<p>具体的逻辑：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// N 为 Redis 实例个数，M 为 N 的 <span class="number">2</span>倍</span><br><span class="line">const M = N * <span class="number">2</span></span><br><span class="line">//生成随机数</span><br><span class="line"><span class="built_in">random</span> = GenRandom(<span class="number">0</span>, M)</span><br><span class="line">//构造备份新 Key</span><br><span class="line">bakHotKey = hotKey + <span class="string">&quot;_&quot;</span> + <span class="built_in">random</span></span><br><span class="line">// 先从备份key中取</span><br><span class="line">data = redis.GET(bakHotKey)</span><br><span class="line"><span class="keyword">if</span> data == NULL &#123;</span><br><span class="line">    data = redis.GET(hotKey)</span><br><span class="line">    <span class="keyword">if</span> data == NULL &#123;</span><br><span class="line">        data = GetFromDB()</span><br><span class="line">        // 可以利用原子锁来写入数据保证数据一致性</span><br><span class="line">        redis.SET(hotKey, data, expireTime)</span><br><span class="line">        redis.SET(bakHotKey, data, expireTime + GenRandom(<span class="number">0</span>, <span class="number">5</span>))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        redis.SET(bakHotKey, data, expireTime + GenRandom(<span class="number">0</span>, <span class="number">5</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在这段代码中，通过一个大于等于 <code>1</code> 小于 <code>M</code> 的随机数，得到一个 <code>bakHotKey</code>，程序会优先访问 <code>bakHotKey</code>，在得不到数据的情况下，再访问原来的 <code>hotkey</code>，并将 <code>hotkey</code> 的内容写回 <code>bakHotKey</code>。</p>
+<p>值得注意的是，<code>backHotKey</code> 的过期时间是 <code>hotkey</code> 的过期时间加上一个较小的随机正整数，这是通过坡度过期的方式，保证在 <code>hotkey</code> 过期时，所有 <code>backHotKey</code> 不会同时过期而造成缓存雪崩。</p>
+<blockquote>
+<p>参考博客</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/" class="post-title-link" itemprop="url">面试场景算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-12 10:47:21" itemprop="dateCreated datePublished" datetime="2022-08-12T10:47:21+08:00">2022-08-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-09 00:18:03" itemprop="dateModified" datetime="2023-01-09T00:18:03+08:00">2023-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">工程向算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="SP1-某云ES倒排索引"><a href="#SP1-某云ES倒排索引" class="headerlink" title="SP1 某云ES倒排索引"></a>SP1 某云ES倒排索引</h2><p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/7ba676741a3c4920b7846476be520779?tpId=332&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=/exam/oj?page=1&tab=%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587&topicId=332">https://www.nowcoder.com/practice/7ba676741a3c4920b7846476be520779?tpId=332&amp;tags=&amp;title=&amp;difficulty=0&amp;judgeStatus=0&amp;rp=0&amp;sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D332</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ID      int整型ArrayList</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> content string字符串ArrayList</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> word    string字符串</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> int整型ArrayList</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title function_">invertedIndex</span><span class="params">(ArrayList&lt;Integer&gt; ID, ArrayList&lt;String&gt; content, String word)</span> &#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        HashMap&lt;String, LinkedHashSet&lt;Integer&gt;&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; ID.size(); i++) &#123;</span><br><span class="line">            String[] split = content.get(i).split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">            <span class="keyword">for</span> (String s : split) &#123;</span><br><span class="line">                LinkedHashSet&lt;Integer&gt; linkedHashSet = map.getOrDefault(s, <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;());</span><br><span class="line">                linkedHashSet.add(ID.get(i));</span><br><span class="line">                map.put(s, linkedHashSet);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(map.getOrDefault(word, <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/zh/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95">倒排索引wiki</a></p>
+<h2 id="SP4-某音一致性哈希"><a href="#SP4-某音一致性哈希" class="headerlink" title="SP4 某音一致性哈希"></a><strong>SP4</strong> <strong>某音一致性哈希</strong></h2><p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/a93bd04c71d445c090565da14990a421?tpId=332&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=/exam/oj?page=1&tab=%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587&topicId=332">https://www.nowcoder.com/practice/a93bd04c71d445c090565da14990a421?tpId=332&amp;tags=&amp;title=&amp;difficulty=0&amp;judgeStatus=0&amp;rp=0&amp;sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D332</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConsistentHashing</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">static</span> <span class="keyword">class</span> <span class="title class_">Section</span> &#123;</span><br><span class="line">        <span class="type">int</span> id;</span><br><span class="line">        <span class="type">int</span> l, r;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Section</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.l = l;</span><br><span class="line">            <span class="keyword">this</span>.r = r;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Section</span><span class="params">(<span class="type">int</span> id, <span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.id = id;</span><br><span class="line">            <span class="keyword">this</span>.l = l;</span><br><span class="line">            <span class="keyword">this</span>.r = r;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @<span class="function">Override</span></span><br><span class="line"><span class="function">        <span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;&#123;&quot;</span> +</span><br><span class="line">                    <span class="string">&quot;id=&quot;</span> + id +</span><br><span class="line">                    <span class="string">&quot;, l=&quot;</span> + l +</span><br><span class="line">                    <span class="string">&quot;, r=&quot;</span> + r +</span><br><span class="line">                    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> machineId = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="type">int</span> <span class="title">nextMachineId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> machineId++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    PriorityQueue&lt;Section&gt; sectionLengthPQ;</span><br><span class="line">    TreeSet&lt;Section&gt; lSet;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> capacity;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConsistentHashing</span><span class="params">(<span class="type">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.capacity = capacity;</span><br><span class="line">        <span class="built_in">init</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        sectionLengthPQ = <span class="keyword">new</span> PriorityQueue&lt;&gt;(<span class="keyword">new</span> <span class="built_in">Comparator</span>&lt;Section&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="type">int</span> <span class="built_in">compare</span>(Section o1, Section o2) &#123;</span><br><span class="line">                <span class="type">int</span> cmp = (o2.r - o2.l) - (o1.r - o1.l);</span><br><span class="line">                <span class="keyword">if</span> (cmp != <span class="number">0</span>) <span class="keyword">return</span> cmp;</span><br><span class="line">                <span class="keyword">return</span> o1.id - o2.id;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        lSet = <span class="keyword">new</span> TreeSet&lt;&gt;(Comparator.<span class="built_in">comparingInt</span>(o -&gt; o.l));</span><br><span class="line">        Section section = <span class="keyword">new</span> <span class="built_in">Section</span>(<span class="built_in">nextMachineId</span>(), <span class="number">0</span>, <span class="keyword">this</span>.capacity - <span class="number">1</span>);</span><br><span class="line">        sectionLengthPQ.<span class="built_in">offer</span>(section);</span><br><span class="line">        lSet.<span class="built_in">add</span>(section);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">void</span> <span class="title">addNode</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            Section section = sectionLengthPQ.<span class="built_in">poll</span>();</span><br><span class="line">            <span class="type">int</span> oldId = section.id;</span><br><span class="line">            <span class="type">int</span> newId = <span class="built_in">nextMachineId</span>();</span><br><span class="line">            <span class="type">int</span> l = section.l;</span><br><span class="line">            <span class="type">int</span> r = section.r;</span><br><span class="line">            lSet.<span class="built_in">remove</span>(section);</span><br><span class="line">            <span class="type">int</span> l1 = l, r1 = (r - l) / <span class="number">2</span> + l;</span><br><span class="line">            <span class="type">int</span> l2 = r1 + <span class="number">1</span>, r2 = r;</span><br><span class="line">            Section section1 = <span class="keyword">new</span> <span class="built_in">Section</span>(oldId, l1, r1);</span><br><span class="line">            Section section2 = <span class="keyword">new</span> <span class="built_in">Section</span>(newId, l2, r2);</span><br><span class="line">            sectionLengthPQ.<span class="built_in">offer</span>(section1);</span><br><span class="line">            sectionLengthPQ.<span class="built_in">offer</span>(section2);</span><br><span class="line">            lSet.<span class="built_in">add</span>(section1);</span><br><span class="line">            lSet.<span class="built_in">add</span>(section2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">int</span> <span class="title">querySection</span><span class="params">(<span class="type">int</span> ID)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> id = ID % capacity;</span><br><span class="line">        Section section = <span class="keyword">new</span> <span class="built_in">Section</span>(id, id);</span><br><span class="line">        <span class="keyword">return</span> lSet.<span class="built_in">floor</span>(section).id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param n  int整型</span></span><br><span class="line"><span class="comment">     * @param ID int整型</span></span><br><span class="line"><span class="comment">     * @return int整型</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">int</span> <span class="title">consistentHashing</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> ID)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        ConsistentHashing consistentHashing = <span class="keyword">new</span> <span class="built_in">ConsistentHashing</span>(<span class="number">800</span>);</span><br><span class="line">        consistentHashing.<span class="built_in">addNode</span>(n - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> consistentHashing.<span class="built_in">querySection</span>(ID);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">static</span> <span class="type">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Solution solution = <span class="keyword">new</span> <span class="built_in">Solution</span>();</span><br><span class="line">        System.out.<span class="built_in">println</span>(solution.<span class="built_in">consistentHashing</span>(<span class="number">10</span>, <span class="number">999</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%80%E8%87%B4%E5%93%88%E5%B8%8C">一致哈希</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000021199728">https://segmentfault.com/a/1190000021199728</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/378056811">https://zhuanlan.zhihu.com/p/378056811</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/12/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/12/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/" class="post-title-link" itemprop="url">倒排索引</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-12 10:23:03" itemprop="dateCreated datePublished" datetime="2022-08-12T10:23:03+08:00">2022-08-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>正向索引：存储每个文档的单词的列表。</p>
+<p>正向索引的查询往往满足每个文档有序频繁的全文查询。</p>
+</blockquote>
+<h1 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h1><blockquote>
+<p>反向索引数据结构是典型的<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E">搜索引擎</a><a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/%E6%AA%A2%E7%B4%A2">检索</a><a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/%E7%AE%97%E6%B3%95">算法</a>重要的部分。</p>
+</blockquote>
+<p><strong>倒排索引</strong>（英语：Inverted index），也常被称为<strong>反向索引</strong>、<strong>置入档案</strong>或<strong>反向档案</strong>，是一种索引方法，被<strong>用来存储在全文搜索下某个单词在一个文档或者一组文档中的存储位置的映射</strong>。它是<em>文档检索系统</em>中最常用的数据结构。</p>
+<p>有两种不同的反向索引形式：</p>
+<ul>
+<li>一条记录的水平反向索引（或者<strong>反向档案索引</strong>）包含每个引用单词的文档的[列表]。</li>
+<li>一个单词的水平反向索引（或者<strong>完全反向索引</strong>）又包含每个单词在一个文档中的位置。</li>
+</ul>
+<p>后者的形式提供了更多的兼容性（比如<em>短语搜索</em>），但是需要更多的时间和空间来创建。</p>
+<p>举例，下面是要被索引的文本：</p>
+<ul><li><span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle T_{0}=}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msub>
+          <mi>T</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>0</mn>
+          </mrow>
+        </msub>
+        <mo>=</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle T_{0}=}</annotation>
+  </semantics></math></span><noscript><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/1ab3d9202f18a678affe9a339511bef0a7b8b110" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:4.865ex; height:2.509ex;" alt="{\displaystyle T_{0}=}"></noscript><img width="0" height="0" class="mwe-math-fallback-image-inline image-lazy-loaded" alt="{\displaystyle T_{0}=}" usemap="undefined" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/1ab3d9202f18a678affe9a339511bef0a7b8b110" srcset="" style="width: 4.865ex; height: 2.509ex; vertical-align: -0.671ex;"></span><code>0. "it is what it is"</code></li>
+<li><span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle T_{1}=}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msub>
+          <mi>T</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>1</mn>
+          </mrow>
+        </msub>
+        <mo>=</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle T_{1}=}</annotation>
+  </semantics></math></span><noscript><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/57ac5840245616f79874f4635b3bcb2e3da344dd" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:4.865ex; height:2.509ex;" alt="{\displaystyle T_{1}=}"></noscript><img width="0" height="0" class="mwe-math-fallback-image-inline image-lazy-loaded" alt="{\displaystyle T_{1}=}" usemap="undefined" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/57ac5840245616f79874f4635b3bcb2e3da344dd" srcset="" style="width: 4.865ex; height: 2.509ex; vertical-align: -0.671ex;"></span><code>1. "what is it"</code></li>
+<li><span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle T_{2}=}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msub>
+          <mi>T</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msub>
+        <mo>=</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle T_{2}=}</annotation>
+  </semantics></math></span><noscript><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/5713cf5634b3846b4d68c3383b65db289511d8bf" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:4.865ex; height:2.509ex;" alt="{\displaystyle T_{2}=}"></noscript><img width="0" height="0" class="mwe-math-fallback-image-inline image-lazy-loaded" alt="{\displaystyle T_{2}=}" usemap="undefined" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/5713cf5634b3846b4d68c3383b65db289511d8bf" srcset="" style="width: 4.865ex; height: 2.509ex; vertical-align: -0.671ex;"></span><code>2. "it is a banana"</code></li></ul>
+
+
+
+<h2 id="反向档案索引"><a href="#反向档案索引" class="headerlink" title="反向档案索引"></a>反向档案索引</h2><p>我们就能得到下面的反向文件索引：</p>
+<pre> "a":      {2}
+ "banana": {2}
+ "is":     {0, 1, 2}
+ "it":     {0, 1, 2}
+ "what":   {0, 1}
+</pre>
+<p>如果要检索 ‘what’、’is’、’it’将对应这个集合：<br>$$<br>{0,1}\cap{0,1,2}\cap{0,1,2}&#x3D;{0,1}<br>$$</p>
+<h2 id="完全反向索引"><a href="#完全反向索引" class="headerlink" title="完全反向索引"></a>完全反向索引</h2><p>对相同的文字，我们得到后面这些完全反向索引，由文档数量和当前查询的单词结果组成的的成对数据。 同样，文档数量和当前查询的单词结果都从零开始。所以，”banana”: {(2, 3)} 就是说 “banana”在第三个文档里 T2，而且在第三个文档的位置是第四个单词(地址为 3)。</p>
+<pre>"a":      {(2, 2)}
+"banana": {(2, 3)}
+"is":     {(0, 1), (0, 4), <b>(1, 1)</b>, (2, 1)}
+"it":     {(0, 0), (0, 3), <b>(1, 2)</b>, (2, 0)} 
+"what":   {(0, 2), <b>(1, 0)</b>}
+</pre>
+
+
+<p>如果我们执行短语搜索<code>&quot;what is it&quot;</code> 我们得到这个短语的全部单词各自的结果所在文档为文档0和文档1。但是这个短语检索的连续的条件仅仅在文档1得到。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/26/JUnit%E5%92%8CMockito/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/07/26/JUnit%E5%92%8CMockito/" class="post-title-link" itemprop="url">JUnit和Mockito</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-26 02:03:06" itemprop="dateCreated datePublished" datetime="2022-07-26T02:03:06+08:00">2022-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Ming8006/p/6297333.html">教程</a><br><a target="_blank" rel="noopener" href="https://site.mockito.org/">官网</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/36615330/mockito-doanswer-vs-thenreturn">thenAnswer VS thenReturn</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/blueZhangFun/article/details/103665393">verify用法</a><br><a target="_blank" rel="noopener" href="https://breeze924.github.io/2018/08/26/JUnit%E7%9F%A5%E8%AF%86%E7%82%B9%E4%B8%89%E5%88%99/">@Mock和@InjectMocks的区别</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hezhiyao/p/9440277.html">@Before、@After、@Test</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
-</body>
 
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
 </html>
