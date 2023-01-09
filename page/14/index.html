@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-count">240</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,468 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/15/ConcurrentLinkedQueue%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/15/ConcurrentLinkedQueue%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">ConcurrentLinkedQueue源码分析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-12-15 00:24:43 / 修改时间：00:33:36" itemprop="dateCreated datePublished" datetime="2021-12-15T00:24:43+08:00">2021-12-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JUC/" itemprop="url" rel="index"><span itemprop="name">JUC</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><code>ConcurrentLinkedQueue</code>，<strong>基于链表的无界的线程安全队列</strong>。</p>
+<p> 当许多线程将共享对公共集合的访问时， ConcurrentLinkedQueue是合适的选择。 <strong>像大多数其他并发集合实现一样，此类不允许使用null元素</strong>。</p>
+<p>此实现采用了一种高效的非阻塞算法，该算法基于 Maged M. Michael 和 Michael L. Scott 在《Simple、Fast、Practical Non-Blocking and Blocking Concurrent Queue Algorithms》 中描述的算法 。</p>
+<p><strong>迭代器是弱一致性的，返回元素反映了在迭代器创建时或之后的某个时刻的队列状态</strong>。 </p>
+<p>它们不会抛出 <code>java.util.ConcurrentModificationException</code> ，并且可能与其他操作同时进行。</p>
+<p>自迭代器创建以来队列中包含的元素将只返回一次。</p>
+<p>某个迭代器创建之后，使用它遍历队列元素时，队列中的某个元素正好返回一次。</p>
+<p>请注意，与大多数集合不同， size方法不是时间复杂度为O(1)的操作。</p>
+<p> 由于这些队列的异步性质，确定当前元素数量需要遍历元素（所以它的时间复杂度是O(n) ，需要我们注意），因此如果在遍历期间修改此集合，则可能会报告不准确的结果。</p>
+<p>此外，批量操作addAll 、 removeAll 、 retainAll 、 containsAll 、 equals和toArray不能保证以原子方式执行。 </p>
+<p>内存一致性影响：与其他并发集合一样，在一个线程中将对象放入ConcurrentLinkedQueue中的操作发生在另一个线程中从ConcurrentLinkedQueue访问或删除该元素之后的操作之前。</p>
+<p>请注意，与此包中的大多数非阻塞算法一样，此实现依赖于以下事实：<br>在垃圾中收集到的系统中，不存在ABA问题的可能性。<br>要回收节点，则无需使用“计数指针”或其他相关技术。</p>
+<p>基本的循环不变量:</p>
+<ul>
+<li>有且仅有一个节点的后即指针为null，就是队列的最后一个节点</li>
+<li>CAS一个节点的引用和null引用，可以原子性地将它从队列中移除。</li>
+<li>从head节点出发遍历所有元素的可达性必须保持，即使在并发修改的情况下。 </li>
+<li>一个已经出队的节点仍然可能处于可使用状态，比如在发生<strong>创建一个迭代器</strong>或者<strong>使用poll</strong>(不过它暂时失去了cpu时间片)的情况时。</li>
+</ul>
+<p>一个优化，每当当前指针距离头&#x2F;尾指针两步远时候，都会去更新 head &#x2F; tail。</p>
+<p>因为头尾节点都是并发并且独立地更新的，所以完全由可能一方落后于另一方更新。</p>
+<p>头部和尾部都有可能滞后，</p>
+<p>迭代器会跳过元素为null的节点。</p>
+<p>当创造一个节点（入队操作前）的时候，为了避免 volatile 写的开销，</p>
+<p>使用了 Unsafe.putObject 代替了普通写，是的排队的开销降为约1.5倍的CAS。</p>
+<p>头部和尾部节点有可能引用，也有可能不引用一个有着非空项的节点。</p>
+<p>如果队列是空的，那么所有元素必然都是空的。</p>
+<p>创建节点时，头尾节点引用一个有着空元素的哑结点。</p>
+<p>它们都使用CAS进行更新，所以永不倒回。</p>
+<p>注：为了节省篇幅，略去部分方法以及注释。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.util.concurrent;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ConcurrentLinkedQueue</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">AbstractQueue</span>&lt;E&gt;</span><br><span class="line">        <span class="keyword">implements</span> <span class="title class_">Queue</span>&lt;E&gt;, java.io.Serializable &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> <span class="number">196745693267521676L</span>;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Node</span>&lt;E&gt; &#123;</span><br><span class="line">        <span class="keyword">volatile</span> E item;</span><br><span class="line">        <span class="keyword">volatile</span> Node&lt;E&gt; next;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * Constructs a new node.  Uses relaxed write because item can</span></span><br><span class="line"><span class="comment">         * only be seen after publication via casNext.</span></span><br><span class="line"><span class="comment">         * 创建一个节点，使用unsafe的方式，不过在使用 casNext 后才能真正遍历到它。</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        Node(E item) &#123;</span><br><span class="line">            UNSAFE.putObject(<span class="built_in">this</span>, itemOffset, item);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">boolean</span> <span class="title function_">casItem</span><span class="params">(E cmp, E val)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> UNSAFE.compareAndSwapObject(<span class="built_in">this</span>, itemOffset, cmp, val);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">      	<span class="comment">//  t.lazySetNext(newNode) &lt;==&gt; t.next = newNode</span></span><br><span class="line">        <span class="keyword">void</span> <span class="title function_">lazySetNext</span><span class="params">(Node&lt;E&gt; val)</span> &#123;</span><br><span class="line">            UNSAFE.putOrderedObject(<span class="built_in">this</span>, nextOffset, val); </span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">boolean</span> <span class="title function_">casNext</span><span class="params">(Node&lt;E&gt; cmp, Node&lt;E&gt; val)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> UNSAFE.compareAndSwapObject(<span class="built_in">this</span>, nextOffset, cmp, val);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Unsafe mechanics</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> sun.misc.Unsafe UNSAFE;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> itemOffset;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> nextOffset;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                UNSAFE = sun.misc.Unsafe.getUnsafe();</span><br><span class="line">                Class&lt;?&gt; k = Node.class;</span><br><span class="line">                itemOffset = UNSAFE.objectFieldOffset</span><br><span class="line">                    (k.getDeclaredField(<span class="string">&quot;item&quot;</span>));</span><br><span class="line">                nextOffset = UNSAFE.objectFieldOffset</span><br><span class="line">                    (k.getDeclaredField(<span class="string">&quot;next&quot;</span>));</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 不变量:</span></span><br><span class="line"><span class="comment">     * - 所有存活节点都可以通过 head 节点到达，通过后继指针 </span></span><br><span class="line"><span class="comment">     * - head != null</span></span><br><span class="line"><span class="comment">     * - (tmp = head).next != tmp || tmp != head  ???</span></span><br><span class="line"><span class="comment">     * 非不变量:</span></span><br><span class="line"><span class="comment">     * - head.item 可能为null，也有可能不为null,</span></span><br><span class="line"><span class="comment">		 * - 允许 tail 到 head的滞后，也就是可能无法从 head 到达 tail.</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">volatile</span> Node&lt;E&gt; head;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 不变量:</span></span><br><span class="line"><span class="comment">     * - the last node 总是可以通过 tail 节点到达，通过后继指针 （the last node 是唯一的其next值为 null 的 node）</span></span><br><span class="line"><span class="comment">     * - tail != null</span></span><br><span class="line"><span class="comment">     * 非不变量:</span></span><br><span class="line"><span class="comment">     * - tail.item 可能为null，也有可能不为null,</span></span><br><span class="line"><span class="comment">		 * - 允许 tail 到 head的滞后，也就是可能无法从 head 到达 tail.</span></span><br><span class="line"><span class="comment">     * - tail.next 可能也可能不”自我指向“ tail.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">volatile</span> Node&lt;E&gt; tail;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 空队列，head、tail 指向同一哑结点</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ConcurrentLinkedQueue</span><span class="params">()</span> &#123;</span><br><span class="line">        head = tail = <span class="keyword">new</span> <span class="title class_">Node</span>&lt;E&gt;(<span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ConcurrentLinkedQueue</span><span class="params">(Collection&lt;? extends E&gt; c)</span> &#123;</span><br><span class="line">        Node&lt;E&gt; h = <span class="literal">null</span>, t = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">for</span> (E e : c) &#123;</span><br><span class="line">            checkNotNull(e); <span class="comment">// 注意 ConcurrentLinkedQueue 不允许null元素</span></span><br><span class="line">            Node&lt;E&gt; newNode = <span class="keyword">new</span> <span class="title class_">Node</span>&lt;E&gt;(e);</span><br><span class="line">            <span class="keyword">if</span> (h == <span class="literal">null</span>) <span class="comment">// 遇到第一个元素</span></span><br><span class="line">                h = t = newNode; </span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                t.lazySetNext(newNode); <span class="comment">// 相当于 t.next = newNode, 不过避免了 volatile 写</span></span><br><span class="line">                t = newNode;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (h == <span class="literal">null</span>) <span class="comment">// c 为 empty，同上</span></span><br><span class="line">            h = t = <span class="keyword">new</span> <span class="title class_">Node</span>&lt;E&gt;(<span class="literal">null</span>);</span><br><span class="line">        head = h;</span><br><span class="line">        tail = t;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Tries to CAS head to p. If successful, repoint old head to itself</span></span><br><span class="line"><span class="comment">     * as sentinel for succ(), below.</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * CAS替换掉旧 head （h）为 新 head（p）</span></span><br><span class="line"><span class="comment">     * 如果替换成功，旧 head的next指针指向自己，成为哨兵</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">updateHead</span><span class="params">(Node&lt;E&gt; h, Node&lt;E&gt; p)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (h != p &amp;&amp; casHead(h, p))</span><br><span class="line">            h.lazySetNext(h); <span class="comment">// 使旧head的后继为head自己，起哨兵作用</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns the successor of p, or the head node if p.next has been</span></span><br><span class="line"><span class="comment">     * linked to self, which will only be true if traversing with a</span></span><br><span class="line"><span class="comment">     * stale pointer that is now off the list.</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * 获取 p 的后继，不过如果 p.next == p 的话，说明 p 已经出队了</span></span><br><span class="line"><span class="comment">     *（p.next == p 就是我们设置的标志，见h.lazySetNext(h)，</span></span><br><span class="line"><span class="comment">     * 因为正常情况下不会出现这种情况 —— 正常情况下 p.next == p 说明链表成环） </span></span><br><span class="line"><span class="comment">     * 此时返回链表新的 head，表示从新头出发</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">final</span> Node&lt;E&gt; <span class="title function_">succ</span><span class="params">(Node&lt;E&gt; p)</span> &#123;</span><br><span class="line">        Node&lt;E&gt; next = p.next;</span><br><span class="line">        <span class="keyword">return</span> (p == next) ? head : next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Inserts the specified element at the tail of this queue.</span></span><br><span class="line"><span class="comment">     * As the queue is unbounded, this method will never return &#123;<span class="doctag">@code</span> false&#125;.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> &#123;<span class="doctag">@code</span> true&#125; (as specified by &#123;<span class="doctag">@link</span> Queue#offer&#125;)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> NullPointerException if the specified element is null</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offer</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        checkNotNull(e);</span><br><span class="line">        <span class="keyword">final</span> Node&lt;E&gt; newNode = <span class="keyword">new</span> <span class="title class_">Node</span>&lt;E&gt;(e);</span><br><span class="line"></span><br><span class="line">      	<span class="comment">// 无界队列，一定可以插入队尾成功。所以，如果失败，一直重试下去</span></span><br><span class="line">        <span class="keyword">for</span> (Node&lt;E&gt; t = tail, p = t;;) &#123;</span><br><span class="line">            Node&lt;E&gt; q = p.next;</span><br><span class="line">            <span class="keyword">if</span> (q == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="comment">// p is last node</span></span><br><span class="line">                <span class="keyword">if</span> (p.casNext(<span class="literal">null</span>, newNode)) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (p != t) <span class="comment">// p == t的时候不更新（防止每一次入队操作都去更新tail，间隔一次）</span></span><br><span class="line">                        casTail(t, newNode);  <span class="comment">// 失败也ok</span></span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// CAS竞争失败，下次再读，再去尝试</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (p == q) <span class="comment">// 只有一种情况出现 p == q, 就是 p 这个节点作为旧 head 从队列中被剔除出去，用 p.next = p 标识</span></span><br><span class="line">              </span><br><span class="line">                <span class="comment">// We have fallen off list.  If tail is unchanged, it</span></span><br><span class="line">                <span class="comment">// will also be off-list, in which case we need to</span></span><br><span class="line">                <span class="comment">// jump to head, from which all live nodes are always</span></span><br><span class="line">                <span class="comment">// reachable.  Else the new tail is a better bet.</span></span><br><span class="line">              	<span class="comment">// -------- 以上为源码注释 ---------</span></span><br><span class="line">                p = (t != (t = tail)) ? t : head; </span><br><span class="line">                <span class="comment">// 首先，跳到 head 处肯定是正确的，无非可能要多做几次循环找到尾节点罢了。</span></span><br><span class="line">                <span class="comment">// 其次，如果 tail 发生了变化，说明有其他线程入队了节点，并且成功修改了 tail，这个时候没必要从 head 出发,</span></span><br><span class="line">                <span class="comment">// 新的 tail 是更好的选择。</span></span><br><span class="line">          		  <span class="comment">// </span></span><br><span class="line">                <span class="comment">// 需要特别指明的是，如果 p 都已经出队了，那么 t 肯定也出队了（因为 p 是从 t 出发的嘛）</span></span><br><span class="line">                <span class="comment">// 如果说此时 tail 还没有发生变化，说明此时 tail 已经跑到了 head的前面（这是完全可能发生的）</span></span><br><span class="line">                <span class="comment">// 这时就必须跳到head了重新出发了。</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="comment">// 寻找真正的”尾节点“</span></span><br><span class="line">                p = (p != t &amp;&amp; t != (t = tail)) ? t : q; </span><br><span class="line">                <span class="comment">/* </span></span><br><span class="line"><span class="comment">                 * 这个三元表达式，做了很多事，有判断，有赋值。</span></span><br><span class="line"><span class="comment">                 * 如果，改写成下面这样，行不行呢？</span></span><br><span class="line"><span class="comment">                 * t = tail; p = q;</span></span><br><span class="line"><span class="comment">                 * 我觉得也是没问题的，因为这是个LIFO的队列，p 不是 the last node，顺着往下找就是了.</span></span><br><span class="line"><span class="comment">                 * 不过作者认为，如果经过一次循环后（也就是 p 跳过一个节点之后,此时 p != t，如果又 tail发生了变化，</span></span><br><span class="line"><span class="comment">                 * 直接跳到新的 tail 处继续寻找更好）</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * 这段逻辑和上面的offer（入队）差不多：</span></span><br><span class="line"><span class="comment">     * 1. 找到链表的真正的头结点（从 head 出发，找到第一个 item 不为null的节点）</span></span><br><span class="line"><span class="comment">     * 2. 将头结点出队（cas将item域置null）</span></span><br><span class="line"><span class="comment">     * 3. 更新 head （cas更新head，旧head标记为&quot;哨兵“）</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">poll</span><span class="params">()</span> &#123;</span><br><span class="line">        restartFromHead:</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Node&lt;E&gt; h = head, p = h, q;;) &#123;</span><br><span class="line">                <span class="type">E</span> <span class="variable">item</span> <span class="operator">=</span> p.item;</span><br><span class="line">              </span><br><span class="line">                <span class="comment">// item 不为 null，说明 p 就是链表的头结点了</span></span><br><span class="line">                <span class="keyword">if</span> (item != <span class="literal">null</span> &amp;&amp; p.casItem(item, <span class="literal">null</span>)) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (p != h) <span class="comment">// 和跟新tail一样，不要每次出队一个节点，就更新一下 head（宁可多循环几次去找到真正的头结点）</span></span><br><span class="line">                        updateHead(h, ((q = p.next) != <span class="literal">null</span>) ? q : p);</span><br><span class="line">                    <span class="keyword">return</span> item;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> ((q = p.next) == <span class="literal">null</span>) &#123; <span class="comment">// p的item为null，p 又没有next节点，说明队列此时已经为empty了，返回null即可</span></span><br><span class="line">                    updateHead(h, p); <span class="comment">// 更新 head </span></span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (p == q)</span><br><span class="line">                    <span class="comment">// 和上面的一样，如果有其他 thread 也在 poll 节点的话，那么 p 引用的节点可能已经出队，标记为哨兵（哨兵的next指针指向自己）</span></span><br><span class="line">                    <span class="comment">// 这个时候需要从新的 head 出发寻找</span></span><br><span class="line">                    <span class="keyword">continue</span> restartFromHead;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    p = q; <span class="comment">// 往后移动，继续找</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 和上面的逻辑基本一致</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">peek</span><span class="params">()</span> &#123;</span><br><span class="line">        restartFromHead:</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Node&lt;E&gt; h = head, p = h, q;;) &#123;</span><br><span class="line">                <span class="type">E</span> <span class="variable">item</span> <span class="operator">=</span> p.item;</span><br><span class="line">                <span class="keyword">if</span> (item != <span class="literal">null</span> || (q = p.next) == <span class="literal">null</span>) &#123;</span><br><span class="line">                    updateHead(h, p); <span class="comment">// updateHead 自身也做了一次 h 是否等于 p 的判断的</span></span><br><span class="line">                    <span class="keyword">return</span> item;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (p == q)</span><br><span class="line">                    <span class="keyword">continue</span> restartFromHead;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    p = q;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回列表中的第一个活动（未删除）节点，如果没有，则返回 null。</span></span><br><span class="line">    <span class="comment">// 这是 poll/peek 的另一种变体； 这里返回第一个节点，而不是元素。 </span></span><br><span class="line">    <span class="comment">// 作为类内的方法使用，不公开</span></span><br><span class="line">    Node&lt;E&gt; <span class="title function_">first</span><span class="params">()</span> &#123;</span><br><span class="line">        restartFromHead:</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Node&lt;E&gt; h = head, p = h, q;;) &#123;</span><br><span class="line">                <span class="type">boolean</span> <span class="variable">hasItem</span> <span class="operator">=</span> (p.item != <span class="literal">null</span>);</span><br><span class="line">                <span class="keyword">if</span> (hasItem || (q = p.next) == <span class="literal">null</span>) &#123;</span><br><span class="line">                    updateHead(h, p);</span><br><span class="line">                    <span class="keyword">return</span> hasItem ? p : <span class="literal">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (p == q)</span><br><span class="line">                    <span class="keyword">continue</span> restartFromHead;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    p = q;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不是通过 size == 0 来判断的</span></span><br><span class="line">    <span class="comment">// 时间复杂度: O(1)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> first() == <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 需要遍历整个链表，因为没有成员属性记录元素个数</span></span><br><span class="line">    <span class="comment">// 时间复杂度: O(n), 谨慎使用</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (Node&lt;E&gt; p = first(); p != <span class="literal">null</span>; p = succ(p)) <span class="comment">// 注意是 succ(p) 而不是简单的 p.next</span></span><br><span class="line">            <span class="keyword">if</span> (p.item != <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">if</span> (++count == Integer.MAX_VALUE)</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (o != <span class="literal">null</span>) &#123;</span><br><span class="line">            Node&lt;E&gt; next, pred = <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">for</span> (Node&lt;E&gt; p = first(); p != <span class="literal">null</span>; pred = p, p = next) &#123;</span><br><span class="line">                <span class="type">boolean</span> <span class="variable">removed</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">                <span class="type">E</span> <span class="variable">item</span> <span class="operator">=</span> p.item;</span><br><span class="line">                <span class="keyword">if</span> (item != <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!o.equals(item)) &#123;</span><br><span class="line">                        next = succ(p);</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    removed = p.casItem(item, <span class="literal">null</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                next = succ(p);</span><br><span class="line">                <span class="keyword">if</span> (pred != <span class="literal">null</span> &amp;&amp; next != <span class="literal">null</span>) <span class="comment">// unlink</span></span><br><span class="line">                    pred.casNext(p, next); <span class="comment">// cas 失败也 ok</span></span><br><span class="line">                <span class="keyword">if</span> (removed)</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">checkNotNull</span><span class="params">(Object v)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (v == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * UNSAFE 的 cas </span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">casTail</span><span class="params">(Node&lt;E&gt; cmp, Node&lt;E&gt; val)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> UNSAFE.compareAndSwapObject(<span class="built_in">this</span>, tailOffset, cmp, val);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">casHead</span><span class="params">(Node&lt;E&gt; cmp, Node&lt;E&gt; val)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> UNSAFE.compareAndSwapObject(<span class="built_in">this</span>, headOffset, cmp, val);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Unsafe mechanics</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> sun.misc.Unsafe UNSAFE;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> headOffset;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> tailOffset;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            UNSAFE = sun.misc.Unsafe.getUnsafe();</span><br><span class="line">            Class&lt;?&gt; k = ConcurrentLinkedQueue.class;</span><br><span class="line">            headOffset = UNSAFE.objectFieldOffset</span><br><span class="line">                (k.getDeclaredField(<span class="string">&quot;head&quot;</span>));</span><br><span class="line">            tailOffset = UNSAFE.objectFieldOffset</span><br><span class="line">                (k.getDeclaredField(<span class="string">&quot;tail&quot;</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/15/BlockingQueue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/15/BlockingQueue/" class="post-title-link" itemprop="url">JDK的BlockingQueue</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-15 00:07:32" itemprop="dateCreated datePublished" datetime="2021-12-15T00:07:32+08:00">2021-12-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-15 17:42:53" itemprop="dateModified" datetime="2022-03-15T17:42:53+08:00">2022-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JUC/" itemprop="url" rel="index"><span itemprop="name">JUC</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h2><p><code>BlockingQueue</code>接口，作为阻塞队列的接口规范，有多种实现类。</p>
+<p><code>BlockingQueue</code>有四种形式，处理不能立即满足但可能在未来某个时候满足的操作。</p>
+<p>四种方式各不相同：一个抛出异常，第二个返回一个特殊值（ <code>null</code>或<code>false</code> ，取决于操作），第三个无限期地阻塞当前线程，直到操作成功，第四个阻塞仅给定的最大时间限制，然后放弃。 这些方法总结在下表中：</p>
+<table>
+<thead>
+<tr>
+<th>方法&#x2F;特点</th>
+<th>Throws exception</th>
+<th>Special value</th>
+<th>Blocks</th>
+<th>Time out</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Insert</td>
+<td>add(e)</td>
+<td>offer(e)</td>
+<td>put(e)</td>
+<td>offer(e, time, unit)</td>
+</tr>
+<tr>
+<td>Remove</td>
+<td>remove()</td>
+<td>poll()</td>
+<td>take()</td>
+<td>poll(time, unit)</td>
+</tr>
+<tr>
+<td>Examine</td>
+<td>element</td>
+<td>peek</td>
+<td>not applicable</td>
+<td>not applicable</td>
+</tr>
+</tbody></table>
+<h2 id="LinkedBlockingQueue"><a href="#LinkedBlockingQueue" class="headerlink" title="LinkedBlockingQueue"></a>LinkedBlockingQueue</h2><blockquote>
+<p><strong>基于链表的(有界的)阻塞队列</strong>。</p>
+<p>该队列对元素 FIFO（先进先出）进行排序。 </p>
+<p>队列的头部是在队列中停留时间最长的那个元素。 队列的尾部是在队列中停留时间最短的那个元素。 新元素插入队列尾部，队列检索操作获取队列头部元素。 </p>
+<p><strong>链表实现的阻塞度列通常比基于数组的阻塞队列具有更高的吞吐量</strong>, 但是没有提供公平访问策略，在大多数并发应用程序中性能的可预测较差。<br>可选的指定容量构造函数参数是一种防止队列过度扩展的方法。</p>
+<p>如果未指定，容量等于Integer.MAX_VALUE 。链接节点在每次插入时动态创建，除非这会使队列超出容量。<br><strong>不允许null元素</strong>。</p>
+</blockquote>
+<p>实现原理</p>
+<p><strong>两把锁，两个条件变量</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Lock held by take, poll, etc */</span></span><br><span class="line">    <span class="comment">// 节点出队操作所需要获取的锁</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">takeLock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Wait queue for waiting takes */</span></span><br><span class="line">    <span class="comment">// 队列不空的条件通知（不空，说明可以出队）</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Condition</span> <span class="variable">notEmpty</span> <span class="operator">=</span> takeLock.newCondition();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Lock held by put, offer, etc */</span></span><br><span class="line">    <span class="comment">// 节点入队操作所需要获取的锁</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">putLock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Wait queue for waiting puts */</span></span><br><span class="line">    <span class="comment">// 队列不满的条件通知（不满，说明可以入队）</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Condition</span> <span class="variable">notFull</span> <span class="operator">=</span> putLock.newCondition();</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.util.concurrent;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LinkedBlockingQueue</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">AbstractQueue</span>&lt;E&gt;</span><br><span class="line">        <span class="keyword">implements</span> <span class="title class_">BlockingQueue</span>&lt;E&gt;, java.io.Serializable &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> -<span class="number">6903933977591709194L</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Node</span>&lt;E&gt; &#123;</span><br><span class="line">        E item;</span><br><span class="line">        Node&lt;E&gt; next;</span><br><span class="line"></span><br><span class="line">        Node(E x) &#123; item = x; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 队列限制，如果没有指定为 Integer.MAX_VALUE</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> capacity;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前元素数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">count</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(); <span class="comment">// 如果不是的，自增、自减都是线程不安全的</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 哨兵头</span></span><br><span class="line"><span class="comment">     * 不变量: head.item == null</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">transient</span> Node&lt;E&gt; head;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 哨兵尾</span></span><br><span class="line"><span class="comment">     * 不变量: last.item == null</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> Node&lt;E&gt; last;</span><br><span class="line">  </span><br><span class="line">  	<span class="comment">// 也就是说empty的queue也至少有1个哨兵（初始时，head == last ）</span></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Lock held by take, poll, etc */</span></span><br><span class="line">    <span class="comment">// 节点出队操作所需要获取的锁</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">takeLock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Wait queue for waiting takes */</span></span><br><span class="line">    <span class="comment">// 队列不空的条件通知（不空，说明可以出队）</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Condition</span> <span class="variable">notEmpty</span> <span class="operator">=</span> takeLock.newCondition();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Lock held by put, offer, etc */</span></span><br><span class="line">    <span class="comment">// 节点入队操作所需要获取的锁</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">putLock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Wait queue for waiting puts */</span></span><br><span class="line">    <span class="comment">// 队列不满的条件通知（不满，说明可以入队）</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Condition</span> <span class="variable">notFull</span> <span class="operator">=</span> putLock.newCondition();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通知那些因为队列已空而等待的节点出队线程</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">signalNotEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">takeLock</span> <span class="operator">=</span> <span class="built_in">this</span>.takeLock;</span><br><span class="line">        takeLock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            notEmpty.signal(); <span class="comment">// 注意不是 signalAll(), 只通知一个线程, 下面也是一样</span></span><br><span class="line">         &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            takeLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// 通知那些因为队列已满而等待的节点入队线程</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">signalNotFull</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">putLock</span> <span class="operator">=</span> <span class="built_in">this</span>.putLock;</span><br><span class="line">        putLock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            notFull.signal(); </span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            putLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 入队</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">enqueue</span><span class="params">(Node&lt;E&gt; node)</span> &#123;</span><br><span class="line">        <span class="comment">// assert putLock.isHeldByCurrentThread(); 断言当前线程拿到 putLock</span></span><br><span class="line">        <span class="comment">// assert last.next == null; 断言last确实是zu&#x27;h</span></span><br><span class="line">        last = last.next = node;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// </span></span><br><span class="line">    <span class="keyword">private</span> E <span class="title function_">dequeue</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// assert takeLock.isHeldByCurrentThread(); 断言当前线程拿到 takeLock</span></span><br><span class="line">        Node&lt;E&gt; h = head;</span><br><span class="line">        Node&lt;E&gt; first = h.next;</span><br><span class="line">        h.next = h; <span class="comment">// help GC</span></span><br><span class="line">        head = first;</span><br><span class="line">        <span class="type">E</span> <span class="variable">x</span> <span class="operator">=</span> first.item;</span><br><span class="line">        first.item = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 两把锁都加锁</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">fullyLock</span><span class="params">()</span> &#123;</span><br><span class="line">        putLock.lock();</span><br><span class="line">        takeLock.lock();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 两把锁都解锁</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">fullyUnlock</span><span class="params">()</span> &#123;</span><br><span class="line">        takeLock.unlock();</span><br><span class="line">        putLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">LinkedBlockingQueue</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(Integer.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">LinkedBlockingQueue</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (capacity &lt;= <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">        <span class="built_in">this</span>.capacity = capacity;</span><br><span class="line">        last = head = <span class="keyword">new</span> <span class="title class_">Node</span>&lt;E&gt;(<span class="literal">null</span>); <span class="comment">// 一个就ok</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> count.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 剩余可用容量</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">remainingCapacity</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> capacity - count.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果空间不够用吗，一直阻塞</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(E e)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="keyword">if</span> (e == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">        <span class="comment">// Note: convention in all put/take/etc is to preset local var</span></span><br><span class="line">        <span class="comment">// holding count negative to indicate failure unless set.</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        Node&lt;E&gt; node = <span class="keyword">new</span> <span class="title class_">Node</span>&lt;E&gt;(e);</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">putLock</span> <span class="operator">=</span> <span class="built_in">this</span>.putLock;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">count</span> <span class="operator">=</span> <span class="built_in">this</span>.count;</span><br><span class="line">        putLock.lockInterruptibly(); <span class="comment">// 可中断的加锁</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count.get() == capacity) &#123; <span class="comment">// 注意是 while</span></span><br><span class="line">                notFull.await(); <span class="comment">// 等待过程中，也可能被 interrupt</span></span><br><span class="line">            &#125;</span><br><span class="line">            enqueue(node);</span><br><span class="line">            c = count.getAndIncrement(); <span class="comment">// 先get后incr，也就是说先拿到队列此时的容量 c</span></span><br><span class="line">            <span class="keyword">if</span> (c + <span class="number">1</span> &lt; capacity) <span class="comment">// c + 1 &lt; capacity 队列一定不满，因为此时 putLock 被自己占有，如果有其他 take 线程，队列已用空间只会更小</span></span><br><span class="line">                notFull.signal();  <span class="comment">// 通知其他put线程工作（注意只通知一个）</span></span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             * 为什么，put 线程还需要通知其他 put 线程呢？</span></span><br><span class="line"><span class="comment">             * 从信号量的角度讲，只需要 take 线程去通知即可。</span></span><br><span class="line"><span class="comment">             * 这就是作者所说的级联通知，而且每次都通知一个，避免大量线程同时被唤醒去争抢锁，</span></span><br><span class="line"><span class="comment">             * 并且避免了不必要的（加锁--通知--解锁）方法调用。</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            putLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="number">0</span>) <span class="comment">// 如果已有其他 take 线程在等待，现在通知它们工作</span></span><br><span class="line">            signalNotEmpty();</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 为什么是 == 而不是 &gt;= ?</span></span><br><span class="line"><span class="comment">         * 实际上，直接去掉这个 if 判断，直接调用 signalNotEmpty() 也是正确的。</span></span><br><span class="line"><span class="comment">         * 但是这会导致每次put调用后都用调用signalNotEmpty（这一步会加锁在解锁），增大太大开销。</span></span><br><span class="line"><span class="comment">         * 所以，相当于只在队列为 empty 时入队元素，put 线程才会通知 take 线程，并且也只通知一个。 </span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定等待时间，其余代码与上面一致，只是在等待固定时间后会 return false </span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offer</span><span class="params">(E e, <span class="type">long</span> timeout, TimeUnit unit)</span></span><br><span class="line">        <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (e == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">        <span class="type">long</span> <span class="variable">nanos</span> <span class="operator">=</span> unit.toNanos(timeout);</span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">putLock</span> <span class="operator">=</span> <span class="built_in">this</span>.putLock;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">count</span> <span class="operator">=</span> <span class="built_in">this</span>.count;</span><br><span class="line">        putLock.lockInterruptibly();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count.get() == capacity) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nanos &lt;= <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                nanos = notFull.awaitNanos(nanos); <span class="comment">// awaitNanos(nanos) 会返回需要等待的剩余时间，&lt;= 0 表明等待结束了  </span></span><br><span class="line">            &#125;</span><br><span class="line">            enqueue(<span class="keyword">new</span> <span class="title class_">Node</span>&lt;E&gt;(e));</span><br><span class="line">            c = count.getAndIncrement();</span><br><span class="line">            <span class="keyword">if</span> (c + <span class="number">1</span> &lt; capacity)</span><br><span class="line">                notFull.signal();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            putLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="number">0</span>)</span><br><span class="line">            signalNotEmpty();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不阻塞</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">offer</span><span class="params">(E e)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (e == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">        <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">count</span> <span class="operator">=</span> <span class="built_in">this</span>.count;</span><br><span class="line">        <span class="comment">// 如果容量已满，直接返回即可</span></span><br><span class="line">        <span class="keyword">if</span> (count.get() == capacity)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      </span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        Node&lt;E&gt; node = <span class="keyword">new</span> <span class="title class_">Node</span>&lt;E&gt;(e);</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">putLock</span> <span class="operator">=</span> <span class="built_in">this</span>.putLock;</span><br><span class="line">        putLock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (count.get() &lt; capacity) &#123;</span><br><span class="line">                enqueue(node);</span><br><span class="line">                c = count.getAndIncrement();</span><br><span class="line">                <span class="keyword">if</span> (c + <span class="number">1</span> &lt; capacity)</span><br><span class="line">                    notFull.signal();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            putLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="number">0</span>)</span><br><span class="line">            signalNotEmpty();</span><br><span class="line">        <span class="keyword">return</span> c &gt;= <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">take</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        E x;</span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">count</span> <span class="operator">=</span> <span class="built_in">this</span>.count;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">takeLock</span> <span class="operator">=</span> <span class="built_in">this</span>.takeLock;</span><br><span class="line">        takeLock.lockInterruptibly();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count.get() == <span class="number">0</span>) &#123;</span><br><span class="line">                notEmpty.await();</span><br><span class="line">            &#125;</span><br><span class="line">            x = dequeue();</span><br><span class="line">            c = count.getAndDecrement();</span><br><span class="line">            <span class="keyword">if</span> (c &gt; <span class="number">1</span>) <span class="comment">// 级联通知</span></span><br><span class="line">                notEmpty.signal();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            takeLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (c == capacity)</span><br><span class="line">            signalNotFull();</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 与上面的逻辑类似，只在队列仅剩余一个可用位置的时候，才去通知 put 线程，并且只通知一个</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 下面的逻辑类似，不再赘述</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">poll</span><span class="params">(<span class="type">long</span> timeout, TimeUnit unit)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">E</span> <span class="variable">x</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="type">long</span> <span class="variable">nanos</span> <span class="operator">=</span> unit.toNanos(timeout);</span><br><span class="line">        <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">count</span> <span class="operator">=</span> <span class="built_in">this</span>.count;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">takeLock</span> <span class="operator">=</span> <span class="built_in">this</span>.takeLock;</span><br><span class="line">        takeLock.lockInterruptibly();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count.get() == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nanos &lt;= <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">                nanos = notEmpty.awaitNanos(nanos);</span><br><span class="line">            &#125;</span><br><span class="line">            x = dequeue();</span><br><span class="line">            c = count.getAndDecrement();</span><br><span class="line">            <span class="keyword">if</span> (c &gt; <span class="number">1</span>)</span><br><span class="line">                notEmpty.signal();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            takeLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (c == capacity)</span><br><span class="line">            signalNotFull();</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">poll</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">count</span> <span class="operator">=</span> <span class="built_in">this</span>.count;</span><br><span class="line">        <span class="keyword">if</span> (count.get() == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">E</span> <span class="variable">x</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">takeLock</span> <span class="operator">=</span> <span class="built_in">this</span>.takeLock;</span><br><span class="line">        takeLock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (count.get() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                x = dequeue();</span><br><span class="line">                c = count.getAndDecrement();</span><br><span class="line">                <span class="keyword">if</span> (c &gt; <span class="number">1</span>)</span><br><span class="line">                    notEmpty.signal();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            takeLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (c == capacity)</span><br><span class="line">            signalNotFull();</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 加 take 锁检测</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">peek</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (count.get() == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">takeLock</span> <span class="operator">=</span> <span class="built_in">this</span>.takeLock;</span><br><span class="line">        takeLock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Node&lt;E&gt; first = head.next;</span><br><span class="line">            <span class="keyword">if</span> (first == <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">return</span> first.item;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            takeLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// contains调用时，直接不允许 put、take</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        fullyLock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (Node&lt;E&gt; p = head.next; p != <span class="literal">null</span>; p = p.next)</span><br><span class="line">                <span class="keyword">if</span> (o.equals(p.item))</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            fullyUnlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>迭代器:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回弱一致性的迭代器</span></span><br><span class="line"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title function_">iterator</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Itr</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">Itr</span> <span class="keyword">implements</span> <span class="title class_">Iterator</span>&lt;E&gt; &#123;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">private</span> Node&lt;E&gt; current;</span><br><span class="line">    <span class="keyword">private</span> Node&lt;E&gt; lastRet;</span><br><span class="line">    <span class="comment">// 缓存住，即使后来这个节点出队了，只要 hasNext() 返回 true, 也一定可以正常返回，</span></span><br><span class="line">    <span class="comment">// 也正因此，它是弱一致性的。</span></span><br><span class="line">    <span class="keyword">private</span> E currentElement;</span><br><span class="line"></span><br><span class="line">    Itr() &#123;</span><br><span class="line">        fullyLock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            current = head.next;</span><br><span class="line">            <span class="keyword">if</span> (current != <span class="literal">null</span>)</span><br><span class="line">                currentElement = current.item;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            fullyUnlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> current != <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> Node&lt;E&gt; <span class="title function_">nextNode</span><span class="params">(Node&lt;E&gt; p)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            Node&lt;E&gt; s = p.next;</span><br><span class="line">            <span class="keyword">if</span> (s == p)  <span class="comment">// 标志着这个节点已经被出队了。</span></span><br><span class="line">                <span class="keyword">return</span> head.next;</span><br><span class="line">            <span class="keyword">if</span> (s == <span class="literal">null</span> || s.item != <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">return</span> s;</span><br><span class="line">            p = s;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * next、remove之前，都会争抢两把锁，同时锁住。</span></span><br><span class="line"><span class="comment">     * 也就是说，使用迭代器遍历链表的时候</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">next</span><span class="params">()</span> &#123;</span><br><span class="line">        fullyLock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (current == <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">            <span class="type">E</span> <span class="variable">x</span> <span class="operator">=</span> currentElement;</span><br><span class="line">            lastRet = current;</span><br><span class="line">            current = nextNode(current);</span><br><span class="line">            currentElement = (current == <span class="literal">null</span>) ? <span class="literal">null</span> : current.item;</span><br><span class="line">            <span class="keyword">return</span> x;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            fullyUnlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">remove</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (lastRet == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>();</span><br><span class="line">        fullyLock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Node&lt;E&gt; node = lastRet;</span><br><span class="line">            lastRet = <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">for</span> (Node&lt;E&gt; trail = head, p = trail.next;</span><br><span class="line">                 p != <span class="literal">null</span>;</span><br><span class="line">                 trail = p, p = p.next) &#123;</span><br><span class="line">                <span class="keyword">if</span> (p == node) &#123;</span><br><span class="line">                    unlink(p, trail);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            fullyUnlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="ArrayBlockingQueue"><a href="#ArrayBlockingQueue" class="headerlink" title="ArrayBlockingQueue"></a>ArrayBlockingQueue</h2><blockquote>
+<p><strong>由数组支持的有界阻塞队列</strong>。</p>
+<p>这是一个经典的“有界缓冲区”，其中一个固定大小的数组保存由生产者插入并由消费者提取的元素。<br>容量一旦创建，就无法更改。 </p>
+<p>尝试put元素放入已满队列将导致操作阻塞； 尝试从空队列中take元素也会类似地阻塞。</p>
+<p><strong>此类支持用于排序等待生产者和消费者线程的可选公平策略</strong>。 </p>
+<p>默认情况下，不保证此顺序。 但是，在公平性设置为true时构造的队列以 FIFO 顺序授予线程访问权限。</p>
+<p><strong>公平通常会降低吞吐量，但会减少可变性并避免饥饿</strong>。</p>
+</blockquote>
+<p>实现原理</p>
+<p><strong>一把锁，两个条件变量</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 这里只使用了一把锁，也就是说，put/take 线程会互相竞争。</span></span><br><span class="line"><span class="comment"> * 吞吐量自然也没有 LinkedBlockingQueue 大，但是提供了公平性策略。</span></span><br><span class="line"><span class="comment"> */</span> </span><br><span class="line"><span class="keyword">final</span> ReentrantLock lock;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notEmpty;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notFull;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.util.concurrent;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ArrayBlockingQueue</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">AbstractQueue</span>&lt;E&gt;</span><br><span class="line">        <span class="keyword">implements</span> <span class="title class_">BlockingQueue</span>&lt;E&gt;, java.io.Serializable &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> -<span class="number">817911632652898426L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** The queued items */</span></span><br><span class="line">    <span class="keyword">final</span> Object[] items;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在此实现中，数组允许被填充满，而不是最多为 length - 1</span></span><br><span class="line"><span class="comment">     */</span> </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/** items index for next take, poll, peek or remove */</span></span><br><span class="line">    <span class="comment">// 下一个要取元素的位置，实际上也就是队列的第一个元素</span></span><br><span class="line">    <span class="type">int</span> takeIndex;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** items index for next put, offer, or add */</span></span><br><span class="line">    <span class="comment">// 下一个要放置元素的位置，实际上也就是队列的最后一个元素的下一个位置。</span></span><br><span class="line">    <span class="type">int</span> putIndex;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Number of elements in the queue */</span></span><br><span class="line">    <span class="comment">// 元素个数</span></span><br><span class="line">    <span class="type">int</span> count; <span class="comment">// 注意不是 atomic的</span></span><br><span class="line">	</span><br><span class="line">  	</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 这里只使用了一把锁，也就是说，put/take 线程会互相竞争。</span></span><br><span class="line"><span class="comment">     * 吞吐量自然也没有 LinkedBlockingQueue 大，但是提供了公平性策略。</span></span><br><span class="line"><span class="comment">     */</span> </span><br><span class="line">    <span class="keyword">final</span> ReentrantLock lock;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Condition notEmpty;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Condition notFull;</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 循环减 1</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">dec</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ((i == <span class="number">0</span>) ? items.length : i) - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">enqueue</span><span class="params">(E x)</span> &#123;</span><br><span class="line">        <span class="comment">// assert lock.getHoldCount() == 1;</span></span><br><span class="line">        <span class="comment">// assert items[putIndex] == null;</span></span><br><span class="line">        <span class="keyword">final</span> Object[] items = <span class="built_in">this</span>.items;</span><br><span class="line">        items[putIndex] = x;</span><br><span class="line">        <span class="keyword">if</span> (++putIndex == items.length)</span><br><span class="line">            putIndex = <span class="number">0</span>;</span><br><span class="line">        count++;</span><br><span class="line">        notEmpty.signal(); <span class="comment">// 入队，通知非空</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> E <span class="title function_">dequeue</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// assert lock.getHoldCount() == 1;</span></span><br><span class="line">        <span class="comment">// assert items[takeIndex] != null;</span></span><br><span class="line">        <span class="keyword">final</span> Object[] items = <span class="built_in">this</span>.items;</span><br><span class="line">        <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">        <span class="type">E</span> <span class="variable">x</span> <span class="operator">=</span> (E) items[takeIndex];</span><br><span class="line">        items[takeIndex] = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (++takeIndex == items.length)</span><br><span class="line">            takeIndex = <span class="number">0</span>;</span><br><span class="line">        count--;</span><br><span class="line">        <span class="keyword">if</span> (itrs != <span class="literal">null</span>)</span><br><span class="line">            itrs.elementDequeued();</span><br><span class="line">        notFull.signal(); <span class="comment">// 出队，通知非满</span></span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 由于底层是固定大小的数组，所以必须指定初始容量，默认是非公平的</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ArrayBlockingQueue</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(capacity, <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ArrayBlockingQueue</span><span class="params">(<span class="type">int</span> capacity, <span class="type">boolean</span> fair)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (capacity &lt;= <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>();</span><br><span class="line">        <span class="built_in">this</span>.items = <span class="keyword">new</span> <span class="title class_">Object</span>[capacity];</span><br><span class="line">        lock = <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>(fair);</span><br><span class="line">        notEmpty = lock.newCondition();</span><br><span class="line">        notFull =  lock.newCondition();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(E e)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        checkNotNull(e);</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;</span><br><span class="line">        lock.lockInterruptibly();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count == items.length)</span><br><span class="line">                notFull.await();</span><br><span class="line">            enqueue(e);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">take</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;</span><br><span class="line">        lock.lockInterruptibly();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count == <span class="number">0</span>)</span><br><span class="line">                notEmpty.await();</span><br><span class="line">            <span class="keyword">return</span> dequeue();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// size 方法也会加锁</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="built_in">this</span>.lock;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> count;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">JVM内存结构</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-12 18:31:40" itemprop="dateCreated datePublished" datetime="2021-12-12T18:31:40+08:00">2021-12-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-12 23:05:29" itemprop="dateModified" datetime="2022-09-12T23:05:29+08:00">2022-09-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="JVM内存结构图"><a href="#JVM内存结构图" class="headerlink" title="JVM内存结构图"></a>JVM内存结构图</h2><p>《深入理解Java虚拟机（第2版）》</p>
+<p><img src="/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-memory.jpg"></p>
+<p><strong>Java8内存结构介绍</strong></p>
+<p><img src="/2021/12/12/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-memory2.png" alt="图片"></p>
+<h2 id="虚拟机内存与本地内存的区别"><a href="#虚拟机内存与本地内存的区别" class="headerlink" title="虚拟机内存与本地内存的区别"></a>虚拟机内存与本地内存的区别</h2><p>Java虚拟机在执行的时候会把管理的内存分配成不同的区域，这些区域被称为虚拟机内存，同时，对于虚拟机没有直接管理的物理内存，也有一定的利用，这些被利用却不在虚拟机内存数据区的内存，我们称它为<code>本地内存</code>，这两种内存有一定的区别：</p>
+<ul>
+<li><p>JVM内存<br>受虚拟机内存大小的参数控制，当大小超过参数设置的大小时就会报OOM</p>
+</li>
+<li><p>本地内存<br>本地内存不受虚拟机内存参数的限制，只受物理内存容量的限制<br>虽然不受参数的限制，但是如果内存的占用超出物理内存的大小，同样也会报OOM</p>
+</li>
+</ul>
+<h2 id="各个区域的具体作用"><a href="#各个区域的具体作用" class="headerlink" title="各个区域的具体作用"></a>各个区域的具体作用</h2><h3 id="程序计数器（Program-Counter-Register）"><a href="#程序计数器（Program-Counter-Register）" class="headerlink" title="程序计数器（Program Counter Register）"></a>程序计数器（Program Counter Register）</h3><p><strong>程序计数器就是当前线程所执行的字节码的行号指示器</strong>，<strong>通过改变计数器的值，来选取下一行指令</strong>，通过他来实现跳转、循环、恢复线程等功能。</p>
+<ul>
+<li>在任何时刻，一个处理器内核只能运行一个线程，多线程是通过线程轮流切换，分配时间来完成的，这就需要有一个标志来记住每个线程执行到了哪里，这里便需要到了程序计数器。</li>
+<li>所以，<strong>程序计数器是线程私有的</strong>，每个线程都已自己的程序计数器。</li>
+</ul>
+<h3 id="虚拟机栈（JVM-Stacks）"><a href="#虚拟机栈（JVM-Stacks）" class="headerlink" title="虚拟机栈（JVM Stacks）"></a>虚拟机栈（JVM Stacks）</h3><p>虚拟机栈是线程私有的，随线程生灭。虚拟机栈描述的是线程中的方法的内存模型：</p>
+<p>每个方法被执行的时候，都会在虚拟机栈中同步创建一个<strong>栈帧</strong>（stack frame）。</p>
+<ul>
+<li>每个栈帧的包含如下的内容<ul>
+<li>Java基本数据类型（byte&#x2F;boolean&#x2F;char&#x2F;int&#x2F;long&#x2F;double&#x2F;float&#x2F;short）以及对象的引用 （注：这里的基本数据类型指的是方法内的局部变量）</li>
+<li>局部变量表</li>
+<li>操作数栈</li>
+<li>动态连接</li>
+<li>方法返回地址</li>
+</ul>
+</li>
+</ul>
+<p>方法被执行时入栈，执行完后出栈<br>虚拟机栈可能会抛出两种异常：</p>
+<ul>
+<li>如果线程请求的栈深度大于虚拟机所规定的栈深度，则会抛出<code>StackOverFlowError</code>即栈溢出</li>
+<li>如果虚拟机的栈容量可以动态扩展，那么当虚拟机栈申请不到内存时会抛出<code>OutOfMemoryError</code>即OOM内存溢出</li>
+</ul>
+<h3 id="本地方法栈（Native-Method-Stacks）"><a href="#本地方法栈（Native-Method-Stacks）" class="headerlink" title="本地方法栈（Native Method Stacks）"></a>本地方法栈（Native Method Stacks）</h3><p>本地方法栈与虚拟机栈的作用是相似的,都会抛出<code>OutOfMemoryError</code>和<code>StackOverFlowError</code>，都是<code>线程私有</code>的，主要的区别在于：</p>
+<ul>
+<li>虚拟机栈执行的是java方法</li>
+<li>本地方法栈执行的是native方法</li>
+</ul>
+<h3 id="Java堆（Java-Heap）"><a href="#Java堆（Java-Heap）" class="headerlink" title="Java堆（Java Heap）"></a>Java堆（Java Heap）</h3><p>java堆是JVM内存中最大的一块，由所有<strong>线程共享</strong>,是<strong>由垃圾收集器管理</strong>的内存区域，<strong>主要存放对象实例</strong>，当然由于java虚拟机的发展，堆中也多了许多东西，现在主要有：</p>
+<ul>
+<li><p>对象实例</p>
+<ul>
+<li>类初始化生成的对象；</li>
+<li>基本数据类型的数组也是对象实例。</li>
+</ul>
+</li>
+<li><p>字符串常量池</p>
+<ul>
+<li>字符串常量池原本存放于方法区，jdk7开始放置于堆中；</li>
+<li>字符串常量池存储的是string对象的直接引用，而不是直接存放的对象，是一张<code>string table</code>。</li>
+</ul>
+</li>
+<li><p>静态变量<br>静态变量是有static修饰的变量，jdk7时从方法区迁移至堆中。</p>
+</li>
+<li><p>线程分配缓冲区（Thread Local Allocation Buffer）</p>
+<ul>
+<li>线程私有，但是不影响java堆的共性；</li>
+<li>增加线程分配缓冲区是为了提升对象分配时的效率。</li>
+</ul>
+</li>
+</ul>
+<p>java堆既可以是固定大小的，也可以是可扩展的（通过参数<code>-Xmx</code>和<code>-Xms</code>设定），如果堆无法扩展或者无法分配内存时也会报OOM。</p>
+<blockquote>
+<p>静态变量 存储位置：JDK8之前，静态成员变量确实存放在方法区；但JDK8之后就取消了“永久代”，取而代之的是“元空间”，永久代中的数据也进行了迁移，静态成员变量迁移到了堆中（方法区是JVM的规范，永久代是方法区的具体实现）。</p>
+</blockquote>
+<h3 id="方法区（Method-Area）"><a href="#方法区（Method-Area）" class="headerlink" title="方法区（Method Area）"></a>方法区（Method Area）</h3><p>方法区绝对是网上所有关于java内存结构文章争论的焦点，因为方法区的实现在java8做了一次大革新，现在我们来讨论一下：</p>
+<p><strong>方法区是所有线程共享的内存</strong>，</p>
+<p>在java8以前是放在JVM内存中的，<strong>由永久代实现，受JVM内存大小参数的限制</strong>;</p>
+<p>在java8中移除了永久代的内容，<strong>方法区由元空间(Meta Space)实现，并直接放到了本地内存中</strong>，不受JVM参数的限制（当然，如果物理内存被占满了，方法区也会报OOM）。</p>
+<p>并且将原来放在方法区的<strong>字符串常量池</strong>和<strong>静态变量</strong>都转移到了Java堆中，方法区与其他区域不同的地方在于，方法区在编译期间和类加载完成后的内容有少许不同，不过总的来说分为这两部分：</p>
+<ul>
+<li><p>类元信息（Klass）</p>
+<ul>
+<li>类元信息在类编译期间放入方法区，里面放置了类的基本信息，包括类的<code>版本</code>、<code>字段</code>、<code>方法</code>、<code>接口</code>以及<code>常量池表（Constant Pool Table）</code></li>
+<li><code>常量池表（Constant Pool Table）</code>存储了类在编译期间生成的<code>字面量</code>、<code>符号引用</code>这些信息在类加载完后会被解析到运行时常量池中</li>
+</ul>
+</li>
+<li><p>运行时常量池（Runtime Constant Pool）</p>
+<ul>
+<li><strong>运行时常量池主要存放在类加载后被解析的字面量与符号引用</strong>，但不止这些；</li>
+<li>运行时常量池具备动态性，可以添加数据，比较多的使用就是String类的intern()方法</li>
+</ul>
+</li>
+</ul>
+<h2 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h2><p><strong>直接内存位于本地内存，不属于JVM内存</strong>，但是也会在物理内存耗尽的时候报OOM。</p>
+<p>在jdk1.4中加入了NIO（New Input&#x2F;Putput）类，引入了一种基于通道（channel）与缓冲区（buffer）的新IO方式，它可以使用native函数直接分配堆外内存，然后通过存储在java堆中的DirectByteBuffer对象作为这块内存的引用进行操作，这样可以在一些场景下大大提高IO性能，<strong>避免了在java堆和native堆来回复制数据</strong>。</p>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><h2 id="类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？"><a href="#类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？" class="headerlink" title="类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？"></a>类常量池、运行时常量池、字符串常量池有什么关系？有什么区别？</h2><p>类常量池与运行时常量池都存储在方法区，而<strong>字符串常量池在jdk7时就已经从方法区迁移到了java堆中</strong>。</p>
+<p>在类编译过程中，会把类元信息放到方法区，类元信息的其中一部分便是<strong>类常量池，主要存放字面量和符号引用</strong>，<strong>而字面量的一部分便是文本字符</strong>，在类加载时将字面量和符号引用解析为直接引用存储在运行时常量池；</p>
+<p>对于文本字符来说，它们会在解析时查找字符串常量池，查出这个文本字符对应的字符串对象的直接引用，将直接引用存储在运行时常量池；</p>
+<p><strong>字符串常量池存储的是字符串对象的引用，而不是字符串本身</strong>。</p>
+<h2 id="什么是字面量？什么是符号引用？"><a href="#什么是字面量？什么是符号引用？" class="headerlink" title="什么是字面量？什么是符号引用？"></a>什么是字面量？什么是符号引用？</h2><ul>
+<li><p>字面量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>;<span class="comment">//这个1便是字面量</span></span><br><span class="line">String b=<span class="string">&quot;iloveu&quot;</span>;<span class="comment">//iloveu便是字面量</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><ul>
+<li>java代码在编译过程中是无法构建引用的，字面量就是在编译时对于数据的一种表示:</li>
+</ul>
+</li>
+<li><p>符号引用</p>
+</li>
+<li><ul>
+<li>由于在编译过程中并不知道每个类的地址，因为可能这个类还没有加载，所以如果你在一个类中引用了另一个类，那么你完全无法知道他的内存地址，那怎么办，我们只能用他的类名作为符号引用，在类加载完后用这个符号引用去获取他的内存地址。</li>
+<li>例子：我在com.demo.Solution类中引用了com.test.Quest，那么我会把<code>com.test.Quest</code>作为符号引用存到类常量池，等类加载完后，拿着这个引用去方法区找这个类的内存地址。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>参考</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ityouknow/p/5610232.html">jvm系列(二):JVM内存结构</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1630,391 +2092,6 @@
 <h3 id="实践建议"><a href="#实践建议" class="headerlink" title="实践建议"></a>实践建议</h3><p>（1）<strong>哨兵节点的数量应不止一个</strong>，一方面增加哨兵节点的冗余，避免哨兵本身成为高可用的瓶颈；另一方面减少对下线的误判。此外，<strong>这些不同的哨兵节点应部署在不同的物理机上</strong>。</p>
 <p>（2）<strong>哨兵节点的数量应该是奇数</strong>，便于哨兵通过投票做出“决策”：领导者选举的决策、客观下线的决策等。</p>
 <p>（3）<strong>各个哨兵节点的配置应一致</strong>，包括硬件、参数等；此外，所有节点都应该使用ntp或类似服务，保证时间准确、一致。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/09/undolog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/09/undolog/" class="post-title-link" itemprop="url">MySQL —— Undo log</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-09 18:47:10" itemprop="dateCreated datePublished" datetime="2021-12-09T18:47:10+08:00">2021-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-11 01:53:31" itemprop="dateModified" datetime="2021-12-11T01:53:31+08:00">2021-12-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="undo-log的作用"><a href="#undo-log的作用" class="headerlink" title="undo log的作用"></a>undo log的作用</h2><p>为了保证事务的原子性，InnoDB引入了undo日志，undo日志记载了回滚操作所需的内容。</p>
-<p>undo是<strong>逻辑日志</strong>，只是将数据库逻辑地恢复到原来的样子；所有修改都被逻辑地取消了，但是数据结构和页本身在回滚之后可能不大相同。</p>
-<p>undo log有两个作用：<strong>提供回滚</strong>和**多版本并发控制(MVCC)**。</p>
-<h2 id="事务id"><a href="#事务id" class="headerlink" title="事务id"></a>事务id</h2><p>在事务在对表中的记录进行修改的时候，会为这个事务分配一个唯一的事务id，这个事务id是递增的，所以事务id越小越先执行。未被分配事务id的事务的id默认是0。</p>
-<h2 id="各种类型的Undo-log"><a href="#各种类型的Undo-log" class="headerlink" title="各种类型的Undo log"></a>各种类型的Undo log</h2><p>InnoDB对不同场景的设计了不同类型的undo日志，比如TRX_UNDO_INSERT_REC, TRX_UNDO_DEL_MARK_REC.</p>
-<p>TRX_UNDO_UPD_EXIST_REC等等。</p>
-<p>除了insert产生的undo日志中没有roll_pointer字段，其他的一般都有roll_pointer这个字段，这个字段就支撑了回滚和MVCC的功能。</p>
-<p><img src="/2021/12/09/undolog/undolog.png"></p>
-<h2 id="Undo-log-的管理"><a href="#Undo-log-的管理" class="headerlink" title="Undo log 的管理"></a>Undo log 的管理</h2><p>类型为FIL_PAGE_UNDO_LOG的页面，是专门用来存储undo日志的，不妨称为Undo页面。</p>
-<p>一个事务写的undo日志可能在一个页面中放不下，所以MySQL使用链表来组织这些undo页面。</p>
-<p>在一个事务执行过程中，最多分配4个页面链表，</p>
-<p>分别是</p>
-<ol>
-<li>针对普通表的insert undo 链表；</li>
-<li>针对普通表的update undo 链表；</li>
-<li>针对临时表的insert undo 链表；</li>
-<li>针对临时表的update undo 链表；</li>
-</ol>
-<p>每个undo页面链表都对应一个Undo Log Segment。Undo页面链表的第一个页中有一个名为Undo Log Segment Header的部分，用来存储关于这个段的信息。</p>
-<p>同一个事务向一个undo链表写入的undo日志算是一个组，每个组都以一个Undo Log Header 部分开头。</p>
-<h2 id="undo及redo如何记录事务"><a href="#undo及redo如何记录事务" class="headerlink" title="undo及redo如何记录事务"></a>undo及redo如何记录事务</h2><h3 id="Undo-Redo事务的简化过程"><a href="#Undo-Redo事务的简化过程" class="headerlink" title="Undo + Redo事务的简化过程"></a>Undo + Redo事务的简化过程</h3><p>假设有A、B两个数据，值分别为1,2，开始一个事务，事务的操作内容为：把1修改为3，2修改为4，那么实际的记录如下（简化）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">A.事务开始.</span><br><span class="line">B.记录A=1到undo log.</span><br><span class="line">C.修改A=3.</span><br><span class="line">D.记录A=3到redo log.</span><br><span class="line">E.记录B=2到undo log.</span><br><span class="line">F.修改B=4.</span><br><span class="line">G.记录B=4到redo log.</span><br><span class="line">H.将redo log写入磁盘。</span><br><span class="line">I.事务提交</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意是先写 undo log，再操作，最后再写redo log</strong></p>
-<h3 id="崩溃恢复"><a href="#崩溃恢复" class="headerlink" title="崩溃恢复"></a>崩溃恢复</h3><p>前面说到未提交的事务和回滚了的事务也会记录Redo Log，因此在进行恢复时,这些事务要进行特殊的的处理。有2种不同的恢复策略：</p>
-<ul>
-<li>进行恢复时，只重做已经提交了的事务。</li>
-<li>进行恢复时，<strong>重做所有事务包括未提交的事务和回滚了的事务，然后通过Undo Log回滚那些未提交的事务</strong>。</li>
-</ul>
-<p>MySQL数据库InnoDB存储引擎使用了B策略, InnoDB存储引擎中的恢复机制有几个特点：</p>
-<ul>
-<li><p><strong>在重做Redo Log时，并不关心事务性</strong>。 恢复时，没有BEGIN，也没有COMMIT,ROLLBACK的行为。也不关心每个日志是哪个事务的。尽管事务ID等事务相关的内容会记入Redo Log，这些内容只是被当作要操作的数据的一部分。</p>
-</li>
-<li><p>使用B策略就<strong>必须要将Undo Log持久化</strong>，而且<strong>必须要在写Redo Log之前将对应的Undo Log写入磁盘</strong>。Undo和Redo Log的这种关联，使得持久化变得复杂起来。</p>
-<p>为了降低复杂度，<strong>InnoDB将Undo Log看作数据，因此记录Undo Log的操作也会记录到redo log中</strong>。</p>
-<p><strong>这样undo log就可以像数据一样缓存起来</strong>，<strong>而不用在redo log之前写入磁盘了</strong>。</p>
-<p>包含Undo Log操作的Redo Log，看起来是这样的：</p>
-</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">记录1: &lt;trx1, Undo log insert &lt;undo_insert …&gt;&gt; # 记录的 undo-log</span><br><span class="line">记录2: &lt;trx1, insert …&gt; # 重做日志本身</span><br><span class="line">记录3: &lt;trx2, Undo log insert &lt;undo_update …&gt;&gt;</span><br><span class="line">记录4: &lt;trx2, update …&gt;</span><br><span class="line">记录5: &lt;trx3, Undo log insert &lt;undo_delete …&gt;&gt;</span><br><span class="line">记录6: &lt;trx3, delete …&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>到这里，还有一个问题没有弄清楚。既然Redo没有事务性，那岂不是会重新执行被回滚了的事务？<br>确实是这样。同时Innodb也会将事务回滚时的操作也记录到redo log中。<strong>回滚操作本质上也是对数据进行修改，因此回滚时对数据的操作也会记录到Redo Log中</strong>。</p>
-<p><strong>一个回滚了的事务的Redo Log</strong>，看起来是这样的：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">记录1: &lt;trx1, Undo log insert &lt;undo_insert …&gt;&gt; # 记录的 undo-log</span><br><span class="line">记录2: &lt;trx1, insert A…&gt; # 重做日志本身</span><br><span class="line">记录3: &lt;trx1, Undo log insert &lt;undo_update …&gt;&gt;</span><br><span class="line">记录4: &lt;trx1, update B…&gt;</span><br><span class="line">记录5: &lt;trx1, Undo log insert &lt;undo_delete …&gt;&gt;</span><br><span class="line">记录6: &lt;trx1, delete C…&gt;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下面是对应的回滚操作</span></span><br><span class="line">记录7: &lt;trx1, insert C&gt; </span><br><span class="line">记录8: &lt;trx1, update B to old value&gt;</span><br><span class="line">记录9: &lt;trx1, delete A&gt;</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>一个被回滚了的事务在恢复时的操作就是先redo再undo，因此不会破坏数据的一致性</strong>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/09/redolog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/09/redolog/" class="post-title-link" itemprop="url">MySQL —— Redo log</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-09 18:47:05" itemprop="dateCreated datePublished" datetime="2021-12-09T18:47:05+08:00">2021-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-11 01:05:41" itemprop="dateModified" datetime="2021-12-11T01:05:41+08:00">2021-12-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="RedoLog介绍"><a href="#RedoLog介绍" class="headerlink" title="RedoLog介绍"></a>RedoLog介绍</h1><h2 id="引言——MySQL如何做到事务的持久性"><a href="#引言——MySQL如何做到事务的持久性" class="headerlink" title="引言——MySQL如何做到事务的持久性"></a>引言——MySQL如何做到事务的持久性</h2><p>MySQL中如何修改数据呢，先从磁盘中加载数据页到InnoDB buffer pool中，然后从InnoDB buffer pool 中取出页面，进行读写操作。</p>
-<p>那么如何做到事务的持久性呢，也就是说如何确保InnoDB buffer pool中的脏页一定会被刷新到磁盘从而做到持久化呢？</p>
-<p>一种最简单的方法，在事务提交成功之前，确保脏页被刷新到磁盘，换句话说，只有在脏页写到磁盘上之后，事务提交才算成功。</p>
-<p>不过这种方案有缺点：</p>
-<ol>
-<li><strong>每次都刷新一个完整的页到磁盘性能开销很大</strong>。比如，一个页面中只有几个字节被修改的时候，刷新完整的页面到磁盘很浪费。</li>
-<li><strong>磁盘的随机IO很慢</strong>，一个事务修改的很多页面可能并不相邻，这个时候每个事务结束前都这样同步刷新的磁盘随机IO代价很大。</li>
-</ol>
-<p>MySQL采取的做法是，仅仅记录下那些修改的操作，譬如<strong>修改某个表空间的某个页面的某个偏移量的某几个字节</strong>，然后将这样的记录及时写到文件中。然后每次事务提交前只需要刷新这样的日志文件到磁盘即可。</p>
-<p>而这样的日志文件就是 <strong>rodo log</strong> 了。</p>
-<p>刷新redo-log而不是完整的数据页到磁盘的好处有：</p>
-<ol>
-<li>redo日志相对来讲比较紧凑，占用的空间比较小；</li>
-<li>redo日志是顺序写入磁盘的，磁盘的顺序IO效率很高。</li>
-</ol>
-<h2 id="redo日志格式"><a href="#redo日志格式" class="headerlink" title="redo日志格式"></a>redo日志格式</h2><p>redo log 包括两部分：</p>
-<ol>
-<li><p>一个是内存中的日志缓冲(redo log buffer)；</p>
-</li>
-<li><p>另一个是磁盘上的日志文件(redo log file)。</p>
-</li>
-</ol>
-<p>下面依次介绍</p>
-<ol>
-<li>type：这条redo日志的格式；</li>
-<li>space ID：表空间 ID；</li>
-<li>page number：页号；</li>
-<li>data：这条redo日志的具体内容。</li>
-</ol>
-<p>具体来说redo日志的种类有非常多，这里就不细谈了。</p>
-<p>挖个坑。</p>
-<h2 id="Mini-transaction-的概念"><a href="#Mini-transaction-的概念" class="headerlink" title="Mini-transaction 的概念"></a>Mini-transaction 的概念</h2><p>MySQL对底层页面的一次原子性的访问成为一个Mini-Transaction（MTR）</p>
-<p>一个MTR产生多个redo日志。</p>
-<p>之所以把它成为迷你的一个事务，是因为在进行崩溃恢复的时候需要把这一组redo日志作为一个不可分割的整体来处理。</p>
-<img src="mtr.png" style="zoom:30%;" />
-
-
-
-<h2 id="redo日志的管理"><a href="#redo日志的管理" class="headerlink" title="redo日志的管理"></a>redo日志的管理</h2><h3 id="log-block"><a href="#log-block" class="headerlink" title="log block"></a>log block</h3><p>redo日志放在大小为512字节的log block 中。每一个block被分为 3 部分：</p>
-<ul>
-<li>log block header</li>
-<li>log block body</li>
-<li>log block trailer</li>
-</ul>
-<p>而真正的redo日志是被放在占用 496 字节的 block body 中的。</p>
-<h3 id="redo-log-buffer"><a href="#redo-log-buffer" class="headerlink" title="redo log buffer"></a>redo log buffer</h3><p>为了解决磁盘速度过慢的问题，写入redo日志也不是直接立即写到磁盘中的。</p>
-<p>于是，MySQL向操作系统申请了一大片内存，称为redo 日志缓冲区，也成为 redo buffer，</p>
-<p>一个redo buffer有若干的 log block 构成。可以指定<code>innodb_log_buffer_size</code>来指定 log buffer 的大小。</p>
-<p>向 log buffer 中写入redo日志也是顺序写入的。</p>
-<h2 id="redo-log的刷盘时机"><a href="#redo-log的刷盘时机" class="headerlink" title="redo log的刷盘时机"></a>redo log的刷盘时机</h2><p>redo日志总留在log buffer中，总是不安全的，只要没有写到稳定的存储介质（磁盘、固定硬盘等等）中就不能保证持久性。</p>
-<p>那么在什么情况下，redo日志会被写到磁盘上呢？</p>
-<ol>
-<li><p>事务提交时：道理很好理解，事务提交还没有将redo log 刷盘就无法做到持久性；</p>
-</li>
-<li><p>log buffer 空间不足时：log buffer 这块内存总是有限大小的，那么在redo log不够使用时，也需要即使把redo log 刷新到磁盘。InnoDB在日志量达到总容量的额50% 时，就会刷盘；</p>
-</li>
-<li><p>后台线程定时刷新；</p>
-</li>
-<li><p>正常关闭服务器时；</p>
-</li>
-<li><p>做checkpoint时。</p>
-</li>
-</ol>
-<h2 id="redo日志文件"><a href="#redo日志文件" class="headerlink" title="redo日志文件"></a>redo日志文件</h2><p>之前谈的所有的redo log其实都是内存性的结构，那么存在在稳定介质中的便是 redo日志文件了。</p>
-<p>磁盘上的日志文件不止一个，而是以一个日志文件组的形式出现，一个日志文件组由多个日志文件组成，名字形式为”ib_logfile[数字]”。<br>每个日志文件的大小由<code>innodb_log_file_size</code>指定，默认是 48 MB。<br>日志文件组文件的个数由<code>innodb_log_files_in_group</code>指定，默认是2个。</p>
-<p>所以，总体的日志文件的大小便是<strong>innodb_log_file_size*innodb_log_files_in_group</strong>，</p>
-<p>如果以循环的方法向redo日志文件中写入数据，那岂不是新写入的会覆盖旧写入的吗？</p>
-<p>如何解决这个问题，MySQL提出了 checkpoint的概念（后面或介绍）。</p>
-<p>每个日志的文件格式是一样的，日志组内的其他的日志文件也是具有相同的格式。</p>
-<p>前2048个字节存储一些管理信息，后面的字节，实际上就是对内存中的log buffer的镜像。</p>
-<h2 id="log-sequence-number相关"><a href="#log-sequence-number相关" class="headerlink" title="log-sequence-number相关"></a>log-sequence-number相关</h2><h3 id="lsn"><a href="#lsn" class="headerlink" title="lsn"></a>lsn</h3><p>InndoDB设计了名为lsn的全局变量，用来记录当前已经写入的<strong>lsn</strong>值，初始值为8704，然后不断递增。</p>
-<p>lsn指的是写入的redo 日志量，这包括了写到了 log buffer 中但没有刷新到磁盘的redo日志。</p>
-<h3 id="flushed-to-disk-lsn"><a href="#flushed-to-disk-lsn" class="headerlink" title="flushed_to_disk_lsn"></a>flushed_to_disk_lsn</h3><p>相应的，InndoDB设计者提出了一个表示刷新到磁盘中的redo日志量的全局变量<strong>flushed_to_disk_lsn</strong>。</p>
-<p>一开始，lsn等于flushed_to_disk_lsn，随着系统的运行，redo日志不断写入log buffer，但又没有即使刷盘，那么flushed_to_disk_lsn便和lsn拉开了差距。</p>
-<h3 id="checkpoint-lsn"><a href="#checkpoint-lsn" class="headerlink" title="checkpoint_lsn"></a>checkpoint_lsn</h3><p>redo日志的大小总是有限的，那么就有必要对其进行重复利用。</p>
-<p>具体的，如果redo日志对应的脏页已经刷新到磁盘，那么此时就没有必要再去保留这样的redo日志，</p>
-<p>于是InnodB使用<strong>checkpoint_lsn</strong>表示当前系统中可以被覆盖redo日志总量是多少，这个变量的初始值也是8704。</p>
-<p>MySQL中有后台线程在脏页刷新到磁盘的时候执行一次checkpoint操作，就是查看是否可以增加checkpoint_lsn（但是不是说只要刷新脏页就一定执行一次checkpoint操作）。</p>
-<h2 id="innodb-flush-log-at-trx-commit"><a href="#innodb-flush-log-at-trx-commit" class="headerlink" title="innodb_flush_log_at_trx_commit"></a>innodb_flush_log_at_trx_commit</h2><p>它的取值有3种：</p>
-<ul>
-<li>0 ：事务提交时不会立即向磁盘同步redo日志。这样会加快处理速度，但是失去持久性这一保证，不可取。</li>
-<li>1 ：事务提交时必须将redo日志同步到磁盘，这样可以保证事务的持久性。默认值就是1。</li>
-<li>2：这是一个折中的选择，事务提交的时候需要同步到操作系统的写磁盘的缓冲区，但不一定要真正写到磁盘上。所以，如果数据库挂了，但是操作系统还没挂，持久性还是可以保证的；反之，持久性还是无法保证。</li>
-</ul>
-<h1 id="崩溃恢复"><a href="#崩溃恢复" class="headerlink" title="崩溃恢复"></a>崩溃恢复</h1><p>redo日志最重要的甚至是唯一的功能就是在数据库崩溃的时候提供数据恢复的保证了。</p>
-<p>崩溃恢复的时候先找到恢复的起点。然后顺着日志文件就可以将数据正确恢复起来。</p>
-<p>但是这个过程可以加快。</p>
-<p>为了避免页面的随机IO，可以实现将redo文件的所有redo文件按照<strong>spaceID和pageNumber</strong><br>为键，然后组织成一张哈希表，然后遍历这张hash表就可以一次性完成对一个页面的恢复。<br>当然，同一个页面的redo日志必须安装时间顺序排序。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/09/Raft/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/09/Raft/" class="post-title-link" itemprop="url">Raft</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-09 13:58:09" itemprop="dateCreated datePublished" datetime="2021-12-09T13:58:09+08:00">2021-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-03-29 04:13:13" itemprop="dateModified" datetime="2022-03-29T04:13:13+08:00">2022-03-29</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>参考</p>
-<p><a target="_blank" rel="noopener" href="https://zinglix.xyz/2020/06/25/raft/">https://zinglix.xyz/2020/06/25/raft/</a></p>
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ZmRS9Gjh9P-4lPLZ9jWk_A">https://mp.weixin.qq.com/s/ZmRS9Gjh9P-4lPLZ9jWk_A</a></p>
-</blockquote>
 
       
     </div>

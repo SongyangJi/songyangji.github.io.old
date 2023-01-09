@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-count">240</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,640 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/20/Linux%E6%97%B6%E9%97%B4%E7%9B%B8%E5%85%B3%E5%BA%93%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/20/Linux%E6%97%B6%E9%97%B4%E7%9B%B8%E5%85%B3%E5%BA%93%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">Linux时间相关库函数</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-20 22:10:55" itemprop="dateCreated datePublished" datetime="2021-11-20T22:10:55+08:00">2021-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-28 15:28:34" itemprop="dateModified" datetime="2022-03-28T15:28:34+08:00">2022-03-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="时间相关"><a href="#时间相关" class="headerlink" title="时间相关"></a>时间相关</h2><h3 id="time"><a href="#time" class="headerlink" title="time"></a>time</h3><ul>
+<li>头文件:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li>函数说明:<br>C 库函数: 返回自纪元 Epoch（1970-01-01 00:00:00 UTC）起经过的时间，以秒为单位。<br>如果 seconds 不为空，则返回值也存储在变量 seconds 中。</li>
+<li>函数定义<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">time_t</span> <span class="title function_">time</span><span class="params">(<span class="type">time_t</span> *seconds)</span></span><br></pre></td></tr></table></figure></li>
+<li>返回值<br>以 time_t 对象返回当前日历时间。</li>
+</ul>
+<h3 id="localtime"><a href="#localtime" class="headerlink" title="localtime"></a>localtime</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>C 库函数  使用 timer 的值来填充 tm 结构。<br>timer 的值被分解为 tm 结构，并用本地时区表示。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> tm *<span class="title function_">localtime</span><span class="params">(<span class="type">const</span> <span class="type">time_t</span> *timer)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回值<br>该函数返回指向 tm 结构的指针，该结构带有被填充的时间信息。下面是 tm 结构的细节:</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tm</span> &#123;</span></span><br><span class="line"><span class="type">int</span> tm_sec;         <span class="comment">/* 秒，范围从 0 到 59                */</span></span><br><span class="line"><span class="type">int</span> tm_min;         <span class="comment">/* 分，范围从 0 到 59                */</span></span><br><span class="line"><span class="type">int</span> tm_hour;        <span class="comment">/* 小时，范围从 0 到 23                */</span></span><br><span class="line"><span class="type">int</span> tm_mday;        <span class="comment">/* 一月中的第几天，范围从 1 到 31                    */</span></span><br><span class="line"><span class="type">int</span> tm_mon;         <span class="comment">/* 月份，范围从 0 到 11                */</span></span><br><span class="line"><span class="type">int</span> tm_year;        <span class="comment">/* 自 1900 起的年数                */</span></span><br><span class="line"><span class="type">int</span> tm_wday;        <span class="comment">/* 一周中的第几天，范围从 0 到 6                */</span></span><br><span class="line"><span class="type">int</span> tm_yday;        <span class="comment">/* 一年中的第几天，范围从 0 到 365                    */</span></span><br><span class="line"><span class="type">int</span> tm_isdst;       <span class="comment">/* 夏令时                        */</span>    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="strftime"><a href="#strftime" class="headerlink" title="strftime"></a>strftime</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>C 库函数,根据 format 中定义的格式化规则，格式化结构 timeptr 表示的时间，并把它存储在 str 中。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">size_t</span> <span class="title function_">strftime</span><span class="params">(<span class="type">char</span> *str, <span class="type">size_t</span> maxsize, <span class="type">const</span> <span class="type">char</span> *format, <span class="type">const</span> <span class="keyword">struct</span> tm *timeptr)</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>str – 这是指向目标数组的指针，用来复制产生的 C 字符串。</li>
+<li>maxsize – 这是被复制到 str 的最大字符数。</li>
+<li>format – 这是 C 字符串，包含了普通字符和特殊格式说明符的任何组合。这些格式说明符由函数替换为表示 tm 中所指定时间的相对应值。<br>具体格式详见：<br><a target="_blank" rel="noopener" href="https://www.runoob.com/cprogramming/c-function-strftime.html">参考链接</a></li>
+</ul>
+<ul>
+<li>返回值<br>如果产生的 C 字符串小于 size 个字符（包括空结束字符），则会返回复制到 str 中的字符总数（不包括空结束字符），否则返回零。</li>
+</ul>
+<h3 id="gettimeofday"><a href="#gettimeofday" class="headerlink" title="gettimeofday"></a>gettimeofday</h3><ul>
+<li>头文件:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li>函数说明:<br>返回当前距离1970年的秒数和微妙数，后面的tz是时区，一般不用（传 NULL 即可）。</li>
+<li>函数定义<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">gettimeofday</span><span class="params">(<span class="keyword">struct</span> timeval *tv, <span class="keyword">struct</span> timezone *tz)</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="clock-gettime"><a href="#clock-gettime" class="headerlink" title="clock_gettime"></a>clock_gettime</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>根据时钟模式，获取多种时间。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">clock_gettime</span><span class="params">(<span class="type">clockid_t</span> clock_id, <span class="keyword">struct</span> timespec * tp )</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CLOCK_REALTIME       0<br>Systemwide realtime clock. 系统实时时间,随系统实时时间改变而改变。<br>即从UTC1970-1-1 0:0:0开始计时,中间时刻如果系统时间被用户该成其他,则对应的时间相应改变</p>
+</li>
+<li><p>CLOCK_MONOTONIC     1<br>Represents monotonic time. Cannot be set. 从系统启动这一刻起开始计时,不受系统时间被用户改变的影响<br>用的是相对时间，它的时间是通过jiffies值来计算的。该时钟不受系统时钟源的影响，只受jiffies值的影响。<br>也就是说它获得的时间戳是单调的。</p>
+</li>
+<li><p>CLOCK_PROCESS_CPUTIME_ID    2<br>High resolution per-process timer. 本进程到当前代码系统CPU花费的时间</p>
+</li>
+<li><p>CLOCK_THREAD_CPUTIME_ID      3<br>Thread-specific timer. 本线程到当前代码系统CPU花费的时间</p>
+</li>
+<li><p>CLOCK_REALTIME_HR                4<br>High resolution version of CLOCK_REALTIME. 0<br>CLOCK_REALTIME 的 高精度版本</p>
+</li>
+<li><p>CLOCK_MONOTONIC_HR            5<br>High resolution version of CLOCK_MONOTONIC.<br>CLOCK_MONOTONIC 的高精度版本</p>
+</li>
+<li><p>返回值<br>时间结构<code>struct timespec</code></p>
+</li>
+<li><p>示例代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">tv</span>;</span></span><br><span class="line">    gettimeofday(&amp;tv, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;gettimeofday : %ld, %d\n&quot;</span>, tv.tv_sec,tv.tv_usec);</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timespec</span> <span class="title">ts</span>;</span></span><br><span class="line">    clock_gettime(CLOCK_REALTIME, &amp;ts);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;CLOCK_REALTIME: %ld, %ld\n&quot;</span>, ts.tv_sec, ts.tv_nsec);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//打印出来的时间跟 cat /proc/uptime 第一个参数一样</span></span><br><span class="line">    clock_gettime(CLOCK_MONOTONIC, &amp;ts);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;CLOCK_MONOTONIC: %ld, %ld\n&quot;</span>, ts.tv_sec, ts.tv_nsec);</span><br><span class="line"></span><br><span class="line">    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &amp;ts);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;CLOCK_PROCESS_CPUTIME_ID: %ld, %ld\n&quot;</span>, ts.tv_sec, ts.tv_nsec);</span><br><span class="line"></span><br><span class="line">    clock_gettime(CLOCK_THREAD_CPUTIME_ID, &amp;ts);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;CLOCK_THREAD_CPUTIME_ID: %ld, %ld\n&quot;</span>, ts.tv_sec, ts.tv_nsec);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n%ld\n&quot;</span>, time(<span class="literal">NULL</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>值得一提的是，本项目使用的计时工具不能使用 time 以及 gettimeofday，否则有小概率发生”时间回溯现象”，<br>具体可以参考 <a target="_blank" rel="noopener" href="https://song-yang-ji.blog.csdn.net/article/details/115837363">Linux的timedatectl —— 关闭或开启时间同步</a>.<br>必须使用 <code>clock_gettime(CLOCK_MONOTONIC, *timespec);</code> 才可以先后两次拿到的时间戳是递增的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/20/Linux%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3%E5%BA%93%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/20/Linux%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3%E5%BA%93%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">Linux读写文件相关库函数</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-20 22:07:03" itemprop="dateCreated datePublished" datetime="2021-11-20T22:07:03+08:00">2021-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-28 15:28:00" itemprop="dateModified" datetime="2022-03-28T15:28:00+08:00">2022-03-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="读写文件相关"><a href="#读写文件相关" class="headerlink" title="读写文件相关"></a>读写文件相关</h2><h3 id="write"><a href="#write" class="headerlink" title="write"></a>write</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>write系统调用，是把缓存区buf中的前nbytes字节写入到与文件描述符有关的文件中。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//参数分别为 文件描述符、缓冲区、</span></span><br><span class="line"><span class="type">size_t</span> <span class="title function_">write</span><span class="params">(<span class="type">int</span> flides, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> nbytes)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回值<br>write系统调用返回的是实际写入到文件中的字节数。</p>
+</li>
+</ul>
+<h3 id="read"><a href="#read" class="headerlink" title="read"></a>read</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>read系统调用，是从与文件描述符flides相关联的文件中读取前nbytes字节的内容，并且写入到数据区buf中。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">size_t</span> <span class="title function_">read</span><span class="params">(<span class="type">int</span> flides, <span class="type">void</span> *buf, <span class="type">size_t</span> nbytes)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回值<br>read系统调用返回的是实际读入的字节数。</p>
+</li>
+</ul>
+<h3 id="open"><a href="#open" class="headerlink" title="open"></a>open</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">const</span> *path, <span class="type">int</span> oflags)</span>; <span class="comment">//1</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">const</span> *path, <span class="type">int</span> oflags, <span class="type">mode_t</span> mode)</span>; <span class="comment">//2</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>参数说明：<br>其中，oflags是由必需文件访问模式和可选模式一起构成的(通过按位或“|”)：<br>必需部分：</p>
+<ul>
+<li>O_RDONLY———-以只读方式打开</li>
+<li>O_WRONLY———以只写方式打开</li>
+<li>O_RDWR————以读写方式打开<br>可选部分：</li>
+<li>O_CREAT————按照参数mode给出的访问模式创建文件</li>
+<li>O_EXCL————–与O_CREAT一起使用，确保创建出文件，避免两个程序同时创建同一个文件，如文件存在则open调用失败 </li>
+<li>O_APPEND———-把写入数据追加在文件的末尾</li>
+<li>O_TRUNC———–把文件长度设置为0，丢弃原有内容</li>
+</ul>
+<p>在第一种调用方式上，加上了第三个参数mode，<strong>主要是搭配O_CREAT使用</strong>，同样地，这个参数规定了属主、同组和其他人对文件的文件操作权限。</p>
+<ul>
+<li>文件属主<ul>
+<li>S_IRUSR———-读权限 </li>
+<li>S_IWUSR———写权限</li>
+<li>S_IXUSR———-执行权限</li>
+</ul>
+</li>
+<li>文件所属组  <ul>
+<li>S_IRGRP———-读权限 </li>
+<li>S_IWGRP———写权限 </li>
+<li>S_IXGRP———-执行权限</li>
+</ul>
+</li>
+<li>其他人  <ul>
+<li>S_IROTH———-读权限 </li>
+<li>S_IWOTH———写权限</li>
+<li>S_IXOTH———-执行权限</li>
+</ul>
+</li>
+</ul>
+<p>另外，也可以用数字设定法：<br>0 : 无权限；<br>1 : 只执行；<br>2 : 只写；<br>4 : 只读。</p>
+<p>这种权限设计实际上就是linux文件权限的设计。</p>
+<ul>
+<li>返回值<br>open系统调用成功返回一个新的文件描述符，失败返回-1。</li>
+</ul>
+<h3 id="close"><a href="#close" class="headerlink" title="close"></a>close</h3><ul>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">close</span><span class="params">(<span class="type">int</span> flides)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>终止文件描述符flides与其对应的文件间的联系，文件描述符被释放，可重新使用。<br>使用完文件描述符之后，要记得释放！</p>
+</li>
+</ul>
+<h3 id="fopen"><a href="#fopen" class="headerlink" title="fopen"></a>fopen</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>函数说明:<br>C 库函数,使用给定的模式 mode 打开 filename 所指向的文件。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FILE *<span class="title function_">fopen</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *filename, <span class="type">const</span> <span class="type">char</span> *mode)</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>“r”</th>
+<th>打开一个用于读取的文件。该文件必须存在。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“w”</td>
+<td>创建一个用于写入的空文件。如果文件名称与已存在的文件相同，则会删除已有文件的内容，文件被视为一个新的空文件。</td>
+</tr>
+<tr>
+<td>“a”</td>
+<td>追加到一个文件。写操作向文件末尾追加数据。如果文件不存在，则创建文件。</td>
+</tr>
+<tr>
+<td>“r+”</td>
+<td>打开一个用于更新的文件，可读取也可写入。该文件必须存在。</td>
+</tr>
+<tr>
+<td>“w+”</td>
+<td>创建一个用于读写的空文件。</td>
+</tr>
+<tr>
+<td>“a+”</td>
+<td>打开一个用于读取和追加的文件。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>返回值<br>该函数返回一个 FILE 指针。否则返回 NULL，且设置全局变量 errno 来标识错误。</p>
+</li>
+</ul>
+<h3 id="fclose"><a href="#fclose" class="headerlink" title="fclose"></a>fclose</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>函数说明:<br>C 库函数 int fclose(FILE *stream) 关闭流 stream, 并且刷新所有的缓冲区。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stream -- 这是指向 FILE 对象的指针，该 FILE 对象指定了要被关闭的流。</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">fclose</span><span class="params">(FILE *stream)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回值<br>如果流成功关闭，则该方法返回零。如果失败，则返回 EOF。</p>
+</li>
+</ul>
+<h3 id="fprintf"><a href="#fprintf" class="headerlink" title="fprintf"></a>fprintf</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>函数说明:<br>C 库函数, 发送格式化输出到流 stream 中。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">fprintf</span><span class="params">(FILE *stream, <span class="type">const</span> <span class="type">char</span> *format, ...)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回值<br>如果成功，则返回写入的字符总数，否则返回一个负数。</p>
+</li>
+</ul>
+<h3 id="flock"><a href="#flock" class="headerlink" title="flock"></a>flock</h3><ul>
+<li><p>头文件 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/file.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明 flock()会依参数operation所指定的方式对参数fd所指的文件做各种锁定或解除锁定的动作。<br>此函数只能锁定整个文件，无法锁定文件的某一区域。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fd 文件描述符、 锁定operation</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">flock</span><span class="params">(<span class="type">int</span> fd,<span class="type">int</span> operation)</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>参数 operation 有下列四种情况:</p>
+<ul>
+<li>LOCK_SH 建立共享锁定。多个进程可同时对同一个文件作共享锁定。</li>
+<li>LOCK_EX 建立互斥锁定。一个文件同时只有一个互斥锁定。</li>
+<li>LOCK_UN 解除文件锁定状态。</li>
+<li>LOCK_NB 无法建立锁定时，此操作可不被阻断，马上返回进程。(通常与LOCK_SH或LOCK_EX做OR组合)</li>
+</ul>
+<ul>
+<li>返回值<br>返回0表示成功，若有错误则返回-1，错误代码存于errno。</li>
+</ul>
+<h3 id="snprintf"><a href="#snprintf" class="headerlink" title="snprintf"></a>snprintf</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>C 库函数，将可变参数(…)按照 format 格式化成字符串，并将字符串复制到 str 中，size 为要写入的字符的最大数目，超过 size 会被截断。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">snprintf</span> <span class="params">(<span class="type">char</span> * str, <span class="type">size_t</span> size, <span class="type">const</span> <span class="type">char</span> * format, ... )</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>str – 目标字符串。</li>
+<li>size – 拷贝字节数(Bytes)。</li>
+<li>format – 格式化成字符串。</li>
+<li>… – 可变参数。</li>
+</ul>
+</li>
+<li><p>返回值</p>
+<ul>
+<li>如果格式化后的字符串长度小于等于 size，则会把字符串全部复制到 str 中，并给其后添加一个字符串结束符 \0。<br>返回的实际写入的长度。</li>
+<li>如果格式化后的字符串长度大于 size，超过 size 的部分会被截断，只将其中的 (size-1) 个字符复制到 str 中，并给其后添加一个字符串结束符 \0。<br>返回值为欲写入的字符串长度。</li>
+</ul>
+</li>
+</ul>
+<h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><h3 id="dup"><a href="#dup" class="headerlink" title="dup"></a>dup</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>dup用来复制参数oldfd所指的文件描述符。<br>返回的新文件描述符和参数oldfd指向同一个文件，这<strong>两个描述符共享同一个数据结构，共享所有的锁定，读写指针和各项标志位</strong>。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">dup</span><span class="params">(<span class="type">int</span> oldfd)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回值<br>当复制成功是，返回最小的尚未被使用过的文件描述符;<br>若有错误则返回-1。<br>错误代码存入errno中。</p>
+</li>
+</ul>
+<h3 id="dup2"><a href="#dup2" class="headerlink" title="dup2"></a>dup2</h3><ul>
+<li><p>头文件:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数说明:<br>dup2与dup区别是dup2可以用参数newfd指定新文件描述符的数值。<br>若参数newfd已经被程序使用，则系统就会将newfd所指的文件关闭；<br>若newfd等于oldfd，则返回newfd,而不关闭newfd所指的文件。<br>dup2所复制的文件描述符与原来的文件描述符共享各种文件状态。共享所有的锁定，读写位置和各项权限或flags等.<br>在shell的重定向功能中，(输入重定向”&lt;”和输出重定向”&gt;”)就是通过调用dup或dup2函数对标准输入和标准输出的操作来实现的。</p>
+</li>
+<li><p>函数定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">dup2</span><span class="params">(<span class="type">int</span> oldfd, <span class="type">int</span> newfd)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>返回值<br>若dup2调用成功则返回新的文件描述符，出错则返回-1。</p>
+</li>
+<li><p>举例：<br>如何使用dup2实现标准输出到文件的重定向？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> oldfd;</span><br><span class="line">    <span class="type">int</span> fd;</span><br><span class="line">    <span class="type">int</span> t;</span><br><span class="line">    <span class="type">char</span> *buf = <span class="string">&quot;This is a test!!!!\n&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span> ((oldfd = open(<span class="string">&quot;/Users/jisongyang/CLionProjects/test_syscalls_sandbox/redirect/mine.txt&quot;</span>, O_RDWR | O_CREAT,</span><br><span class="line">                      <span class="number">0644</span>)) == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;open error\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    fd = dup2(oldfd, STDOUT_FILENO);</span><br><span class="line">    <span class="keyword">if</span> (fd == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;dup2 error\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;fd:%d  STDOUT_FILENO:%d\n&quot;</span>, fd, STDOUT_FILENO);</span><br><span class="line">    &#125;</span><br><span class="line">    t = (<span class="type">int</span>) <span class="built_in">strlen</span>(buf);</span><br><span class="line">    <span class="keyword">if</span> (write(fileno(<span class="built_in">stdout</span>), buf, t) != t)<span class="comment">//本应该写入到stdout的信息，但是标准输出已经重定向到目标文件中，故向标准输出写的数据将会写到目标文件中。</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;write error!\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    fflush(<span class="built_in">stdout</span>); <span class="comment">// printf 是带缓冲的函数，不加这一行代码，printf 的内容不会写到文件里</span></span><br><span class="line">    close(fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>最重要的一行代码：<code>dup2(oldfd, STDOUT_FILENO)</code></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/20/socket/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/20/socket/" class="post-title-link" itemprop="url">Socket编程 —— 使用 select、poll、epoll</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-20 20:27:00" itemprop="dateCreated datePublished" datetime="2021-11-20T20:27:00+08:00">2021-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-17 03:14:33" itemprop="dateModified" datetime="2022-03-17T03:14:33+08:00">2022-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/IO/" itemprop="url" rel="index"><span itemprop="name">IO</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="socket编程"><a href="#socket编程" class="headerlink" title="socket编程"></a>socket编程</h2><img src="socket-state.png" style="zoom:50%;" />
+
+
+
+<ol>
+<li><p>服务端和客户端初始化 socket ，得到⽂件描述符；</p>
+</li>
+<li><p>服务端调⽤ bind ，将绑定在 IP 地址和端⼝;</p>
+</li>
+<li><p>服务端调⽤ listen ，进⾏监听；</p>
+</li>
+<li><p>服务端调⽤ accept ，等待客户端连接；</p>
+</li>
+<li><p>客户端调⽤ connect ，向服务器端的地址和端⼝发起连接请求；</p>
+</li>
+<li><p>服务端 accept 返回⽤于传输的 socket 的⽂件描述符；</p>
+</li>
+<li><p>客户端调⽤ write 写⼊数据；服务端调⽤ read 读取数据；</p>
+</li>
+<li><p>客户端断开连接时，会调⽤ close ，那么服务端 read 读取数据的时候，就会读取到了 EOF ，待处理完</p>
+</li>
+</ol>
+<p>数据后，服务端调⽤ close ，表示连接关闭。</p>
+<p>这⾥需要注意的是，服务端调⽤ accept 时，连接成功了会返回⼀个已完成连接的 socket，后续⽤来传输数据。</p>
+<p>所以，监听的 socket 和真正⽤来传送数据的 socket，是两个 socket，⼀个叫作<strong>监听 socket</strong>，⼀个叫作<strong>已完成连接 socket</strong>。</p>
+<p>成功连接建⽴之后，双⽅开始通过 read 和 write 函数来读写数据，就像往⼀个⽂件流⾥⾯写东⻄⼀样。</p>
+<h2 id="select函数"><a href="#select函数" class="headerlink" title="select函数"></a>select函数</h2><p>select 实现多路复⽤的⽅式是，<strong>将已连接的 Socket 都放到⼀个⽂件描述符集合</strong>，</p>
+<p>然后<strong>调⽤ select 函数将⽂件描述符集合拷⻉到内核⾥，让内核来检查是否有⽹络事件产⽣</strong>，检查的⽅式很粗暴，就是通过<strong>遍历⽂件描述符集合的⽅式</strong>，<strong>当检查到有事件产⽣后，将此 Socket 标记为可读或可写， 接着再把整个⽂件描述符集合拷⻉回⽤户态⾥</strong>，然后⽤户态还需要<strong>再通过遍历的⽅法找到可读或可写的 Socke</strong>t，然后再对其处</p>
+<p>理。</p>
+<p>所以，对<strong>于 select 这种⽅式，需要进⾏ 2 次「遍历」⽂件描述符集合</strong>，⼀次是在内核态⾥，⼀个次是在<strong>⽤户态</strong> ，⽽且还会发⽣ <strong>2</strong> 次「拷⻉」⽂件描述符集合，先从⽤户空间传⼊内核空间，由内核修改后，再传出到⽤户空间中。</p>
+<p>select 使⽤固定⻓度的 BitsMap，表示⽂件描述符集合，⽽且<strong>所⽀持的⽂件描述符的个数是有限制的</strong>，在</p>
+<p>Linux 系统中，由内核中的 FD_SETSIZE 限制， 默认最⼤值为 1024 ，只能监听 0~1023 的⽂件描述符。</p>
+<h2 id="poll-函数"><a href="#poll-函数" class="headerlink" title="poll 函数"></a>poll 函数</h2><p><strong>poll 不再⽤位图或数组来存储所关注的⽂件描述符，取⽽代之⽤动态数组</strong>，以<strong>链表形式来组织，突破了</strong></p>
+<p><strong>select 的⽂件描述符个数限制</strong>，当然还会受到系统⽂件描述符限制。</p>
+<p>但是 poll 和 select 并没有太⼤的本质区别，都是使⽤「线性结构」存储进程关注的 <strong>Socket</strong> 集合，因此<strong>都需要遍历⽂件描述符集合</strong>来找到可读或可写的 <strong>Socket</strong>，时间复杂度为 **O(n)**，</p>
+<p>⽽且<strong>也需要在⽤户态与内核态之间拷⻉⽂件描述符集合</strong>，这种⽅式随着并发数上来，性能的损耗会呈指数级增⻓。</p>
+<h2 id="epoll-函数"><a href="#epoll-函数" class="headerlink" title="epoll 函数"></a>epoll 函数</h2><p>epoll 通过两个⽅⾯，很好解决了 select&#x2F;poll 的问题。</p>
+<ul>
+<li>第⼀点，epoll 在内核⾥<strong>使⽤红⿊树来跟踪进程所有待检测的⽂件描述符</strong>，把需要监控的 socket 通过</li>
+</ul>
+<p><code>epoll_ctl()</code> 函数加⼊内核中的红⿊树⾥，红⿊树是个⾼效的数据结构，增删查⼀般时间复杂度是</p>
+<p>O(logn) ，通过对这棵⿊红树进⾏操作，<strong>这样就不需要像 select&#x2F;poll 每次操作时都传⼊整个 socket 集合，只需要传⼊⼀个待检测的 socket，减少了内核和⽤户空间⼤量的数据拷⻉和内存分配</strong>。</p>
+<ul>
+<li>第⼆点， epoll 使⽤<strong>事件驱动</strong>的机制，<strong>内核⾥维护了⼀个链表来记录就绪事件</strong>，<strong>当某个 socket 有事件发⽣时，通过回调函数内核会将其加⼊到这个就绪事件列表中</strong>，当⽤户调⽤ <code>epoll_wait() </code>函数时，<strong>只会返回有事件发⽣的⽂件描述符的个数，不需要像 select&#x2F;poll 那样轮询扫描整个 socket 集合</strong>，⼤⼤提⾼了检测的效率。<br><img src="/2021/11/20/socket/epoll.png"></li>
+</ul>
+<h3 id="相关接口"><a href="#相关接口" class="headerlink" title="相关接口"></a>相关接口</h3><p>epoll API是Linux专有的特性，相较于<code>select</code>和<code>poll</code>，<code>epoll</code>更加灵活且<strong>没有描述符限制</strong>。<code>epoll</code>设计也与<code>select</code>和<code>poll</code>不同，主要包含以下三个接口：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">epoll_create</span><span class="params">(<span class="type">int</span> size)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_ctl</span><span class="params">(<span class="type">int</span> epfd, <span class="type">int</span> op, <span class="type">int</span> fd, <span class="keyword">struct</span> epoll_event *event)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">epoll_wait</span><span class="params">(<span class="type">int</span> epfd, <span class="keyword">struct</span> epoll_event * events, <span class="type">int</span> maxevents, <span class="type">int</span> timeout)</span>;</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>下面依次介绍。</p>
+</blockquote>
+<h4 id="epoll-create"><a href="#epoll-create" class="headerlink" title="epoll_create()"></a>epoll_create()</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">epoll_create</span><span class="params">(<span class="type">int</span> size)</span>；<span class="comment">//创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大</span></span><br></pre></td></tr></table></figure>
+
+<p>创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大，这个参数不同于select()中的第一个参数，给出最大监听的fd+1的值，<em>参数size并不是限制了epoll所能监听的描述符最大个数，只是对内核初始分配内部数据结构的一个建议</em>。<br>当创建好epoll句柄后，它就会占用一个fd值，在linux下如果查看&#x2F;proc&#x2F;进程id&#x2F;fd&#x2F;，是能够看到这个fd的，所以在使用完epoll后，必须调用close()关闭，否则可能导致fd被耗尽。</p>
+<h4 id="int-epoll-ctl"><a href="#int-epoll-ctl" class="headerlink" title="int epoll_ctl()"></a>int epoll_ctl()</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">epoll_ctl</span><span class="params">(<span class="type">int</span> epfd, <span class="type">int</span> op, <span class="type">int</span> fd, <span class="keyword">struct</span> epoll_event *ev)</span>; <span class="comment">//修改兴趣列表（事件注册函数）</span></span><br></pre></td></tr></table></figure>
+
+<p>该函数是对指定描述符fd执行op操作。</p>
+<ul>
+<li>epfd：是epoll_create()的返回值。</li>
+<li>op：表示op操作，用三个宏来表示：1. <code>EPOLL_CTL_ADD</code>注册新的fd到epfd中；2. <code>EPOLL_CTL_MOD</code>修改已经注册的fd的监听事件；3. <code>EPOLL_CTL_DEL</code>从<code>epfd</code>中删除一个fd。</li>
+<li>fd：是需要监听的fd（文件描述符）</li>
+<li>epoll_event：是告诉内核需要监听什么事，struct epoll_event结构如下：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> &#123;</span></span><br><span class="line">  <span class="type">__uint32_t</span> events;  <span class="comment">/* Epoll events */</span></span><br><span class="line">  <span class="type">epoll_data_t</span> data;  <span class="comment">/* User data variable */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>events可以是以下几个宏的集合</strong>：</p>
+<ol>
+<li>EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；</li>
+<li>EPOLLOUT：表示对应的文件描述符可以写；</li>
+<li>EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；</li>
+<li>EPOLLERR：表示对应的文件描述符发生错误；</li>
+<li>EPOLLHUP：表示对应的文件描述符被挂断；</li>
+<li>EPOLLET： bsEPOLL设为边缘触发（Edge Triggered)模式，这是相对于水平触发(Level Triggered）来说的。</li>
+<li>EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里。</li>
+</ol>
+<p>其中<code>data</code>的类型为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span> <span class="title">epoll_data</span> &#123;</span></span><br><span class="line">  <span class="type">void</span>    *ptr; <span class="comment">//pointer to user defined data</span></span><br><span class="line">  <span class="type">int</span>     fd; <span class="comment">//file descriptor</span></span><br><span class="line">  uint_32 u32; <span class="comment">//32-bit integer</span></span><br><span class="line">  uint_64 u64; <span class="comment">//64-bit integer</span></span><br><span class="line">&#125; <span class="type">epoll_data_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>data</code>字段是唯一可以获知同这个事件相关的文件描述符的途径</strong>，因此调用<code>epoll_ctl()</code>将文件描述符添加到兴趣列表中时，应该要么将<code>ev.data.fd</code>设为文件描述符，要么将<code>ev.data.ptr</code>设为指向包含该文件描述的结构体。</p>
+<h4 id="int-epoll-wait"><a href="#int-epoll-wait" class="headerlink" title="int epoll_wait()"></a>int epoll_wait()</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">epoll_wait</span><span class="params">(<span class="type">int</span> epfd, <span class="keyword">struct</span> epoll_event *evlist, <span class="type">int</span> maxevents, <span class="type">int</span> timeout)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>数组<code>evlist</code>的空间由调用者负责申请;</p>
+<p>等待epfd上的io事件，最多返回maxevents个事件。<br>参数evlist用来从内核得到事件的集合，maxevents告之内核这个evlist有多大，这个maxevents的值不能大于创建epoll_create()时的size，参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。<strong>该函数返回需要处理的事件数目，如返回0表示已超时</strong>。</p>
+<h3 id="epoll的工作模式"><a href="#epoll的工作模式" class="headerlink" title="epoll的工作模式"></a>epoll的工作模式</h3><p>epoll对文件描述符的操作有两种模式：<strong>LT（level trigger）</strong>和<strong>ET（edge trigger）</strong>。LT模式是默认模式，LT模式与ET模式的区别如下：</p>
+<p><strong>LT模式</strong>：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，<strong>应用程序可以不立即处理该事件</strong>。下次调用epoll_wait时，会再次响应应用程序并通知此事件。</p>
+<p><strong>ET模式</strong>：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，<strong>应用程序必须立即处理该事件</strong>。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。</p>
+<p>LT模式下，<strong>主要缓冲区数据一次没有处理完，那么下次<code>epoll_wait</code>返回时，还会返回这个句柄</strong>；</p>
+<p>而ET模式下，缓冲区数据一次没处理结束，那么下次就不会再通知了，只在第一次返回．所以在ET模式下，一般是通过while循环，一次性读完全部数据<strong>．epoll默认使用的是LT</strong>．</p>
+<h4 id="1-LT模式"><a href="#1-LT模式" class="headerlink" title="1. LT模式"></a>1. LT模式</h4><p>LT(level triggered)是默认的工作方式，并且<strong>同时支持block和no-block</strong> socket.在这种做法中，内核告诉你一个文件描述符是否就绪了，然后你可以对这个就绪的fd进行IO操作。如果你不作任何操作，内核还是会继续通知你的。</p>
+<h4 id="2-ET模式"><a href="#2-ET模式" class="headerlink" title="2. ET模式"></a>2. ET模式</h4><p><strong>ET(edge-triggered)是高速工作方式</strong>，只支持no-block socket。在这种模式下，当描述符从未就绪变为就绪时，内核通过epoll告诉你。然后它会假设你知道文件描述符已经就绪，并且不会再为那个文件描述符发送更多的就绪通知，直到你做了某些操作导致那个文件描述符不再为就绪状态了(比如，你在发送，接收或者接收请求，或者发送接收的数据少于一定量时导致了一个EWOULDBLOCK 错误）。但是请注意，如果一直不对这个fd作IO操作(从而导致它再次变成未就绪)，内核不会发送更多的通知(only once)</p>
+<p><strong>ET模式在很大程度上减少了epoll事件被重复触发的次数</strong>，因此效率要比LT模式高。epoll工作在ET模式的时候，<strong>必须使用非阻塞套接口</strong>，以避免由于一个文件句柄的阻塞读&#x2F;阻塞写操作把处理多个文件描述符的任务饿死。</p>
+<p><strong>假如有这样一个例子：</strong></p>
+<ol>
+<li>我们已经把一个用来从管道中读取数据的文件句柄(RFD)添加到epoll描述符</li>
+<li>这个时候从管道的另一端被写入了2KB的数据</li>
+<li>调用epoll_wait(2)，并且它会返回RFD，说明它已经准备好读取操作</li>
+<li>然后我们读取了1KB的数据</li>
+<li>调用epoll_wait(2)（两种工作模式有不同的差别）</li>
+</ol>
+<p><strong>LT模式：</strong><br>如果是LT模式，那么在第5步调用epoll_wait(2)之后，仍然能受到通知。</p>
+<p><strong>ET模式：</strong><br>只有在监视的文件句柄上发生了某个事件的时候 ET 工作模式才会汇报事件。因此在第5步的时候，调用者可能会放弃等待仍在存在于文件输入缓冲区内的剩余数据。</p>
+<h3 id="epoll的实现原理"><a href="#epoll的实现原理" class="headerlink" title="epoll的实现原理"></a>epoll的实现原理</h3><p>在linux，一切皆文件．所以当调用<code>epoll_create</code>时，内核给这个<code>epoll</code>分配一个文件描述符，但是这个不是普通的文件，而是只服务于epoll。</p>
+<p>当内核初始化epoll时，会开辟一块内核高速缓冲区，用于放置我们监听的对端socket，这些socket会以<strong>红黑树节点的形式</strong>保存在内核的<code>cache</code>里，以支持快速的查找，插入，删除。</p>
+<p>同时，建立了一个<strong>list链表，用于存储准备就绪的事件</strong>．所以调用<code>epoll_wait</code>时，在timeout时间内，只是简单的观察这个list链表是否有数据，如果没有，则睡眠至超时时间到返回；如果有数据，则在超时时间到，拷贝至用户态<code>events</code>数组中．</p>
+<p><em>那么，这个准备就绪list链表是怎么维护的呢？</em><br>当我们执行<code>epoll_ctl()</code>时，除了把socket_fd放到epoll系统里对应的红黑树上之外，还会<strong>给内核中断处理程序注册一个回调函数</strong>，告诉内核，<strong>如果这个句柄的中断到了，就把它放到准备就绪list链表里</strong>。所以，当一个socket上有数据到了，内核在把网卡上的数据copy到内核中后就来把socket插入到准备就绪链表里了。</p>
+<p>epoll主要由两个结构体：eventpoll与epitem。epitem是每一个IO所对应的的事件。比如 <code>epoll_ctl()</code>的<code>EPOLL_CTL_ADD</code>操作的时候，就需要创建一个<code>epitem</code>。<code>eventpoll</code>是每一个epoll所对应的。比如<code>epoll_create</code>就是创建一个<code>eventpoll</code>。如下图所示，<code>eventpoll</code> 包含了 <code>lock</code>、<code>mtx</code>、<code>wq（等待队列）</code>与 <code>rdlist</code> 等成员，其中 <code>rdlist</code> 和 <code>rbr</code> 是我们所关心的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1990,341 +2624,6 @@
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/296949412">既然CPU有缓存一致性协议（MESI），为什么JMM还需要volatile关键字？</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiaowenmu1/article/details/89705740">MESI（缓存一致性协议）</a></p>
 <p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/MESI%E5%8D%8F%E8%AE%AE">MESI协议-wiki</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/12/KMP%E7%AE%97%E6%B3%95%20%E2%80%94%E2%80%94%20%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%81%E6%A8%A1%E6%9D%BF%E3%80%81%20%E5%BA%94%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/12/KMP%E7%AE%97%E6%B3%95%20%E2%80%94%E2%80%94%20%E7%9F%A5%E8%AF%86%E7%82%B9%E3%80%81%E6%A8%A1%E6%9D%BF%E3%80%81%20%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">KMP算法 —— 知识点、模板、 应用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-12 01:18:45" itemprop="dateCreated datePublished" datetime="2021-11-12T01:18:45+08:00">2021-11-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-03 20:25:39" itemprop="dateModified" datetime="2023-01-03T20:25:39+08:00">2023-01-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>这里并不打算去详细推导KMP的原理，以及精髓。只是整理了一下KMP算法的模板、应用、理解的关键点。</p>
-</blockquote>
-<h1 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h1><p>KMP算法最基本的应用就是字符串的匹配——给定一个text串，一个pattern串，询问pattern串在text串中是否出现，以及出现几次、位置等等。</p>
-<h1 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">KMP</span>&#123;</span><br><span class="line">    string pattern;</span><br><span class="line">    <span class="type">int</span> len ;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; next;  <span class="comment">// 这里的next数组是从1开始的</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 也叫失配数组,next[i] 表示以第i位结尾的子串与模式串的前缀相同的最大长度（但不能是自身），也就是所谓的最长公共前后缀</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Next</span><span class="params">()</span></span>&#123;</span><br><span class="line">        next.<span class="built_in">resize</span>(len+<span class="number">1</span>);</span><br><span class="line">        <span class="type">int</span> j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= len; i++) &#123;</span><br><span class="line">            <span class="keyword">while</span>(j &gt; <span class="number">0</span> &amp;&amp; pattern[i] != pattern[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                j = next[j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(pattern[i] == pattern[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            next[i] = j;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">KMP</span>(<span class="type">const</span> string &amp;pattern) &#123;</span><br><span class="line">        len = pattern.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">this</span>-&gt;pattern = <span class="string">&quot; &quot;</span> + pattern; </span><br><span class="line">        <span class="built_in">Next</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isSubstringOfText</span><span class="params">(<span class="type">const</span> string&amp; text)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">getPositions</span>(text).<span class="built_in">size</span>() &gt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="comment">// 统计模式串在文本串出现的次数</span></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getTimes</span><span class="params">(<span class="type">const</span> string&amp; text)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">getPositions</span>(text).<span class="built_in">size</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 统计模式串在文本串的出现的次数</span></span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">getPositions</span><span class="params">(<span class="type">const</span> string&amp; text)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; res;</span><br><span class="line">        <span class="keyword">if</span>(text.<span class="built_in">size</span>()  &lt; len) <span class="keyword">return</span> res;</span><br><span class="line">        <span class="type">int</span> j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; text.<span class="built_in">size</span>(); i++)&#123;</span><br><span class="line">            <span class="keyword">while</span> (j &gt; <span class="number">0</span> &amp;&amp; text[i] != pattern[j + <span class="number">1</span>])&#123;</span><br><span class="line">                j = next[j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(text[i] == pattern[j + <span class="number">1</span>])&#123;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(j == len)&#123;</span><br><span class="line">                <span class="comment">// i 是匹配时文本串的位置（从0开始）</span></span><br><span class="line">                res.<span class="built_in">push_back</span>(i);</span><br><span class="line">                j = next[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="comment">// 求数组f[] 其中 f[i] 表示文本串以i结尾的子串与 pattern 串的前缀相同的最大长度（这里也是从1开始计数）</span></span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">getFArray</span><span class="params">(<span class="type">const</span> string&amp; text)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> m = text.<span class="built_in">size</span>(), j = <span class="number">0</span>;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">f</span><span class="params">(m+<span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i= <span class="number">0</span> ;i &lt; m; i++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(j &gt; <span class="number">0</span> &amp;&amp; (j == len || text[i] != pattern[j + <span class="number">1</span>])) &#123;</span><br><span class="line">                j = next[j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(text[i] == pattern[j + <span class="number">1</span>])&#123;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            f[i] = j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> f;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">const</span> vector&lt;<span class="type">int</span>&gt; &amp;<span class="title">getNext</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><ul>
-<li>失配数组的求法以及含义。<code>next[]</code></li>
-<li>模式匹配的结果数组。<code>f[]</code></li>
-<li>从DFA(有限状态自动)的角度去理解。(对后面的AC自动机的理解大有裨益)</li>
-</ul>
-<h1 id="典型应用"><a href="#典型应用" class="headerlink" title="典型应用"></a>典型应用</h1><ul>
-<li>模式串和文本串的模式匹配。</li>
-<li>处理和前缀和后缀有关的问题。</li>
-<li>处理循环节方面的问题。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/11/%E5%A4%A7%E6%95%B4%E6%95%B0%E5%8F%96%E6%A8%A1%E3%80%81%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%E4%B8%8E%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E3%80%81%E5%BF%AB%E9%80%9F%E5%B9%82%E4%B8%8E%E6%85%A2%E9%80%9F%E4%B9%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/11/%E5%A4%A7%E6%95%B4%E6%95%B0%E5%8F%96%E6%A8%A1%E3%80%81%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%E4%B8%8E%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E3%80%81%E5%BF%AB%E9%80%9F%E5%B9%82%E4%B8%8E%E6%85%A2%E9%80%9F%E4%B9%98/" class="post-title-link" itemprop="url">大整数取模、最大公约数与最小公倍数、快速幂与慢速乘、矩阵乘法加速</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-11 00:00:00" itemprop="dateCreated datePublished" datetime="2021-11-11T00:00:00+08:00">2021-11-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-03 20:24:48" itemprop="dateModified" datetime="2023-01-03T20:24:48+08:00">2023-01-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="大整数取模"><a href="#大整数取模" class="headerlink" title="大整数取模"></a>大整数取模</h2><p>Description：<br>输入一个字符串 a 代表一个很大的数，一个32位整数b，问a能否整除b。<br><a target="_blank" rel="noopener" href="https://vjudge.net/problem/LightOJ-1214">Large Division LightOJ - 1214 
-</a><br>亲测 10ms。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">//大整数取模</span></span><br><span class="line"></span><br><span class="line">string a;</span><br><span class="line"><span class="type">int</span> b;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> t;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=t;i++)&#123;</span><br><span class="line">        cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">        b = <span class="built_in">abs</span>(b);</span><br><span class="line">        ll sum=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(a[<span class="number">0</span>]==<span class="string">&#x27;-&#x27;</span>) a.<span class="built_in">erase</span>(a.<span class="built_in">begin</span>());</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;a.<span class="built_in">length</span>();j++)&#123;</span><br><span class="line">            sum = sum*<span class="number">10</span> + a[j]-<span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">            sum%=b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum&gt;<span class="number">0</span>) <span class="built_in">printf</span>(<span class="string">&quot;Case %d: not divisible\n&quot;</span>,i);</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">&quot;Case %d: divisible\n&quot;</span>,i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>亲测，500ms左右，发现Java的BigDecimal速度还是比较慢的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.math.BigDecimal;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		<span class="type">Scanner</span> <span class="variable">sc</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Scanner</span>(System.in);</span><br><span class="line">		<span class="type">int</span> t=sc.nextInt();</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=t;i++) &#123;</span><br><span class="line">			<span class="type">String</span> <span class="variable">as</span> <span class="operator">=</span> sc.next();</span><br><span class="line">			<span class="type">String</span> <span class="variable">bs</span> <span class="operator">=</span> sc.next();</span><br><span class="line">			<span class="type">BigDecimal</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(as);</span><br><span class="line">			<span class="type">BigDecimal</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(bs);</span><br><span class="line">			<span class="keyword">if</span>(a.divideAndRemainder(b)[<span class="number">1</span>].compareTo(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(<span class="number">0</span>))==<span class="number">0</span>) &#123;</span><br><span class="line">				System.out.printf(<span class="string">&quot;Case %d: divisible\n&quot;</span>,i);</span><br><span class="line">			&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">				System.out.printf(<span class="string">&quot;Case %d: not divisible\n&quot;</span>,i);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		sc.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">其中；</span><br><span class="line">a.divideAndRemainder(b)返回一个数组，[<span class="number">0</span>]是整除数，[<span class="number">1</span>]是余数。</span><br><span class="line">A.compareTo（B）-<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>分别对应 &lt;,=,&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="最大公约数与最小公倍数"><a href="#最大公约数与最小公倍数" class="headerlink" title="最大公约数与最小公倍数"></a>最大公约数与最小公倍数</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">gcd</span><span class="params">(ll a,ll b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> b==<span class="number">0</span>?a: <span class="built_in">gcd</span>(b,a%b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">lcm</span><span class="params">(ll a,ll b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a/<span class="built_in">gcd</span>(a,b)*b;  <span class="comment">// 先除再乘，否则可能中间溢出</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="快速幂与慢速乘"><a href="#快速幂与慢速乘" class="headerlink" title="快速幂与慢速乘"></a>快速幂与慢速乘</h2><p>小栗子<br>快速幂： ${ {2^7&#x3D;2<em>2^6&#x3D;2</em>(2^3)^2&#x3D;2*(2*(2^2))^2} }$</p>
-<p>也就是：${ {2^{2^2+2^1+2^0} } }$<br>时间复杂度：O(logn)</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//快速幂</span></span><br><span class="line"><span class="function">ll <span class="title">pow</span><span class="params">(ll a,ll n,ll p)</span></span>&#123;</span><br><span class="line">    ll ans=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(n)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&amp;<span class="number">1</span>) ans=ans*a%p;  <span class="comment">//如果无需取模，去掉 %p即可</span></span><br><span class="line">        a=a*a%p;  <span class="comment">// 是 平方</span></span><br><span class="line">        n/=<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>慢速乘$ { { 3<em>7&#x3D;3</em>(2^2+2^1+2^0) } } $</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//慢速乘,大数相乘，速度慢，而且容易溢出</span></span><br><span class="line"><span class="function">ll <span class="title">mul</span><span class="params">(ll a,ll b,ll p)</span></span>&#123;  <span class="comment">//将b分解成 和</span></span><br><span class="line">    ll ans=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(b)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b&amp;<span class="number">1</span>) ans=(ans+a)%p;</span><br><span class="line">        a=a*<span class="number">2</span>%p;  <span class="comment">//是乘 2</span></span><br><span class="line">        b/=<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>常见问法：<br><a target="_blank" rel="noopener" href="https://vjudge.net/problem/LightOJ-1282">Leading and Trailing LightOJ - 1282</a><br>输出一个大数的最右面3位（%1000即可），和最左面3位。<br>如果要输出最左面的3位呢？<br>${ {n^k&#x3D;10^p} }$<br>p应该是个带小数的浮点数m,取对数 ${ {p&#x3D;k*log_{10}(n)} }$,(p的小数部分)*100取整就是答案，因为p的整数部分只控制多少位。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">fmod</span>(a,b) 浮点数的取余数。<span class="built_in">fmod</span>(a,<span class="number">1</span>)即可取出小数。</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="comment">//快速幂</span></span><br><span class="line"><span class="function">ll <span class="title">pow</span><span class="params">(ll a,ll n,ll p)</span></span>&#123;</span><br><span class="line">    ll ans=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(n)&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&amp;<span class="number">1</span>) ans=ans*a%p;  <span class="comment">//如果无需取模，去掉 %p即可</span></span><br><span class="line">        a=a*a%p;  <span class="comment">// 是 平方</span></span><br><span class="line">        n/=<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> t;</span><br><span class="line">    cin&gt;&gt;t;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=t;i++)&#123;</span><br><span class="line">        ll n,k;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld%lld&quot;</span>,&amp;n,&amp;k);</span><br><span class="line">        ll ans2 = <span class="built_in">pow</span>(n, k,<span class="number">1000</span>);</span><br><span class="line">        ll ans1 = <span class="built_in">pow</span>(<span class="number">10.0</span>,<span class="number">2.0</span>+<span class="built_in">fmod</span>((<span class="type">double</span>)k*<span class="built_in">log10</span>((<span class="type">double</span>)n), <span class="number">1</span>));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Case %d: %lld %03lld\n&quot;</span>,i,ans1,ans2);</span><br><span class="line">        <span class="comment">//注意题目要求最右边的3位数字，如果3，则应该输出003</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="矩阵加速"><a href="#矩阵加速" class="headerlink" title="矩阵加速"></a>矩阵加速</h2><p>步骤：</p>
-<ol>
-<li><strong>求出递推矩阵</strong>（也是最重要的一步）；</li>
-<li><strong>矩阵乘法</strong>；</li>
-<li><strong>矩阵快速幂</strong>；</li>
-<li><strong>矩阵乘向量得出结果</strong>。</li>
-</ol>
-<p>例： <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/">剑指 Offer 10- I. 斐波那契数列</a></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">mod</span> <span class="operator">=</span> (<span class="type">int</span>)<span class="number">1e9</span> + <span class="number">7</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">fib</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[][] A = &#123;&#123;<span class="number">1</span>, <span class="number">1</span>&#125;, &#123;<span class="number">1</span>, <span class="number">0</span>&#125;&#125;;</span><br><span class="line">        <span class="type">int</span>[][] B = pow(A, n);</span><br><span class="line">        <span class="keyword">return</span> B[<span class="number">1</span>][<span class="number">0</span>]; <span class="comment">// 实际上是 矩阵B*列向量[1,0]的结果</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 矩阵乘法，返回新数组</span></span><br><span class="line">    <span class="type">int</span>[][] mul(<span class="type">int</span>[][] A, <span class="type">int</span>[][] B) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">m</span> <span class="operator">=</span> A.length, n = B[<span class="number">0</span>].length;</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> A[<span class="number">0</span>].length;</span><br><span class="line">        <span class="type">int</span>[][] ans = <span class="keyword">new</span> <span class="title class_">int</span>[m][n];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">0</span>; k &lt; len; k++) &#123;</span><br><span class="line">                    <span class="comment">// 小心溢出</span></span><br><span class="line">                    res = (<span class="type">int</span>)((res + (<span class="type">long</span>)A[i][k] * B[k][j] ) % mod);</span><br><span class="line">                &#125;</span><br><span class="line">                ans[i][j] = res;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 快速幂计算</span></span><br><span class="line">    <span class="type">int</span>[][] pow(<span class="type">int</span>[][] A, <span class="type">int</span> n) &#123;</span><br><span class="line">        <span class="type">int</span>[][] ans = <span class="keyword">new</span> <span class="title class_">int</span>[A.length][A[<span class="number">0</span>].length];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; ans.length; i++) &#123;</span><br><span class="line">            ans[i][i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(n % <span class="number">2</span> == <span class="number">1</span>) &#123;</span><br><span class="line">                ans = mul(ans, A);</span><br><span class="line">            &#125;</span><br><span class="line">            A = mul(A, A);</span><br><span class="line">            n &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/10/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/10/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">背包问题详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-10 12:01:40" itemprop="dateCreated datePublished" datetime="2021-11-10T12:01:40+08:00">2021-11-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-03 20:25:10" itemprop="dateModified" datetime="2023-01-03T20:25:10+08:00">2023-01-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h1><h2 id="01背包"><a href="#01背包" class="headerlink" title="01背包"></a>01背包</h2><p>Model: 给定n个物品，第i个物品的体积为Vi,价值为Wi.背包容积为m。每件物品最多选择一次，总体积不超过m,要求总价值最大。</p>
-<p> <strong>01背包，时间复杂度 O(nm),空间复杂度 O(nm)</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e3</span>;</span><br><span class="line"><span class="type">int</span> n,m,w[maxn],v[maxn],f[maxn][maxn];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++) <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;w[i],&amp;v[i]);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=m;j++) f[i][j]=f[i<span class="number">-1</span>][j];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=v[i];j&lt;=m;j++) f[i][j] = <span class="built_in">max</span>(f[i][j],f[i<span class="number">-1</span>][j-v[i]]+w[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 打表观察</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%3d&quot;</span>,f[i][j]);</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>状态表示</strong>：$f[i][j]$表示把 1，2，……i共 <strong>i</strong> 个物品放入容量为 <strong>j</strong> 的背包中所获得的最大价值。<br><strong>DP方程：</strong></p>
-<p>$$f[i][j]&#x3D;max\begin{cases}<br>f[i-1][j]，不选第i个物品\<br>f[i-1][j-v[i]]+w[i]，if(j&gt;&#x3D;v[i]),选第i个物品<br>\end{cases}$$</p>
-<p>样例<br>n&#x3D;,m&#x3D;15;<br>w[]  2 3 4 5 10<br>v[]   2 3 3 4 7<br><em>动态结果</em><br><img src="https://img-blog.csdnimg.cn/20200208195835563.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODQ2MzI0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>最终答案为  f [n] [m]</p>
-<p>用<strong>滚动数组</strong>进行优化<br>空间复杂度被优化为 O(m)</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> d[maxn];</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=m;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">        <span class="keyword">if</span>(j&gt;=v[i]) d[j]=<span class="built_in">max</span>(d[j],d[j-v[i]]+w[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>先使用，后更新</strong><br><strong>j</strong> 必须使用倒序循环，才保证先使用 <strong>i-1</strong> 阶段的状态，之后再更新为 <strong>i</strong> 阶段的状态，i.e. 要保证每个物品只加入一次。</p>
-<h3 id="小栗子"><a href="#小栗子" class="headerlink" title="小栗子"></a>小栗子</h3><p>—<a target="_blank" rel="noopener" href="https://vjudge.net/problem/OpenJ_Bailian-4004">数字组合方案</a><br>Description：给定整数a1、a2、…an，判断是否可以从中选出若干数，使它们的和恰好为m,求方案总数。</p>
-<p>状态表示：f[i][j] 前 <strong>i</strong> 个数组合得到和为 <strong>j</strong> 的方案总数<br>DP方程：$f[i][j]&#x3D;f[i-1][j]+f[i-1][j-a[i]]$<br>分别对应不取a[i]，取a[i]。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> n,m,f[<span class="number">1000</span>][<span class="number">1000</span>],a[<span class="number">1000</span>];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a[i]);</span><br><span class="line">        f[i][<span class="number">0</span>]=<span class="number">1</span>; <span class="comment">// 边界值</span></span><br><span class="line">    &#125;</span><br><span class="line">    f[<span class="number">0</span>][<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;a[i];j++) f[i][j]= f[i<span class="number">-1</span>][j];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=a[i];j&lt;=m;j++) f[i][j]= f[i<span class="number">-1</span>][j]+f[i<span class="number">-1</span>][j-a[i]];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 打表观察</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            cout&lt;&lt;f[i][j]&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        cout&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;f[n][m]&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img-blog.csdnimg.cn/20200208205516607.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODQ2MzI0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>滚动数组优化</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> n,m,f[<span class="number">10005</span>],a;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="comment">//边界值，即前i个数组合，和为0的方案数，方案数为1，也就是，前i个数都不取</span></span><br><span class="line">    f[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a);  <span class="comment">//可以边读入边运算</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=m;j&gt;=a;j--)&#123;</span><br><span class="line">            f[j]+=f[j-a];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;f[m]&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="完全背包"><a href="#完全背包" class="headerlink" title="完全背包"></a>完全背包</h2><p>Model :  给定n个物品，第i个物品的体积为Vi,价值为Wi.背包容积为m。<strong>每件物品可以选择无数次</strong>，总体积不超过m,要求总价值最大。</p>
-<p><strong>状态表示</strong>：<code>f[i][j]</code>表示把 1，2，……i共 <strong>i</strong> 个物品放入容量为 <strong>j</strong> 的背包中所获得的最大价值。<br><strong>DP方程：</strong></p>
-<p>$$f[i][j]&#x3D;max\begin{cases}<br>f[i-1][j],从未选过第i种物品\<br>f[i][j-v[i]]+w[i]，if (j&gt;&#x3D;v[i]) 从第i种物品中选择一个<br>\end{cases}$$</p>
-<p>在 01背包中，使用倒序循环遍历 j ,限制了每种物品最多使用一次，<br>自然，正序循环的话，每个物品就可以重复加入。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;v,&amp;w);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=v;j&lt;=m;j++)&#123;</span><br><span class="line">        f[j] = <span class="built_in">max</span>(f[j],f[j-v]+w);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="小栗子–自然数拆分"><a href="#小栗子–自然数拆分" class="headerlink" title="小栗子–自然数拆分"></a>小栗子–自然数拆分</h3><p>Description： 给定一个自然数N,要求把N拆分成若干个整数相加的形式，参与加法运算的数可以重复，求拆分方案。<br>思路： 1~N这N个数就是n个物品，总和 N 就是背包的容积.</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> ll mod = <span class="number">2147483648</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line">ll f[<span class="number">4005</span>],n;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    f[<span class="number">0</span>]=<span class="number">1</span>; <span class="comment">//边界值</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123; <span class="comment">//依次加入n个物品</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=i;j&lt;=n;j++)&#123; <span class="comment">//已有1~i这i个数求和得到j的方案数</span></span><br><span class="line">            f[j] = (f[j]+f[j-i])%mod;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;(f[n]%mod)&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
-<h2 id="多重背包"><a href="#多重背包" class="headerlink" title="多重背包"></a>多重背包</h2><p> Model:给定n个物品，第i个物品的体积为Vi,价值为Wi.<strong>并且有Ci个</strong>,背包容积为m。总体积不超过m,要求总价值最大。</p>
-<h3 id="直接拆分法"><a href="#直接拆分法" class="headerlink" title="直接拆分法"></a>直接拆分法</h3><p>把第 i 种商品看做独立的Ci个商品，相当于一共有  ${ { \sum_{ i &#x3D; 1 }^N Ci } }$个物品，就把物品转化为01背包问题了,但是效率比较低。<br>时间复杂度： $$O(M*\sum_{ i &#x3D; 1 }^N Ci)$$</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>  f[maxn],n,m,v[maxn],w[maxn],c[maxn];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=c[i];j++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> k=m;k&gt;=v[i];k--)&#123;</span><br><span class="line">                f[k] = <span class="built_in">max</span>(f[k],f[k-v[i]]+w[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,f[m]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="二进制拆分法"><a href="#二进制拆分法" class="headerlink" title="二进制拆分法"></a>二进制拆分法</h3><p>把数量为Ci个的第 i 种物品拆分成 p+2种物品，它们的价值与体积分别为：<br>$$ 2^0<em>Wi,2^1</em>Wi,……2^p<em>Wi，Ri</em>Wi $$<br>$$2^0<em>Vi,2^1</em>Vi,……2^p<em>Vi，Ri</em>Vi$$<br>其中 p为满足 ${ {2^{p+1}-1&lt;&#x3D;Ci } }$ 的最大整数。<br>${ {Ri&#x3D;Ci-(2^{p+1}-1) } }$。</p>
-<p>时间复杂度： $$O(M*\sum_{i&#x3D;1}^N log(Ci))$$</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> maxn = <span class="number">1e5</span>+<span class="number">5</span>;</span><br><span class="line"><span class="type">int</span> f[maxn],n,m,w[maxn],v[maxn],c[maxn];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;m,&amp;n)==<span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">memset</span>(f, <span class="number">0</span>, <span class="built_in">sizeof</span>(f));</span><br><span class="line">        <span class="built_in">memset</span>(w, <span class="number">0</span>, <span class="built_in">sizeof</span>(w));</span><br><span class="line">        <span class="built_in">memset</span>(c, <span class="number">0</span>, <span class="built_in">sizeof</span>(c));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;c[i],&amp;w[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="type">int</span> p = (<span class="type">int</span>)<span class="built_in">log2</span>(c[i]+<span class="number">1</span>)<span class="number">-1</span>;</span><br><span class="line">            <span class="type">int</span> ri= -<span class="built_in">pow</span>(<span class="number">2</span>, p+<span class="number">1</span>)+c[i]+<span class="number">1</span>;</span><br><span class="line">            <span class="type">int</span> wp[p+<span class="number">5</span>],vp[p+<span class="number">5</span>];</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> x=<span class="number">0</span>;x&lt;=p;x++)&#123;</span><br><span class="line">                wp[x]=<span class="built_in">pow</span>(<span class="number">2</span>,x)*w[i];</span><br><span class="line">                vp[x]=<span class="built_in">pow</span>(<span class="number">2</span>,x)*v[i]</span><br><span class="line">            &#125;</span><br><span class="line">            wp[p+<span class="number">1</span>]=ri*w[i];v[p+<span class="number">1</span>]=ri*v[i];</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=p+<span class="number">1</span>;j++)&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="type">int</span> k=m;k&gt;=vp[j];k--)&#123;</span><br><span class="line">                    f[k] = <span class="built_in">max</span>(f[k],f[k-vp[j]]+wp[j]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,f[m]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="多重背包模板题"><a href="#多重背包模板题" class="headerlink" title="多重背包模板题."></a><a target="_blank" rel="noopener" href="https://vjudge.net/problem/UVA-10626">多重背包模板题</a>.</h3><h2 id="分组背包"><a href="#分组背包" class="headerlink" title="分组背包"></a>分组背包</h2><p> Model : 给定 <strong>N</strong> 组物品，其中第 <strong>i</strong> 组有 <strong>Ci</strong> 个物品。第 i 组的第 <strong>j</strong> 个物品的体积为 <strong>Vij</strong>,价值为 <strong>Wij</strong>。有一个容积为 M 的背包，使得<strong>每组至多选择一个物品</strong>并且总体积不超过M的前提下，物品的价值和最大。<br><strong>状态</strong>:$F[i][j]$,表示从前 <strong>i</strong> 组中选出总体积为 <strong>j</strong> 的物品放入背包，物品的最大价值和。<br><strong>DP方程</strong>：<br>$$f[i][j]&#x3D;max\begin{cases}<br>f[i-1][j]，不选第 i 组物品\<br>max_{(1&#x3D;&lt;k&lt;&#x3D;C_i)}f[i-1][j-V_{ik}]+W_{ik}，选第i组物品的某个物品k<br>\end{cases}$$</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=m;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">1</span>;k&lt;=c[i];k++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(j&gt;=v[i][k])</span><br><span class="line">                f[j]=<span class="built_in">max</span>(f[j],f[j-v[i][k]]+w[i][k]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,f[m]);</span><br></pre></td></tr></table></figure>
-<p>注意点：<strong>倒序循环j</strong>;<br><strong>对每一组物品的循环k应该放在j的内层，以保证每个物品只会放进去一次。</strong><br>从动态规划的角度：<br><strong>i</strong>是”阶段“，<strong>i</strong>和<strong>j</strong>共同构成”状态“，而<strong>k</strong>是”决策“——在第<strong>i</strong>个阶段使用哪个物品。</p>
 
       
     </div>

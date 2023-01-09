@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">237</span>
+          <span class="site-state-item-count">240</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,451 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/28/%E5%88%86%E5%B8%83%E5%BC%8FID/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/28/%E5%88%86%E5%B8%83%E5%BC%8FID/" class="post-title-link" itemprop="url">分布式ID</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-28 10:48:10" itemprop="dateCreated datePublished" datetime="2022-09-28T10:48:10+08:00">2022-09-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-09 01:16:03" itemprop="dateModified" datetime="2022-10-09T01:16:03+08:00">2022-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h1><p><strong>优点：</strong></p>
+<ul>
+<li>生成足够简单，本地生成无网络消耗，具有唯一性</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>无序的字符串，不具备趋势自增特性</li>
+<li>没有具体的业务含义</li>
+<li>长度过长16 字节128位，36位长度的字符串，存储以及查询对MySQL的性能消耗较大，MySQL官方明确建议主键要尽量越短越好，作为数据库主键 <code>UUID</code> 的无序性会导致数据位置频繁变动，严重影响性能。</li>
+</ul>
+<h1 id="Snowflake——雪花算法"><a href="#Snowflake——雪花算法" class="headerlink" title="Snowflake——雪花算法"></a>Snowflake——雪花算法</h1><p>雪花算法（Snowflake）是twitter公司内部分布式项目采用的ID生成算法，开源后广受国内大厂的好评，在该算法影响下各大公司相继开发出各具特色的分布式生成器。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-4f51c7b6704323cc376b5a8a9a7cad09_1440w.jpg"></p>
+<p><code>Snowflake</code>生成的是Long类型的ID，一个Long类型占8个字节，每个字节占8比特，也就是说一个Long类型占64个比特。</p>
+<p>Snowflake ID组成结构：<code>正数位</code>（占1比特）+ <code>时间戳</code>（占41比特）+ <code>机器ID</code>（占5比特）+ <code>数据中心</code>（占5比特）+ <code>自增值</code>（占12比特），总共64比特组成的一个Long类型。</p>
+<ul>
+<li>第一个bit位（1bit）：Java中long的最高位是符号位代表正负，正数是0，负数是1，一般生成ID都为正数，所以默认为0。</li>
+<li>时间戳部分（41bit）：毫秒级的时间，不建议存当前时间戳，而是用（当前时间戳 - 固定开始时间戳）的差值，可以使产生的ID从更小的值开始；41位的时间戳可以使用69年，(1L &lt;&lt; 41) &#x2F; (1000L * 60 * 60 * 24 * 365) &#x3D; 69年</li>
+<li>工作机器id（10bit）：也被叫做<code>workId</code>，这个可以灵活配置，机房或者机器号组合都可以。</li>
+<li>序列号部分（12bit），自增值支持同一毫秒内同一个节点可以生成4096个ID</li>
+</ul>
+<p>根据这个算法的逻辑，只需要将这个算法用Java语言实现出来，封装为一个工具方法，那么各个业务应用可以直接使用该工具方法来获取分布式ID，只需保证每个业务应用有自己的工作机器id即可，而不需要单独去搭建一个获取分布式ID的应用。</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p><strong>效率高</strong><br>生成id的效率比较快，最高在1ms内可以生成2的12次方，也就是4096个id。<br><strong>不依赖其他组件</strong><br>生成id的过程中，主要是根据时间戳，workID，序列号来进行生成，可以做到不额外依赖其他组件，只依赖于本地系统时间独立地生成id。</p>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p><strong>易造成数据倾斜的问题</strong><br>举例：一个数据库中总共有10个id，分别是</p>
+<p>0，25，26，27，28，29，30，31，32，100</p>
+<p>id的最小值是0，最大值是100，按照id最大值减去最小值，进行范围切分，分成四段的话，范围是以下四个范围：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">[``0``,``25``), 存在``1``个id，值分别是``0` `[``25``,``50``) 存在``8``个id，值分别是``25``，``26``，``27``，``28``，``29``，``30``，``31``，``32` `[``50``,``75``),存在``0``个id [``75``,``100``] 存在``1``个``100``，值是``100</span><br></pre></td></tr></table></figure>
+
+<p>这样明显就会存在数据倾斜的问题，就是[25,50) 这个区间存在的id数量特别多，而其他区间存在的id数量特别少。如果我们用Sqoop将MySQL中的数据导入到Hive中去时，就是按照这种id最大值减去最小值，进行范围切分实现方法进行数据分片，然后多线程进行数据导入，每个线程负责一个分片的数据，数据不均匀的话，导入的时间就会变长，有些线程分配的数据量少，导入很快，有些线程分配的数据量大导入很慢。总导入时间取决于最慢的那个线程的时间。</p>
+<p>使用Snowflake生成的id，id值的大小因为取决于生成id时的时间戳，如果某一个时间段爬取了大量文章进行入库，在很短的时候内生成了很多id，而其他时间段生成id数量很少，在使用Sqoop导入数据时就会有数据倾斜的问题，需要单独自己进行数据切分，让数据变均匀，然后进行导入。</p>
+<h1 id="号段模式"><a href="#号段模式" class="headerlink" title="号段模式"></a>号段模式</h1><p>号段模式是当下分布式ID生成器的主流实现方式之一，号段模式可以理解为<strong>从数据库批量的获取自增ID</strong>，每次从数据库取出一个号段范围，例如 [0,1000) 代表1000个ID，具体的业务服务将本号段，生成1~1000的自增ID并加载到内存。</p>
+<p>表结构如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> id_generator (</span><br><span class="line">  id <span class="type">int</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  max_id <span class="type">bigint</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;当前最大id&#x27;</span>,</span><br><span class="line">  step <span class="type">int</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;号段的布长&#x27;</span>,</span><br><span class="line">  biz_type	<span class="type">int</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;业务类型&#x27;</span>,</span><br><span class="line">  version <span class="type">int</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;版本号&#x27;</span>,</span><br><span class="line">  <span class="keyword">PRIMARY</span> KEY (`id`)</span><br><span class="line">) </span><br></pre></td></tr></table></figure>
+
+
+
+<p>eg.<br><img src="https://pic3.zhimg.com/80/v2-abc2633c6ff85daf95fca018f717a24e_1440w.png"></p>
+<ul>
+<li><p>biz_type ：代表不同业务类型；</p>
+</li>
+<li><p>max_id ：当前最大的可用id；</p>
+</li>
+<li><p>step ：代表号段的长度；</p>
+</li>
+<li><p>version ：是一个乐观锁，每次都更新version，保证并发时数据的正确性。</p>
+</li>
+</ul>
+<p>等这批号段ID用完，再次向数据库申请新号段，对<code>max_id</code>字段做一次<code>update</code>操作，<code>update max_id= max_id + step</code>，update成功则说明新号段获取成功，新的号段范围是<code>(max_id ,max_id +step]</code>。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> id_generator <span class="keyword">set</span> max_id <span class="operator">=</span> #&#123;max_id<span class="operator">+</span>step&#125;, version <span class="operator">=</span> version <span class="operator">+</span> <span class="number">1</span> <span class="keyword">where</span> version <span class="operator">=</span> # &#123;version&#125; <span class="keyword">and</span> biz_type <span class="operator">=</span> XXX</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>由于多业务端可能同时操作，所以采用版本号<code>version</code>乐观锁方式更新，这种<code>分布式ID</code>生成方式不强依赖于数据库，不会频繁的访问数据库，对数据库的压力小很多。</p>
+<h2 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h2><p><strong>效率高</strong><br>生成id的效率取决于step的大小，不会像主键自增生成id那样再受限于数据库的数量。</p>
+<h2 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h2><p><strong>强依赖于数据库</strong><br>还是强依赖于数据库，数据库宕机后，虽然id生成系统靠内存中还未使用完id，可以维持系统正常运行一段时间，但是数据库不可用还是会导致整个系统不可用。</p>
+<p><strong>id是连续的</strong><br>容易造成被爬取，以及被竞争对手猜测出一天的订单量。</p>
+<h1 id="美团（Leaf）"><a href="#美团（Leaf）" class="headerlink" title="美团（Leaf）"></a>美团（Leaf）</h1><p>Leaf同时支持号段模式和snowflake算法模式，可以切换使用。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/27/%E9%98%B2%E9%87%8D%E4%B8%8E%E5%B9%82%E7%AD%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/27/%E9%98%B2%E9%87%8D%E4%B8%8E%E5%B9%82%E7%AD%89/" class="post-title-link" itemprop="url">防重与幂等</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-27 22:39:04" itemprop="dateCreated datePublished" datetime="2022-09-27T22:39:04+08:00">2022-09-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-28 13:38:19" itemprop="dateModified" datetime="2022-09-28T13:38:19+08:00">2022-09-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/27/MySQL%E6%85%A2%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/27/MySQL%E6%85%A2%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">MySQL慢查询优化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-27 22:10:48" itemprop="dateCreated datePublished" datetime="2022-09-27T22:10:48+08:00">2022-09-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-09 09:39:59" itemprop="dateModified" datetime="2022-10-09T09:39:59+08:00">2022-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1-发现-监控慢查询"><a href="#1-发现-监控慢查询" class="headerlink" title="1. 发现+监控慢查询"></a>1. 发现+监控慢查询</h1><h2 id="Mysql提供的慢查询日志"><a href="#Mysql提供的慢查询日志" class="headerlink" title="Mysql提供的慢查询日志"></a>Mysql提供的慢查询日志</h2><p><strong>MySQL的慢查询，全名是慢查询日志，是MySQL提供的一种日志记录，用来记录在MySQL中响应时间超过阀值的语句。</strong></p>
+<p><strong>相关参数</strong></p>
+<ol>
+<li>slow_query_log : 是否开启慢查询日志</li>
+<li>slow_query_log_file : 慢查询日志文件名及路径</li>
+<li>long_query_time : 指定慢查询时间阈(yu)值，sql执行时间大于该阈值（不包括该值本身，如在sql执行中花费的时间等于，下面的2秒时，不会被记录）将被记录下来,生产环境中1~2秒范围均可</li>
+<li>log_queries_not_using_indexes : 将没有使用索引的语句记录至慢查询日志中，</li>
+<li>log_throttle_queries_not_using_indexes : 限制每分钟内，在慢查询日志中，去记录没有使用索引的SQL语句的次数,因为没有使用索引的SQL可能会短时间重复执行，为了避免日志快速增大，限制每分钟的记录次数</li>
+<li>min_examined_row_limit : 扫描全表少于该值的记录将不会被记录至慢查询日志,结合去记录没有使用索引的SQL语句的例子，有可能存在某一个表，数据量维持在百行左右，且没有建立索引。这种表即使不建立索引，查询也很快，扫描记录很小，如果确定有这种表，则可以通过此参数设置，将这个SQL不记录到慢查询日志。</li>
+</ol>
+<p><strong>开启方式</strong></p>
+<ol>
+<li>修改配置文件</li>
+<li>MySQL shell</li>
+</ol>
+<p><img src="https://pic3.zhimg.com/80/v2-b2bd80889ea54240a64ec1510c73a13a_1440w.png"></p>
+<h2 id="MyBatis-plus的性能分析插件"><a href="#MyBatis-plus的性能分析插件" class="headerlink" title="MyBatis -plus的性能分析插件"></a>MyBatis -plus的性能分析插件</h2><blockquote>
+<p>性能分析拦截器，用于输出每条 SQL 语句及其执行时间</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://hfbbob1.gitbooks.io/mybatis-plus/content/xing-neng-fen-xi-cha-jian.html">https://hfbbob1.gitbooks.io/mybatis-plus/content/xing-neng-fen-xi-cha-jian.html</a></p>
+<h1 id="2-分析慢查询日志——explain"><a href="#2-分析慢查询日志——explain" class="headerlink" title="2. 分析慢查询日志——explain"></a>2. 分析慢查询日志——explain</h1><p>直接分析mysql慢查询日志 ,利用explain关键字可以模拟优化器执行SQL查询语句，来分析sql慢查询语句。</p>
+<p>Explain是一个非常有的命令，可以用来获取关于查询执行计划的信息，以及如何解释输出。Explain命令是查看查询优化器如何决定执行查询的主要方法。这个功能有一定的局限性，并不总是会说出真相，但是它的输出是可以获取的最好信息，值得花时间了解，可以学习到查询是如何执行的。</p>
+<p>explain的输出列：<br><img src="https://img-blog.csdn.net/20170509232741017?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3VzZXl1a3Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p>
+<p><strong>其中最重要的字段为：id、type、key、rows、Extra</strong></p>
+<ol>
+<li><strong>id列</strong></li>
+</ol>
+<p>这一列总是包含一个编号，标示select所属的行。</p>
+<p><strong>数字越大越先执行，如果说数字一样大，那么就从上往下依次执行</strong>，id列为null的就表示这是一个结果集，不需要使用它来进行查询。</p>
+<ol start="2">
+<li><strong>select_type列</strong></li>
+</ol>
+<p>这一列显示了对应行是简单还是复杂select。</p>
+<p>常见的有：</p>
+<p>A：simple：表示不包含union操作或者不包含子查询的简单select查询。有连接查询时，外层的查询为simple，且只有一个</p>
+<p>B：primary：一个需要union操作或者含有子查询的select，位于最外层的单位查询的select_type即为primary。且只有一个</p>
+<p>C：union：union连接的两个select查询，第一个查询是dervied派生表，除了第一个表外，第二个以后的表select_type都是union</p>
+<p>D：dependent union：与union一样，出现在union 或union all语句中，但是这个查询要受到外部查询的影响</p>
+<p>E：union result：包含union的结果集，在union和union all语句中,因为它不需要参与查询，所以id字段为null</p>
+<p>F：subquery：除了from字句中包含的子查询外，其他地方出现的子查询都可能是subquery</p>
+<p>G：dependent subquery：与dependentunion类似，表示这个subquery的查询要受到外部表查询的影响</p>
+<p>H：derived：from字句中出现的子查询，也叫做派生表，其他数据库中可能叫做内联视图或嵌套select</p>
+<ol start="3">
+<li>table列</li>
+</ol>
+<p>这一列显示了对应行正在访问查询的表名，如果查询使用了别名，那么这里显示的是别名，如果不涉及对数据表的操作，那么这显示为null，如果显示为尖括号括起来的<derived N>就表示这个是临时表，后边的N就是执行计划中的id，表示结果来自于这个查询产生。如果是尖括号括起来的&lt;union M,N&gt;，与<derived N>类似，也是一个临时表，表示这个结果来自于union查询的id为M,N的结果集。</p>
+<ol start="4">
+<li><strong>type列</strong></li>
+</ol>
+<p>这一列显示了<strong>访问类型，即MySQL决定如何查找表中的行</strong>。</p>
+<p><strong>依次从好到差：system，const，eq_ref，ref，fulltext，ref_or_null，unique_subquery，index_subquery，range，index_merge，index，ALL，除了all之外，其他的type都可以使用到索引，除了index_merge之外，其他的type只可以用到一个索引</strong></p>
+<p>A：system：表中只有一行数据或者是空表，且只能用于myisam和memory表。如果是Innodb引擎表，type列在这个情况通常都是all或者index</p>
+<p>B：<strong>const：使用唯一索引或者主键</strong>，返回记录一定是1行记录的等值where条件时，通常type是const。其他数据库也叫做唯一索引扫描</p>
+<p>C：<strong>eq_ref</strong>：出现在要连接过个表的查询计划中，<strong>驱动表只返回一行数据，且这行数据是第二个表的主键或者唯一索引</strong>，且必须为not null，唯一索引和主键是多列时，只有所有的列都用作比较时才会出现eq_ref</p>
+<p>D：<strong>ref</strong>：不像eq_ref那样要求连接顺序，也没有主键和唯一索引的要求，只要使用相等条件检索时就可能出现，常见与辅助索引的等值查找。或者多列主键、唯一索引中，使用第一个列之外的列作为等值查找也会出现，总之，返回数据不唯一的等值查找就可能出现。</p>
+<p>E：fulltext：全文索引检索，要注意，全文索引的优先级很高，若全文索引和普通索引同时存在时，mysql不管代价，优先选择使用全文索引</p>
+<p>F：ref_or_null：与ref方法类似，只是增加了null值的比较。实际用的不多。</p>
+<p>G：unique_subquery：用于where中的in形式子查询，子查询返回不重复值唯一值</p>
+<p>H：index_subquery：用于in形式子查询使用到了辅助索引或者in常数列表，子查询可能返回重复值，可以使用索引将子查询去重。</p>
+<p>I：<strong>range：索引范围扫描</strong>，常见于使用&gt;,&lt;,isnull,between ,in ,like等运算符的查询中。</p>
+<p>J：index_merge：表示查询使用了两个以上的索引，最后取交集或者并集，常见and ，or的条件使用了不同的索引，官方排序这个在ref_or_null之后，但是实际上由于要读取所个索引，性能可能大部分时间都不如range</p>
+<p>K：<strong>index：索引全表扫描</strong>，<strong>把索引从头到尾扫一遍</strong>，常见于使用索引列就可以处理不需要读取数据文件的查询、可以使用索引排序或者分组的查询。</p>
+<p>L：<strong>all：全表扫描数据文件</strong>，然后再在server层进行过滤返回符合要求的记录。</p>
+<ol start="5">
+<li><strong>possible_keys列</strong></li>
+</ol>
+<p><strong>查询可能使用到的索引</strong>都会在这里列出来。这个列表是优化过程早期创建的，因此有些罗列出来的索引有可能后续是没用的。</p>
+<ol start="6">
+<li><strong>key列</strong></li>
+</ol>
+<p>显示了<strong>查询真正使用到的索引</strong>，select_type为index_merge时，这里可能出现两个以上的索引，其他的select_type这里只会出现一个。</p>
+<p>如果该索引没有出现在possible_keys列中，那么MySQL选用它是出于另外的原因，比如选择了一个覆盖索引。</p>
+<p>possible_keys揭示了哪一个索引能有助于高效地进行查找，key显示了优化采用哪一个索引可以最小化查询成本。</p>
+<ol start="7">
+<li>key_len列</li>
+</ol>
+<p>用于处理查询的索引长度，如果是单列索引，那就整个索引长度算进去，如果是多列索引，那么查询不一定都能使用到所有的列，具体使用到了多少个列的索引，这里就会计算进去，没有使用到的列，这里不会计算进去。留意下这个列的值，算一下你的多列索引总长度就知道有没有使用到所有的列了。要注意，mysql的ICP特性使用到的索引不会计入其中。另外，key_len只计算where条件用到的索引长度，而排序和分组就算用到了索引，也不会计算到key_len中。</p>
+<ol start="8">
+<li>ref列</li>
+</ol>
+<p>如果是使用的常数等值查询，这里会显示const，如果是连接查询，被驱动表的执行计划这里会显示驱动表的关联字段，如果是条件使用了表达式或者函数，或者条件列发生了内部隐式转换，这里可能显示为func</p>
+<ol start="9">
+<li><strong>rows列</strong></li>
+</ol>
+<p>这里是执<strong>行计划中估算的扫描行数</strong>，不是精确值。</p>
+<ol start="10">
+<li><strong>extra列</strong></li>
+</ol>
+<p>这个列可以显示的信息非常多，有几十种，常用的有</p>
+<p>A：distinct：在select部分使用了distinc关键字</p>
+<p>B：no tables used：不带from字句的查询或者Fromdual查询</p>
+<p>C：使用not in()形式子查询或notexists运算符的连接查询，这种叫做反连接。即，一般连接查询是先查询内表，再查询外表，反连接就是先查询外表，再查询内表。</p>
+<p>D：<strong>using filesort</strong>：排序时无法使用到索引时，就会出现这个。<strong>常见于order by和group by语句中</strong></p>
+<p>E：<strong>using index：查询时不需要回表查询，直接通过索引就可以获取查询的数据。(覆盖索引)</strong></p>
+<p>F：<strong>using join buffer</strong>（block nestedloop），using join buffer（batched key accss）：5.6.x之后的版本优化关联查询的BNL，BKA特性。主要是减少内表的循环数量以及比较顺序地扫描查询。</p>
+<p>G：using sort_union，using_union，usingintersect，using sort_intersection：</p>
+<p>using intersect：表示使用and的各个索引的条件时，该信息表示是从处理结果获取交集</p>
+<p>using union：表示使用or连接各个使用索引的条件时，该信息表示从处理结果获取并集</p>
+<p>using sort_union和usingsort_intersection：与前面两个对应的类似，只是他们是出现在用and和or查询信息量大时，先查询主键，然后进行排序合并后，才能读取记录并返回。</p>
+<p>H：using temporary：表示使用了临时表存储中间结果。临时表可以是内存临时表和磁盘临时表，执行计划中看不出来，需要查看status变量，used_tmp_table，used_tmp_disk_table才能看出来。</p>
+<p>I：<strong>using where</strong>：<strong>表示存储引擎返回的记录并不是所有的都满足查询条件，需要在server层进行过滤。</strong>查询条件中分为限制条件和检查条件，5.6之前，存储引擎只能根据限制条件扫描数据并返回，然后server层根据检查条件进行过滤再返回真正符合查询的数据。5.6.x之后支持ICP特性，可以把检查条件也下推到存储引擎层，不符合检查条件和限制条件的数据，直接不读取，这样就大大减少了存储引擎扫描的记录数量。extra列显示using index condition</p>
+<p>J：firstmatch(tb_name)：5.6.x开始引入的优化子查询的新特性之一，常见于where字句含有in()类型的子查询。如果内表的数据量比较大，就可能出现这个</p>
+<p>K：loosescan(m..n)：5.6.x之后引入的优化子查询的新特性之一，在in()类型的子查询中，子查询返回的可能有重复记录时，就可能出现这个</p>
+<p>除了这些之外，还有很多查询数据字典库，执行计划过程中就发现不可能存在结果的一些提示信息</p>
+<ol start="11">
+<li>filtered列</li>
+</ol>
+<p>使用explain extended时会出现这个列，5.7之后的版本默认就有这个字段，不需要使用explain extended了。这个字段表示存储引擎返回的数据在server层过滤后，剩下多少满足查询的记录数量的比例，注意是百分比，不是具体记录数。</p>
+<h1 id="3-常见的慢查询优化"><a href="#3-常见的慢查询优化" class="headerlink" title="3. 常见的慢查询优化"></a>3. 常见的慢查询优化</h1><h2 id="索引相关"><a href="#索引相关" class="headerlink" title="索引相关"></a>索引相关</h2><h3 id="索引没起作用的情况"><a href="#索引没起作用的情况" class="headerlink" title="索引没起作用的情况"></a>索引没起作用的情况</h3><ol>
+<li>使用LIKE关键字的查询语句</li>
+<li>范围查询破坏最左前缀匹配原则</li>
+<li>索引字段参与计算</li>
+</ol>
+<h3 id="建索引的几大原则"><a href="#建索引的几大原则" class="headerlink" title="建索引的几大原则"></a>建索引的几大原则</h3><p>1.<strong>最左前缀匹配原则</strong>，非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a &#x3D; 1 and b &#x3D; 2 and c &gt; 3 and d &#x3D; 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。</p>
+<p>2.&#x3D;和in可以乱序，比如a &#x3D; 1 and b &#x3D; 2 and c &#x3D; 3 建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式。</p>
+<p>3.<strong>尽量选择区分度高的列作为索引</strong>，区分度的公式是count(distinct col)&#x2F;count(*)，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1，而一些状态、性别字段可能在大数据面前区分度就是0，那可能有人会问，这个比例有什么经验值吗？使用场景不同，这个值也很难确定，一般需要join的字段我们都要求是0.1以上，即平均1条扫描10条记录。</p>
+<p>4.<strong>索引列不能参与计算</strong>，保持列“干净”，比如from_unixtime(create_time) &#x3D; ’2014-05-29’就不能使用到索引，原因很简单，b+树中存的都是数据表中的字段值，但进行检索时，需要把所有元素都应用函数才能比较，显然成本太大。所以语句应该写成create_time &#x3D; unix_timestamp(’2014-05-29’)。</p>
+<p>5.<strong>尽量复用已有的索引</strong>，不要新建索引。比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可。</p>
+<h2 id="优化数据库结构"><a href="#优化数据库结构" class="headerlink" title="优化数据库结构"></a>优化数据库结构</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/137368446">分库分表相关</a></p>
+<p>（这里介绍一点最简单的）</p>
+<ul>
+<li>将字段很多的表分解成多个表</li>
+</ul>
+<p>对于字段比较多的表，如果有些字段的使用频率很低，可以将这些字段分离出来形成新表。因为当一个表的数据量很大时，会由于使用频率低的字段的存在而变慢。</p>
+<ul>
+<li>增加中间表（但是破坏了数据库范式）</li>
+</ul>
+<p>对于需要经常联合查询的表，可以建立中间表以提高查询效率。通过建立中间表，把需要经常联合查询的数据插入到中间表中，然后将原来的联合查询改为对中间表的查询，以此来提高查询效率。</p>
+<h2 id="分页相关"><a href="#分页相关" class="headerlink" title="分页相关"></a>分页相关</h2><p>在系统中需要分页的操作通常会使用limit加上偏移量的方法实现，同时加上合适的order by 子句。如果有对应的索引，通常效率会不错，否则MySQL需要做大量的<strong>文件排序</strong>操作。</p>
+<p>一个非常令人头疼问题就是当偏移量非常大的时候，</p>
+<p>例如可能是limit 10000,20这样的查询，这是mysql需要查询10020条然后只返回最后20条，前面的10000条记录都将被舍弃，这样的代价很高。</p>
+<p>优化此类查询的一个最简单的方法是尽可能的使用<strong>索引覆盖扫描</strong>，而不是查询所有的列。然后根据需要做一次关联操作再返回所需的列。对于偏移量很大的时候这样做的效率会得到很大提升。</p>
+<p>对于下面的查询：<br>select id,title from collect limit 90000,10;<br>该语句存在的最大问题在于limit M,N中偏移量M太大（我们暂不考虑筛选字段上要不要添加索引的影响），导致每次查询都要先从整个表中找到满足条件 的前M条记录，之后舍弃这M条记录并从第M+1条记录开始再依次找到N条满足条件的记录。</p>
+<p>如果表非常大，且筛选字段没有合适的索引，且M特别大那么这样的代价是非常高的。</p>
+<p> 试想，<strong>如果我们下一次的查询能从前一次查询结束后标记的位置开始查找，找到满足条件的100条记录，并记下下一次查询应该开始的位置，以便于下一次查询能直接从该位置开始，这样就不必每次查询都先从整个表中先找到满足条件的前M条记录</strong>，舍弃，在从M+1开始再找到100条满足条件的记录了。</p>
+<p>方法一：<strong>先查询出主键id值（或者直接带上id）</strong><br>select id,title from collect where id&gt;&#x3D;(select id from collect order by id limit 90000,1) limit 10;<br>原理：先查询出90000条数据对应的主键id的值，然后直接通过该id的值直接查询该id后面的数据。</p>
+<p>方法二：<strong>关延迟联</strong><br>如果这个表非常大，那么这个查询可以改写成如下的方式：<br>select news.id, news.description from news inner join (select id from news order by title limit 50000,5) as myNew using(id);<br>这里的“关延迟联”将大大提升查询的效率，它让MySQL扫描尽可能少的页面，获取需要的记录后再根据关联列回原表查询需要的所有列。这个技术也可以用在优化关联查询中的limit。</p>
+<h2 id="其他小trick"><a href="#其他小trick" class="headerlink" title="其他小trick"></a>其他小trick</h2><ul>
+<li><strong>小表驱动大表</strong></li>
+</ul>
+<p>。。。。。。</p>
+<blockquote>
+<p>参考文章<a target="_blank" rel="noopener" href="https://tech.meituan.com/2014/06/30/mysql-index.html">https://tech.meituan.com/2014/06/30/mysql-index.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1170,414 +1615,6 @@
 <p><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/353223.html">https://help.aliyun.com/document_detail/353223.html</a></p>
 </blockquote>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/" class="post-title-link" itemprop="url">Redis的实战小例子</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-09-21 15:14:47" itemprop="dateCreated datePublished" datetime="2022-09-21T15:14:47+08:00">2022-09-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-28 08:49:14" itemprop="dateModified" datetime="2022-09-28T08:49:14+08:00">2022-09-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>最常见的使用方式。</p>
-<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p><a target="_blank" rel="noopener" href="https://songyangji.gitee.io/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">https://songyangji.gitee.io/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</a></p>
-<h2 id="排行榜"><a href="#排行榜" class="headerlink" title="排行榜"></a>排行榜</h2><p>在线比赛的排行榜。</p>
-<p>使用 zset即可。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GameService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    RedisTemplate redisTemplate;</span><br><span class="line">    ZSetOperations ops;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">        ops = redisTemplate.opsForZSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">incrUserScoreInGame</span><span class="params">(String gameId, <span class="type">int</span> uid, <span class="type">double</span> addedScore)</span> &#123;</span><br><span class="line">        ops.incrementScore(gameId, uid, addedScore);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addUserWithScore</span><span class="params">(String gameId, <span class="type">int</span> uid, <span class="type">double</span> score)</span> &#123;</span><br><span class="line">        ops.add(gameId, uid, score);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;UserScore&gt; <span class="title function_">getTopK</span><span class="params">(String gameId, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        Set&lt;ZSetOperations.TypedTuple&lt;Integer&gt;&gt; set = ops.rangeWithScores(gameId, <span class="number">0</span>, k - <span class="number">1</span>);</span><br><span class="line">        ArrayList&lt;UserScore&gt; objects = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">assert</span> set != <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">for</span> (ZSetOperations.TypedTuple&lt;Integer&gt; tuple : set) &#123;</span><br><span class="line">            <span class="type">UserScore</span> <span class="variable">userScore</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UserScore</span>(tuple.getValue() == <span class="literal">null</span> ? -<span class="number">1</span> : tuple.getValue() , tuple.getScore() == <span class="literal">null</span> ?<span class="number">0</span> : tuple.getScore());</span><br><span class="line">            objects.add(userScore);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> objects;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>大数据量进行排名时候，分数的累加是具有规律性的，就是说一般不会突然一下子加10000分，减10000分。而是+10，-10。那么可以得出这么一个结论：在一般情况下，前十名的用户是由前1000名（也可以是2000名，结合具体业务来）来产出的。所以给出这样的策略：1.第一次跑批得出前1000名的uid，进行排序，计算出前10名进行展示。2.10分钟内，只统计这1000个uid的分数变化情况，产出10名。3.定时任务10分钟一次跑全量数据跑出最新的1000个uid，计算前10。4.如果遇到大分数累加事件，直接将该用户当前积分和第1000个uid分数进行比较，分数低的uid进行抛弃。</p>
-<p>zset只存10个，每次写入前判断下第10名的value，大于就写入，并存储更新第10名的value，难道不是这样做？</p>
-<h2 id="签到"><a href="#签到" class="headerlink" title="签到"></a>签到</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">testBitMap</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 示例：使用BitMap记录用户本周是否有签到</span></span><br><span class="line">    <span class="keyword">final</span> <span class="type">long</span> <span class="variable">userId</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>().nextLong();</span><br><span class="line">    <span class="comment">// final long userId = 1L;</span></span><br><span class="line">    <span class="comment">// userId高48位用于将用户划分到不同的key，低16位作为位图偏移参数offset;</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">keySign</span> <span class="operator">=</span> <span class="string">&quot;user:sign:&quot;</span> + LocalDate.now().getDayOfWeek() + <span class="string">&quot;:&quot;</span> + (userId &gt;&gt; <span class="number">16</span>);</span><br><span class="line">    <span class="comment">// offset参数必须大于或等于0，小于2^32(bit 映射被限制在 512 MB 之内)</span></span><br><span class="line">    redisTemplate.opsForValue().setBit(keySign, userId &amp; <span class="number">0xffff</span>, <span class="literal">true</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, userId &amp; <span class="number">0xffff</span>));</span><br><span class="line">    System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, (userId + <span class="number">1</span>) &amp; <span class="number">0xffff</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="面对面开房间"><a href="#面对面开房间" class="headerlink" title="面对面开房间"></a>面对面开房间</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/54chensongxia/p/13813533.html">https://www.cnblogs.com/54chensongxia/p/13813533.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.runoob.com/html/html5-geolocation.html">https://www.runoob.com/html/html5-geolocation.html</a></p>
-<p>数据结构：</p>
-<p>6位的房间号 ： 1000，000；</p>
-<p><code>longitude:latitude</code></p>
-<blockquote>
-<p>在经线上，纬度每差1度,实地距离大约为111千米；</p>
-<p>在纬线上，经度每差1度,实际距离为111×cosθ千米。（其中θ表示该纬线的纬度.在不同纬线上,经度每差1度的实际距离是不相等的）。</p>
-</blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加一个空间元素,longitude、latitude、member分别是该地理位置的经度、纬度、成员</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这里的成员就是指代具体的业务数据，比如说用户的ID等</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">需要注意的是Redis的纬度有效范围不是[-90,90]而是[-85,85]</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果在添加一个空间元素时，这个元素中的menber已经存在key中，那么GEOADD命令会返回0,相当于更新了这个menber的位置信息</span></span><br><span class="line">GEOADD key longitude latitude member [longitude latitude member]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">用于添加城市的坐标信息</span></span><br><span class="line">geoadd cities:locations 117.12 39.08 tianjin 114.29 38.02 shijiazhuang 118.01 39.38 tangshan 115.29 38.51 baoding</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取地理位置信息</span></span><br><span class="line">geopos key member [member ...]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取天津的坐标</span></span><br><span class="line">geopos cities:locations tianjin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取两个坐标之间的距离</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">unit代表单位，有4个单位值</span></span><br><span class="line">  - m (meter) 代表米</span><br><span class="line">  - km （kilometer）代表千米</span><br><span class="line">  - mi （miles）代表英里</span><br><span class="line">  - ft （ft）代表尺</span><br><span class="line">geodist key member1 member2 [unit]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取天津和保定之间的距离</span></span><br><span class="line">GEODIST cities:locations tianjin baoding km</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取指定位置范围内的地理信息位置集合，此命令可以用于实现附近的人的功能</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">georadius和georadiusbymember两个命令的作用是一样的，都是以一个地理位置为中心算出指定半径内的其他地理信息位置，不同的是georadius命令的中心位置给出了具体的经纬度，georadiusbymember只需给出成员即可。其中radiusm|km|ft|mi是必需参数，指定了半径（带单位），这两个命令有很多可选参数，参数含义如下：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withcoord：返回结果中包含经纬度。</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withdist：返回结果中包含离中心节点位置的距离。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withhash：返回结果中包含geohash，有关geohash后面介绍。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- COUNT count：指定返回结果的数量。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- asc|desc：返回结果按照离中心节点的距离做升序或者降序。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- store key：将返回结果的地理位置信息保存到指定键。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- storedist key：将返回结果离中心节点的距离保存到指定键。</span></span><br><span class="line">georadius key longitude latitude radiusm|km|ft|mi [withcoord] [withdist] [withhash] [COUNT count] [asc|desc] [store key] [storedist key]</span><br><span class="line"></span><br><span class="line">georadiusbymember key member radiusm|km|ft|mi [withcoord] [withdist] [withhash] [COUNT count] [asc|desc] [store key] [storedist key]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取geo <span class="built_in">hash</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Redis使用geohash将二维经纬度转换为一维字符串，geohash有如下特点：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- GEO的数据类型为zset，Redis将所有地理位置信息的geohash存放在zset中。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- 字符串越长，表示的位置更精确，表3-8给出了字符串长度对应的精度，例如geohash长度为9时，精度在2米左右。长度和精度的对应关系，请参考：https://easyreadfs.nosdn.127.net/9F42_CKRFsfc8SUALbHKog==/8796093023252281390</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- 两个字符串越相似，它们之间的距离越近，Redis利用字符串前缀匹配算法实现相关的命令。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- geohash编码和经纬度是可以相互转换的。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- Redis正是使用有序集合并结合geohash的特性实现了GEO的若干命令。</span></span><br><span class="line">geohash key member [member ...]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除操作，GEO没有提供删除成员的命令，但是因为GEO的底层实现是zset，所以可以借用zrem命令实现对地理位置信息的删除。</span></span><br><span class="line">zrem key member</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h1><h2 id="第一种：基于Redis的setnx的操作"><a href="#第一种：基于Redis的setnx的操作" class="headerlink" title="第一种：基于Redis的setnx的操作"></a>第一种：基于Redis的setnx的操作</h2><p>我们在使用Redis的分布式锁的时候，大家都知道是依靠了setnx的指令，在CAS（Compare and swap）的操作的时候，同时给指定的key设置了过期实践（expire），我们在限流的主要目的就是为了在单位时间内，有且仅有N数量的请求能够访问我的代码程序。所以依靠setnx可以很轻松的做到这方面的功能。</p>
-<p>比如我们需要在10秒内限定20个请求，那么我们在setnx的时候可以设置过期时间10，当请求的setnx数量达到20时候即达到了限流效果。代码比较简单就不做展示了。</p>
-<p>当然这种做法的弊端是很多的，比如当统计1-10秒的时候，无法统计2-11秒之内，如果需要统计N秒内的M个请求，那么我们的Redis中需要保持N个key等等问题</p>
-<h2 id="第二种：基于Redis的数据结构zset"><a href="#第二种：基于Redis的数据结构zset" class="headerlink" title="第二种：基于Redis的数据结构zset]"></a>第二种：基于Redis的数据结构zset]</h2><p>其实限流涉及的最主要的就是滑动窗口，上面也提到1-10怎么变成2-11。其实也就是起始值和末端值都各+1即可。</p>
-<p>而我们如果用Redis的list数据结构可以轻而易举的实现该功能</p>
-<p>我们可以将请求打造成一个zset数组，当每一次请求进来的时候，value保持唯一，可以用UUID生成，而score可以用当前时间戳表示，因为score我们可以用来计算当前时间戳之内有多少的请求数量，而zset数据结构也提供了range方法让我们可以很轻易的获取到2个时间戳内有多少请求。</p>
-<p>代码如下</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Response <span class="title function_">limitFlow</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">Long</span> <span class="variable">currentTime</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>().getTime();</span><br><span class="line">        System.out.println(currentTime);</span><br><span class="line">        <span class="keyword">if</span>(redisTemplate.hasKey(<span class="string">&quot;limit&quot;</span>)) &#123;</span><br><span class="line">            <span class="type">Integer</span> <span class="variable">count</span> <span class="operator">=</span> redisTemplate.opsForZSet().rangeByScore(<span class="string">&quot;limit&quot;</span>, currentTime -  intervalTime, currentTime).size();        <span class="comment">// intervalTime是限流的时间 </span></span><br><span class="line">            System.out.println(count);</span><br><span class="line">            <span class="keyword">if</span> (count != <span class="literal">null</span> &amp;&amp; count &gt; <span class="number">5</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> Response.ok(<span class="string">&quot;每分钟最多只能访问5次&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        redisTemplate.opsForZSet().add(<span class="string">&quot;limit&quot;</span>,UUID.randomUUID().toString(),currentTime);</span><br><span class="line">        <span class="keyword">return</span> Response.ok(<span class="string">&quot;访问成功&quot;</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>通过上述代码可以做到滑动窗口的效果，并且能保证每N秒内至多M个请求，缺点就是zset的数据结构会越来越大。实现方式相对也是比较简单的。</p>
-<blockquote>
-<p>基于微服务的思想，构建在 B2C 电商场景下的项目实战。核心技术栈，是 Spring Boot + Dubbo 。未来，会重构成 Spring Cloud Alibaba 。</p>
-<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/YunaiV/onemall">https://github.com/YunaiV/onemall</a></p>
-</blockquote>
-<h2 id="第三种：基于Redis的令牌桶算法"><a href="#第三种：基于Redis的令牌桶算法" class="headerlink" title="第三种：基于Redis的令牌桶算法"></a>第三种：基于Redis的令牌桶算法</h2><p>提到限流就不得不提到令牌桶算法了。</p>
-<p>令牌桶算法提及到输入速率和输出速率，当输出速率大于输入速率，那么就是超出流量限制了。</p>
-<p>也就是说我们每访问一次请求的时候，可以从Redis中获取一个令牌，如果拿到令牌了，那就说明没超出限制，而如果拿不到，则结果相反。</p>
-<p>依靠上述的思想，我们可以<strong>结合Redis的List数据结构</strong>很轻易的做到这样的代码，只是简单实现</p>
-<p><strong>依靠List的leftPop来获取令牌；</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出令牌</span></span><br><span class="line"><span class="keyword">public</span> Response <span class="title function_">limitFlow2</span><span class="params">(Long id)</span>&#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> redisTemplate.opsForList().leftPop(<span class="string">&quot;limit_list&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span>(result == <span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> Response.ok(<span class="string">&quot;当前令牌桶中无令牌&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Response.ok(articleDescription2);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>再<strong>依靠Java的定时任务，定时往List中rightPush令牌</strong>，当然令牌也需要唯一性，所以我这里还是用UUID进行了生成</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 10S的速率往令牌桶中添加UUID，只为保证唯一性</span></span><br><span class="line">    <span class="meta">@Scheduled(fixedDelay = 10_000,initialDelay = 0)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setIntervalTimeTask</span><span class="params">()</span>&#123;</span><br><span class="line">        redisTemplate.opsForList().rightPush(<span class="string">&quot;limit_list&quot;</span>,UUID.randomUUID().toString());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>综上，代码实现起始都不是很难，针对这些限流方式我们可以在AOP或者filter中加入以上代码，用来做到接口的限流，最终保护你的网站。</p>
-<p>Redis其实还有很多其他的用处，他的作用不仅仅是缓存，分布式锁的作用。他的数据结构也不仅仅是只有String，Hash，List，Set，Zset。有兴趣的可以后续了解下他的GeoHash算法；BitMap，HLL以及布隆过滤器数据(Redis4.0之后加入，可以用Docker直接安装redislabs&#x2F;rebloom)结构。</p>
-<blockquote>
-<p> <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/jT0WYISuSoi_hkTmELb7PQ">https://mp.weixin.qq.com/s/jT0WYISuSoi_hkTmELb7PQ</a></p>
-</blockquote>
-<h2 id="第四种：基于Redis的漏桶算法"><a href="#第四种：基于Redis的漏桶算法" class="headerlink" title="第四种：基于Redis的漏桶算法"></a>第四种：基于Redis的漏桶算法</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903982842789896">https://juejin.cn/post/6844903982842789896</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">海量数据问题解决</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-09-15 01:05:26 / 修改时间：02:09:38" itemprop="dateCreated datePublished" datetime="2022-09-15T01:05:26+08:00">2022-09-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">工程向算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="问题简介"><a href="#问题简介" class="headerlink" title="问题简介"></a>问题简介</h1><p>这里的海量数据问题不是指的一般性的大数据问题，指的是由大量数字、字符串等构成的大数据集，我们需要处理解决如下几种典型的计算问题：计数、排序、去重、交集、TopK等等。</p>
-<p>问题的关键点在于，如此庞大的数据无法一次性放到内存里面，因而处理方案就没有那么简单了。</p>
-<ol>
-<li><p><strong>计数</strong><br> 海量数字，哪个数字出现的次数最多？</p>
-</li>
-<li><p><strong>排序</strong><br> 10G的数字，将其排序。</p>
-</li>
-<li><p><strong>去重</strong></p>
-<p>  海量日志，去除其中重复的数据。</p>
-</li>
-<li><p><strong>交集</strong></p>
-<p>  两个各有20亿行的文件，每一行都只有一个数字，求这两个文件的交集。</p>
-</li>
-<li><p><strong>TopK</strong></p>
-<p>  10G整数求中位数。</p>
-</li>
-</ol>
-<h1 id="典型问题分析"><a href="#典型问题分析" class="headerlink" title="典型问题分析"></a>典型问题分析</h1><h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><p><a target="_blank" rel="noopener" href="https://songyangji.gitee.io/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/">大文件排序</a></p>
-<p>可参考上面的博客。</p>
-<h2 id="去重——海量日志，去除其中重复的数据。"><a href="#去重——海量日志，去除其中重复的数据。" class="headerlink" title="去重——海量日志，去除其中重复的数据。"></a>去重——海量日志，去除其中重复的数据。</h2><blockquote>
-<p> 如果是32位int的话，可以考虑位图bitmap之类的，不过这里我们直接分析更一般性的问题。</p>
-</blockquote>
-<p><strong>哈希文件分片</strong></p>
-<p>首先根据数据量估算一下需要拆分成多少的小文件后可以放在内存里处理。比如1TB的字符串可能需要分成1024个小文件才可以处理。</p>
-<p>对每一条一条数据记录， 根据某种hash规则，求取hash(url) %1024，然后根据所取得的值将数据记录分别存储到1024个小文件（a0~a1023）中。hash结果很集中使得某个文件ai过大，可以再对ai进行二级hash(ai0~ai1024)，这样数据就又被hash到 1024 个不同级别的文件中。  每一个小文件是可以单独进行处理的。</p>
-<blockquote>
-<p>这里有一个小问题，就是上面的处理的方式默认数据基本上均匀分布的，但是如果说某一单个字符串本身就出现了很多很多此，那么二级hash、三级hash都没有用，这个时候需要在最终的放在内存处理前，先对这些hash无法减小数据量的文件进行compact操作，也就是提前去除那些重复字符串。</p>
-</blockquote>
-<h2 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h2><p>计数指的是要计算一条记录出现的次数，这个问题的处理方式本质上和上面的<strong>去重</strong>是一回事的。</p>
-<h2 id="交集"><a href="#交集" class="headerlink" title="交集"></a>交集</h2><h3 id="有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？"><a href="#有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？" class="headerlink" title="有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？"></a>有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？</h3><blockquote>
-<p>解决方案1：hash 分解+ 分而治之 + 归并 的方式：</p>
-</blockquote>
-<p>如果内存中想要存入所有的 url，共需要 50亿 * 64&#x3D; 320G大小空间，所以采用 hash 分解+ 分而治之 + 归并 的方式：</p>
-<p>（1）遍历文件a，对每个 url 根据某种hash规则，求取hash(url) %1024，然后根据所取得的值将 url 分别存储到1024个小文件（a0~a1023）中。这样每个小文件的大约为300M。如果hash结果很集中使得某个文件ai过大，可以再对ai进行二级hash(ai0~ai1024)，这样 url 就被hash到 1024 个不同级别的文件中。对文件b也是相同的处理方式。</p>
-<p>（2）分别比较文件，a0 VS b0，…… ，a1023 VS b1023，求每对小文件中相同的url时：把其中一个小文件的 url 存储到 hashmap 中，然后遍历另一个小文件的每个url，看其是否在刚才构建的 hashmap 中，如果是，那么就是共同的url，存到文件中。</p>
-<p>（3）把1024个文件中的相同 url 合并起来，比如写到文件里。</p>
-<blockquote>
-<p>解决方案2：Bloom filter</p>
-</blockquote>
-<p>如果允许有一定的错误率，可以使用 Bloom filter。<br>将其中一个文件中的 url载入 Bloom filter，然后挨个读取另外一个文件的url，检查是否与Bloom filter，如果是，那么该url应该是共同的url（注意会有一定的错误率）</p>
-<h3 id="现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。"><a href="#现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。" class="headerlink" title="现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。"></a>现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。</h3><p><strong>解决方案</strong>：采用 bitmap 进行问题解决，int 的[最大数]是 2^32 &#x3D; 4G。</p>
-<p>用一个二进制的下标来表示一个 int 值，大概需要4G个bit位，即约4G&#x2F;8 &#x3D; 512M的内存，就可以解决问题了。</p>
-<p>① <strong>首先</strong>遍历文件，将每个文件按照数字的正数，负数标记到2个 bitmap 上，为：正数 bitmapA_positive，负数 bitmapA_negative；</p>
-<p>② <strong>遍历</strong>另外一个文件，生成正数：bitmapB_positive，bitmapB_negative；</p>
-<p>③ 取 bitmapA_positive and bitmapB_positive 得到2个文件的正数的交集，同理得到负数的交集；</p>
-<p>④ 合并，问题解决。</p>
-<h2 id="TopK——10G整数求中位数"><a href="#TopK——10G整数求中位数" class="headerlink" title="TopK——10G整数求中位数"></a>TopK——10G整数求中位数</h2><ol>
-<li><p>分桶法</p>
-<p> 思路：化大为小，把所有数划分到各个小区间，把每个数映射到对应的区间里，对每个区间中数的个数进行计数，数一遍各个区间，看看中位数落在哪个区间，若够小，使用基于内存的算法，否则 继续划分。<br> 具体的：<br> 假设整数是32位的，根据每个整数二进制前的5位，可以划分为32个不同的桶，如果某个桶的个数在内存中放不下，则继续划分，知道内存可以放下为止；然后统计每个桶中的数的个数，就可以中位数一定出现在哪个桶中，而且知道是该桶中第几大数，因为桶的划分是根据二进制前缀来进行划分的，桶之间是排好序的。</p>
-</li>
-<li><p>分治+递归</p>
-<p> 题目说是整数，我们认为是带符号的int,所以4字节，占32位。<br> 假设100亿个数字保存在一个大文件中，依次读一部分文件到内存(不超过内存的限制)，将每个数字用二进制表示，比较二进制的最高位(第32位，符号位，0是正，1是负)，如果数字的最高位为0，则将这个数字写入 file_0文件中；如果最高位为 1，则将该数字写入file_1文件中。<br> 从而将100亿个数字分成了两个文件，假设 file_0文件中有 60亿 个数字，file_1文件中有 40亿 个数字。那么中位数就在 file_0 文件中，并且是 file_0 文件中所有数字排序之后的第 10亿 个数字。（file_1中的数都是负数，file_0中的数都是正数，也即这里一共只有40亿个负数，那么排序之后的第50亿个数一定位于file_0中）<br> 现在，我们只需要处理 file_0 文件了（不需要再考虑file_1文件）。对于 file_0 文件，同样采取上面的措施处理：将file_0文件依次读一部分到内存(不超内存限制)，将每个数字用二进制表示，比较二进制的 次高位（第31位），如果数字的次高位为0，写入file_0_0文件中；如果次高位为1，写入file_0_1文件 中。<br> 现假设 file_0_0文件中有30亿个数字，file_0_1中也有30亿个数字，则中位数就是：file_0_0文件中的数字从小到大排序之后的第10亿个数字。<br> 抛弃file_0_1文件，继续对 file_0_0文件 根据 次次高位(第30位) 划分，假设此次划分的两个文件为：file_0_0_0中有5亿个数字，file_0_0_1中有25亿个数字，那么中位数就是 file_0_0_1文件中的所有数字排序之后的 第 5亿 个数。</p>
-</li>
-</ol>
-<blockquote>
-<p>参考文章</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/GarrettWale/p/14478347.html">https://www.cnblogs.com/GarrettWale/p/14478347.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hustwht/article/details/52181632">https://blog.csdn.net/hustwht/article/details/52181632</a></p>
-<p><a target="_blank" rel="noopener" href="https://guozi149.me/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E7%AE%97%E6%B3%95/100%E4%BA%BF%E6%9D%A1URL%E5%8E%BB%E9%87%8D/">https://guozi149.me/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E7%AE%97%E6%B3%95/100%E4%BA%BF%E6%9D%A1URL%E5%8E%BB%E9%87%8D/</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/luxiaoxun/p/14392375.html">https://www.cnblogs.com/luxiaoxun/p/14392375.html</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/13/%E5%AD%97%E5%85%B8%E6%A0%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/13/%E5%AD%97%E5%85%B8%E6%A0%91/" class="post-title-link" itemprop="url">字典树 —— Trie</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-09-13 16:14:57" itemprop="dateCreated datePublished" datetime="2022-09-13T16:14:57+08:00">2022-09-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-14 18:21:24" itemprop="dateModified" datetime="2022-09-14T18:21:24+08:00">2022-09-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="字典树介绍"><a href="#字典树介绍" class="headerlink" title="字典树介绍"></a>字典树介绍</h1><p>又称<strong>前缀树</strong>，Trie树，是一种多叉树。典型应用是用于统计，排序和保存大量的字符串（但不仅限于字符串）。它的优点是：利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较。<br>它的最基本的操作是插入一个字符串，和查询。</p>
-<h1 id="存储原理"><a href="#存储原理" class="headerlink" title="存储原理"></a>存储原理</h1><p>多叉树结构：<br>一般的，如果我们想存储一棵一般的树，树的节点可以这样写：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">OrdinaryTrieNode</span>&#123;</span><br><span class="line">	<span class="type">int</span> val;</span><br><span class="line">	vector&lt;OrdinaryTrieNode*&gt; childs;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>而如果是字典树的话：<br>假设字符串仅由大小为<strong>n</strong>的字符集中的字符构成（比如26个小写字母），那么每个节点的字节就可以有<strong>n</strong>个指向。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> size = <span class="number">26</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TrieNode</span>&#123;</span><br><span class="line">	TrieNode* childs[size];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>发现，节点本身并没有存储字符的值。那么如何知道它的后继字符有哪些呢？<br>这个时候，我们可以把将字符映射到一个索引，然后让父节点的<code>childs</code>数组索引存储这个节点。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> c;</span><br><span class="line">TrieNode* parent;</span><br><span class="line">parent-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>] = <span class="keyword">new</span> TrieNode;</span><br></pre></td></tr></table></figure>
-<p>这个时候<code>parent</code>节点就有了一个新的子节点，对应的字符为<code>c</code>;<br>于是，其实我们发现真正字符的信息其实是<strong>存储在父节点与子节点的边上</strong>，<strong>节点本身只是存储着它的子节点</strong>。</p>
-<p><img src="https://img-blog.csdnimg.cn/20200614173023837.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODQ2MzI0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>（<del>图来自互联网</del> ）<br>那么怎么知道记录一个字符串的结束呢，比如**字符串<code>aabb</code>**，其实并不代表<code>aab</code>出现在字典树里。<br>根据不同实现，也有不同的解决办法。<br>一种方法是，在结构体里加一个变量，表明这个节点是否是字符串的结尾。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">TrieNode</span>&#123;</span><br><span class="line">	<span class="type">bool</span> isEnd;</span><br><span class="line">	TrieNode* childs[size];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h1 id="字典树的静态实现"><a href="#字典树的静态实现" class="headerlink" title="字典树的静态实现"></a>字典树的静态实现</h1><p>数组模拟，下标代替指针。<br>其中，编号为1的节点表示根节点，0表示空指。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> maxnode = maxn*maxlen;  <span class="comment">// 字符串个数*字符串的长度</span></span><br><span class="line"><span class="type">int</span> trie[maxnode][size],tot=<span class="number">1</span>; <span class="comment">// size是字符集的大小，tot保存节点个数</span></span><br><span class="line"><span class="type">bool</span> end[maxnode]  <span class="comment">// 结尾标记</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">idx</span><span class="params">(<span class="type">char</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> c - <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//插入字符串的方法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">char</span>* str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> len = <span class="built_in">strlen</span>(str),p=<span class="number">1</span>;  <span class="comment">//根节点为1</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> id = <span class="built_in">idx</span>(str[i]);</span><br><span class="line">		<span class="keyword">if</span>(!trie[p][id]) <span class="comment">//如果这个节点不存在，新建一个</span></span><br><span class="line">			trie[p][id]= ++tot;</span><br><span class="line">		p = trie[p][id];</span><br><span class="line">	&#125;</span><br><span class="line">	end[p]=<span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//查找字符串的方法</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">find</span><span class="params">(<span class="type">char</span>* str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> len = <span class="built_in">strlen</span>(str),p=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		p = trie[p][<span class="built_in">idx</span>(str[i])];</span><br><span class="line">		<span class="keyword">if</span>(!p) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> end[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="字典树的动态实现"><a href="#字典树的动态实现" class="headerlink" title="字典树的动态实现"></a>字典树的动态实现</h1><p>版本一：<br>其中，析构函数用递归实现。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="built_in">Trie</span>() &#123;</span><br><span class="line">        root = <span class="keyword">new</span> TrieNode;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ~<span class="built_in">Trie</span>()&#123;</span><br><span class="line">        <span class="built_in">destroy</span>(root);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Inserts a word into the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        TrieNode *p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>] == <span class="literal">nullptr</span>)&#123;</span><br><span class="line">                p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>] = <span class="keyword">new</span> TrieNode;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;isEnd = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if the word is in the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">search</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        TrieNode *p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>]==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;isEnd;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if there is any word in the trie that starts with the given prefix. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">startsWith</span><span class="params">(<span class="type">const</span> string &amp;prefix)</span> </span>&#123;</span><br><span class="line">        TrieNode *p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:prefix)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>]==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">TrieNode</span>&#123;    </span><br><span class="line">        <span class="type">bool</span> isEnd = <span class="literal">false</span>;</span><br><span class="line">        TrieNode* childs[<span class="number">26</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    &#125;;</span><br><span class="line">    TrieNode* root ;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">destroy</span><span class="params">(TrieNode* root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root)&#123;</span><br><span class="line">            <span class="keyword">return</span> ;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(TrieNode* pt:root-&gt;childs)&#123;</span><br><span class="line">            <span class="built_in">destroy</span>(pt);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(root)&#123;</span><br><span class="line">            <span class="keyword">delete</span> root;</span><br><span class="line">            root = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>版本2：<br>树的节点用</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span>&#123;</span><br><span class="line">       <span class="type">bool</span> isEnd = <span class="literal">false</span>;</span><br><span class="line">       unordered_map&lt;<span class="type">char</span>,Node*&gt; childs;</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
-<p>其中析构函数用迭代实现（用一个<code>queue&lt;TrieNode&gt;</code>,遍历这棵树就可）。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="built_in">Trie</span>() &#123;</span><br><span class="line">        root = <span class="keyword">new</span> Node;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">Trie</span>()&#123;</span><br><span class="line">        queue&lt;Node*&gt; q;</span><br><span class="line">        q.<span class="built_in">push</span>(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            Node* pn = q.<span class="built_in">front</span>();</span><br><span class="line">            q.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">for</span>(unordered_map&lt;<span class="type">char</span>,Node*&gt;::iterator it=pn-&gt;childs.<span class="built_in">begin</span>(); it!=pn-&gt;childs.<span class="built_in">end</span>();it++ )&#123;</span><br><span class="line">                q.<span class="built_in">push</span>(it-&gt;second);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">delete</span> pn;</span><br><span class="line">            pn = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Inserts a word into the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        Node* p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!p-&gt;childs.<span class="built_in">count</span>(c))&#123;</span><br><span class="line">                p-&gt;childs[c] = <span class="keyword">new</span> Node;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c];</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;isEnd = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if the word is in the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">search</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        Node* p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!p-&gt;childs.<span class="built_in">count</span>(c))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;isEnd;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if there is any word in the trie that starts with the given prefix. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">startsWith</span><span class="params">(<span class="type">const</span> string &amp;prefix)</span> </span>&#123;</span><br><span class="line">        Node* p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:prefix)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!p-&gt;childs.<span class="built_in">count</span>(c))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Node</span>&#123;</span><br><span class="line">        <span class="type">bool</span> isEnd = <span class="literal">false</span>;</span><br><span class="line">        unordered_map&lt;<span class="type">char</span>,Node*&gt; childs;</span><br><span class="line">    &#125;;</span><br><span class="line">    Node * root;    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h1 id="01Trie介绍"><a href="#01Trie介绍" class="headerlink" title="01Trie介绍"></a>01Trie介绍</h1><p>将数字映射成一个<strong>01串</strong>，如果是一个<code>int</code>数字，就是一个长度为32的01串。<br>然后将这些01串当成字符串插入字典树，这时候字典树的字符集为2（只有0和1）。</p>
-<h2 id="代码部分的几处重要点"><a href="#代码部分的几处重要点" class="headerlink" title="代码部分的几处重要点"></a>代码部分的几处重要点</h2><p>①依次从高位到低位提取出二进制数字<br>注意<code>up</code>是个常量，如果数值是<strong>int</strong>的话，取<strong>30</strong>——最高位是符号位，第二高位就表示$2^{30}$</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=up;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">	<span class="type">int</span> id = (x&gt;&gt;i)&amp;<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<p>②异或结果的求法（位运算加快速度）</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sum = (sum&lt;&lt;<span class="number">1</span>)|<span class="number">1</span>  <span class="comment">// 乘2在加1</span></span><br><span class="line">sum&lt;&lt;=<span class="number">1</span>  <span class="comment">// sum = sum&lt;&lt;1 == sum*2</span></span><br></pre></td></tr></table></figure>
-
-
-<h2 id="典型例题"><a href="#典型例题" class="headerlink" title="典型例题"></a>典型例题</h2><p><a target="_blank" rel="noopener" href="https://loj.ac/problem/10050">The XOR Largest Pair</a><br>01Trie的典型例题<br>给定n个数字，求任意两个数字异或运算的最大值。</p>
-<ul>
-<li>思路：<br>将数字理解为一个长度为32位的01串，异或运算求最值，应该贪心地从最高位到最低位取不同的数字。</li>
-<li>步骤：<br>将所有数字插入Trie，然后遍历n个数字，对于每个数字从高位到低位， 依次匹配与它不同的数字（没有就匹配相同的）。<br>注意这样贪心是合理的，因为高位的数字影响大于低位数字影响总和。<br>譬如:<br>0x1000 0000 &gt;   0x0111 1111。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stack&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ms0(a) memset(a,0,sizeof(a))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxnode = <span class="number">1e5</span>+<span class="number">5</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> up = <span class="number">30</span>;</span><br><span class="line"><span class="type">int</span> n,d[maxnode],trie[maxnode*<span class="number">32</span>][<span class="number">2</span>],tot=<span class="number">0</span>,ans;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=up;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> id = (x&gt;&gt;i)&amp;<span class="number">1</span>;   <span class="comment">//从高位到低位的获取</span></span><br><span class="line">        <span class="keyword">if</span>(!trie[p][id]) trie[p][id]=++tot;</span><br><span class="line">        p=trie[p][id];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>,sum=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=up;i&gt;=<span class="number">0</span>;i--) <span class="comment">// 从高位到低位</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> id = (x&gt;&gt;i)&amp;<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(trie[p][id^<span class="number">1</span>])</span><br><span class="line">        &#123;</span><br><span class="line">            sum = (sum&lt;&lt;<span class="number">1</span>)|<span class="number">1</span> ;  <span class="comment">// sum=sum*2+1</span></span><br><span class="line">            p = trie[p][id^<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            sum&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">            p=trie[p][id];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;d[i]);</span><br><span class="line">        <span class="built_in">insert</span>(d[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">        ans = <span class="built_in">max</span>(ans,<span class="built_in">find</span>(d[i]));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="Demo——字典树的实现"><a href="#Demo——字典树的实现" class="headerlink" title="Demo——字典树的实现"></a>Demo——字典树的实现</h1><p><strong>NC124</strong> <strong>字典树的实现</strong></p>
-<p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/a55a584bc0ca4a83a272680174be113b?tpId=117&tqId=37818&rp=1&ru=/exam/oj&qru=/exam/oj&sourceUrl=/exam/oj?difficulty=3&judgeStatus=3&page=1&pageSize=50&search=&tab=%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587&topicId=117&difficulty=3&judgeStatus=3&tags=&title=">https://www.nowcoder.com/practice/a55a584bc0ca4a83a272680174be113b?tpId=117&amp;tqId=37818&amp;rp=1&amp;ru=/exam/oj&amp;qru=/exam/oj&amp;sourceUrl=%2Fexam%2Foj%3Fdifficulty%3D3%26judgeStatus%3D3%26page%3D1%26pageSize%3D50%26search%3D%26tab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D117&amp;difficulty=3&amp;judgeStatus=3&amp;tags=&amp;title=</a></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> id(c) c - <span class="string">&#x27;a&#x27;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">        <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> endCnt = <span class="number">0</span>;</span><br><span class="line">        Node *child[<span class="number">26</span>]&#123;&#125;;</span><br><span class="line">    &#125;;</span><br><span class="line">    Node *root = <span class="keyword">new</span> Node;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(string &amp;s)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:s) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                p-&gt;child[<span class="built_in">id</span>(c)] = <span class="keyword">new</span> Node;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">            p-&gt;cnt++;</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;endCnt++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">remove</span><span class="params">(string &amp;s)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:s) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">            p-&gt;cnt--;</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;endCnt--;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">search</span><span class="params">(string &amp;s)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:s) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;endCnt &gt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">prefixNumber</span><span class="params">(string &amp;pre)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:pre) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param operators string字符串vector&lt;vector&lt;&gt;&gt; the ops</span></span><br><span class="line"><span class="comment">     * @return string字符串vector</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">vector&lt;string&gt; <span class="title">trieU</span><span class="params">(vector&lt;vector&lt;string&gt; &gt; &amp;operators)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        Trie trie;</span><br><span class="line">        vector&lt;string&gt; ans;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;opt: operators) &#123;</span><br><span class="line">            string o = opt[<span class="number">0</span>];</span><br><span class="line">            string s = opt[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (o == <span class="string">&quot;1&quot;</span>) &#123;</span><br><span class="line">                trie.<span class="built_in">add</span>(s);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (o == <span class="string">&quot;2&quot;</span>) &#123;</span><br><span class="line">                trie.<span class="built_in">remove</span>(s);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (o == <span class="string">&quot;3&quot;</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (trie.<span class="built_in">search</span>(s)) &#123;</span><br><span class="line">                    ans.<span class="built_in">emplace_back</span>(<span class="string">&quot;YES&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    ans.<span class="built_in">emplace_back</span>(<span class="string">&quot;NO&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (o == <span class="string">&quot;4&quot;</span>) &#123;</span><br><span class="line">                <span class="type">int</span> num = trie.<span class="built_in">prefixNumber</span>(s);</span><br><span class="line">                ans.<span class="built_in">emplace_back</span>(<span class="built_in">to_string</span>(num));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
       
     </div>
 
