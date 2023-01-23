@@ -1,930 +1,1488 @@
 <!DOCTYPE html>
-
-
 <html lang="zh-CN">
-
-
 <head>
-  <meta charset="utf-8" />
-    
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>
-     JsyBlog
-  </title>
-  <meta name="generator" content="hexo-theme-ayer">
-  
-  <link rel="shortcut icon" href="/images/ayer.png" />
-  
-  
-<link rel="stylesheet" href="/dist/main.css">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
-  
-<link rel="stylesheet" href="/css/custom.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-  
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-  
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="website">
+<meta property="og:title" content="JsyBlog">
+<meta property="og:url" content="http://example.com/page/3/index.html">
+<meta property="og:site_name" content="JsyBlog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="SongyangJi">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/page/3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/3/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JsyBlog</title>
   
 
-  
 
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-</html>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-<body>
-  <div id="app">
-    
-      
-      <canvas width="1777" height="841"
-        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
-      
-    <main class="content on">
-      
-<section class="cover">
-    
-  <div class="cover-frame">
-    <div class="bg-box">
-      <img src="/images/cover1.jpg" alt="image frame" />
-    </div>
-    <div class="cover-inner text-center text-white">
-      <h1><a href="/">JsyBlog</a></h1>
-      <div id="subtitle-box">
-        
-        <span id="subtitle"></span>
-        
-      </div>
-      <div>
-        
-        <img
-          src="/images/ayer.svg"
-          class="cover-logo"
-          alt="JsyBlog"
-        />
-        
-      </div>
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
-  <div class="cover-learn-more">
-    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">JsyBlog</h1>
+      <i class="logo-line"></i>
+    </a>
   </div>
-</section>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
-
-
-<!-- Subtitle -->
-
-  <script>
-    try {
-      var typed = new Typed("#subtitle", {
-        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '让风吹干流过的泪和汗，总有一天我有属于我的天'],
-        startDelay: 0,
-        typeSpeed: 200,
-        loop: true,
-        backSpeed: 70,
-        showCursor: true
-      });
-    } catch (err) {
-      console.log(err)
-    }
-  </script>
-  
-<div id="main">
-  <section class="outer">
-  
-  
-  
-
-<div class="notice" style="margin-top:50px">
-    <i class="ri-heart-fill"></i>
-    <div class="notice-content" id="broad"></div>
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
 </div>
-<script type="text/javascript">
-    fetch('https://v1.hitokoto.cn')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("broad").innerHTML = data.hitokoto;
-        })
-        .catch(console.error)
-</script>
 
-<style>
-    .notice {
-        padding: 20px;
-        border: 1px dashed #e6e6e6;
-        color: #969696;
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        background: #fbfbfb50;
-        border-radius: 10px;
-    }
 
-    .notice i {
-        float: left;
-        color: #999;
-        font-size: 16px;
-        padding-right: 10px;
-        vertical-align: middle;
-        margin-top: -2px;
-    }
 
-    .notice-content {
-        display: initial;
-        vertical-align: middle;
-    }
-</style>
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
   
-  <article class="articles">
-    
-    
-    
-    
-    <article
-  id="post-etcd"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/09/etcd/"
-    >etcd</a> 
-</h2>
- 
+  <aside class="sidebar">
 
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/09/etcd/" class="article-date">
-  <time datetime="2022-12-08T18:57:47.000Z" itemprop="datePublished">2022-12-09</time>
-</a>    
-    </div>
-       
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li></ul>
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
 
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-毕设01——大纲"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/06/%E6%AF%95%E8%AE%BE01%E2%80%94%E2%80%94%E5%A4%A7%E7%BA%B2/"
-    >毕设01——大纲</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/06/%E6%AF%95%E8%AE%BE01%E2%80%94%E2%80%94%E5%A4%A7%E7%BA%B2/" class="article-date">
-  <time datetime="2022-12-06T02:40:13.000Z" itemprop="datePublished">2022-12-06</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%AF%95%E8%AE%BE/">毕设</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-Go刷题"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/06/Go%E5%88%B7%E9%A2%98/"
-    >Go刷题</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/06/Go%E5%88%B7%E9%A2%98/" class="article-date">
-  <time datetime="2022-12-06T01:17:05.000Z" itemprop="datePublished">2022-12-06</time>
-</a>    
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-Kitex01"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/03/Kitex01/"
-    >Kitex入门</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/03/Kitex01/" class="article-date">
-  <time datetime="2022-12-03T15:59:15.000Z" itemprop="datePublished">2022-12-03</time>
-</a>    
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RPC/" rel="tag">RPC</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-GoLang-测试"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/03/GoLang-%E6%B5%8B%E8%AF%95/"
-    >GoLang-测试</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/03/GoLang-%E6%B5%8B%E8%AF%95/" class="article-date">
-  <time datetime="2022-12-03T15:12:51.000Z" itemprop="datePublished">2022-12-03</time>
-</a>    
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-GoLang-Module"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/12/01/GoLang-Module/"
-    >GoLang-Module</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/12/01/GoLang-Module/" class="article-date">
-  <time datetime="2022-11-30T16:24:38.000Z" itemprop="datePublished">2022-12-01</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Go/">Go</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-GCC参数详解"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/11/30/GCC%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/"
-    >GCC参数详解</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/11/30/GCC%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/" class="article-date">
-  <time datetime="2022-11-30T14:39:32.000Z" itemprop="datePublished">2022-11-30</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/C/">C</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-GoLang-Cgo"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/11/30/GoLang-Cgo/"
-    >GoLang-Cgo</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/11/30/GoLang-Cgo/" class="article-date">
-  <time datetime="2022-11-30T14:27:44.000Z" itemprop="datePublished">2022-11-30</time>
-</a>    
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-GoLang-Channel"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/11/30/GoLang-Channel/"
-    >GoLang-Channel</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/11/30/GoLang-Channel/" class="article-date">
-  <time datetime="2022-11-30T07:36:30.000Z" itemprop="datePublished">2022-11-30</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Go/">Go</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-    <article
-  id="post-LeetCode并发编程题"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2022/11/30/LeetCode%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%A2%98/"
-    >LeetCode并发编程题</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2022/11/30/LeetCode%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E9%A2%98/" class="article-date">
-  <time datetime="2022-11-29T18:33:13.000Z" itemprop="datePublished">2022-11-30</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
-  </div>
-   
-    </div>
-       
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go/" rel="tag">Go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="tag">并发编程</a></li></ul>
-
-    </footer>
-  </div>
-
-   
-    
-</article>
-
-    
-  </article>
-  
-
-  
-  <nav class="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SongyangJi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">245</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">109</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
   </nav>
-  
-</section>
 </div>
 
-      <footer class="footer">
-  <div class="outer">
-    <ul>
-      <li>
-        Copyrights &copy;
-        2020-2023
-        <i class="ri-heart-fill heart_icon"></i> SongyangJi
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-      </li>
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      <li>
-        <!-- cnzz统计 -->
-        
-        <script type="text/javascript" src=''></script>
-        
-      </li>
-    </ul>
-  </div>
-</footer>
-      <div class="float_btns">
-        <div class="totop" id="totop">
-  <i class="ri-arrow-up-line"></i>
-</div>
-
-<div class="todark" id="todark">
-  <i class="ri-moon-line"></i>
-</div>
-
+        </div>
       </div>
-    </main>
-    <aside class="sidebar on">
-      <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
-  </div>
-  
-  <ul class="nav nav-main">
+    </div>
+
     
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">主页</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">归档</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/categories">分类</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/tags">标签</a>
-    </li>
-    
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      
-      <a class="nav-item-link nav-item-search"  title="搜索">
-        <i class="ri-search-line"></i>
-      </a>
-      
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-    </aside>
-    <script>
-      if (window.matchMedia("(max-width: 768px)").matches) {
-        document.querySelector('.content').classList.remove('on');
-        document.querySelector('.sidebar').classList.remove('on');
-      }
-    </script>
-    <div id="mask"></div>
+  </aside>
 
-<!-- #reward -->
-<div id="reward">
-  <span class="close"><i class="ri-close-line"></i></span>
-  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
-  <div class="reward-box">
-    
-    
-  </div>
-</div>
-    
-<script src="/js/jquery-2.0.3.min.js"></script>
-
-
-<script src="/js/lazyload.min.js"></script>
-
-<!-- Tocbot -->
-
-<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
-<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
-
-<script src="/dist/main.js"></script>
-
-<!-- ImageViewer -->
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
 
     </div>
 
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/09/hertz%E2%80%94%E2%80%94%E8%B7%AF%E7%94%B1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/09/hertz%E2%80%94%E2%80%94%E8%B7%AF%E7%94%B1/" class="post-title-link" itemprop="url">hertz——路由</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-12-09 10:48:28 / 修改时间：15:21:46" itemprop="dateCreated datePublished" datetime="2022-12-09T10:48:28+08:00">2022-12-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/hertz/" itemprop="url" rel="index"><span itemprop="name">hertz</span></a>
+        </span>
+    </span>
+
+  
 </div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
-
-<script>
-    function viewer_init() {
-        let pswpElement = document.querySelectorAll('.pswp')[0];
-        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
-
-        $imgArr.forEach(($em, i) => {
-            $em.onclick = () => {
-                // slider展开状态
-                // todo: 这样不好，后面改成状态
-                if (document.querySelector('.left-col.show')) return
-                let items = []
-                $imgArr.forEach(($em2, i2) => {
-                    let img = $em2.getAttribute('data-idx', i2)
-                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
-                    let title = $em2.getAttribute('alt')
-                    // 获得原图尺寸
-                    const image = new Image()
-                    image.src = src
-                    items.push({
-                        src: src,
-                        w: image.width || $em2.width,
-                        h: image.height || $em2.height,
-                        title: title
-                    })
-                })
-                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
-                    index: parseInt(i)
-                });
-                gallery.init()
-            }
-        })
-    }
-    viewer_init()
-</script>
-
-<!-- MathJax -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-  });
-
-  MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for(i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-  });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-  var ayerConfig = {
-    mathjax: true
-  }
-</script>
-
-<!-- Katex -->
-
+        </div>
+      </header>
 
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
-        
-            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
-        
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/route/">https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/route/</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;github.com/cloudwego/hertz/pkg/app&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/cloudwego/hertz/pkg/app/server&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/cloudwego/hertz/pkg/protocol/consts&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	h := server.Default(server.WithHostPorts(<span class="string">&quot;127.0.0.1:8080&quot;</span>))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// register route</span></span><br><span class="line">	RegisterRoute(h)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// register route with handle</span></span><br><span class="line">	RegisterRouteWithHandle(h)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// register group route</span></span><br><span class="line">	RegisterGroupRoute(h)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// register parameter route</span></span><br><span class="line">	RegisterParaRoute(h)</span><br><span class="line"></span><br><span class="line">	h.Spin()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterRoute</span><span class="params">(h *server.Hertz)</span></span> &#123;</span><br><span class="line">	h.GET(<span class="string">&quot;/get&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;get&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.POST(<span class="string">&quot;/post&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;post&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.PUT(<span class="string">&quot;/put&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;put&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.DELETE(<span class="string">&quot;/delete&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;delete&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.PATCH(<span class="string">&quot;/patch&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;patch&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.HEAD(<span class="string">&quot;/head&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;head&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.OPTIONS(<span class="string">&quot;/options&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;options&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterRouteWithHandle</span><span class="params">(h *server.Hertz)</span></span> &#123;</span><br><span class="line">	h.Handle(consts.MethodGet, <span class="string">&quot;/hget&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;hget&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.Handle(consts.MethodPost, <span class="string">&quot;/hpost&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;hpost&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.Handle(consts.MethodPut, <span class="string">&quot;/hput&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;hput&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.Handle(consts.MethodDelete, <span class="string">&quot;/hdelete&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;hdelete&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.Handle(consts.MethodPatch, <span class="string">&quot;/hpatch&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;hpatch&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.Handle(consts.MethodHead, <span class="string">&quot;/hhead&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;hhead&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h.Handle(consts.MethodOptions, <span class="string">&quot;/hoptions&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;hoptions&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">loginEndpoint</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">submitEndpoint</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readEndpoint</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterGroupRoute</span><span class="params">(h *server.Hertz)</span></span> &#123;</span><br><span class="line">	<span class="comment">// Simple group: v1</span></span><br><span class="line">	v1 := h.Group(<span class="string">&quot;/v1&quot;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// loginEndpoint is a handler func</span></span><br><span class="line">		v1.POST(<span class="string">&quot;/login&quot;</span>, loginEndpoint)</span><br><span class="line">		v1.POST(<span class="string">&quot;/submit&quot;</span>, submitEndpoint)</span><br><span class="line">		v1.POST(<span class="string">&quot;/streaming_read&quot;</span>, readEndpoint)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Simple group: v2</span></span><br><span class="line">	v2 := h.Group(<span class="string">&quot;/v2&quot;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		v2.POST(<span class="string">&quot;/login&quot;</span>, loginEndpoint)</span><br><span class="line">		v2.POST(<span class="string">&quot;/submit&quot;</span>, submitEndpoint)</span><br><span class="line">		v2.POST(<span class="string">&quot;/streaming_read&quot;</span>, readEndpoint)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterParaRoute</span><span class="params">(h *server.Hertz)</span></span> &#123;</span><br><span class="line">	<span class="comment">// This handler will match: &quot;/hertz/version&quot;, but will not match : &quot;/hertz/&quot; or &quot;/hertz&quot;</span></span><br><span class="line">	h.GET(<span class="string">&quot;/hertz/:version&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		version := c.Param(<span class="string">&quot;version&quot;</span>)</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;Hello %s&quot;</span>, version)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// However, this one will match &quot;/hertz/v1/&quot; and &quot;/hertz/v2/send&quot;</span></span><br><span class="line">	h.GET(<span class="string">&quot;/hertz/:version/*action&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		version := c.Param(<span class="string">&quot;version&quot;</span>)</span><br><span class="line">		action := c.Param(<span class="string">&quot;action&quot;</span>)</span><br><span class="line">		message := version + <span class="string">&quot; is &quot;</span> + action</span><br><span class="line">		c.String(consts.StatusOK, message)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// For each matched request Context will hold the route definition</span></span><br><span class="line">	h.POST(<span class="string">&quot;/hertz/:version/*action&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		<span class="comment">// c.FullPath() == &quot;/hertz/:version/*action&quot; // true</span></span><br><span class="line">		c.String(consts.StatusOK, c.FullPath())</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
     
 
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
 
-<!-- busuanzi  -->
-
-<!-- ClickLove -->
-
-<!-- ClickBoom1 -->
-
-<!-- ClickBoom2 -->
-
-
-<script src="/js/clickBoom2.js"></script>
-
-
-<!-- CodeCopy -->
-
-
-<link rel="stylesheet" href="/css/clipboard.css">
-
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-<script>
-  function wait(callback, seconds) {
-    var timelag = null;
-    timelag = window.setTimeout(callback, seconds);
-  }
-  !function (e, t, a) {
-    var initCopyCode = function(){
-      var copyHtml = '';
-      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
-      copyHtml += '</button>';
-      $(".highlight .code pre").before(copyHtml);
-      $(".article pre code").before(copyHtml);
-      var clipboard = new ClipboardJS('.btn-copy', {
-        target: function(trigger) {
-          return trigger.nextElementSibling;
-        }
-      });
-      clipboard.on('success', function(e) {
-        let $btn = $(e.trigger);
-        $btn.addClass('copied');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-checkbox-circle-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPIED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-checkbox-circle-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
-      clipboard.on('error', function(e) {
-        e.clearSelection();
-        let $btn = $(e.trigger);
-        $btn.addClass('copy-failed');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-time-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPY FAILED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-time-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
-    }
-    initCopyCode();
-  }(window, document);
-</script>
-
-
-<!-- CanvasBackground -->
-
-
-<script src="/js/dz.js"></script>
 
 
 
     
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/09/hertz%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/09/hertz%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">hertz入门</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-12-09 09:51:28 / 修改时间：15:21:46" itemprop="dateCreated datePublished" datetime="2022-12-09T09:51:28+08:00">2022-12-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/hertz/" itemprop="url" rel="index"><span itemprop="name">hertz</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go install github.com/cloudwego/hertz/cmd/hz@latest</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="生成代码"><a href="#生成代码" class="headerlink" title="生成代码"></a>生成代码</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir hertz_demo % hz new</span><br><span class="line">output directory /Users/jisongyang/GolandProjects/hertz_demo is not under GOPATH/src. Please specify a module name with the &#x27;-module&#x27; flag</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>-module</code>指定模块</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hz new -module hertz_demo`</span><br></pre></td></tr></table></figure>
+
+<p>目录结构</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir hertz_demo % tree</span><br><span class="line">.</span><br><span class="line">├── biz</span><br><span class="line">│   ├── handler</span><br><span class="line">│   │   └── ping.go</span><br><span class="line">│   └── router</span><br><span class="line">│       └── register.go</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">├── router.go</span><br><span class="line">└── router_gen.go</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;github.com/cloudwego/hertz/pkg/app&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/cloudwego/hertz/pkg/app/server&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/cloudwego/hertz/pkg/protocol/consts&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// server.Default() creates a Hertz with recovery middleware.</span></span><br><span class="line">	<span class="comment">// If you need a pure hertz, you can use server.New()</span></span><br><span class="line">	h := server.Default()</span><br><span class="line"></span><br><span class="line">	h.GET(<span class="string">&quot;/hello&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, c *app.RequestContext)</span></span> &#123;</span><br><span class="line">		c.String(consts.StatusOK, <span class="string">&quot;Hello hertz!&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	h.Spin()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>修改监听端口</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The default listening port is 8888.</span></span><br><span class="line"><span class="comment">// You can modify it with server.WithHostPorts().</span></span><br><span class="line">h := server.Default(</span><br><span class="line">	server.WithHostPorts(<span class="string">&quot;127.0.0.1:8080&quot;</span>),</span><br><span class="line">	server.WithMaxRequestBodySize(<span class="number">20</span>&lt;&lt;<span class="number">20</span>),</span><br><span class="line">	server.WithTransport(standard.NewTransporter),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cloudwego.io/zh/docs/hertz/">https://www.cloudwego.io/zh/docs/hertz/</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/09/etcd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/09/etcd/" class="post-title-link" itemprop="url">etcd</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-12-09 02:57:47 / 修改时间：09:51:57" itemprop="dateCreated datePublished" datetime="2022-12-09T02:57:47+08:00">2022-12-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir ~ % brew services start etcd</span><br><span class="line">==&gt; Successfully started `etcd` (label: homebrew.mxcl.etcd)</span><br><span class="line">jisongyang@SongyangJi-MacBookAir ~ % brew services list</span><br><span class="line">Name              Status  User       File</span><br><span class="line">activemq          none</span><br><span class="line">etcd              started jisongyang ~/Library/LaunchAgents/homebrew.mxcl.etcd.plist</span><br><span class="line">hbase             none</span><br><span class="line">jenkins           none</span><br><span class="line">mongodb-community none</span><br><span class="line">nginx             none</span><br><span class="line">rabbitmq          none</span><br><span class="line">redis             none</span><br><span class="line">jisongyang@SongyangJi-MacBookAir ~ % etcdctl endpoint health</span><br><span class="line">127.0.0.1:2379 is healthy: successfully committed proposal: took = 2.418875ms</span><br><span class="line">jisongyang@SongyangJi-MacBookAir ~ % etcd ctl put &quot;name&quot; &quot;bob&quot;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:&quot;2022-12-09T03:06:16.834+0800&quot;,&quot;caller&quot;:&quot;etcdmain/etcd.go:73&quot;,&quot;msg&quot;:&quot;Running: &quot;,&quot;args&quot;:[&quot;etcd&quot;,&quot;ctl&quot;,&quot;put&quot;,&quot;name&quot;,&quot;bob&quot;]&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;warn&quot;,&quot;ts&quot;:&quot;2022-12-09T03:06:16.834+0800&quot;,&quot;caller&quot;:&quot;etcdmain/etcd.go:75&quot;,&quot;msg&quot;:&quot;failed to verify flags&quot;,&quot;error&quot;:&quot;&#x27;ctl&#x27; is not a valid flag&quot;&#125;</span><br><span class="line">jisongyang@SongyangJi-MacBookAir ~ %</span><br><span class="line">jisongyang@SongyangJi-MacBookAir ~ % etcd ctl get &quot;name&quot;</span><br><span class="line">&#123;&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:&quot;2022-12-09T03:06:26.364+0800&quot;,&quot;caller&quot;:&quot;etcdmain/etcd.go:73&quot;,&quot;msg&quot;:&quot;Running: &quot;,&quot;args&quot;:[&quot;etcd&quot;,&quot;ctl&quot;,&quot;get&quot;,&quot;name&quot;]&#125;</span><br><span class="line">&#123;&quot;level&quot;:&quot;warn&quot;,&quot;ts&quot;:&quot;2022-12-09T03:06:26.364+0800&quot;,&quot;caller&quot;:&quot;etcdmain/etcd.go:75&quot;,&quot;msg&quot;:&quot;failed to verify flags&quot;,&quot;error&quot;:&quot;&#x27;ctl&#x27; is not a valid flag&quot;&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/06/%E6%AF%95%E8%AE%BE01%E2%80%94%E2%80%94%E5%A4%A7%E7%BA%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/06/%E6%AF%95%E8%AE%BE01%E2%80%94%E2%80%94%E5%A4%A7%E7%BA%B2/" class="post-title-link" itemprop="url">毕设01——大纲</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-06 10:40:13" itemprop="dateCreated datePublished" datetime="2022-12-06T10:40:13+08:00">2022-12-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-08 09:34:48" itemprop="dateModified" datetime="2022-12-08T09:34:48+08:00">2022-12-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%AF%95%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">毕设</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Docker虚拟机资源在线管理系统的设计与实现"><a href="#Docker虚拟机资源在线管理系统的设计与实现" class="headerlink" title="Docker虚拟机资源在线管理系统的设计与实现"></a>Docker虚拟机资源在线管理系统的设计与实现</h1><h2 id="任务书"><a href="#任务书" class="headerlink" title="任务书"></a>任务书</h2><h3 id="主要研究内容"><a href="#主要研究内容" class="headerlink" title="主要研究内容"></a>主要研究内容</h3><p>针对研究中心广大教师和研究生的实际需求，构建一个中心IT资源管理系统，该系统允许资源使用者（教师和研究生）在线提出Docker虚拟机的资源申请，在完成相应的审批流程后，实现Docker虚拟机资源的在线分配，并通过邮件实时告知申请者资源登录账号和密码。允许用户自行选定云平台私有镜像库中要安装的应用软件，实现所选定的镜像软件的一键式安装。</p>
+<h3 id="主要技术指标"><a href="#主要技术指标" class="headerlink" title="主要技术指标"></a>主要技术指标</h3><p>1、采用B&#x2F;S架构完成开发，业务流程清晰；<br>2、实现对系统用户的统一鉴权；<br>3、界面友好，操作方便，支持选定软件的一键式安装。</p>
+<h3 id="目标和要求"><a href="#目标和要求" class="headerlink" title="目标和要求"></a>目标和要求</h3><p>1、构建一个基于Web的Docker虚拟机资源管理系统，可协助研究中心运维人员方便地管理中心云平台现有IT资源。<br>2、搭建Docker云平台，构建平台私有镜像库，支持大部分常用软件的一键式安装；<br>3、实现资源在线申请、审核批复、在线资源分配和回收、资源使用情况的在线查询及统计分析等功能。</p>
+<h3 id="特色"><a href="#特色" class="headerlink" title="特色"></a>特色</h3><p>该系统能极大地提高研究中心IT资源的智能化管理水平。</p>
+<h3 id="成果形式"><a href="#成果形式" class="headerlink" title="成果形式"></a>成果形式</h3><p>  1）系统源代码；<br>  2）毕业设计论文。</p>
+<h3 id="成果价值"><a href="#成果价值" class="headerlink" title="成果价值"></a>成果价值</h3><p>通过该课题的研发，可以让学生综合利用在校学习的云计算平台、Docker容器技术、Web端开发技术等方面的知识来解决实际问题，可以培养和锻炼学生解决生产过程中实际问题的能力，为学生今后从事高性能计算、互联网业务的开发等相关领域的工作打下基础。</p>
+<h3 id="应收集资料及主要参考文献"><a href="#应收集资料及主要参考文献" class="headerlink" title="应收集资料及主要参考文献"></a>应收集资料及主要参考文献</h3><p>1、胡长征. 基于Docker的自动化部署系统研究及实现[D]. 中国科学院大学，2017：1-75.<br>2、曹郁. 基于Docker容器的微服务研究与实现[J]. 科学技术创新，2019，28：97-98.<br>3、李顺. 基于Docker的轻量化容器云平台设计与实践[J]. 金融科技时代，2019，10：38-40.</p>
+<h2 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h2><ol>
+<li>容器服务的注册和发现，元数据、资源统计数据的管理</li>
+<li>容器服务的部署——镜像软件的一键化安装、用户代码的自动化部署</li>
+<li>容器资源的定时回收</li>
+<li>容器的健康状态检测、故障通知、自动重启</li>
+<li>私有镜像库的搭建，元数据的维护，镜像的管理</li>
+<li>容器、镜像等资源的权限管理系统</li>
+<li>容器、镜像等资源申请、审核平台</li>
+<li>用户注册登录服务</li>
+<li>消息通知系统</li>
+</ol>
+<h2 id="技术准备"><a href="#技术准备" class="headerlink" title="技术准备"></a>技术准备</h2><ol>
+<li>Web框架，Hertz </li>
+<li>微服务架构，Kitex</li>
+<li>数据库交互，Gorm</li>
+<li>分布式key-value存储系统，Etcd</li>
+<li>定时任务框架，？</li>
+<li>权限管理系统，？</li>
+<li>审批审核系统，？</li>
+<li>Docker的Go-Client</li>
+<li>私有镜像仓库，？</li>
+<li>CI&#x2F;CD系统，Jenkins？</li>
+</ol>
+<h2 id="模块划分"><a href="#模块划分" class="headerlink" title="模块划分"></a>模块划分</h2><ol>
+<li>容器服务</li>
+<li>镜像服务</li>
+<li>资源审核、权限管理系统</li>
+<li>Web的API服务</li>
+<li>……</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/06/Go%E5%88%B7%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/06/Go%E5%88%B7%E9%A2%98/" class="post-title-link" itemprop="url">Go刷题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-12-06 09:17:05 / 修改时间：09:25:45" itemprop="dateCreated datePublished" datetime="2022-12-06T09:17:05+08:00">2022-12-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>字符串</p>
+<h1 id="1805-字符串中不同整数的数目"><a href="#1805-字符串中不同整数的数目" class="headerlink" title="1805. 字符串中不同整数的数目"></a>1805. 字符串中不同整数的数目</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-different-integers-in-a-string/solutions/">https://leetcode.cn/problems/number-of-different-integers-in-a-string/solutions/</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">numDifferentIntegers</span><span class="params">(word <span class="type">string</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    cs := []<span class="type">rune</span>(word)</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(cs); i++ &#123;</span><br><span class="line">        <span class="keyword">if</span> !(cs[i] &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; cs[i] &lt;= <span class="string">&#x27;9&#x27;</span>) &#123;</span><br><span class="line">            cs[i] = <span class="string">&#x27; &#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    word = <span class="type">string</span>(cs)</span><br><span class="line">    splits := strings.Split(word, <span class="string">&quot; &quot;</span>)</span><br><span class="line">    </span><br><span class="line">    f := <span class="function"><span class="keyword">func</span><span class="params">(s <span class="type">string</span>)</span></span> <span class="type">string</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> <span class="built_in">len</span>(s) &gt; <span class="number">1</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> !strings.HasPrefix(s, <span class="string">&quot;0&quot;</span>) &#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">            s = strings.TrimPrefix(s, <span class="string">&quot;0&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> i, s := <span class="keyword">range</span> splits &#123;</span><br><span class="line">        splits[i] = f(s)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span>)</span><br><span class="line">    <span class="keyword">for</span> _, s := <span class="keyword">range</span> splits &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(s) &gt; <span class="number">0</span> &#123;</span><br><span class="line">            m[s]++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(m)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>一次遍历，且原地完成</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">numDifferentIntegers</span><span class="params">(word <span class="type">string</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    s := <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">bool</span>&#123;&#125;</span><br><span class="line">    n := <span class="built_in">len</span>(word)</span><br><span class="line">    p1 := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> p1 &lt; n &amp;&amp; !unicode.IsDigit(<span class="type">rune</span>(word[p1])) &#123;</span><br><span class="line">            p1++</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> p1 == n &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        p2 := p1</span><br><span class="line">        <span class="keyword">for</span> p2 &lt; n &amp;&amp; unicode.IsDigit(<span class="type">rune</span>(word[p2])) &#123;</span><br><span class="line">            p2++</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> p2-p1 &gt; <span class="number">1</span> &amp;&amp; word[p1] == <span class="string">&#x27;0&#x27;</span> &#123; <span class="comment">// 去除前导 0</span></span><br><span class="line">            p1++</span><br><span class="line">        &#125;</span><br><span class="line">        s[word[p1:p2]] = <span class="literal">true</span></span><br><span class="line">        p1 = p2</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/03/Kitex01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/03/Kitex01/" class="post-title-link" itemprop="url">Kitex入门</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-03 23:59:15" itemprop="dateCreated datePublished" datetime="2022-12-03T23:59:15+08:00">2022-12-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-09 02:24:24" itemprop="dateModified" datetime="2022-12-09T02:24:24+08:00">2022-12-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="thrift入门"><a href="#thrift入门" class="headerlink" title="thrift入门"></a>thrift入门</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install thrift</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写thrift文件"><a href="#编写thrift文件" class="headerlink" title="编写thrift文件"></a>编写thrift文件</h2><p><a target="_blank" rel="noopener" href="https://thrift.apache.org/docs/idl">thrift语法</a></p>
+<p>Goland 插件：Thrift Support</p>
+<p><code>User.thrift</code></p>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> go Sample <span class="comment">// Sample对应go的module名</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>:<span class="keyword">required</span> <span class="type">i32</span> id;</span><br><span class="line">    <span class="number">2</span>:<span class="keyword">required</span> <span class="type">string</span> name;</span><br><span class="line">    <span class="number">3</span>:<span class="keyword">required</span> <span class="type">string</span> avatar;</span><br><span class="line">    <span class="number">4</span>:<span class="keyword">required</span> <span class="type">string</span> address;</span><br><span class="line">    <span class="number">5</span>:<span class="keyword">required</span> <span class="type">string</span> mobile;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">UserList</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>:<span class="keyword">required</span> <span class="type">list</span>&lt;User&gt; userList;</span><br><span class="line">    <span class="number">2</span>:<span class="keyword">required</span> <span class="type">i32</span> page;</span><br><span class="line">    <span class="number">3</span>:<span class="keyword">required</span> <span class="type">i32</span> limit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>Service.thrift</code></p>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">include <span class="string">&quot;User.thrift&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> go Sample</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">map</span>&lt;<span class="type">string</span>, <span class="type">string</span>&gt; Data</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Response</span> </span>&#123;</span><br><span class="line">    <span class="number">1</span>:<span class="keyword">required</span> <span class="type">i32</span> errCode; <span class="comment">// 错误码</span></span><br><span class="line">    <span class="number">2</span>:<span class="keyword">required</span> <span class="type">string</span> errMsg; <span class="comment">// 错误信息</span></span><br><span class="line">    <span class="number">3</span>:<span class="keyword">required</span> Data data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义服务</span></span><br><span class="line"><span class="class"><span class="keyword">service</span> <span class="title">Greeter</span> </span>&#123;</span><br><span class="line">    Response SayHello(</span><br><span class="line">        <span class="number">1</span>:<span class="keyword">required</span> User.User user</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    Response GetUser(</span><br><span class="line">        <span class="number">1</span>:<span class="keyword">required</span> <span class="type">i32</span> uid</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="使用thrift脚手架"><a href="#使用thrift脚手架" class="headerlink" title="使用thrift脚手架"></a>使用thrift脚手架</h2><p>使用<code>thrift -r -v --gen go idl/Service.thrift</code>根据idl文件生成go代码。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir thrift_sample % thrift -r -v --gen go idl/Service.thrift</span><br><span class="line">Scanning /Users/jisongyang/GolandProjects/thrift_sample/idl/Service.thrift <span class="keyword">for</span> includes</span><br><span class="line">Scanning /Users/jisongyang/GolandProjects/thrift_sample/idl/User.thrift <span class="keyword">for</span> includes</span><br><span class="line">Parsing /Users/jisongyang/GolandProjects/thrift_sample/idl/User.thrift <span class="keyword">for</span> types</span><br><span class="line">Parsing /Users/jisongyang/GolandProjects/thrift_sample/idl/Service.thrift <span class="keyword">for</span> types</span><br><span class="line">Program: /Users/jisongyang/GolandProjects/thrift_sample/idl/User.thrift</span><br><span class="line">Generating <span class="string">&quot;go&quot;</span></span><br><span class="line">Program: /Users/jisongyang/GolandProjects/thrift_sample/idl/Service.thrift</span><br><span class="line">Generating <span class="string">&quot;go&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>目录结构</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── client_test.go</span><br><span class="line">├── gen-go  # thrift脚手架生成的目录</span><br><span class="line">│   └── Sample</span><br><span class="line">│       ├── GoUnusedProtection__.go</span><br><span class="line">│       ├── Service-consts.go</span><br><span class="line">│       ├── Service.go</span><br><span class="line">│       ├── User-consts.go</span><br><span class="line">│       ├── User.go</span><br><span class="line">│       └── greeter-remote</span><br><span class="line">│           └── greeter-remote.go</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── idl # 自己编写的idl文件</span><br><span class="line">│   ├── Service.thrift</span><br><span class="line">│   └── User.thrift</span><br><span class="line">└── main.go</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="server端实现interface"><a href="#server端实现interface" class="headerlink" title="server端实现interface"></a>server端实现interface</h2><p>这是thrift生成的</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Greeter <span class="keyword">interface</span> &#123;</span><br><span class="line">  <span class="comment">// Parameters:</span></span><br><span class="line">  <span class="comment">//  - User</span></span><br><span class="line">  SayHello(ctx context.Context, user *User) (_r *Response, _err <span class="type">error</span>)</span><br><span class="line">  <span class="comment">// Parameters:</span></span><br><span class="line">  <span class="comment">//  - UID</span></span><br><span class="line">  GetUser(ctx context.Context, uid <span class="type">int32</span>) (_r *Response, _err <span class="type">error</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>server端里去实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义服务</span></span><br><span class="line"><span class="keyword">type</span> Greeter <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现IDL里定义的接口</span></span><br><span class="line"><span class="comment">//SayHello</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Greeter)</span></span> SayHello(ctx context.Context, u *Sample.User) (r *Sample.Response, err <span class="type">error</span>) &#123;</span><br><span class="line">    strJson, _ := json.Marshal(u)</span><br><span class="line">    <span class="keyword">return</span> &amp;Sample.Response&#123;ErrCode: <span class="number">0</span>, ErrMsg: <span class="string">&quot;success&quot;</span>, Data: <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>&#123;<span class="string">&quot;User&quot;</span>: <span class="type">string</span>(strJson)&#125;&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//GetUser</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Greeter)</span></span> GetUser(ctx context.Context, uid <span class="type">int32</span>) (r *Sample.Response, err <span class="type">error</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;Sample.Response&#123;ErrCode: <span class="number">1</span>, ErrMsg: <span class="string">&quot;user not exist.&quot;</span>&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">   </span><br><span class="line"><span class="comment">//buffered</span></span><br><span class="line"><span class="keyword">var</span> transportFactory thrift.TTransportFactory</span><br><span class="line"><span class="keyword">if</span> *buffered &#123;</span><br><span class="line">    transportFactory = thrift.NewTBufferedTransportFactory(<span class="number">8192</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    transportFactory = thrift.NewTTransportFactory()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//framed</span></span><br><span class="line"><span class="keyword">if</span> *framed &#123;</span><br><span class="line">    transportFactory = thrift.NewTFramedTransportFactory(transportFactory)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//handler</span></span><br><span class="line">handler := &amp;Greeter&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//transport,no secure</span></span><br><span class="line"><span class="keyword">var</span> err <span class="type">error</span></span><br><span class="line"><span class="keyword">var</span> transport thrift.TServerTransport</span><br><span class="line">transport, err = thrift.NewTServerSocket(*addr)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;error running server:&quot;</span>, err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//processor</span></span><br><span class="line">processor := Sample.NewGreeterProcessor(handler) <span class="comment">// 关键</span></span><br><span class="line"></span><br><span class="line">fmt.Println(<span class="string">&quot;Starting the simple server... on &quot;</span>, *addr)</span><br><span class="line"></span><br><span class="line"><span class="comment">//start tcp server</span></span><br><span class="line">server := thrift.NewTSimpleServer4(processor, transport, transportFactory, protocolFactory)</span><br><span class="line">err = server.Serve()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;error running server:&quot;</span>, err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="client端"><a href="#client端" class="headerlink" title="client端"></a>client端</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ctx = context.Background()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetClient</span><span class="params">()</span></span> *Sample.GreeterClient &#123;</span><br><span class="line">    addr := <span class="string">&quot;:9090&quot;</span></span><br><span class="line">    <span class="keyword">var</span> transport thrift.TTransport</span><br><span class="line">    <span class="keyword">var</span> err <span class="type">error</span></span><br><span class="line">    transport, err = thrift.NewTSocket(addr)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;Error opening socket:&quot;</span>, err)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//protocol</span></span><br><span class="line">    <span class="keyword">var</span> protocolFactory thrift.TProtocolFactory</span><br><span class="line">    protocolFactory = thrift.NewTBinaryProtocolFactoryDefault()</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//no buffered</span></span><br><span class="line">    <span class="keyword">var</span> transportFactory thrift.TTransportFactory</span><br><span class="line">    transportFactory = thrift.NewTTransportFactory()</span><br><span class="line">    </span><br><span class="line">    transport, err = transportFactory.GetTransport(transport)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;error running client:&quot;</span>, err)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> err := transport.Open(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;error running client:&quot;</span>, err)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    iprot := protocolFactory.GetProtocol(transport)</span><br><span class="line">    oprot := protocolFactory.GetProtocol(transport)</span><br><span class="line">    </span><br><span class="line">    client := Sample.NewGreeterClient(thrift.NewTStandardClient(iprot, oprot)) <span class="comment">// 关键</span></span><br><span class="line">    <span class="keyword">return</span> client</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//GetUser</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestGetUser</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">    client := GetClient()</span><br><span class="line">    rep, err := client.GetUser(ctx, <span class="number">100</span>)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        t.Errorf(<span class="string">&quot;thrift err: %v\n&quot;</span>, err)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        t.Logf(<span class="string">&quot;Recevied: %v\n&quot;</span>, rep)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<blockquote>
+<p>Reference</p>
+<p><a target="_blank" rel="noopener" href="https://thrift.apache.org/">https://thrift.apache.org/</a></p>
+<p><a target="_blank" rel="noopener" href="https://thrift.apache.org/docs/idl">thrift语法</a></p>
+</blockquote>
+<h1 id="Kitex"><a href="#Kitex" class="headerlink" title="Kitex"></a>Kitex</h1><p>关于kite的介绍和微服务rpc的基本概念就不写了，直接上操作。</p>
+<h2 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h2><ol>
+<li>安装 kitex：<code>go install github.com/cloudwego/kitex/tool/cmd/kitex@latest</code></li>
+<li>安装 thriftgo：<code>go install github.com/cloudwego/thriftgo@latest</code></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir kitex_echo % kitex --version</span><br><span class="line">v0.4.3</span><br><span class="line">jisongyang@SongyangJi-MacBookAir kitex_echo % thriftgo --version</span><br><span class="line">thriftgo 0.2.4</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>有了thriftgo无需安装thrift了。</p>
+</blockquote>
+<blockquote>
+<p>这里可以直接创建目录，用kitex生成项目，也可以先创建go项目再进去编写idl。</p>
+</blockquote>
+<h2 id="编写IDL"><a href="#编写IDL" class="headerlink" title="编写IDL"></a>编写IDL</h2><p>echo.thrift</p>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> go api</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Request</span> </span>&#123;</span><br><span class="line">  <span class="number">1</span>: <span class="type">string</span> message</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Response</span> </span>&#123;</span><br><span class="line">  <span class="number">1</span>: <span class="type">string</span> message</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">service</span> <span class="title">Echo</span> </span>&#123;</span><br><span class="line">    Response echo(<span class="number">1</span>: Request req)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="生成-echo-服务代码"><a href="#生成-echo-服务代码" class="headerlink" title="生成 echo 服务代码"></a>生成 echo 服务代码</h2><p>命令：<code>kitex -module kitex_echo -service p.s.m echo.thrift</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir kitex_echo % kitex -module kitex_echo -service p.s.m echo.thrift</span><br><span class="line">jisongyang@SongyangJi-MacBookAir kitex_echo % tree</span><br><span class="line">.</span><br><span class="line">├── build.sh</span><br><span class="line">├── echo.thrift</span><br><span class="line">├── go.mod</span><br><span class="line">├── handler.go</span><br><span class="line">├── kitex_gen</span><br><span class="line">│   └── api # idl中go的namespace</span><br><span class="line">│       ├── echo # idl的文件名</span><br><span class="line">│       │   ├── client.go</span><br><span class="line">│       │   ├── echo.go</span><br><span class="line">│       │   ├── invoker.go</span><br><span class="line">│       │   └── server.go</span><br><span class="line">│       ├── echo.go</span><br><span class="line">│       ├── k-consts.go</span><br><span class="line">│       └── k-echo.go</span><br><span class="line">├── main.go</span><br><span class="line">└── script</span><br><span class="line">    └── bootstrap.sh</span><br><span class="line"></span><br><span class="line">4 directories, 13 files</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.cloudwego.io/zh/docs/kitex/tutorials/code-gen/code_generation/">代码生成</a></p>
+<ul>
+<li>-service service_name<br>使用该选项时，kitex 会生成构建一个服务的脚手架代码，参数 <code>service_name</code> 给出启动时服务自身的名字，通常其值取决于使用 Kitex 框架时搭配的服务注册和服务发现功能。</li>
+</ul>
+<p>如果不指定 -service 参数，那么生成的只有 kitex_gen 目录。</p>
+<ul>
+<li>-module module_name<br>该参数用于指定生成代码所属的 Go 模块，会影响生成代码里的 import path。<br>如果当前目录是在 $GOPATH&#x2F;src 下的一个目录，那么可以不指定该参数；kitex 会使用 $GOPATH&#x2F;src 开始的相对路径作为 import path 前缀。例如，在$GOPATH&#x2F;src&#x2F;example.com&#x2F;hello&#x2F;world 下执行 kitex，那么 kitex_gen&#x2F;example_package&#x2F;example_package.go 在其他代码代码里的 import path 会是 example.com&#x2F;hello&#x2F;world&#x2F;kitex_gen&#x2F;example_package。<br>如果当前目录不在 $GOPATH&#x2F;src 下，那么必须指定该参数。<br>如果指定了 -module 参数，那么 kitex 会从当前目录开始往上层搜索 go.mod 文件<br>如果不存在 go.mod 文件，那么 kitex 会调用 go mod init 生成 go.mod；<br>如果存在 go.mod 文件，那么 kitex 会检查 -module 的参数和 go.mod 里的模块名字是否一致，如果不一致则会报错退出；<br>最后，go.mod 的位置及其模块名字会决定生成代码里的 import path。</li>
+</ul>
+<blockquote>
+<p>Another example</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── build.sh                     // 服务的构建脚本，会创建一个名为 output 的目录并生成启动服务所需的文件到里面</span><br><span class="line">├── handler.go                   // 用户在该文件里实现 IDL service 定义的方法</span><br><span class="line">├── kitex_gen                    // IDL 内容相关的生成代码</span><br><span class="line">│   ├── base                     // base.thrift 的生成代码</span><br><span class="line">│   │   ├── base.go              // thriftgo 的产物，包含 base.thrift 定义的内容的 go 代码</span><br><span class="line">│   │   └── k-base.go            // kitex 在 thriftgo 的产物之外生成的代码</span><br><span class="line">│   └── demo                     // demo.thrift 的生成代码</span><br><span class="line">│       ├── demo.go              // thriftgo 的产物，包含 demo.thrift 定义的内容的 go 代码</span><br><span class="line">│       ├── k-demo.go            // kitex 在 thriftgo 的产物之外生成的代码</span><br><span class="line">│       └── demoservice          // kitex 为 demo.thrift 里定义的 demo service 生成的代码</span><br><span class="line">│           ├── demoservice.go   // 提供了 client.go 和 server.go 共用的一些定义</span><br><span class="line">│           ├── client.go        // 提供了 NewClient API</span><br><span class="line">│           └── server.go        // 提供了 NewServer API</span><br><span class="line">├── main.go                      // 程序入口</span><br><span class="line">└── script                       // 构建脚本</span><br><span class="line">    └── bootstrap.sh             // 服务的启动脚本，会被 build.sh 拷贝至 output 下</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="一个bug——not-enough-arguments-in-call-to-t-tProt-xxx"><a href="#一个bug——not-enough-arguments-in-call-to-t-tProt-xxx" class="headerlink" title="一个bug——not enough arguments in call to t.tProt.xxx"></a>一个bug——not enough arguments in call to t.tProt.xxx</h3><p>根本原因是thrift在git上的go包更新了增加对go 1.7中的http.request + context的用法，部分函数中增加了context参数；但是thriftgo生成的go代码是版本较低的。</p>
+<p>所以解决方案就是要么使用最新的thriftgo（目前好像develop版本可以），要么降低<code>github.com/apache/thrif</code>的版本。</p>
+<p>亲测，将版本降低到v0.13.0是可以的。</p>
+<h2 id="client端-1"><a href="#client端-1" class="headerlink" title="client端"></a>client端</h2><p>值得一提的是，这里直接使用了服务端生成的go代码，这是可以的也是应该的。</p>
+<p>如果如果是其他语言的话，就必须要在generate code一下了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;context&quot;</span></span><br><span class="line">    <span class="string">&quot;log&quot;</span></span><br><span class="line">    <span class="string">&quot;time&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="string">&quot;github.com/cloudwego/kitex/client&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/cloudwego/kitex/client/callopt&quot;</span></span><br><span class="line">    <span class="string">&quot;kitex_echo/kitex_gen/api&quot;</span></span><br><span class="line">    <span class="string">&quot;kitex_echo/kitex_gen/api/echo&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    c, err := echo.NewClient(<span class="string">&quot;p.s.m&quot;</span>, client.WithHostPorts(<span class="string">&quot;0.0.0.0:8888&quot;</span>))</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    req := &amp;api.Request&#123;Message: <span class="string">&quot;helloworld from jsy&quot;</span>&#125;</span><br><span class="line">    resp, err := c.Echo(context.Background(), req, callopt.WithRPCTimeout(<span class="number">3</span>*time.Second))</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    log.Println(resp)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Go.mod</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">module kite_echo_client</span><br><span class="line"></span><br><span class="line"><span class="keyword">go</span> <span class="number">1.18</span></span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">	github.com/cloudwego/kitex v0<span class="number">.4</span><span class="number">.3</span></span><br><span class="line">	kitex_echo v0<span class="number">.0</span><span class="number">.0</span><span class="number">-00010101000000</span><span class="number">-000000000000</span> <span class="comment">// 这个服务端的module还没推送到git remote</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">	github.com/apache/thrift v0<span class="number">.13</span><span class="number">.0</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/bytedance/gopkg v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20220531084716</span><span class="number">-665</span>b4f21126f <span class="comment">// indirect</span></span><br><span class="line">	github.com/chenzhuoyu/iasm v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20220818063314</span><span class="number">-28</span>c361dae733 <span class="comment">// indirect</span></span><br><span class="line">	github.com/choleraehyq/pid v0<span class="number">.0</span><span class="number">.15</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/cloudwego/fastpb v0<span class="number">.0</span><span class="number">.2</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/cloudwego/frugal v0<span class="number">.1</span><span class="number">.3</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/cloudwego/netpoll v0<span class="number">.2</span><span class="number">.6</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/cloudwego/thriftgo v0<span class="number">.2</span><span class="number">.1</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/golang/protobuf v1<span class="number">.5</span><span class="number">.2</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/google/pprof v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20220608213341</span>-c488b8fa1db3 <span class="comment">// indirect</span></span><br><span class="line">	github.com/jhump/protoreflect v1<span class="number">.8</span><span class="number">.2</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/json-iterator/<span class="keyword">go</span> v1<span class="number">.1</span><span class="number">.12</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/modern-<span class="keyword">go</span>/concurrent v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20180228061459</span>-e0a39a4cb421 <span class="comment">// indirect</span></span><br><span class="line">	github.com/modern-<span class="keyword">go</span>/reflect2 v1<span class="number">.0</span><span class="number">.2</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/oleiade/lane v1<span class="number">.0</span><span class="number">.1</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/tidwall/gjson v1<span class="number">.9</span><span class="number">.3</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/tidwall/match v1<span class="number">.1</span><span class="number">.1</span> <span class="comment">// indirect</span></span><br><span class="line">	github.com/tidwall/pretty v1<span class="number">.2</span><span class="number">.0</span> <span class="comment">// indirect</span></span><br><span class="line">	golang.org/x/arch v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20220722155209</span><span class="number">-00200</span>b7164a7 <span class="comment">// indirect</span></span><br><span class="line">	golang.org/x/net v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20210614182718</span><span class="number">-04</span>defd469f4e <span class="comment">// indirect</span></span><br><span class="line">	golang.org/x/sync v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20210220032951</span><span class="number">-036812</span>b2e83c <span class="comment">// indirect</span></span><br><span class="line">	golang.org/x/sys v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20220817070843</span><span class="number">-5</span>a390386f1f2 <span class="comment">// indirect</span></span><br><span class="line">	golang.org/x/text v0<span class="number">.3</span><span class="number">.6</span> <span class="comment">// indirect</span></span><br><span class="line">	google.golang.org/genproto v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20210513213006</span>-bf773b8c8384 <span class="comment">// indirect</span></span><br><span class="line">	google.golang.org/protobuf v1<span class="number">.28</span><span class="number">.0</span> <span class="comment">// indirect</span></span><br><span class="line">	gopkg.in/yaml.v3 v3<span class="number">.0</span><span class="number">.1</span> <span class="comment">// indirect</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">replace kitex_echo =&gt; ../kitex_echo <span class="comment">// 直接替换为本地目录</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p><a target="_blank" rel="noopener" href="https://www.cloudwego.io/zh/docs/kitex/">https://www.cloudwego.io/zh/docs/kitex/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/03/GoLang-%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/03/GoLang-%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">GoLang-测试</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-03 23:12:51" itemprop="dateCreated datePublished" datetime="2022-12-03T23:12:51+08:00">2022-12-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-04 19:35:17" itemprop="dateModified" datetime="2022-12-04T19:35:17+08:00">2022-12-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Go-Testing"><a href="#Go-Testing" class="headerlink" title="Go-Testing"></a>Go-Testing</h1><ol>
+<li>测试代码须放在包以<code>_test.go</code>结尾的文件中。</li>
+<li>测试函数以<code>Test</code>为前缀。</li>
+<li>测试命令（<code>go test</code>）忽略以”_”或”.”开头的测试文件。</li>
+<li>正常的编译操作(<code>go build</code>、<code>go install</code>)会忽略测试文件</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/01/GoLang-Module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/01/GoLang-Module/" class="post-title-link" itemprop="url">GoLang-Module</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-01 00:24:38" itemprop="dateCreated datePublished" datetime="2022-12-01T00:24:38+08:00">2022-12-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-09 02:35:05" itemprop="dateModified" datetime="2022-12-09T02:35:05+08:00">2022-12-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Go-Mod-模式"><a href="#Go-Mod-模式" class="headerlink" title="Go Mod 模式"></a>Go Mod 模式</h1><p>Go Modules 在 Go 1.11 和 Go 1.12 中有三个模式，根据环境变量 <code>GO111MODULE</code>进行配置：</p>
+<h2 id="GOPATH-模式（GO111MODULE-x3D-off）"><a href="#GOPATH-模式（GO111MODULE-x3D-off）" class="headerlink" title="GOPATH 模式（GO111MODULE&#x3D;off）"></a>GOPATH 模式（GO111MODULE&#x3D;off）</h2><p>Go 编译器从不使用 Go Mod。而会查找 vendor 目录和 GOPATH 以查找依赖项。</p>
+<h2 id="Go-Modules-模式（-GO111MODULE-x3D-on）"><a href="#Go-Modules-模式（-GO111MODULE-x3D-on）" class="headerlink" title="Go Modules 模式（ GO111MODULE&#x3D;on）"></a>Go Modules 模式（ GO111MODULE&#x3D;on）</h2><p>Go 编译器只使用 Go Mod，GOPATH不再作为导入目录，但它还是会把下载的依赖储存在 GOPATH&#x2F;pkg&#x2F;mod 中，也会把 go install 命令的结果放在 GOPATH&#x2F;bin 中。</p>
+<h2 id="缺省模式（未设置该环境变量或-GO111MODULE-x3D-auto）"><a href="#缺省模式（未设置该环境变量或-GO111MODULE-x3D-auto）" class="headerlink" title="缺省模式（未设置该环境变量或 GO111MODULE&#x3D;auto）"></a>缺省模式（未设置该环境变量或 GO111MODULE&#x3D;auto）</h2><p>Go 编译器在同时满足以下两个条件时使用 Go Mod</p>
+<p>1.当前目录不在 GOPATH&#x2F;src&#x2F; 下；<br>2.在当前目录或上层目录中存在 go.mod 文件；</p>
+<p>Go 1.13 及1.13以后版本默认使用 Go Mod 模式</p>
+<h1 id="依赖管理命令-go-get-x2F-install、go-mod-tidy、download"><a href="#依赖管理命令-go-get-x2F-install、go-mod-tidy、download" class="headerlink" title="依赖管理命令 go get&#x2F;install、go mod tidy、download"></a>依赖管理命令 go get&#x2F;install、go mod tidy、download</h1><h1 id="Go-Module的发布、导入"><a href="#Go-Module的发布、导入" class="headerlink" title="Go Module的发布、导入"></a>Go Module的发布、导入</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/109828249">https://zhuanlan.zhihu.com/p/109828249</a></p>
+<blockquote>
+<p>参考文章<br><a target="_blank" rel="noopener" href="https://www.topgoer.com/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/%E9%85%8D%E7%BD%AEgopath.html">https://www.topgoer.com/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/%E9%85%8D%E7%BD%AEgopath.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://go.dev/blog/using-go-modules">https://go.dev/blog/using-go-modules</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_63044390/article/details/123984873">https://blog.csdn.net/m0_63044390/article/details/123984873</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.topgoer.com/%E5%85%B6%E4%BB%96/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86.html">https://www.topgoer.com/%E5%85%B6%E4%BB%96/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/04dd0d386df2">https://www.jianshu.com/p/04dd0d386df2</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.golangstack.com/post/go-mod-import-local-package/">go mod 导入本地包</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/30/GCC%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/11/30/GCC%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">GCC参数详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-11-30 22:39:32 / 修改时间：22:45:59" itemprop="dateCreated datePublished" datetime="2022-11-30T22:39:32+08:00">2022-11-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="gcc工作步骤"><a href="#gcc工作步骤" class="headerlink" title="gcc工作步骤"></a>gcc工作步骤</h3><p>gcc 与 g++ 分别是 gnu 的 c &amp; c++ 编译器 gcc&#x2F;g++ 在执行编译工作的时候，总共需要4步：</p>
+<ul>
+<li>1、预处理,生成 .i 的文件[预处理器cpp]</li>
+<li>2、将预处理后的文件转换成汇编语言, 生成文件 .s [编译器egcs]</li>
+<li>3、有汇编变为目标代码(机器代码)生成 .o 的文件[汇编器as]</li>
+<li>4、连接目标代码, 生成可执行程序 [链接器ld]</li>
+</ul>
+<h3 id="参数详解"><a href="#参数详解" class="headerlink" title="参数详解"></a>参数详解</h3><p><strong>-x language filename</strong></p>
+<p>设定文件所使用的语言, 使后缀名无效, 对以后的多个有效。也就是根据约定 C 语言的后缀名称是 .c 的，而 C++ 的后缀名是 .C 或者 .cpp, 如果你很个性，决定你的 C 代码文件的后缀名是 .pig 哈哈，那你就要用这个参数, 这个参数对他后面的文件名都起作用，除非到了下一个参数的使用。 可以使用的参数吗有下面的这些：’c’, ‘objective-c’, ‘c-header’, ‘c++’, ‘cpp-output’, ‘assembler’, 与 ‘assembler-with-cpp’。</p>
+<p>看到英文，应该可以理解的。</p>
+<p>例子用法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -x c hello.pig </span><br></pre></td></tr></table></figure>
+
+<p>　　</p>
+<p><strong>-x none filename</strong></p>
+<p>关掉上一个选项，也就是让gcc根据文件名后缀，自动识别文件类型 。</p>
+<p>例子用法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -x c hello.pig -x none hello2.c </span><br></pre></td></tr></table></figure>
+
+<p>　　</p>
+<p><strong>-c</strong></p>
+<p>只激活预处理,编译,和汇编,也就是他只把程序做成obj文件</p>
+<p>例子用法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -c hello.c </span><br></pre></td></tr></table></figure>
+
+<p>他将生成 .o 的 obj 文件</p>
+<p><strong>-S</strong></p>
+<p>只激活预处理和编译，就是指把文件编译成为汇编代码。</p>
+<p>例子用法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -S hello.c </span><br></pre></td></tr></table></figure>
+
+<p>他将生成 .s 的汇编代码，你可以用文本编辑器察看。</p>
+<p><strong>-E</strong></p>
+<p>只激活预处理,这个不生成文件, 你需要把它重定向到一个输出文件里面。</p>
+<p>例子用法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -E hello.c &gt; pianoapan.txt </span><br><span class="line">gcc -E hello.c | more </span><br></pre></td></tr></table></figure>
+
+<p>慢慢看吧, 一个 hello word 也要与处理成800行的代码。</p>
+<p><strong>-o</strong></p>
+<p>制定目标名称, 默认的时候, gcc 编译出来的文件是 a.out, 很难听, 如果你和我有同感，改掉它, 哈哈。</p>
+<p>例子用法:</p>
+<p>　　</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -o hello.exe hello.c (哦,windows用习惯了) </span><br><span class="line">　　gcc -o hello.asm -S hello.c</span><br></pre></td></tr></table></figure>
+
+<p><strong>-pipe</strong></p>
+<p>　　</p>
+<p>使用管道代替编译中临时文件, 在使用非 gnu 汇编工具的时候, 可能有些问题。</p>
+<p>　　</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -pipe -o hello.exe hello.c </span><br></pre></td></tr></table></figure>
+
+<p><strong>-ansi</strong></p>
+<p>关闭 gnu c中与 ansi c 不兼容的特性, 激活 ansi c 的专有特性（包括禁止一些 asm inline typeof 关键字, 以及 UNIX,vax 等预处理宏）。</p>
+<p><strong>-fno-asm</strong></p>
+<p>此选项实现 ansi 选项的功能的一部分，它禁止将 asm, inline 和 typeof 用作关键字。</p>
+<p>　　　　</p>
+<p><strong>-fno-strict-prototype</strong></p>
+<p>只对 g++ 起作用, 使用这个选项, g++ 将对不带参数的函数,都认为是没有显式的对参数的个数和类型说明,而不是没有参数。</p>
+<p>而 gcc 无论是否使用这个参数, 都将对没有带参数的函数, 认为城没有显式说明的类型。</p>
+<p>　　</p>
+<p><strong>-fthis-is-varialble</strong></p>
+<p>就是向传统 c++ 看齐, 可以使用 this 当一般变量使用。</p>
+<p>　　</p>
+<p><strong>-fcond-mismatch</strong></p>
+<p>允许条件表达式的第二和第三参数类型不匹配, 表达式的值将为 void 类型。</p>
+<p>　　</p>
+<p><strong>-funsigned-char 、-fno-signed-char、-fsigned-char 、-fno-unsigned-char</strong></p>
+<p>这四个参数是对 char 类型进行设置, 决定将 char 类型设置成 unsigned char(前两个参数)或者 signed char(后两个参数)。</p>
+<p>　　</p>
+<p><strong>-include file</strong></p>
+<p>包含某个代码,简单来说,就是便以某个文件,需要另一个文件的时候,就可以用它设定,功能就相当于在代码中使用 **#include<filename>**。</p>
+<p>例子用法:</p>
+<p>　　</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello.c -include /root/pianopan.h </span><br></pre></td></tr></table></figure>
+
+<p>　　</p>
+<p><strong>-imacros file</strong></p>
+<p>　　</p>
+<p>将 file 文件的宏, 扩展到 gcc&#x2F;g++ 的输入文件, 宏定义本身并不出现在输入文件中。</p>
+<p>　　</p>
+<p><strong>-Dmacro</strong></p>
+<p>相当于 C 语言中的 <strong>#define macro</strong></p>
+<p>　　</p>
+<p><strong>-Dmacro&#x3D;defn</strong></p>
+<p>相当于 C 语言中的 <strong>#define macro&#x3D;defn</strong></p>
+<p>　　</p>
+<p><strong>-Umacro</strong></p>
+<p>相当于 C 语言中的 <strong>#undef macro</strong></p>
+<p><strong>-undef</strong></p>
+<p>　　</p>
+<p>取消对任何非标准宏的定义</p>
+<p>　　</p>
+<p><strong>-Idir</strong></p>
+<p>在你是用 <strong>#include “file”</strong> 的时候, gcc&#x2F;g++ 会先在当前目录查找你所制定的头文件, 如果没有找到, 他回到默认的头文件目录找, 如果使用 -I 制定了目录,他会先在你所制定的目录查找, 然后再按常规的顺序去找。</p>
+<p>对于 #include<file>, gcc&#x2F;g++ 会到 -I 制定的目录查找, 查找不到, 然后将到系统的默认的头文件目录查找 。</p>
+<p>　　</p>
+<p><strong>-I-</strong></p>
+<p>　　</p>
+<p>就是取消前一个参数的功能, 所以一般在 -Idir 之后使用。</p>
+<p>　　</p>
+<p><strong>-idirafter dir</strong></p>
+<p>在 -I 的目录里面查找失败, 讲到这个目录里面查找。</p>
+<p>　　</p>
+<p><strong>-iprefix prefix 、-iwithprefix dir</strong></p>
+<p>一般一起使用, 当 -I 的目录查找失败, 会到 prefix+dir 下查找</p>
+<p>　　</p>
+<p><strong>-nostdinc</strong></p>
+<p>　　</p>
+<p>使编译器不再系统默认的头文件目录里面找头文件, 一般和 -I 联合使用,明确限定头文件的位置。</p>
+<p>　　</p>
+<p><strong>-nostdin C++</strong></p>
+<p>　</p>
+<p>规定不在 g++ 指定的标准路经中搜索, 但仍在其他路径中搜索, 此选项在创 libg++ 库使用 。</p>
+<p>　　</p>
+<p><strong>-C</strong></p>
+<p>　</p>
+<p>在预处理的时候, 不删除注释信息, 一般和-E使用, 有时候分析程序，用这个很方便的。</p>
+<p>　　</p>
+<p><strong>-M</strong></p>
+<p>　</p>
+<p>生成文件关联的信息。包含目标文件所依赖的所有源代码你可以用 <strong>gcc -M hello.c</strong> 来测试一下，很简单。</p>
+<p>　　</p>
+<p><strong>-MM</strong></p>
+<p>　</p>
+<p>和上面的那个一样，但是它将忽略由 <strong>#include<file></strong> 造成的依赖关系。 　　</p>
+<p><strong>-MD</strong></p>
+<p>　</p>
+<p>和-M相同，但是输出将导入到.d的文件里面 　　</p>
+<p><strong>-MMD</strong></p>
+<p>　</p>
+<p>和 -MM 相同，但是输出将导入到 .d 的文件里面。</p>
+<p>　　</p>
+<p><strong>-Wa,option</strong></p>
+<p>　</p>
+<p>此选项传递 option 给汇编程序; 如果 option 中间有逗号, 就将 option 分成多个选项, 然 后传递给会汇编程序。</p>
+<p>　　</p>
+<p><strong>-Wl.option</strong></p>
+<p>　</p>
+<p>此选项传递 option 给连接程序; 如果 option 中间有逗号, 就将 option 分成多个选项, 然 后传递给会连接程序。</p>
+<p>　　</p>
+<p><strong>-llibrary</strong></p>
+<p>　</p>
+<p>制定编译的时候使用的库</p>
+<p>　　</p>
+<p>例子用法</p>
+<p>　　</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -lcurses hello.c</span><br></pre></td></tr></table></figure>
+
+<p>　　</p>
+<p>使用 ncurses 库编译程序</p>
+<p>　　</p>
+<p><strong>-Ldir</strong></p>
+<p>　　</p>
+<p>制定编译的时候，搜索库的路径。比如你自己的库，可以用它制定目录，不然编译器将只在标准库的目录找。这个dir就是目录的名称。</p>
+<p>　　</p>
+<p><strong>-O0 、-O1 、-O2 、-O3</strong></p>
+<p>　　</p>
+<p>编译器的优化选项的 4 个级别，-O0 表示没有优化, -O1 为默认值，-O3 优化级别最高。</p>
+<p>　 　 　　</p>
+<p><strong>-g</strong></p>
+<p>　　</p>
+<p>只是编译器，在编译的时候，产生调试信息。</p>
+<p>　　</p>
+<p><strong>-gstabs</strong></p>
+<p>　　</p>
+<p>此选项以 stabs 格式声称调试信息, 但是不包括 gdb 调试信息。</p>
+<p>　　</p>
+<p><strong>-gstabs+</strong></p>
+<p>　　</p>
+<p>此选项以 stabs 格式声称调试信息, 并且包含仅供 gdb 使用的额外调试信息。</p>
+<p>　　</p>
+<p><strong>-ggdb</strong></p>
+<p>　　</p>
+<p>此选项将尽可能的生成 gdb 的可以使用的调试信息。</p>
+<p><strong>-static</strong></p>
+<p>　　</p>
+<p>此选项将禁止使用动态库，所以，编译出来的东西，一般都很大，也不需要什么动态连接库，就可以运行。</p>
+<p><strong>-share</strong></p>
+<p>　</p>
+<p>此选项将尽量使用动态库，所以生成文件比较小，但是需要系统由动态库。</p>
+<p><strong>-traditional</strong></p>
+<p>　　</p>
+<p>试图让编译器支持传统的C语言特性。</p>
+<p>GCC 是 GNU 的 C 和 C++ 编译器。实际上，GCC 能够编译三种语言：C、C++ 和 Object C（C 语言的一种面向对象扩展）。利用 gcc 命令可同时编译并连接 C 和 C++ 源程序。</p>
+<p>如果你有两个或少数几个 C 源文件，也可以方便地利用 GCC 编译、连接并生成可执行文件。例如，假设你有两个源文件 main.c 和 factorial.c 两个源文件，现在要编 译生成一个计算阶乘的程序。</p>
+<p>factorial.c 文件代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">factorial</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> factorial(n - <span class="number">1</span>) * n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>main.c 文件代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">factorial</span><span class="params">(<span class="type">int</span> n)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="keyword">if</span> (argc &lt; <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Usage: %s n\n&quot;</span>, argv[<span class="number">0</span>]);  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;  <span class="keyword">else</span>  &#123;</span><br><span class="line">        n = atoi(argv[<span class="number">1</span>]);  <span class="built_in">printf</span>(<span class="string">&quot;Factorial of %d is %d.\n&quot;</span>, n, factorial(n));</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>利用如下的命令可编译生成可执行文件，并执行程序：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">gcc -o factorial main.c factorial.c</span> </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./factorial 5</span> </span><br><span class="line">Factorial of 5 is 120. </span><br></pre></td></tr></table></figure>
+
+<p>GCC 可同时用来编译 C 程序和 C++ 程序。一般来说，C 编译器通过源文件的后缀名来判断是 C 程序还是 C++ 程序。在 Linux 中，C 源文件的后缀名为 .c，而 C++ 源文件的后缀名为 .C 或 .cpp。但是，gcc 命令只能编译 C++ 源文件，而不能自动和 C++ 程序使用的库连接。因此，通常使用 g++ 命令来完成 C++ 程序的编译和连接，该程序会自动调用 gcc 实现编译。假设我们有一个如下的 C++ 源文件（hello.c）：</p>
+<p>hello.c 文件代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>  void main (void)  &#123;  　cout &lt;&lt; <span class="string">&quot;Hello, world!&quot;</span> &lt;&lt; endl;  &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>则可以如下调用 g++ 命令编译、连接并生成可执行文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">g++ -o hello hello.c</span> </span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./hello</span> </span><br><span class="line">Hello, world! </span><br></pre></td></tr></table></figure>
+
+<h3 id="gcc-命令的常用选项"><a href="#gcc-命令的常用选项" class="headerlink" title="gcc 命令的常用选项"></a>gcc 命令的常用选项</h3><table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">-ansi</td>
+<td align="left">只支持 ANSI 标准的 C 语法。这一选项将禁止 GNU C 的某些特色， 例如 asm 或 typeof 关键词。</td>
+</tr>
+<tr>
+<td align="left">-c</td>
+<td align="left">只编译并生成目标文件。</td>
+</tr>
+<tr>
+<td align="left">-DMACRO</td>
+<td align="left">以字符串”1”定义 MACRO 宏。</td>
+</tr>
+<tr>
+<td align="left">-DMACRO&#x3D;DEFN</td>
+<td align="left">以字符串”DEFN”定义 MACRO 宏。</td>
+</tr>
+<tr>
+<td align="left">-E</td>
+<td align="left">只运行 C 预编译器。</td>
+</tr>
+<tr>
+<td align="left">-g</td>
+<td align="left">生成调试信息。GNU 调试器可利用该信息。</td>
+</tr>
+<tr>
+<td align="left">-IDIRECTORY</td>
+<td align="left">指定额外的头文件搜索路径DIRECTORY。</td>
+</tr>
+<tr>
+<td align="left">-LDIRECTORY</td>
+<td align="left">指定额外的函数库搜索路径DIRECTORY。</td>
+</tr>
+<tr>
+<td align="left">-lLIBRARY</td>
+<td align="left">连接时搜索指定的函数库LIBRARY。</td>
+</tr>
+<tr>
+<td align="left">-m486</td>
+<td align="left">针对 486 进行代码优化。</td>
+</tr>
+<tr>
+<td align="left">-o FILE</td>
+<td align="left">生成指定的输出文件。用在生成可执行文件时。</td>
+</tr>
+<tr>
+<td align="left">-O0</td>
+<td align="left">不进行优化处理。</td>
+</tr>
+<tr>
+<td align="left">-O 或 -O1</td>
+<td align="left">优化生成代码。</td>
+</tr>
+<tr>
+<td align="left">-O2</td>
+<td align="left">进一步优化。</td>
+</tr>
+<tr>
+<td align="left">-O3</td>
+<td align="left">比 -O2 更进一步优化，包括 inline 函数。</td>
+</tr>
+<tr>
+<td align="left">-shared</td>
+<td align="left">生成共享目标文件。通常用在建立共享库时。</td>
+</tr>
+<tr>
+<td align="left">-static</td>
+<td align="left">禁止使用共享连接。</td>
+</tr>
+<tr>
+<td align="left">-UMACRO</td>
+<td align="left">取消对 MACRO 宏的定义。</td>
+</tr>
+<tr>
+<td align="left">-w</td>
+<td align="left">不生成任何警告信息。</td>
+</tr>
+<tr>
+<td align="left">-Wall</td>
+<td align="left">生成所有警告信息。</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/30/GoLang-Cgo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/11/30/GoLang-Cgo/" class="post-title-link" itemprop="url">GoLang-Cgo</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-11-30 22:27:44 / 修改时间：22:28:14" itemprop="dateCreated datePublished" datetime="2022-11-30T22:27:44+08:00">2022-11-30</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://bastengao.com/blog/2017/12/go-cgo-c.html">https://bastengao.com/blog/2017/12/go-cgo-c.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://go.dev/blog/cgo">https://go.dev/blog/cgo</a></p>
+<p><a target="_blank" rel="noopener" href="https://pkg.go.dev/cmd/cgo">https://pkg.go.dev/cmd/cgo</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
-</body>
 
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
 </html>
