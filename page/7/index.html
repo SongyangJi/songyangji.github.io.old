@@ -1,1429 +1,940 @@
 <!DOCTYPE html>
+
+
 <html lang="zh-CN">
+
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+     JsyBlog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/images/ayer.png" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+  
+<link rel="stylesheet" href="/css/custom.css">
 
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-
-    <meta property="og:type" content="website">
-<meta property="og:title" content="JsyBlog">
-<meta property="og:url" content="http://example.com/page/7/index.html">
-<meta property="og:site_name" content="JsyBlog">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="SongyangJi">
-<meta name="twitter:card" content="summary">
-
-
-<link rel="canonical" href="http://example.com/page/7/">
-
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/7/index.html","title":""}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>JsyBlog</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
   
 
+  
 
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
+</html>
 
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      
+<section class="cover">
+    
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="/images/cover1.jpg" alt="image frame" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">JsyBlog</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+        <img
+          src="/images/ayer.svg"
+          class="cover-logo"
+          alt="JsyBlog"
+        />
+        
+      </div>
     </div>
   </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">JsyBlog</h1>
-      <i class="logo-line"></i>
-    </a>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
   </div>
+</section>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '让风吹干流过的泪和汗，总有一天我有属于我的天'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 70,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
+<div id="main">
+  <section class="outer">
+  
+  
+  
+
+<div class="notice" style="margin-top:50px">
+    <i class="ri-heart-fill"></i>
+    <div class="notice-content" id="broad"></div>
+</div>
+<script type="text/javascript">
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("broad").innerHTML = data.hitokoto;
+        })
+        .catch(console.error)
+</script>
+
+<style>
+    .notice {
+        padding: 20px;
+        border: 1px dashed #e6e6e6;
+        color: #969696;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #fbfbfb50;
+        border-radius: 10px;
+    }
+
+    .notice i {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        padding-right: 10px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+
+    .notice-content {
+        display: initial;
+        vertical-align: middle;
+    }
+</style>
+  
+  <article class="articles">
+    
+    
+    
+    
+    <article
+  id="post-操作系统——进程调度算法"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/"
+    >操作系统——进程与线程、调度算法</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" class="article-date">
+  <time datetime="2022-09-22T17:47:05.000Z" itemprop="datePublished">2022-09-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+  </div>
+   
     </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
   </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-操作系统——页面置换算法"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/"
+    >操作系统——页面置换算法</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/" class="article-date">
+  <time datetime="2022-09-22T17:46:02.000Z" itemprop="datePublished">2022-09-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Redis大Key问题"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/09/21/Redis%E5%A4%A7Key%E9%97%AE%E9%A2%98/"
+    >Redis大Key问题</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/21/Redis%E5%A4%A7Key%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2022-09-21T07:14:47.000Z" itemprop="datePublished">2022-09-21</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Redis的实战小例子"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/"
+    >Redis的实战小例子</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/" class="article-date">
+  <time datetime="2022-09-21T07:14:47.000Z" itemprop="datePublished">2022-09-21</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-海量数据问题解决"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"
+    >海量数据问题解决</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="article-date">
+  <time datetime="2022-09-14T17:05:26.000Z" itemprop="datePublished">2022-09-15</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/">工程向算法</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-字典树"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/09/13/%E5%AD%97%E5%85%B8%E6%A0%91/"
+    >字典树 —— Trie</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/13/%E5%AD%97%E5%85%B8%E6%A0%91/" class="article-date">
+  <time datetime="2022-09-13T08:14:57.000Z" itemprop="datePublished">2022-09-13</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-Spring如何解决循环依赖"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/09/05/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/"
+    >Spring如何解决循环依赖</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/05/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/" class="article-date">
+  <time datetime="2022-09-05T05:05:42.000Z" itemprop="datePublished">2022-09-05</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-SpringBoot自动装配"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/09/05/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/"
+    >SpringBoot自动装配</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/05/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" class="article-date">
+  <time datetime="2022-09-05T03:32:10.000Z" itemprop="datePublished">2022-09-05</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-消息Ack与Offset提交"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/08/25/%E6%B6%88%E6%81%AFAck%E4%B8%8EOffset%E6%8F%90%E4%BA%A4/"
+    >消息Ack与Offset提交</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/08/25/%E6%B6%88%E6%81%AFAck%E4%B8%8EOffset%E6%8F%90%E4%BA%A4/" class="article-date">
+  <time datetime="2022-08-25T07:43:38.000Z" itemprop="datePublished">2022-08-25</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/">消息中间件</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+    <article
+  id="post-时间轮算法"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2022/08/24/%E6%97%B6%E9%97%B4%E8%BD%AE%E7%AE%97%E6%B3%95/"
+    >时间轮算法</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/08/24/%E6%97%B6%E9%97%B4%E8%BD%AE%E7%AE%97%E6%B3%95/" class="article-date">
+  <time datetime="2022-08-24T07:35:10.000Z" itemprop="datePublished">2022-08-24</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/">工程向算法</a>
+  </div>
+   
+    </div>
+       
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+   
+    
+</article>
+
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/6/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/8/">下一页</a>
+  </nav>
+  
+</section>
 </div>
 
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2023
+        <i class="ri-heart-fill heart_icon"></i> SongyangJi
       </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="JsyBlog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
   </ul>
 </nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
 </div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
   </div>
 </div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
 
     </div>
-  </div>
 
-</header>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
         
-  
-  <aside class="sidebar">
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
+
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
 
-    <div class="sidebar-inner sidebar-overview-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
 
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-        </div>
-        <!--/noindex-->
 
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">SongyangJi</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">240</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">42</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">109</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
-    </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/21/Redis%E7%9A%84%E5%AE%9E%E6%88%98%E5%B0%8F%E4%BE%8B%E5%AD%90/" class="post-title-link" itemprop="url">Redis的实战小例子</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-09-21 15:14:47" itemprop="dateCreated datePublished" datetime="2022-09-21T15:14:47+08:00">2022-09-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-28 08:49:14" itemprop="dateModified" datetime="2022-09-28T08:49:14+08:00">2022-09-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>最常见的使用方式。</p>
-<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p><a target="_blank" rel="noopener" href="https://songyangji.gitee.io/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">https://songyangji.gitee.io/2021/11/29/Redis%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</a></p>
-<h2 id="排行榜"><a href="#排行榜" class="headerlink" title="排行榜"></a>排行榜</h2><p>在线比赛的排行榜。</p>
-<p>使用 zset即可。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GameService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    RedisTemplate redisTemplate;</span><br><span class="line">    ZSetOperations ops;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">        ops = redisTemplate.opsForZSet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">incrUserScoreInGame</span><span class="params">(String gameId, <span class="type">int</span> uid, <span class="type">double</span> addedScore)</span> &#123;</span><br><span class="line">        ops.incrementScore(gameId, uid, addedScore);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addUserWithScore</span><span class="params">(String gameId, <span class="type">int</span> uid, <span class="type">double</span> score)</span> &#123;</span><br><span class="line">        ops.add(gameId, uid, score);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;UserScore&gt; <span class="title function_">getTopK</span><span class="params">(String gameId, <span class="type">int</span> k)</span> &#123;</span><br><span class="line">        Set&lt;ZSetOperations.TypedTuple&lt;Integer&gt;&gt; set = ops.rangeWithScores(gameId, <span class="number">0</span>, k - <span class="number">1</span>);</span><br><span class="line">        ArrayList&lt;UserScore&gt; objects = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">assert</span> set != <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">for</span> (ZSetOperations.TypedTuple&lt;Integer&gt; tuple : set) &#123;</span><br><span class="line">            <span class="type">UserScore</span> <span class="variable">userScore</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UserScore</span>(tuple.getValue() == <span class="literal">null</span> ? -<span class="number">1</span> : tuple.getValue() , tuple.getScore() == <span class="literal">null</span> ?<span class="number">0</span> : tuple.getScore());</span><br><span class="line">            objects.add(userScore);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> objects;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>大数据量进行排名时候，分数的累加是具有规律性的，就是说一般不会突然一下子加10000分，减10000分。而是+10，-10。那么可以得出这么一个结论：在一般情况下，前十名的用户是由前1000名（也可以是2000名，结合具体业务来）来产出的。所以给出这样的策略：1.第一次跑批得出前1000名的uid，进行排序，计算出前10名进行展示。2.10分钟内，只统计这1000个uid的分数变化情况，产出10名。3.定时任务10分钟一次跑全量数据跑出最新的1000个uid，计算前10。4.如果遇到大分数累加事件，直接将该用户当前积分和第1000个uid分数进行比较，分数低的uid进行抛弃。</p>
-<p>zset只存10个，每次写入前判断下第10名的value，大于就写入，并存储更新第10名的value，难道不是这样做？</p>
-<h2 id="签到"><a href="#签到" class="headerlink" title="签到"></a>签到</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">testBitMap</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 示例：使用BitMap记录用户本周是否有签到</span></span><br><span class="line">    <span class="keyword">final</span> <span class="type">long</span> <span class="variable">userId</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>().nextLong();</span><br><span class="line">    <span class="comment">// final long userId = 1L;</span></span><br><span class="line">    <span class="comment">// userId高48位用于将用户划分到不同的key，低16位作为位图偏移参数offset;</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">keySign</span> <span class="operator">=</span> <span class="string">&quot;user:sign:&quot;</span> + LocalDate.now().getDayOfWeek() + <span class="string">&quot;:&quot;</span> + (userId &gt;&gt; <span class="number">16</span>);</span><br><span class="line">    <span class="comment">// offset参数必须大于或等于0，小于2^32(bit 映射被限制在 512 MB 之内)</span></span><br><span class="line">    redisTemplate.opsForValue().setBit(keySign, userId &amp; <span class="number">0xffff</span>, <span class="literal">true</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, userId &amp; <span class="number">0xffff</span>));</span><br><span class="line">    System.out.println(<span class="string">&quot;是否签到：&quot;</span> + redisTemplate.opsForValue().getBit(keySign, (userId + <span class="number">1</span>) &amp; <span class="number">0xffff</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="面对面开房间"><a href="#面对面开房间" class="headerlink" title="面对面开房间"></a>面对面开房间</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/54chensongxia/p/13813533.html">https://www.cnblogs.com/54chensongxia/p/13813533.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.runoob.com/html/html5-geolocation.html">https://www.runoob.com/html/html5-geolocation.html</a></p>
-<p>数据结构：</p>
-<p>6位的房间号 ： 1000，000；</p>
-<p><code>longitude:latitude</code></p>
-<blockquote>
-<p>在经线上，纬度每差1度,实地距离大约为111千米；</p>
-<p>在纬线上，经度每差1度,实际距离为111×cosθ千米。（其中θ表示该纬线的纬度.在不同纬线上,经度每差1度的实际距离是不相等的）。</p>
-</blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加一个空间元素,longitude、latitude、member分别是该地理位置的经度、纬度、成员</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这里的成员就是指代具体的业务数据，比如说用户的ID等</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">需要注意的是Redis的纬度有效范围不是[-90,90]而是[-85,85]</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果在添加一个空间元素时，这个元素中的menber已经存在key中，那么GEOADD命令会返回0,相当于更新了这个menber的位置信息</span></span><br><span class="line">GEOADD key longitude latitude member [longitude latitude member]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">用于添加城市的坐标信息</span></span><br><span class="line">geoadd cities:locations 117.12 39.08 tianjin 114.29 38.02 shijiazhuang 118.01 39.38 tangshan 115.29 38.51 baoding</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取地理位置信息</span></span><br><span class="line">geopos key member [member ...]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取天津的坐标</span></span><br><span class="line">geopos cities:locations tianjin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取两个坐标之间的距离</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">unit代表单位，有4个单位值</span></span><br><span class="line">  - m (meter) 代表米</span><br><span class="line">  - km （kilometer）代表千米</span><br><span class="line">  - mi （miles）代表英里</span><br><span class="line">  - ft （ft）代表尺</span><br><span class="line">geodist key member1 member2 [unit]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取天津和保定之间的距离</span></span><br><span class="line">GEODIST cities:locations tianjin baoding km</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取指定位置范围内的地理信息位置集合，此命令可以用于实现附近的人的功能</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">georadius和georadiusbymember两个命令的作用是一样的，都是以一个地理位置为中心算出指定半径内的其他地理信息位置，不同的是georadius命令的中心位置给出了具体的经纬度，georadiusbymember只需给出成员即可。其中radiusm|km|ft|mi是必需参数，指定了半径（带单位），这两个命令有很多可选参数，参数含义如下：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withcoord：返回结果中包含经纬度。</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withdist：返回结果中包含离中心节点位置的距离。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- withhash：返回结果中包含geohash，有关geohash后面介绍。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- COUNT count：指定返回结果的数量。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- asc|desc：返回结果按照离中心节点的距离做升序或者降序。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- store key：将返回结果的地理位置信息保存到指定键。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- storedist key：将返回结果离中心节点的距离保存到指定键。</span></span><br><span class="line">georadius key longitude latitude radiusm|km|ft|mi [withcoord] [withdist] [withhash] [COUNT count] [asc|desc] [store key] [storedist key]</span><br><span class="line"></span><br><span class="line">georadiusbymember key member radiusm|km|ft|mi [withcoord] [withdist] [withhash] [COUNT count] [asc|desc] [store key] [storedist key]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取geo <span class="built_in">hash</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Redis使用geohash将二维经纬度转换为一维字符串，geohash有如下特点：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- GEO的数据类型为zset，Redis将所有地理位置信息的geohash存放在zset中。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- 字符串越长，表示的位置更精确，表3-8给出了字符串长度对应的精度，例如geohash长度为9时，精度在2米左右。长度和精度的对应关系，请参考：https://easyreadfs.nosdn.127.net/9F42_CKRFsfc8SUALbHKog==/8796093023252281390</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- 两个字符串越相似，它们之间的距离越近，Redis利用字符串前缀匹配算法实现相关的命令。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- geohash编码和经纬度是可以相互转换的。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">- Redis正是使用有序集合并结合geohash的特性实现了GEO的若干命令。</span></span><br><span class="line">geohash key member [member ...]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除操作，GEO没有提供删除成员的命令，但是因为GEO的底层实现是zset，所以可以借用zrem命令实现对地理位置信息的删除。</span></span><br><span class="line">zrem key member</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h1><h2 id="第一种：基于Redis的setnx的操作"><a href="#第一种：基于Redis的setnx的操作" class="headerlink" title="第一种：基于Redis的setnx的操作"></a>第一种：基于Redis的setnx的操作</h2><p>我们在使用Redis的分布式锁的时候，大家都知道是依靠了setnx的指令，在CAS（Compare and swap）的操作的时候，同时给指定的key设置了过期实践（expire），我们在限流的主要目的就是为了在单位时间内，有且仅有N数量的请求能够访问我的代码程序。所以依靠setnx可以很轻松的做到这方面的功能。</p>
-<p>比如我们需要在10秒内限定20个请求，那么我们在setnx的时候可以设置过期时间10，当请求的setnx数量达到20时候即达到了限流效果。代码比较简单就不做展示了。</p>
-<p>当然这种做法的弊端是很多的，比如当统计1-10秒的时候，无法统计2-11秒之内，如果需要统计N秒内的M个请求，那么我们的Redis中需要保持N个key等等问题</p>
-<h2 id="第二种：基于Redis的数据结构zset"><a href="#第二种：基于Redis的数据结构zset" class="headerlink" title="第二种：基于Redis的数据结构zset]"></a>第二种：基于Redis的数据结构zset]</h2><p>其实限流涉及的最主要的就是滑动窗口，上面也提到1-10怎么变成2-11。其实也就是起始值和末端值都各+1即可。</p>
-<p>而我们如果用Redis的list数据结构可以轻而易举的实现该功能</p>
-<p>我们可以将请求打造成一个zset数组，当每一次请求进来的时候，value保持唯一，可以用UUID生成，而score可以用当前时间戳表示，因为score我们可以用来计算当前时间戳之内有多少的请求数量，而zset数据结构也提供了range方法让我们可以很轻易的获取到2个时间戳内有多少请求。</p>
-<p>代码如下</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Response <span class="title function_">limitFlow</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">Long</span> <span class="variable">currentTime</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>().getTime();</span><br><span class="line">        System.out.println(currentTime);</span><br><span class="line">        <span class="keyword">if</span>(redisTemplate.hasKey(<span class="string">&quot;limit&quot;</span>)) &#123;</span><br><span class="line">            <span class="type">Integer</span> <span class="variable">count</span> <span class="operator">=</span> redisTemplate.opsForZSet().rangeByScore(<span class="string">&quot;limit&quot;</span>, currentTime -  intervalTime, currentTime).size();        <span class="comment">// intervalTime是限流的时间 </span></span><br><span class="line">            System.out.println(count);</span><br><span class="line">            <span class="keyword">if</span> (count != <span class="literal">null</span> &amp;&amp; count &gt; <span class="number">5</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> Response.ok(<span class="string">&quot;每分钟最多只能访问5次&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        redisTemplate.opsForZSet().add(<span class="string">&quot;limit&quot;</span>,UUID.randomUUID().toString(),currentTime);</span><br><span class="line">        <span class="keyword">return</span> Response.ok(<span class="string">&quot;访问成功&quot;</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>通过上述代码可以做到滑动窗口的效果，并且能保证每N秒内至多M个请求，缺点就是zset的数据结构会越来越大。实现方式相对也是比较简单的。</p>
-<blockquote>
-<p>基于微服务的思想，构建在 B2C 电商场景下的项目实战。核心技术栈，是 Spring Boot + Dubbo 。未来，会重构成 Spring Cloud Alibaba 。</p>
-<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/YunaiV/onemall">https://github.com/YunaiV/onemall</a></p>
-</blockquote>
-<h2 id="第三种：基于Redis的令牌桶算法"><a href="#第三种：基于Redis的令牌桶算法" class="headerlink" title="第三种：基于Redis的令牌桶算法"></a>第三种：基于Redis的令牌桶算法</h2><p>提到限流就不得不提到令牌桶算法了。</p>
-<p>令牌桶算法提及到输入速率和输出速率，当输出速率大于输入速率，那么就是超出流量限制了。</p>
-<p>也就是说我们每访问一次请求的时候，可以从Redis中获取一个令牌，如果拿到令牌了，那就说明没超出限制，而如果拿不到，则结果相反。</p>
-<p>依靠上述的思想，我们可以<strong>结合Redis的List数据结构</strong>很轻易的做到这样的代码，只是简单实现</p>
-<p><strong>依靠List的leftPop来获取令牌；</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出令牌</span></span><br><span class="line"><span class="keyword">public</span> Response <span class="title function_">limitFlow2</span><span class="params">(Long id)</span>&#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> redisTemplate.opsForList().leftPop(<span class="string">&quot;limit_list&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span>(result == <span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> Response.ok(<span class="string">&quot;当前令牌桶中无令牌&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Response.ok(articleDescription2);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>再<strong>依靠Java的定时任务，定时往List中rightPush令牌</strong>，当然令牌也需要唯一性，所以我这里还是用UUID进行了生成</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 10S的速率往令牌桶中添加UUID，只为保证唯一性</span></span><br><span class="line">    <span class="meta">@Scheduled(fixedDelay = 10_000,initialDelay = 0)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setIntervalTimeTask</span><span class="params">()</span>&#123;</span><br><span class="line">        redisTemplate.opsForList().rightPush(<span class="string">&quot;limit_list&quot;</span>,UUID.randomUUID().toString());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>综上，代码实现起始都不是很难，针对这些限流方式我们可以在AOP或者filter中加入以上代码，用来做到接口的限流，最终保护你的网站。</p>
-<p>Redis其实还有很多其他的用处，他的作用不仅仅是缓存，分布式锁的作用。他的数据结构也不仅仅是只有String，Hash，List，Set，Zset。有兴趣的可以后续了解下他的GeoHash算法；BitMap，HLL以及布隆过滤器数据(Redis4.0之后加入，可以用Docker直接安装redislabs&#x2F;rebloom)结构。</p>
-<blockquote>
-<p> <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/jT0WYISuSoi_hkTmELb7PQ">https://mp.weixin.qq.com/s/jT0WYISuSoi_hkTmELb7PQ</a></p>
-</blockquote>
-<h2 id="第四种：基于Redis的漏桶算法"><a href="#第四种：基于Redis的漏桶算法" class="headerlink" title="第四种：基于Redis的漏桶算法"></a>第四种：基于Redis的漏桶算法</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903982842789896">https://juejin.cn/post/6844903982842789896</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/15/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">海量数据问题解决</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-09-15 01:05:26 / 修改时间：02:09:38" itemprop="dateCreated datePublished" datetime="2022-09-15T01:05:26+08:00">2022-09-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">工程向算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="问题简介"><a href="#问题简介" class="headerlink" title="问题简介"></a>问题简介</h1><p>这里的海量数据问题不是指的一般性的大数据问题，指的是由大量数字、字符串等构成的大数据集，我们需要处理解决如下几种典型的计算问题：计数、排序、去重、交集、TopK等等。</p>
-<p>问题的关键点在于，如此庞大的数据无法一次性放到内存里面，因而处理方案就没有那么简单了。</p>
-<ol>
-<li><p><strong>计数</strong><br> 海量数字，哪个数字出现的次数最多？</p>
-</li>
-<li><p><strong>排序</strong><br> 10G的数字，将其排序。</p>
-</li>
-<li><p><strong>去重</strong></p>
-<p>  海量日志，去除其中重复的数据。</p>
-</li>
-<li><p><strong>交集</strong></p>
-<p>  两个各有20亿行的文件，每一行都只有一个数字，求这两个文件的交集。</p>
-</li>
-<li><p><strong>TopK</strong></p>
-<p>  10G整数求中位数。</p>
-</li>
-</ol>
-<h1 id="典型问题分析"><a href="#典型问题分析" class="headerlink" title="典型问题分析"></a>典型问题分析</h1><h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><p><a target="_blank" rel="noopener" href="https://songyangji.gitee.io/2022/03/20/%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8E%92%E5%BA%8F/">大文件排序</a></p>
-<p>可参考上面的博客。</p>
-<h2 id="去重——海量日志，去除其中重复的数据。"><a href="#去重——海量日志，去除其中重复的数据。" class="headerlink" title="去重——海量日志，去除其中重复的数据。"></a>去重——海量日志，去除其中重复的数据。</h2><blockquote>
-<p> 如果是32位int的话，可以考虑位图bitmap之类的，不过这里我们直接分析更一般性的问题。</p>
-</blockquote>
-<p><strong>哈希文件分片</strong></p>
-<p>首先根据数据量估算一下需要拆分成多少的小文件后可以放在内存里处理。比如1TB的字符串可能需要分成1024个小文件才可以处理。</p>
-<p>对每一条一条数据记录， 根据某种hash规则，求取hash(url) %1024，然后根据所取得的值将数据记录分别存储到1024个小文件（a0~a1023）中。hash结果很集中使得某个文件ai过大，可以再对ai进行二级hash(ai0~ai1024)，这样数据就又被hash到 1024 个不同级别的文件中。  每一个小文件是可以单独进行处理的。</p>
-<blockquote>
-<p>这里有一个小问题，就是上面的处理的方式默认数据基本上均匀分布的，但是如果说某一单个字符串本身就出现了很多很多此，那么二级hash、三级hash都没有用，这个时候需要在最终的放在内存处理前，先对这些hash无法减小数据量的文件进行compact操作，也就是提前去除那些重复字符串。</p>
-</blockquote>
-<h2 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h2><p>计数指的是要计算一条记录出现的次数，这个问题的处理方式本质上和上面的<strong>去重</strong>是一回事的。</p>
-<h2 id="交集"><a href="#交集" class="headerlink" title="交集"></a>交集</h2><h3 id="有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？"><a href="#有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？" class="headerlink" title="有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？"></a>有a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？</h3><blockquote>
-<p>解决方案1：hash 分解+ 分而治之 + 归并 的方式：</p>
-</blockquote>
-<p>如果内存中想要存入所有的 url，共需要 50亿 * 64&#x3D; 320G大小空间，所以采用 hash 分解+ 分而治之 + 归并 的方式：</p>
-<p>（1）遍历文件a，对每个 url 根据某种hash规则，求取hash(url) %1024，然后根据所取得的值将 url 分别存储到1024个小文件（a0~a1023）中。这样每个小文件的大约为300M。如果hash结果很集中使得某个文件ai过大，可以再对ai进行二级hash(ai0~ai1024)，这样 url 就被hash到 1024 个不同级别的文件中。对文件b也是相同的处理方式。</p>
-<p>（2）分别比较文件，a0 VS b0，…… ，a1023 VS b1023，求每对小文件中相同的url时：把其中一个小文件的 url 存储到 hashmap 中，然后遍历另一个小文件的每个url，看其是否在刚才构建的 hashmap 中，如果是，那么就是共同的url，存到文件中。</p>
-<p>（3）把1024个文件中的相同 url 合并起来，比如写到文件里。</p>
-<blockquote>
-<p>解决方案2：Bloom filter</p>
-</blockquote>
-<p>如果允许有一定的错误率，可以使用 Bloom filter。<br>将其中一个文件中的 url载入 Bloom filter，然后挨个读取另外一个文件的url，检查是否与Bloom filter，如果是，那么该url应该是共同的url（注意会有一定的错误率）</p>
-<h3 id="现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。"><a href="#现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。" class="headerlink" title="现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。"></a>现有两个各有20亿行的文件，每一行都只有一个int型数字，求这两个文件的交集。</h3><p><strong>解决方案</strong>：采用 bitmap 进行问题解决，int 的[最大数]是 2^32 &#x3D; 4G。</p>
-<p>用一个二进制的下标来表示一个 int 值，大概需要4G个bit位，即约4G&#x2F;8 &#x3D; 512M的内存，就可以解决问题了。</p>
-<p>① <strong>首先</strong>遍历文件，将每个文件按照数字的正数，负数标记到2个 bitmap 上，为：正数 bitmapA_positive，负数 bitmapA_negative；</p>
-<p>② <strong>遍历</strong>另外一个文件，生成正数：bitmapB_positive，bitmapB_negative；</p>
-<p>③ 取 bitmapA_positive and bitmapB_positive 得到2个文件的正数的交集，同理得到负数的交集；</p>
-<p>④ 合并，问题解决。</p>
-<h2 id="TopK——10G整数求中位数"><a href="#TopK——10G整数求中位数" class="headerlink" title="TopK——10G整数求中位数"></a>TopK——10G整数求中位数</h2><ol>
-<li><p>分桶法</p>
-<p> 思路：化大为小，把所有数划分到各个小区间，把每个数映射到对应的区间里，对每个区间中数的个数进行计数，数一遍各个区间，看看中位数落在哪个区间，若够小，使用基于内存的算法，否则 继续划分。<br> 具体的：<br> 假设整数是32位的，根据每个整数二进制前的5位，可以划分为32个不同的桶，如果某个桶的个数在内存中放不下，则继续划分，知道内存可以放下为止；然后统计每个桶中的数的个数，就可以中位数一定出现在哪个桶中，而且知道是该桶中第几大数，因为桶的划分是根据二进制前缀来进行划分的，桶之间是排好序的。</p>
-</li>
-<li><p>分治+递归</p>
-<p> 题目说是整数，我们认为是带符号的int,所以4字节，占32位。<br> 假设100亿个数字保存在一个大文件中，依次读一部分文件到内存(不超过内存的限制)，将每个数字用二进制表示，比较二进制的最高位(第32位，符号位，0是正，1是负)，如果数字的最高位为0，则将这个数字写入 file_0文件中；如果最高位为 1，则将该数字写入file_1文件中。<br> 从而将100亿个数字分成了两个文件，假设 file_0文件中有 60亿 个数字，file_1文件中有 40亿 个数字。那么中位数就在 file_0 文件中，并且是 file_0 文件中所有数字排序之后的第 10亿 个数字。（file_1中的数都是负数，file_0中的数都是正数，也即这里一共只有40亿个负数，那么排序之后的第50亿个数一定位于file_0中）<br> 现在，我们只需要处理 file_0 文件了（不需要再考虑file_1文件）。对于 file_0 文件，同样采取上面的措施处理：将file_0文件依次读一部分到内存(不超内存限制)，将每个数字用二进制表示，比较二进制的 次高位（第31位），如果数字的次高位为0，写入file_0_0文件中；如果次高位为1，写入file_0_1文件 中。<br> 现假设 file_0_0文件中有30亿个数字，file_0_1中也有30亿个数字，则中位数就是：file_0_0文件中的数字从小到大排序之后的第10亿个数字。<br> 抛弃file_0_1文件，继续对 file_0_0文件 根据 次次高位(第30位) 划分，假设此次划分的两个文件为：file_0_0_0中有5亿个数字，file_0_0_1中有25亿个数字，那么中位数就是 file_0_0_1文件中的所有数字排序之后的 第 5亿 个数。</p>
-</li>
-</ol>
-<blockquote>
-<p>参考文章</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/GarrettWale/p/14478347.html">https://www.cnblogs.com/GarrettWale/p/14478347.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hustwht/article/details/52181632">https://blog.csdn.net/hustwht/article/details/52181632</a></p>
-<p><a target="_blank" rel="noopener" href="https://guozi149.me/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E7%AE%97%E6%B3%95/100%E4%BA%BF%E6%9D%A1URL%E5%8E%BB%E9%87%8D/">https://guozi149.me/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E7%AE%97%E6%B3%95/100%E4%BA%BF%E6%9D%A1URL%E5%8E%BB%E9%87%8D/</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/luxiaoxun/p/14392375.html">https://www.cnblogs.com/luxiaoxun/p/14392375.html</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/13/%E5%AD%97%E5%85%B8%E6%A0%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/13/%E5%AD%97%E5%85%B8%E6%A0%91/" class="post-title-link" itemprop="url">字典树 —— Trie</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-09-13 16:14:57" itemprop="dateCreated datePublished" datetime="2022-09-13T16:14:57+08:00">2022-09-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-14 18:21:24" itemprop="dateModified" datetime="2022-09-14T18:21:24+08:00">2022-09-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="字典树介绍"><a href="#字典树介绍" class="headerlink" title="字典树介绍"></a>字典树介绍</h1><p>又称<strong>前缀树</strong>，Trie树，是一种多叉树。典型应用是用于统计，排序和保存大量的字符串（但不仅限于字符串）。它的优点是：利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较。<br>它的最基本的操作是插入一个字符串，和查询。</p>
-<h1 id="存储原理"><a href="#存储原理" class="headerlink" title="存储原理"></a>存储原理</h1><p>多叉树结构：<br>一般的，如果我们想存储一棵一般的树，树的节点可以这样写：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">OrdinaryTrieNode</span>&#123;</span><br><span class="line">	<span class="type">int</span> val;</span><br><span class="line">	vector&lt;OrdinaryTrieNode*&gt; childs;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>而如果是字典树的话：<br>假设字符串仅由大小为<strong>n</strong>的字符集中的字符构成（比如26个小写字母），那么每个节点的字节就可以有<strong>n</strong>个指向。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> size = <span class="number">26</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TrieNode</span>&#123;</span><br><span class="line">	TrieNode* childs[size];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>发现，节点本身并没有存储字符的值。那么如何知道它的后继字符有哪些呢？<br>这个时候，我们可以把将字符映射到一个索引，然后让父节点的<code>childs</code>数组索引存储这个节点。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> c;</span><br><span class="line">TrieNode* parent;</span><br><span class="line">parent-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>] = <span class="keyword">new</span> TrieNode;</span><br></pre></td></tr></table></figure>
-<p>这个时候<code>parent</code>节点就有了一个新的子节点，对应的字符为<code>c</code>;<br>于是，其实我们发现真正字符的信息其实是<strong>存储在父节点与子节点的边上</strong>，<strong>节点本身只是存储着它的子节点</strong>。</p>
-<p><img src="https://img-blog.csdnimg.cn/20200614173023837.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODQ2MzI0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>（<del>图来自互联网</del> ）<br>那么怎么知道记录一个字符串的结束呢，比如**字符串<code>aabb</code>**，其实并不代表<code>aab</code>出现在字典树里。<br>根据不同实现，也有不同的解决办法。<br>一种方法是，在结构体里加一个变量，表明这个节点是否是字符串的结尾。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">TrieNode</span>&#123;</span><br><span class="line">	<span class="type">bool</span> isEnd;</span><br><span class="line">	TrieNode* childs[size];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h1 id="字典树的静态实现"><a href="#字典树的静态实现" class="headerlink" title="字典树的静态实现"></a>字典树的静态实现</h1><p>数组模拟，下标代替指针。<br>其中，编号为1的节点表示根节点，0表示空指。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> maxnode = maxn*maxlen;  <span class="comment">// 字符串个数*字符串的长度</span></span><br><span class="line"><span class="type">int</span> trie[maxnode][size],tot=<span class="number">1</span>; <span class="comment">// size是字符集的大小，tot保存节点个数</span></span><br><span class="line"><span class="type">bool</span> end[maxnode]  <span class="comment">// 结尾标记</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">idx</span><span class="params">(<span class="type">char</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> c - <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//插入字符串的方法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">char</span>* str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> len = <span class="built_in">strlen</span>(str),p=<span class="number">1</span>;  <span class="comment">//根节点为1</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> id = <span class="built_in">idx</span>(str[i]);</span><br><span class="line">		<span class="keyword">if</span>(!trie[p][id]) <span class="comment">//如果这个节点不存在，新建一个</span></span><br><span class="line">			trie[p][id]= ++tot;</span><br><span class="line">		p = trie[p][id];</span><br><span class="line">	&#125;</span><br><span class="line">	end[p]=<span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//查找字符串的方法</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">find</span><span class="params">(<span class="type">char</span>* str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> len = <span class="built_in">strlen</span>(str),p=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		p = trie[p][<span class="built_in">idx</span>(str[i])];</span><br><span class="line">		<span class="keyword">if</span>(!p) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> end[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="字典树的动态实现"><a href="#字典树的动态实现" class="headerlink" title="字典树的动态实现"></a>字典树的动态实现</h1><p>版本一：<br>其中，析构函数用递归实现。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="built_in">Trie</span>() &#123;</span><br><span class="line">        root = <span class="keyword">new</span> TrieNode;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ~<span class="built_in">Trie</span>()&#123;</span><br><span class="line">        <span class="built_in">destroy</span>(root);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Inserts a word into the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        TrieNode *p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>] == <span class="literal">nullptr</span>)&#123;</span><br><span class="line">                p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>] = <span class="keyword">new</span> TrieNode;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;isEnd = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if the word is in the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">search</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        TrieNode *p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>]==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;isEnd;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if there is any word in the trie that starts with the given prefix. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">startsWith</span><span class="params">(<span class="type">const</span> string &amp;prefix)</span> </span>&#123;</span><br><span class="line">        TrieNode *p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:prefix)&#123;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>]==<span class="literal">nullptr</span>)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">TrieNode</span>&#123;    </span><br><span class="line">        <span class="type">bool</span> isEnd = <span class="literal">false</span>;</span><br><span class="line">        TrieNode* childs[<span class="number">26</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    &#125;;</span><br><span class="line">    TrieNode* root ;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">destroy</span><span class="params">(TrieNode* root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root)&#123;</span><br><span class="line">            <span class="keyword">return</span> ;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(TrieNode* pt:root-&gt;childs)&#123;</span><br><span class="line">            <span class="built_in">destroy</span>(pt);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(root)&#123;</span><br><span class="line">            <span class="keyword">delete</span> root;</span><br><span class="line">            root = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>版本2：<br>树的节点用</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span>&#123;</span><br><span class="line">       <span class="type">bool</span> isEnd = <span class="literal">false</span>;</span><br><span class="line">       unordered_map&lt;<span class="type">char</span>,Node*&gt; childs;</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
-<p>其中析构函数用迭代实现（用一个<code>queue&lt;TrieNode&gt;</code>,遍历这棵树就可）。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="built_in">Trie</span>() &#123;</span><br><span class="line">        root = <span class="keyword">new</span> Node;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">Trie</span>()&#123;</span><br><span class="line">        queue&lt;Node*&gt; q;</span><br><span class="line">        q.<span class="built_in">push</span>(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            Node* pn = q.<span class="built_in">front</span>();</span><br><span class="line">            q.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">for</span>(unordered_map&lt;<span class="type">char</span>,Node*&gt;::iterator it=pn-&gt;childs.<span class="built_in">begin</span>(); it!=pn-&gt;childs.<span class="built_in">end</span>();it++ )&#123;</span><br><span class="line">                q.<span class="built_in">push</span>(it-&gt;second);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">delete</span> pn;</span><br><span class="line">            pn = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Inserts a word into the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        Node* p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!p-&gt;childs.<span class="built_in">count</span>(c))&#123;</span><br><span class="line">                p-&gt;childs[c] = <span class="keyword">new</span> Node;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c];</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;isEnd = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if the word is in the trie. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">search</span><span class="params">(<span class="type">const</span> string &amp;word)</span> </span>&#123;</span><br><span class="line">        Node* p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:word)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!p-&gt;childs.<span class="built_in">count</span>(c))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;isEnd;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if there is any word in the trie that starts with the given prefix. */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">startsWith</span><span class="params">(<span class="type">const</span> string &amp;prefix)</span> </span>&#123;</span><br><span class="line">        Node* p = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">char</span> c:prefix)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!p-&gt;childs.<span class="built_in">count</span>(c))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;childs[c];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Node</span>&#123;</span><br><span class="line">        <span class="type">bool</span> isEnd = <span class="literal">false</span>;</span><br><span class="line">        unordered_map&lt;<span class="type">char</span>,Node*&gt; childs;</span><br><span class="line">    &#125;;</span><br><span class="line">    Node * root;    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h1 id="01Trie介绍"><a href="#01Trie介绍" class="headerlink" title="01Trie介绍"></a>01Trie介绍</h1><p>将数字映射成一个<strong>01串</strong>，如果是一个<code>int</code>数字，就是一个长度为32的01串。<br>然后将这些01串当成字符串插入字典树，这时候字典树的字符集为2（只有0和1）。</p>
-<h2 id="代码部分的几处重要点"><a href="#代码部分的几处重要点" class="headerlink" title="代码部分的几处重要点"></a>代码部分的几处重要点</h2><p>①依次从高位到低位提取出二进制数字<br>注意<code>up</code>是个常量，如果数值是<strong>int</strong>的话，取<strong>30</strong>——最高位是符号位，第二高位就表示$2^{30}$</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=up;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">	<span class="type">int</span> id = (x&gt;&gt;i)&amp;<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<p>②异或结果的求法（位运算加快速度）</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sum = (sum&lt;&lt;<span class="number">1</span>)|<span class="number">1</span>  <span class="comment">// 乘2在加1</span></span><br><span class="line">sum&lt;&lt;=<span class="number">1</span>  <span class="comment">// sum = sum&lt;&lt;1 == sum*2</span></span><br></pre></td></tr></table></figure>
-
-
-<h2 id="典型例题"><a href="#典型例题" class="headerlink" title="典型例题"></a>典型例题</h2><p><a target="_blank" rel="noopener" href="https://loj.ac/problem/10050">The XOR Largest Pair</a><br>01Trie的典型例题<br>给定n个数字，求任意两个数字异或运算的最大值。</p>
-<ul>
-<li>思路：<br>将数字理解为一个长度为32位的01串，异或运算求最值，应该贪心地从最高位到最低位取不同的数字。</li>
-<li>步骤：<br>将所有数字插入Trie，然后遍历n个数字，对于每个数字从高位到低位， 依次匹配与它不同的数字（没有就匹配相同的）。<br>注意这样贪心是合理的，因为高位的数字影响大于低位数字影响总和。<br>譬如:<br>0x1000 0000 &gt;   0x0111 1111。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stack&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ms0(a) memset(a,0,sizeof(a))</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxnode = <span class="number">1e5</span>+<span class="number">5</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> up = <span class="number">30</span>;</span><br><span class="line"><span class="type">int</span> n,d[maxnode],trie[maxnode*<span class="number">32</span>][<span class="number">2</span>],tot=<span class="number">0</span>,ans;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=up;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> id = (x&gt;&gt;i)&amp;<span class="number">1</span>;   <span class="comment">//从高位到低位的获取</span></span><br><span class="line">        <span class="keyword">if</span>(!trie[p][id]) trie[p][id]=++tot;</span><br><span class="line">        p=trie[p][id];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>,sum=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=up;i&gt;=<span class="number">0</span>;i--) <span class="comment">// 从高位到低位</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> id = (x&gt;&gt;i)&amp;<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(trie[p][id^<span class="number">1</span>])</span><br><span class="line">        &#123;</span><br><span class="line">            sum = (sum&lt;&lt;<span class="number">1</span>)|<span class="number">1</span> ;  <span class="comment">// sum=sum*2+1</span></span><br><span class="line">            p = trie[p][id^<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            sum&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">            p=trie[p][id];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;d[i]);</span><br><span class="line">        <span class="built_in">insert</span>(d[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">        ans = <span class="built_in">max</span>(ans,<span class="built_in">find</span>(d[i]));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="Demo——字典树的实现"><a href="#Demo——字典树的实现" class="headerlink" title="Demo——字典树的实现"></a>Demo——字典树的实现</h1><p><strong>NC124</strong> <strong>字典树的实现</strong></p>
-<p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/a55a584bc0ca4a83a272680174be113b?tpId=117&tqId=37818&rp=1&ru=/exam/oj&qru=/exam/oj&sourceUrl=/exam/oj?difficulty=3&judgeStatus=3&page=1&pageSize=50&search=&tab=%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587&topicId=117&difficulty=3&judgeStatus=3&tags=&title=">https://www.nowcoder.com/practice/a55a584bc0ca4a83a272680174be113b?tpId=117&amp;tqId=37818&amp;rp=1&amp;ru=/exam/oj&amp;qru=/exam/oj&amp;sourceUrl=%2Fexam%2Foj%3Fdifficulty%3D3%26judgeStatus%3D3%26page%3D1%26pageSize%3D50%26search%3D%26tab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D117&amp;difficulty=3&amp;judgeStatus=3&amp;tags=&amp;title=</a></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> id(c) c - <span class="string">&#x27;a&#x27;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">        <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> endCnt = <span class="number">0</span>;</span><br><span class="line">        Node *child[<span class="number">26</span>]&#123;&#125;;</span><br><span class="line">    &#125;;</span><br><span class="line">    Node *root = <span class="keyword">new</span> Node;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(string &amp;s)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:s) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                p-&gt;child[<span class="built_in">id</span>(c)] = <span class="keyword">new</span> Node;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">            p-&gt;cnt++;</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;endCnt++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">remove</span><span class="params">(string &amp;s)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:s) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">            p-&gt;cnt--;</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;endCnt--;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">search</span><span class="params">(string &amp;s)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:s) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;endCnt &gt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">prefixNumber</span><span class="params">(string &amp;pre)</span> </span>&#123;</span><br><span class="line">        Node *p = root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c:pre) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p-&gt;child[<span class="built_in">id</span>(c)] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;child[<span class="built_in">id</span>(c)];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p-&gt;cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param operators string字符串vector&lt;vector&lt;&gt;&gt; the ops</span></span><br><span class="line"><span class="comment">     * @return string字符串vector</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">vector&lt;string&gt; <span class="title">trieU</span><span class="params">(vector&lt;vector&lt;string&gt; &gt; &amp;operators)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        Trie trie;</span><br><span class="line">        vector&lt;string&gt; ans;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;opt: operators) &#123;</span><br><span class="line">            string o = opt[<span class="number">0</span>];</span><br><span class="line">            string s = opt[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (o == <span class="string">&quot;1&quot;</span>) &#123;</span><br><span class="line">                trie.<span class="built_in">add</span>(s);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (o == <span class="string">&quot;2&quot;</span>) &#123;</span><br><span class="line">                trie.<span class="built_in">remove</span>(s);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (o == <span class="string">&quot;3&quot;</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (trie.<span class="built_in">search</span>(s)) &#123;</span><br><span class="line">                    ans.<span class="built_in">emplace_back</span>(<span class="string">&quot;YES&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    ans.<span class="built_in">emplace_back</span>(<span class="string">&quot;NO&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (o == <span class="string">&quot;4&quot;</span>) &#123;</span><br><span class="line">                <span class="type">int</span> num = trie.<span class="built_in">prefixNumber</span>(s);</span><br><span class="line">                ans.<span class="built_in">emplace_back</span>(<span class="built_in">to_string</span>(num));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/05/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/05/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/" class="post-title-link" itemprop="url">Spring如何解决循环依赖</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-09-05 13:05:42 / 修改时间：13:57:39" itemprop="dateCreated datePublished" datetime="2022-09-05T13:05:42+08:00">2022-09-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="三级缓存的设计"><a href="#三级缓存的设计" class="headerlink" title="三级缓存的设计"></a>三级缓存的设计</h2><blockquote>
-<p>这里指的是单例的、非构造依赖的循环引用。很多人都知道Spring用了三层缓存来解决循环依赖，但是不知道其原因，为什么是三级缓存？二级缓存不行吗？一级缓存不可以 ？</p>
-</blockquote>
-<p>Spring 解决循环依赖的核心就是提前暴露对象，而提前暴露的对象就是放置于第二级缓存中。缓存的底层都是Map，至于它们属于第几层是由Spring获取数据顺序以及其作用来表现的。</p>
-<p>三级缓存的说明：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>singletonObjects</code></td>
-<td>一级缓存，存放完整的 Bean。</td>
-</tr>
-<tr>
-<td><code>earlySingletonObjects</code></td>
-<td>二级缓存，存放提前暴露的Bean，Bean 是不完整的，未完成属性注入和执行 初始化（init） 方法。</td>
-</tr>
-<tr>
-<td><code>singletonFactories</code></td>
-<td>三级缓存，存放的是 Bean 工厂，主要是生产 Bean，存放到二级缓存中。</td>
-</tr>
-</tbody></table>
-<h3 id="第一级缓存singletonObjects"><a href="#第一级缓存singletonObjects" class="headerlink" title="第一级缓存singletonObjects"></a>第一级缓存<code>singletonObjects</code></h3><p>1.先说一级缓存<code>singletonObjects</code>。实际上，一级依赖已经可以解决循环依赖的问题，假设两个beanA和beanB相互依赖，beanA被实例化后，放入一级缓存，即使没有进行初始化，但是beanA的引用已经创建（栈到堆的引用已经确定），其他依赖beanB已经可以持有beanA的引用，但是这个bean在没有初始化完成前，其内存（堆）里的字段、方法等还不能正常使用，but，这并不影响对象之间引用持有；这个时候beanA依赖的beanB实例化，beanB可以顺利拿到beanA的引用，完成beanB的实例化与初始化，并放入一级缓存，在beanB完成创建后，beanA通过缓存顺利拿到beanB的引用，至此，循环依赖只需一层缓存就能完成。</p>
-<p>2.一级缓存的关键点在与：bean实例化与初始化的分离。从JVM的角度，实例化后，对象已经存在，其内的属性都是初始默认值，只有在初始化后才会赋值，以及持有其他对象的引用。通过这个特性，在实例化后，我们就可以将对象的引用放入缓存交给需要引用依赖的其他对象，这个过程就是提前暴露。</p>
-<h3 id="第三级缓存singletonFactories"><a href="#第三级缓存singletonFactories" class="headerlink" title="第三级缓存singletonFactories"></a>第三级缓存<code>singletonFactories</code></h3><p>1.上述我们通过一级缓存已经拿到的对象有什么问题？</p>
-<p>根本问题就是，我们拿到的是bean的原始引用，如果我们需要的是bean的代理对象怎么办？Spring里充斥了大量的动态代理模式的架构，典型的AOP就是动态代理模式实现的，再比如我们经常使用的配置类注解<code>@Configuration</code>在缺省情况下（full mode），其内的所有@Bean都是处于动态代理模式，除非手动指定<code>proxyBeanMethods = false</code>将配置转成简略模式（lite mode）。</p>
-<p>2.所以，Spring在bean实例化后，将原始bean放入第三级缓存singletonFactories中，第三级缓存里实际存入的是ObjectFactory接口签名的回调实现。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 函数签名</span><br><span class="line">addSingletonFactory(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span><br><span class="line">    </span><br><span class="line"># 具体实现由回调决定    </span><br><span class="line">addSingletonFactory(beanName, () -&gt; getEarlyBeanReference(beanName, mbd, bean));</span><br></pre></td></tr></table></figure>
-
-<p>那么如果有动态代理的需求，里面可以埋点进行处理，将原始bean包装后返回。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Object <span class="title function_">getEarlyBeanReference</span><span class="params">(String beanName, RootBeanDefinition mbd, Object bean)</span> &#123;</span><br><span class="line">	<span class="type">Object</span> <span class="variable">exposedObject</span> <span class="operator">=</span> bean;</span><br><span class="line">	<span class="keyword">if</span> (!mbd.isSynthetic() &amp;&amp; hasInstantiationAwareBeanPostProcessors()) &#123;</span><br><span class="line">		<span class="keyword">for</span> (BeanPostProcessor bp : getBeanPostProcessors()) &#123;</span><br><span class="line">			<span class="keyword">if</span> (bp <span class="keyword">instanceof</span> SmartInstantiationAwareBeanPostProcessor) &#123;</span><br><span class="line">				<span class="type">SmartInstantiationAwareBeanPostProcessor</span> <span class="variable">ibp</span> <span class="operator">=</span> (SmartInstantiationAwareBeanPostProcessor) bp;</span><br><span class="line">				exposedObject = ibp.getEarlyBeanReference(exposedObject, beanName);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> exposedObject;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3.通过第三级缓存我们可以拿到可能经过包装的对象，解决对象代理封装的问题。</p>
-<h3 id="第二级缓存earlySingletonObjects"><a href="#第二级缓存earlySingletonObjects" class="headerlink" title="第二级缓存earlySingletonObjects"></a>第二级缓存<code>earlySingletonObjects</code></h3><p>1.为什么需要<code>earlySingletonObjects</code>这个二级缓存？并且，如果只有一个缓存的情况下，为什么不直接使用<code>singletonFactories</code>这个缓存，即可实现代理又可以缓存数据。</p>
-<p>2.从软件设计角度考虑，三个缓存代表三种不同的职责，根据单一职责原理，从设计角度就需分离三种职责的缓存，所以形成三级缓存的状态。</p>
-<h2 id="三级缓存的划分及其作用。"><a href="#三级缓存的划分及其作用。" class="headerlink" title="三级缓存的划分及其作用。"></a>三级缓存的划分及其作用。</h2><ol>
-<li><p>一级缓存<code>singletonObjects</code>是完整的bean，它可以被外界任意使用，并且不会有歧义。</p>
-</li>
-<li><p>二级缓存<code>earlySingletonObjects</code>是不完整的bean，没有完成初始化，它与<code>singletonObjects</code>的分离主要是职责的分离以及边界划分，可以试想一个Map缓存里既有完整可使用的bean，也有不完整的，只能持有引用的bean，在复杂度很高的架构中，很容易出现歧义，并带来一些不可预知的错误。</p>
-</li>
-<li><p>三级缓存<code>singletonFactories</code>，其职责就是包装一个bean，有回调逻辑，所以它的作用非常清晰，并且只能处于第三层。</p>
-</li>
-</ol>
-<p>在实际使用中，<strong>要获取一个bean，先从一级缓存一直查找到三级缓存，缓存bean的时候是从三级到一级的顺序保存。</strong></p>
-<p>并且缓存bean的过程中，<strong>三个缓存都是互斥的</strong>，只会保持bean在一个缓存中，而且，<strong>最终都会在一级缓存中</strong>。</p>
-<h3 id="需要自行解决的循环依赖"><a href="#需要自行解决的循环依赖" class="headerlink" title="需要自行解决的循环依赖"></a>需要自行解决的循环依赖</h3><ul>
-<li>多例循环依赖（不是单例模式）</li>
-<li>构造器循环依赖</li>
-<li>@DependsOn产生的循环依赖（@DependsOn注解可以定义在类和方法上，意思是我这个组件要依赖于另一个组件，也就是说被依赖的组件会比该组件先注册到IOC容器中。）</li>
-<li>@Async的循环依赖（<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43944305/article/details/120499084%E3%80%81https://zhuanlan.zhihu.com/p/482514840%EF%BC%89">https://blog.csdn.net/weixin_43944305/article/details/120499084、https://zhuanlan.zhihu.com/p/482514840）</a></li>
-</ul>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/asker009/p/14376955.html">Spring Bean 循环依赖为什么需要三级缓存</a></p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6985337310472568839">https://juejin.cn/post/6985337310472568839</a></p>
-<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039091691">https://segmentfault.com/a/1190000039091691</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38738238/article/details/123218697">https://blog.csdn.net/weixin_38738238/article/details/123218697</a></p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7046316452801937416">https://juejin.cn/post/7046316452801937416</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/05/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/05/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/" class="post-title-link" itemprop="url">SpringBoot自动装配</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-09-05 11:32:10 / 修改时间：13:05:20" itemprop="dateCreated datePublished" datetime="2022-09-05T11:32:10+08:00">2022-09-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="从SPI到SpringBootAutoConfig"><a href="#从SPI到SpringBootAutoConfig" class="headerlink" title="从SPI到SpringBootAutoConfig"></a>从SPI到SpringBootAutoConfig</h1><p>SPI ，全称为 Service Provider Interface(服务提供者接口)，是一种服务发现机制。它通过在classpath路径下的META-INF&#x2F;services文件夹查找文件，自动加载文件中所定义的类。</p>
-<p>通过某种方式读取<code>spring.factories</code>文件，紧接着把里面所有的自动配置类加载到Spring容器中，然后就可以通过Spring的机制将配置类的@Bean注入到容器中了。</p>
-<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000040510401">看完就会的SpringBoot自动装配原理</a></p>
-<p><code>@SpringBootApplication</code><br>-&gt;<code>@EnableAutoConfiguration</code><br>-&gt;<code>AutoConfigurationImportSelector</code><br>-&gt;<code>AutoConfigurationImportSelector#selectImports()</code><br>-&gt; <code>AutoConfigurationImportSelector#getCandidateConfigurations</code><br>-&gt; <code>SpringFactoriesLoader#loadFactoryNames</code><br>-&gt;…<code>SpringFactoriesLoader#loadSpringFactories()</code><br>-&gt;”META-INF&#x2F;spring.factories”</p>
-<p>不光是这个依赖下的META-INF&#x2F;spring.factories被读取到，所有 Spring Boot Starter 下的META-INF&#x2F;spring.factories都会被读取到。</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/javaguide/p/springboot-auto-config.html">淘宝一面：“说一下 Spring Boot 自动装配原理呗？”</a></p>
-<p><code>AutoConfigurationImportSelector</code> 类实现了 <code>ImportSelector</code>接口，也就实现了这个接口中的 <code>selectImports</code>方法，该方法主要用于<strong>获取所有符合条件的类的全限定类名，这些类需要被加载到 IoC 容器中</strong>。</p>
-<p><strong>总结</strong></p>
-<p>Spring Boot 通过<code>@EnableAutoConfiguration</code>开启自动装配，通过 SpringFactoriesLoader 最终加载<code>META-INF/spring.factories</code>中的自动配置类实现自动装配，自动配置类其实就是通过<code>@Conditional</code>按需加载的配置类，想要其生效必须引入<code>spring-boot-starter-xxx</code>包实现起步依赖</p>
-<blockquote>
-<p>Spring Boot 提供的条件注解</p>
-<ul>
-<li><code>@ConditionalOnBean</code>：当容器里有指定 Bean 的条件下</li>
-<li><code>@ConditionalOnMissingBean</code>：当容器里没有指定 Bean 的情况下</li>
-<li><code>@ConditionalOnSingleCandidate</code>：当指定 Bean 在容器中只有一个，或者虽然有多个但是指定首选 Bean</li>
-<li><code>@ConditionalOnClass</code>：当类路径下有指定类的条件下</li>
-<li><code>@ConditionalOnMissingClass</code>：当类路径下没有指定类的条件下</li>
-<li><code>@ConditionalOnProperty</code>：指定的属性是否有指定的值</li>
-<li><code>@ConditionalOnResource</code>：类路径是否有指定的值</li>
-<li><code>@ConditionalOnExpression</code>：基于 SpEL 表达式作为判断条件</li>
-<li><code>@ConditionalOnJava</code>：基于 Java 版本作为判断条件</li>
-<li><code>@ConditionalOnJndi</code>：在 JNDI 存在的条件下差在指定的位置</li>
-<li><code>@ConditionalOnNotWebApplication</code>：当前项目不是 Web 项目的条件下</li>
-<li><code>@ConditionalOnWebApplication</code>：当前项目是 Web 项 目的条件下</li>
-</ul>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/25/%E6%B6%88%E6%81%AFAck%E4%B8%8EOffset%E6%8F%90%E4%BA%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/08/25/%E6%B6%88%E6%81%AFAck%E4%B8%8EOffset%E6%8F%90%E4%BA%A4/" class="post-title-link" itemprop="url">消息Ack与Offset提交</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-08-25 15:43:38" itemprop="dateCreated datePublished" datetime="2022-08-25T15:43:38+08:00">2022-08-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="http://dockone.io/article/9820">http://dockone.io/article/9820</a></p>
-<p><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/Kafka%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98/16%20%20%E6%8F%AD%E5%BC%80%E7%A5%9E%E7%A7%98%E7%9A%84%E2%80%9C%E4%BD%8D%E7%A7%BB%E4%B8%BB%E9%A2%98%E2%80%9D%E9%9D%A2%E7%BA%B1.md">https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/Kafka%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98/16%20%20%E6%8F%AD%E5%BC%80%E7%A5%9E%E7%A7%98%E7%9A%84%E2%80%9C%E4%BD%8D%E7%A7%BB%E4%B8%BB%E9%A2%98%E2%80%9D%E9%9D%A2%E7%BA%B1.md</a></p>
-<p><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/Kafka%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98/18%20%20Kafka%E4%B8%AD%E4%BD%8D%E7%A7%BB%E6%8F%90%E4%BA%A4%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF.md">https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/Kafka%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98/18%20%20Kafka%E4%B8%AD%E4%BD%8D%E7%A7%BB%E6%8F%90%E4%BA%A4%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF.md</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/24/%E6%97%B6%E9%97%B4%E8%BD%AE%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/08/24/%E6%97%B6%E9%97%B4%E8%BD%AE%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">时间轮算法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-08-24 15:35:10" itemprop="dateCreated datePublished" datetime="2022-08-24T15:35:10+08:00">2022-08-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">工程向算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p><a href="%E9%9D%A2%E8%AF%95%E5%AE%98%EF%BC%9A%E7%9F%A5%E9%81%93%E6%97%B6%E9%97%B4%E8%BD%AE%E7%AE%97%E6%B3%95%E5%90%97%EF%BC%9F%E5%9C%A8Netty%E5%92%8CKafka%E4%B8%AD%E5%A6%82%E4%BD%95%E5%BA%94%E7%94%A8%E7%9A%84%EF%BC%9F">https://github.com/baicaihenxiao/GitBook-Notes/blob/master/zu-jian/kafka/mian-shi-guan-zhi-dao-shi-jian-lun-suan-fa-ma-zai-netty-he-kafka-zhong-ru-he-ying-yong-de.md</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/luozhiyun/p/12075326.html">时间轮算法（TimingWheel）是如何实现的？</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/23/%E9%99%90%E6%B5%81%E3%80%81%E9%99%8D%E7%BA%A7%E3%80%81%E7%86%94%E6%96%AD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/08/23/%E9%99%90%E6%B5%81%E3%80%81%E9%99%8D%E7%BA%A7%E3%80%81%E7%86%94%E6%96%AD/" class="post-title-link" itemprop="url">限流、降级、熔断</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-08-23 16:27:29" itemprop="dateCreated datePublished" datetime="2022-08-23T16:27:29+08:00">2022-08-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-12 23:04:15" itemprop="dateModified" datetime="2022-09-12T23:04:15+08:00">2022-09-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9C%8D%E5%8A%A1%E6%B2%BB%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">服务治理</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/341939685">服务降级与服务熔断区别</a></p>
-<p><a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/2593d1a3b9e1e06cac6502c4f">限流、熔断与降级</a></p>
-<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1815254">10张图带你彻底搞懂限流、熔断、服务降级</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/13/Rabbitmq%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/08/13/Rabbitmq%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">Rabbitmq消息模型</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-08-13 23:53:09" itemprop="dateCreated datePublished" datetime="2022-08-13T23:53:09+08:00">2022-08-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="基本模型"><a href="#基本模型" class="headerlink" title="基本模型"></a>基本模型</h1><h2 id="单个消费者"><a href="#单个消费者" class="headerlink" title="单个消费者"></a>单个消费者</h2><p><img src="https://www.rabbitmq.com/img/tutorials/python-one-overall.png"></p>
-<h2 id="多个消费者并发消费"><a href="#多个消费者并发消费" class="headerlink" title="多个消费者并发消费"></a>多个消费者并发消费</h2><p><img src="https://www.rabbitmq.com/img/tutorials/python-two.png"><br>如果有多个消费者，它们会共同消费这个队列里的消息，是负载均衡的实现方式，官方称这叫”Work Queues”。</p>
-<p>（而在Kafka、RocketMQ里，这样的消费方式叫ConsumerGroup）</p>
-<p><strong>总结</strong></p>
-<p>根据上面的两张图，我们可以得出这样的结论，这里的队列逻辑上和物理上可以认为是一个，多个生产者并发push，多个消费者并发poll。</p>
-<h1 id="交换机的引入"><a href="#交换机的引入" class="headerlink" title="交换机的引入"></a>交换机的引入</h1><p>虽然基本的mq模型就是上面所述的，但是为了更好地管理消息的路由，各大mq的设计方案各有不同。</p>
-<p>RabbitMq的设计理念是：消费者和<strong>队列</strong>打交道，生产者和<strong>交换机</strong>打交道，<strong>队列</strong>可以<strong>绑定（bind）</strong>到<strong>交换机</strong>上，二者的网络路由关系叫<strong>路由键</strong>。</p>
-<blockquote>
-<p>ps：虽然设计上，生产者只能将消息发到某个exchange，但是为了保持历史兼容，rabbit自己提供了一个default的交换机供你使用，这个交换机叫直连（Direct）交换机。</p>
-</blockquote>
-<h2 id="直连交换机-Direct-Exchange"><a href="#直连交换机-Direct-Exchange" class="headerlink" title="直连交换机(Direct Exchange)"></a>直连交换机(Direct Exchange)</h2><p><img src="https://www.rabbitmq.com/img/tutorials/direct-exchange.png"></p>
-<p>如上图，消息发送到某个直连交换机后，具体要路由到哪个队列，是由生产者发送消息的路由键决定的。</p>
-<blockquote>
-<p>ps：同样，为了历史兼容，如果你使用了默认的交换机，也没有指定路由键，那么默认会使用队列名作为路由键。</p>
-</blockquote>
-<h2 id="扇出交换机-Fanout-Exchange"><a href="#扇出交换机-Fanout-Exchange" class="headerlink" title="扇出交换机(Fanout Exchange)"></a>扇出交换机(Fanout Exchange)</h2><p><img src="https://www.rabbitmq.com/img/tutorials/bindings.png"></p>
-<p>扇出交换机将消息广播到每一个bind的队列上。</p>
-<blockquote>
-<p>ps: 其实这里的fanout的概念就有点像kafka、rocketmq里，不同ConsumerGroup消费topic的概念，也就是说，不用的ConsumerGroup的消费进度是独立的。</p>
-</blockquote>
-<h2 id="主题交换机（Topic-Exchange）"><a href="#主题交换机（Topic-Exchange）" class="headerlink" title="主题交换机（Topic Exchange）"></a>主题交换机（Topic Exchange）</h2><p><img src="https://www.rabbitmq.com/img/tutorials/python-five.png"></p>
-<p>可以理解为<strong>带匹配符的Direct Exchange</strong>，根据路由键来路由到相匹配的队列上，而不是简单地比较是否相等。</p>
-<blockquote>
-<p>参考资料</p>
-<p><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/getstarted.html">https://www.rabbitmq.com/getstarted.html</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
     
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">Redis的热key问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-08-13 23:50:26" itemprop="dateCreated datePublished" datetime="2022-08-13T23:50:26+08:00">2022-08-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-10-17 10:52:52" itemprop="dateModified" datetime="2022-10-17T10:52:52+08:00">2022-10-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>上面提到，所谓热key问题就是，突然有几十万的请求去访问redis上的某个特定key。那么，这样会造成流量过于集中，达到物理网卡上限，从而导致这台redis的服务器宕机。那接下来这个key的请求，就会直接怼到你的数据库上，导致你的服务不可用。</p>
-</blockquote>
-<h2 id="热Key的危害"><a href="#热Key的危害" class="headerlink" title="热Key的危害"></a>热Key的危害</h2><ul>
-<li>流量集中，达到服务器处理上限（<code>CPU</code>、网络 <code>IO</code> 等）；</li>
-<li>会影响在同一个 <code>Redis</code> 实例上其他 <code>Key</code> 的读写请求操作；</li>
-<li>热 <code>Key</code> 请求落到同一个 <code>Redis</code> 实例上，无法通过扩容解决；</li>
-<li>大量 <code>Redis</code> 请求失败，查询操作可能打到数据库，拖垮数据库，导致整个服务不可用。</li>
-</ul>
-<h2 id="如何发现热Key"><a href="#如何发现热Key" class="headerlink" title="如何发现热Key"></a>如何发现热Key</h2><h3 id="凭借业务经验，预估热-Key-出现"><a href="#凭借业务经验，预估热-Key-出现" class="headerlink" title="凭借业务经验，预估热 Key 出现"></a>凭借业务经验，预估热 Key 出现</h3><p>根据业务系统上线的一些活动和功能，我们是可以在某些场景下提前预估热 <code>Key</code> 的出现的，比如业务需要进行一场商品秒杀活动，秒杀商品信息和数量一般都会缓存到 <code>Redis</code> 中，这种场景极有可能出现热 <code>Key</code> 问题的。</p>
-<ul>
-<li>优点：简单，凭经验发现热 <code>Key</code>，提早发现提早处理；</li>
-<li>缺点：没有办法预测所有热 <code>Key</code> 出现，比如某些热点新闻事件，无法提前预测。</li>
-</ul>
-<h3 id="客户端进行收集"><a href="#客户端进行收集" class="headerlink" title="客户端进行收集"></a>客户端进行收集</h3><p>一般我们在连接 <code>Redis</code> 服务器时都要使用专门的 SDK（比如：<code>Java</code> 的客户端工具 <code>Jedis</code>、<code>Redisson</code>），我们可以对客户端工具进行封装，在发送请求前进行收集采集，同时定时把收集到的数据上报到统一的服务进行聚合计算。</p>
-<ul>
-<li>优点：方案简单</li>
-<li>缺点：<ul>
-<li>对客户端代码有一定入侵，或者需要对 <code>SDK</code> 工具进行二次开发；</li>
-<li>没法适应多语言架构，每一种语言的 <code>SDK</code> 都需要进行开发，后期开发维护成本较高。</li>
-</ul>
-</li>
-</ul>
-<h3 id="在代理层进行收集"><a href="#在代理层进行收集" class="headerlink" title="在代理层进行收集"></a>在代理层进行收集</h3><p>如果所有的 <code>Redis</code> 请求都经过 <code>Proxy</code>（代理）的话，可以考虑改动 <code>Proxy</code> 代码进行收集，思路与客户端基本类似。</p>
-<p><img src="https://gitee.com/dongzl/article-images/raw/master/2021/03-Redis-Hot-Key/Redis-Hot-Key-02.png" alt="img"></p>
-<ul>
-<li>优点：对使用方完全透明，能够解决客户端 <code>SDK</code> 的语言异构和版本升级问题；</li>
-<li>缺点：<ul>
-<li>开发成本会比客户端高些；</li>
-<li>并不是所有的 <code>Redis</code> 集群架构中都有 <code>Proxy</code> 代理（使用这种方式必须要部署 <code>Proxy</code>）。</li>
-</ul>
-</li>
-</ul>
-<h3 id="使用-Redis-自带命令"><a href="#使用-Redis-自带命令" class="headerlink" title="使用 Redis 自带命令"></a>使用 Redis 自带命令</h3><ol>
-<li><strong>hotkeys 参数</strong></li>
-</ol>
-<p><code>Redis</code> 在 <code>4.0.3</code> 版本中添加了 <a target="_blank" rel="noopener" href="https://github.com/redis/redis/pull/4392">hotkeys</a> 查找特性，可以直接利用 <code>redis-cli --hotkeys</code> 获取当前 <code>keyspace</code> 的热点 <code>key</code>，实现上是通过 <code>scan + object freq</code> 完成的。</p>
-<ul>
-<li>优点：无需进行二次开发，能够直接利用现成的工具；</li>
-<li>缺点：<ul>
-<li>由于需要扫描整个 <code>keyspace</code>，实时性上比较差;</li>
-<li>扫描时间与 <code>key</code> 的数量正相关，如果 <code>key</code> 的数量比较多，耗时可能会非常长。</li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>hotkeys<br><a target="_blank" rel="noopener" href="https://www.zhangbj.com/p/765.html">https://www.zhangbj.com/p/765.html</a></p>
-</blockquote>
-<ol start="2">
-<li><a target="_blank" rel="noopener" href="https://redis.io/commands/monitor">monitor</a> 命令</li>
-</ol>
-<p><code>monitor</code> 命令可以实时抓取出 <code>Redis</code> 服务器接收到的命令，通过 <code>redis-cli monitor</code> 抓取数据，同时结合一些现成的分析工具，比如 <a target="_blank" rel="noopener" href="https://github.com/facebookarchive/redis-faina">redis-faina</a>，统计出热 Key。</p>
-<ul>
-<li>优点：无需进行二次开发，能够直接利用现成的工具；</li>
-<li>缺点：该命令在高并发的条件下，有内存增暴增的隐患，还会降低 <code>Redis</code> 的性能。</li>
-</ul>
-<h3 id="Redis-节点抓包分析"><a href="#Redis-节点抓包分析" class="headerlink" title="Redis 节点抓包分析"></a>Redis 节点抓包分析</h3><p><code>Redis</code> 客户端使用 <code>TCP</code> 协议与服务端进行交互，通信协议采用的是 <code>RESP</code> 协议。自己写程序监听端口，按照 <code>RESP</code> 协议规则解析数据，进行分析。或者我们可以使用一些抓包工具，比如 <code>tcpdump</code> 工具，抓取一段时间内的流量进行解析。</p>
-<ul>
-<li>优点：对 <code>SDK</code> 或者 <code>Proxy</code> 代理层没有入侵；</li>
-<li>缺点：<ul>
-<li>有一定的开发成本；</li>
-<li>热 <code>Key</code> 节点的网络流量和系统负载已经比较高了，抓包可能会导致情况进一步恶化。</li>
-</ul>
-</li>
-</ul>
-<h2 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h2><h3 id="增加-Redis-实例副本数量"><a href="#增加-Redis-实例副本数量" class="headerlink" title="增加 Redis 实例副本数量"></a>增加 Redis 实例副本数量</h3><p>对于出现热 <code>Key</code> 的 <code>Redis</code> 实例，我们可以通过水平扩容增加副本数量，将读请求的压力分担到不同副本节点上。</p>
-<p>(通过<strong>主从复制-读写分离</strong>，将读请求分散多个机器上。)</p>
-<h3 id="二级缓存（本地缓存）"><a href="#二级缓存（本地缓存）" class="headerlink" title="二级缓存（本地缓存）"></a>二级缓存（本地缓存）</h3><p>当出现热 <code>Key</code> 以后，把热 <code>Key</code> 加载到系统的 <code>JVM</code> 中。后续针对这些热 <code>Key</code> 的请求，会直接从 <code>JVM</code> 中获取，而不会走到 <code>Redis</code> 层。这些本地缓存的工具很多，比如 <code>Ehcache</code>，或者 <code>Google Guava</code> 中 <code>Cache</code> 工具，或者直接使用 <code>HashMap</code> 作为本地缓存工具都是可以的。</p>
-<p><strong>使用本地缓存需要注意两个问题：</strong></p>
-<ul>
-<li>如果对热 <code>Key</code> 进行本地缓存，需要防止本地缓存过大，影响系统性能；</li>
-<li>需要处理本地缓存和 <code>Redis</code> 集群数据的一致性问题。</li>
-</ul>
-<h3 id="热-Key-备份"><a href="#热-Key-备份" class="headerlink" title="热 Key 备份"></a>热 Key 备份</h3><p>通过前面的分析，我们可以了解到，之所以出现热 <code>Key</code>，是因为有大量的对同一个 <code>Key</code> 的请求落到同一个 <code>Redis</code> 实例上，如果我们可以有办法将这些请求打散到不同的实例上，防止出现流量倾斜的情况，那么热 <code>Key</code> 问题也就不存在了。</p>
-<p>那么如何将对某个热 <code>Key</code> 的请求打散到不同实例上呢？我们就可以通过热 <code>Key</code> 备份的方式，基本的思路就是，我们<strong>可以给热 <code>Key</code> 加上前缀或者后缀，把一个热 <code>Key</code> 的数量变成 <code>Redis</code> 实例个数 <code>N</code> 的倍数 <code>M</code>，从而由访问一个 <code>Redis</code> <code>Key</code> 变成访问 <code>N * M</code> 个 <code>Redis</code> <code>Key</code>。 <code>N * M</code> 个 <code>Redis</code> <code>Key</code> 经过分片分布到不同的实例上，将访问量均摊到所有实例</strong>。</p>
-<p>具体的逻辑：</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// N 为 Redis 实例个数，M 为 N 的 <span class="number">2</span>倍</span><br><span class="line">const M = N * <span class="number">2</span></span><br><span class="line">//生成随机数</span><br><span class="line"><span class="built_in">random</span> = GenRandom(<span class="number">0</span>, M)</span><br><span class="line">//构造备份新 Key</span><br><span class="line">bakHotKey = hotKey + <span class="string">&quot;_&quot;</span> + <span class="built_in">random</span></span><br><span class="line">// 先从备份key中取</span><br><span class="line">data = redis.GET(bakHotKey)</span><br><span class="line"><span class="keyword">if</span> data == NULL &#123;</span><br><span class="line">    data = redis.GET(hotKey)</span><br><span class="line">    <span class="keyword">if</span> data == NULL &#123;</span><br><span class="line">        data = GetFromDB()</span><br><span class="line">        // 可以利用原子锁来写入数据保证数据一致性</span><br><span class="line">        redis.SET(hotKey, data, expireTime)</span><br><span class="line">        redis.SET(bakHotKey, data, expireTime + GenRandom(<span class="number">0</span>, <span class="number">5</span>))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        redis.SET(bakHotKey, data, expireTime + GenRandom(<span class="number">0</span>, <span class="number">5</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>在这段代码中，通过一个大于等于 <code>1</code> 小于 <code>M</code> 的随机数，得到一个 <code>bakHotKey</code>，程序会优先访问 <code>bakHotKey</code>，在得不到数据的情况下，再访问原来的 <code>hotkey</code>，并将 <code>hotkey</code> 的内容写回 <code>bakHotKey</code>。</p>
-<p>值得注意的是，<code>backHotKey</code> 的过期时间是 <code>hotkey</code> 的过期时间加上一个较小的随机正整数，这是通过坡度过期的方式，保证在 <code>hotkey</code> 过期时，所有 <code>backHotKey</code> 不会同时过期而造成缓存雪崩。</p>
-<blockquote>
-<p>参考博客</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/8/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-
-<div class="copyright">
-  &copy; 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">SongyangJi</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
-
-    </div>
-  </footer>
-
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-
-
-
-
-  
-
-
-
-
-
 </body>
+
 </html>
