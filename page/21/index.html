@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">245</span>
+          <span class="site-state-item-count">246</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,273 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/23/Elasticsearch%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/23/Elasticsearch%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">Elasticsearch入门</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-23 20:29:14" itemprop="dateCreated datePublished" datetime="2021-10-23T20:29:14+08:00">2021-10-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-10-24 14:24:43" itemprop="dateModified" datetime="2021-10-24T14:24:43+08:00">2021-10-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Elasticsearch/" itemprop="url" rel="index"><span itemprop="name">Elasticsearch</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h1><h2 id="Elaticsearch-Stack-简介"><a href="#Elaticsearch-Stack-简介" class="headerlink" title="Elaticsearch Stack 简介"></a>Elaticsearch Stack 简介</h2><p>Elaticsearch，简称为es， es是一个高扩展的、<strong>分布式</strong>的、<strong>RESTful 风格</strong>的<strong>搜索和数据分析引擎</strong>。</p>
+<p>它可以近乎实时的存储、检索数据。本身扩展性很好，可以扩展到上百台服务器，处理PB级别的数据。</p>
+<p>Es也使用<strong>Java开发</strong>并使用Lucene作为其核心来实现所有索引和搜索的功能，但是它的目的是通过简单的RESTful API来隐藏Lucene的复杂性，从而让全文搜索变得简单。</p>
+<h2 id="Kibana简介"><a href="#Kibana简介" class="headerlink" title="Kibana简介"></a>Kibana简介</h2><p>Kibana 是一个免费且开放的用户界面，能够让您对 Elasticsearch 数据进行可视化，并让您在 Elastic Stack 中进行导航。您可以进行各种操作，从跟踪查询负载，到理解请求如何流经您的整个应用，都能轻松完成。</p>
+<p>Es技术栈还有其他工具，目前介绍这两个。</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>下面是二者下载链接，下载相应的版本即可。</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/cn/downloads/elasticsearch">elasticsearch下载</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/cn/downloads/kibana">kibana下载</a></p>
+<p>或者对于mac用户直接使用brew安装启动即可（学习环境使用）</p>
+<p>(M1的mac)</p>
+<ul>
+<li>安装 elasticsearch</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install elastic/tap/elasticsearch-full</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装 kibana</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install elastic/tap/kibana-full</span><br></pre></td></tr></table></figure>
+
+<p>分别启动。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew services start elasticsearch-full</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew services start kibana-full</span><br></pre></td></tr></table></figure>
+
+
+<p>访问</p>
+<p>es的默认端口 9200： <a target="_blank" rel="noopener" href="http://localhost:9200/">http://localhost:9200/</a></p>
+<p>kibana的默认端口 5601： <a target="_blank" rel="noopener" href="http://localhost:5601/">http://localhost:5601/</a></p>
+<p>注意：9300是tcp通讯端口，集群间和TCPClient都使用该端口，9200是http协议的RESTful接口。</p>
+<p>如果正常展示web界面，以及如下文字，说明安装启动一切正常。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;SongyangJi-MacBookAir.local&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;cluster_name&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;elasticsearch_jisongyang&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;cluster_uuid&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;wCrPSWgyQnCCCVCr0Hhc1g&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;number&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;7.14.2&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build_flavor&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;default&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build_type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;tar&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build_hash&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;6bc13727ce758c0e943c3c21653b3da82f627f75&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build_date&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;2021-09-15T10:18:09.722761972Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build_snapshot&quot;</span> <span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;lucene_version&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;8.9.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;minimum_wire_compatibility_version&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;6.8.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;minimum_index_compatibility_version&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;6.0.0-beta1&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;tagline&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;You Know, for Search&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Elasticsearch相关概念术语"><a href="#Elasticsearch相关概念术语" class="headerlink" title="Elasticsearch相关概念术语"></a>Elasticsearch相关概念术语</h1><h2 id="关系型数据库的比较与联系"><a href="#关系型数据库的比较与联系" class="headerlink" title="关系型数据库的比较与联系"></a>关系型数据库的比较与联系</h2><table>
+<thead>
+<tr>
+<th>数据库实例&#x2F;Es集群</th>
+<th>库&#x2F;索引</th>
+<th>表&#x2F;类型</th>
+<th>行&#x2F;文档</th>
+<th>列&#x2F;字段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RelationalDB</td>
+<td>Databases</td>
+<td>Tables</td>
+<td>Rows</td>
+<td>Columns</td>
+</tr>
+<tr>
+<td>Elasticsearch</td>
+<td>Indexes</td>
+<td>Types</td>
+<td>Documents</td>
+<td>Fields</td>
+</tr>
+</tbody></table>
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><ul>
+<li><p>index (索引)<br>一个索引就是一个拥有几分相似特征的文档的集合。</p>
+</li>
+<li><p>type（类型）<br>在一个索引中，你可以定义一种或多种类型。一个类型是你的索引的一个逻辑上的分类&#x2F;分区，其语义完全由你来定。通常，会为具有一组共同字段的文档定义一个类型。</p>
+</li>
+</ul>
+<p>不过，明显上述的概念定义是有点模糊的（不像关系型数据库的库表关系那样泾渭分明），所以在后来的版本中就取消了type这个语义。</p>
+<ul>
+<li><p>document 文档<br>一个文档是一个可被索引的基础信息单元。文档以JSON（Javascript Object Notation）格式来表示，而JSON是一个到处存在的互联网数据交互格式。在一个index，你可以存储任意多的文档。</p>
+</li>
+<li><p>field 字段</p>
+<p>相当于是数据表的字段，对文档数据根据不同属性进行的分类标识，也就是 Json 中的键。</p>
+</li>
+<li><p>mapping 映射</p>
+<p><strong>mapping是处理数据的方式和规则方面做一些限制</strong>，如某个字段的数据类型、默认值、分析器、是否被索引等等，这些都是映射里面可以设置的，其它就是处理es里面数据的一些使用规则设置也叫做映射，按着最优规则处理数据对性能提高很大，因此才需要建立映射，并且需要思考如何建立映射才能对性能更好。</p>
+</li>
+</ul>
+<h1 id="与-Elasticsearch-交互"><a href="#与-Elasticsearch-交互" class="headerlink" title="与 Elasticsearch 交互"></a>与 Elasticsearch 交互</h1><p>你可以</p>
+<ul>
+<li>使用elasticsearch提供的UI工具<ol>
+<li>elasticsearch-head插件</li>
+<li>kibana的dev-tools</li>
+</ol>
+</li>
+<li>使用elasticsearch提供的Restful接口直接访问<ol>
+<li>cURL</li>
+<li>postman</li>
+</ol>
+</li>
+<li>使用elasticsearch提供的API进行访问<br>也就是用程序调api去与es交互，也是程序开发者的最关心的交互方式。</li>
+</ul>
+<h2 id="curl"><a href="#curl" class="headerlink" title="curl"></a>curl</h2><p>如果使用curl的话</p>
+<ul>
+<li>语法</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X&lt;VERB&gt; &#x27;&lt;PROTOCOL&gt;://&lt;HOST&gt;:&lt;PORT&gt;/&lt;PATH&gt;?&lt;QUERY_STRING&gt;&#x27; -d &#x27;&lt;BODY&gt;&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>各字段的含义：</p>
+<table>
+<thead>
+<tr>
+<th><code>VERB</code></th>
+<th>适当的 HTTP <em>方法</em> 或 <em>谓词</em> : <code>GET</code>、 <code>POST</code>、 <code>PUT</code>、 <code>HEAD</code> 或者 <code>DELETE</code>。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PROTOCOL</code></td>
+<td><code>http</code> 或者 <code>https</code>（如果你在 Elasticsearch 前面有一个 <code>https</code> 代理）</td>
+</tr>
+<tr>
+<td><code>HOST</code></td>
+<td>Elasticsearch 集群中任意节点的主机名，或者用 <code>localhost</code> 代表本地机器上的节点。</td>
+</tr>
+<tr>
+<td><code>PORT</code></td>
+<td>运行 Elasticsearch HTTP 服务的端口号，默认是 <code>9200</code> 。</td>
+</tr>
+<tr>
+<td><code>PATH</code></td>
+<td>API 的终端路径（例如 <code>_count</code> 将返回集群中文档数量）。Path 可能包含多个组件，例如：<code>_cluster/stats</code> 和 <code>_nodes/stats/jvm</code> 。</td>
+</tr>
+<tr>
+<td><code>QUERY_STRING</code></td>
+<td>任意可选的查询字符串参数 (例如 <code>?pretty</code> 将格式化地输出 JSON 返回值，使其更容易阅读)</td>
+</tr>
+<tr>
+<td><code>BODY</code></td>
+<td>一个 JSON 格式的请求体 (如果请求需要的话)</td>
+</tr>
+</tbody></table>
+<h2 id="使用kibana"><a href="#使用kibana" class="headerlink" title="使用kibana"></a>使用kibana</h2><p>在kibana的开发者工具<a target="_blank" rel="noopener" href="http://localhost:5601/app/dev_tools#/console">console</a>。</p>
+<p>以下为 <strong>version 7.14.2</strong> 的示范操作。</p>
+<h3 id="索引的CRUD"><a href="#索引的CRUD" class="headerlink" title="索引的CRUD"></a>索引的CRUD</h3><h4 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h4><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PUT /problem</span><br></pre></td></tr></table></figure>
+
+<p>返回值</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;acknowledged&quot;</span> <span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;shards_acknowledged&quot;</span> <span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;index&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;problem&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="查看索引"><a href="#查看索引" class="headerlink" title="查看索引"></a>查看索引</h4><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /problem</span><br></pre></td></tr></table></figure>
+
+<p>只介绍其中几个字段的含义：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;problem&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;aliases&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span> <span class="comment">// 索引的别名</span></span><br><span class="line">    <span class="attr">&quot;mappings&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span> <span class="comment">// mapping的规则</span></span><br><span class="line">    <span class="attr">&quot;settings&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span>  </span><br><span class="line">      <span class="attr">&quot;index&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;routing&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;allocation&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;include&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;_tier_preference&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;data_content&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;number_of_shards&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span>  <span class="comment">// 分片的数量，低版本的默认值是5，现在默认是1</span></span><br><span class="line">        <span class="attr">&quot;provided_name&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;problem&quot;</span><span class="punctuation">,</span> </span><br><span class="line">        <span class="attr">&quot;creation_date&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;1635053207532&quot;</span><span class="punctuation">,</span> <span class="comment">// 创建时间戳</span></span><br><span class="line">        <span class="attr">&quot;number_of_replicas&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span>  <span class="comment">// 备份的数量</span></span><br><span class="line">        <span class="attr">&quot;uuid&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;HfPT1GNyTTmYAXCSjIVoVA&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;version&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span>  </span><br><span class="line">          <span class="attr">&quot;created&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;7140299&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h4><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /index</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;acknowledged&quot;</span> <span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="文档的CRUD"><a href="#文档的CRUD" class="headerlink" title="文档的CRUD"></a>文档的CRUD</h3><h4 id="创建文档"><a href="#创建文档" class="headerlink" title="创建文档"></a>创建文档</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">POST problem/_doc</span><br><span class="line">&#123;</span><br><span class="line">    &quot;difficult_level&quot;: &quot;简单&quot;,</span><br><span class="line">    &quot;id&quot;: &quot;1486&quot;,</span><br><span class="line">    &quot;name&quot;: &quot;数组异或操作&quot;,</span><br><span class="line">    &quot;passing_rate&quot;: &quot;84.3%&quot;,</span><br><span class="line">    &quot;passing_rate_number&quot;: 0.843,</span><br><span class="line">    &quot;solutions&quot;: 381,</span><br><span class="line">    &quot;uri&quot;: &quot;xor-operation-in-an-array&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;_index&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;problem&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;_type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;_doc&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;_id&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;SJ7bsHwBtcEm-AFPQqjS&quot;</span><span class="punctuation">,</span> <span class="comment">// 此id便是自动生成的</span></span><br><span class="line">  <span class="attr">&quot;_version&quot;</span> <span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;result&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;created&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;_shards&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;total&quot;</span> <span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;successful&quot;</span> <span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;failed&quot;</span> <span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;_seq_no&quot;</span> <span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;_primary_term&quot;</span> <span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>插入完文档后，可以看看这个index的信息。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;problem&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;aliases&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// 发现 mappings 信息多了出来，主要是刚刚插入的json串的键的信息，如类型，名称等等</span></span><br><span class="line">    <span class="attr">&quot;mappings&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span> </span><br><span class="line">      <span class="attr">&quot;properties&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;difficult_level&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;id&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;passing_rate&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;passing_rate_number&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;float&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;solutions&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;long&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;uri&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;fields&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;keyword&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;keyword&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;ignore_above&quot;</span> <span class="punctuation">:</span> <span class="number">256</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;settings&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;index&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;routing&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;allocation&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;include&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;_tier_preference&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;data_content&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;number_of_shards&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;provided_name&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;problem&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;creation_date&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;1635053636611&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;number_of_replicas&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;uuid&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;v12NNzubQ1u9g6x9wN9W0A&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;version&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;created&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;7140299&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="查询文档"><a href="#查询文档" class="headerlink" title="查询文档"></a>查询文档</h4><p>搜索API的最基础的形式是没有指定任何查询的空搜索，它简单地返回集群中所有索引下的所有文档：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_search</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里我们搜索刚才创建的problem的索引</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET problem/_search</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;took&quot;</span> <span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span> <span class="comment">// 执行整个搜索请求耗费了多少毫秒</span></span><br><span class="line">  <span class="attr">&quot;timed_out&quot;</span> <span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span> <span class="comment">// 是否超时, 可以指定 timeout 为 10 或者 10ms（10毫秒），或者 1s（1秒）如，GET /_search?timeout=10ms</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">&quot;_shards&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="comment">// 在查询中参与分片的总数，以及这些分片成功了多少个失败了多少个</span></span><br><span class="line">    <span class="attr">&quot;total&quot;</span> <span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;successful&quot;</span> <span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;skipped&quot;</span> <span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;failed&quot;</span> <span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hits&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="comment">// 结果中最重要的部分是 hits</span></span><br><span class="line">    <span class="attr">&quot;total&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="comment">// 配到的文档总数</span></span><br><span class="line">      <span class="attr">&quot;value&quot;</span> <span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;relation&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;eq&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;max_score&quot;</span> <span class="punctuation">:</span> <span class="number">1.0</span><span class="punctuation">,</span> <span class="comment">// 查询所匹配文档的 _score 的最大值</span></span><br><span class="line">    <span class="attr">&quot;hits&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;_index&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;problem&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;_type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;_doc&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;_id&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;SJ7bsHwBtcEm-AFPQqjS&quot;</span><span class="punctuation">,</span> <span class="comment">// 自动生成的id</span></span><br><span class="line">        <span class="attr">&quot;_score&quot;</span> <span class="punctuation">:</span> <span class="number">1.0</span><span class="punctuation">,</span> <span class="comment">// 衡量了文档与查询的匹配程度,  返回的文档是按照 _score 降序排列的</span></span><br><span class="line">        <span class="attr">&quot;_source&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="comment">// 源文档，是你自己添加的文档</span></span><br><span class="line">          <span class="attr">&quot;difficult_level&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;简单&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;id&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;1486&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;name&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;数组异或操作&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;passing_rate&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;84.3%&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;passing_rate_number&quot;</span> <span class="punctuation">:</span> <span class="number">0.843</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;solutions&quot;</span> <span class="punctuation">:</span> <span class="number">381</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;uri&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;xor-operation-in-an-array&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html">Elasticsearch: 权威指南（中文）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.15/index.html">Elasticsearch Guide</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#reference">Spring 整合 Elasticsearch</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1896,123 +2163,6 @@
 <p>参考博客</p>
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b5f8057a1cd5">Rabbitmq用户权限配置</a></p>
 </blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/09/Ubuntu%E3%80%81MacOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%20RabbitMQ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/09/Ubuntu%E3%80%81MacOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%20RabbitMQ/" class="post-title-link" itemprop="url">Ubuntu、MacOS环境下下载安装 RabbitMQ</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-09 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-09T00:00:00+08:00">2021-10-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-10-11 22:17:35" itemprop="dateModified" datetime="2021-10-11T22:17:35+08:00">2021-10-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h1><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>先更新一下资源。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
-
-<p>由于rabbitMq需要erlang语言的支持，在安装rabbitMq之前需要安装erlang。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install -y erlang-nox</span><br></pre></td></tr></table></figure>
-
-<p>安装rabbitmq </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install -y rabbitmq-server</span><br></pre></td></tr></table></figure>
-
-
-<p>默认下载的地址</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:/etc/rabbitmq$ whereis rabbitmq</span><br><span class="line">rabbitmq: /usr/lib/rabbitmq /etc/rabbitmq /usr/share/rabbitmq</span><br></pre></td></tr></table></figure>
-
-<h2 id="开启、关闭"><a href="#开启、关闭" class="headerlink" title="开启、关闭"></a>开启、关闭</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># start</span></span><br><span class="line">sudo service rabbitmq-server start</span><br><span class="line"></span><br><span class="line"><span class="comment"># stop</span></span><br><span class="line">sudo service rabbitmq-server stop</span><br></pre></td></tr></table></figure>
-
-
-<p>直接到&#x2F;sbin目录下执行也是可以的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动 start</span></span><br><span class="line">sudo /sbin/service rabbitmq-server start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止 stop</span></span><br><span class="line">sudo /sbin/service rabbitmq-server stop</span><br></pre></td></tr></table></figure>
-
-<h2 id="启动Web管理端"><a href="#启动Web管理端" class="headerlink" title="启动Web管理端"></a>启动Web管理端</h2><p>安装了Rabbitmq后，默认也安装了该管理工具，执行命令即可启动</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/rabbitmq</span><br><span class="line">sudo rabbitmq-plugins <span class="built_in">enable</span> rabbitmq_management</span><br></pre></td></tr></table></figure>
-
-<p>访问 localhost:15672<br>出现一下即可。<br><img src="https://img-blog.csdnimg.cn/20210402155642536.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODQ2MzI0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="MacOS"><a href="#MacOS" class="headerlink" title="MacOS"></a>MacOS</h1><h2 id="下载-1"><a href="#下载-1" class="headerlink" title="下载"></a>下载</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew update</span><br><span class="line">brew install rabbitmq</span><br></pre></td></tr></table></figure>
-
-<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> RABBITMQ_HOME=/opt/homebrew/Cellar/rabbitmq/3.8.13</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$RABBITMQ_HOME</span>/sbin</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="启动、关闭"><a href="#启动、关闭" class="headerlink" title="启动、关闭"></a>启动、关闭</h2><p>这里是借助 brew 去管理的。如果直接使用  rabbitmq提供的脚本启动也是可以的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew services start rabbitmq</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew services stop rabbitmq</span><br></pre></td></tr></table></figure>
-
-<p>访问Web端是一样的。</p>
 
       
     </div>

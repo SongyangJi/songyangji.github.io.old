@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">245</span>
+          <span class="site-state-item-count">246</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,129 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/08/%E5%9C%A8%E7%BA%BF%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/08/%E5%9C%A8%E7%BA%BF%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/" class="post-title-link" itemprop="url">在线数据迁移</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-10-08 22:38:41" itemprop="dateCreated datePublished" datetime="2022-10-08T22:38:41+08:00">2022-10-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-18 17:01:49" itemprop="dateModified" datetime="2022-10-18T17:01:49+08:00">2022-10-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">架构</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p> 在线数据迁移最大的挑战是如何保证迁移过程服务不受影响。很多人将其比喻成“飞行过程中换发动机”“给行驶的汽车换轮胎”，但实际上并没有那么困难，一个入行一两年的技术人员，遵从一些经验指导，完全可以完成。下面就跟大家分享一下个人在这方面的一些经验，作为抛砖引玉。</p>
+</blockquote>
+<p>在线数据迁移一般分为四个步骤：</p>
+<p>一. 上线双写，即同时写入新旧两种数据；</p>
+<p>二. 历史数据离线搬迁，即离线将历史存量数据从旧系统搬到新系统；</p>
+<p>三. 切读，即将读请求路由到新系统；</p>
+<p>四. 清理沉淀，包括清理旧的数据，回收资源，及清理旧的代码逻辑，旧的配套系统等等，将迁移过程中的经验教训进行总结沉淀，将过程中开发或使用的工具进行通用化改造，以备下次使用。</p>
+<p>注意，某些情况下，步骤一和步骤二也可能倒过来，先做历史数据搬迁，然后再写入新数据，这时候就需要谨慎的处理搬迁这段时间里产生的新数据，一般使用 queue 缓存写入的方式，称为“追数据”。(相当于先存量迁移+再增量迁移)。</p>
+<p><img src="https://static001.infoq.cn/resource/image/e0/8a/e043082562e046bef188321d2a97ec8a.png" alt="img"></p>
+<p>图 1：在线数据迁移步骤示意图</p>
+<p>下面以某社交平台粉丝列表从 Mysql 迁移到 HBase 为例子，展开来讲讲每个步骤具体实施、可能的问题及对策。</p>
+<p>在迁移之前，根据以往的经验制定了更详细的流程，如图：</p>
+<p><img src="https://static001.infoq.cn/resource/image/61/2c/61bffb2af80ae332bf892ddf74b8b52c.png" alt="img"></p>
+<p>图 2：粉丝列表迁移到 HBase 工作流程图</p>
+<h2 id="上线双写"><a href="#上线双写" class="headerlink" title="上线双写"></a>上线双写</h2><p>编写双写的代码逻辑之前，首先要根据业务规则和性能指标确定 HBase 的表结构和主键设计。</p>
+<blockquote>
+<p> 对于列表类的需求，HBase 有两种典型的用法，一种是高表模式，与传统的 Mysql 模式非常类似，列表中的每一项存一行，每一行有固定的属性列；另一种是宽表模式，一个列表存一行，列表中的每一项存成一个单独的列，各种属性都打包到列内部的 value 中。如图：</p>
+</blockquote>
+<p><img src="https://static001.infoq.cn/resource/image/c9/47/c9042f3c2e1658f1383b8b091e602347.png" alt="img"></p>
+<blockquote>
+<p> 粉丝列表业务分别使用 HBase 高表模式和宽表模式存储示意图<br>高表模式的好处在于与 Mysql 类似，各种业务逻辑的实现也比较像，认知和改造成本较低，劣势在于因为 HBase 的实现机制导致单个列表可能被分别存储在多个不同的 Region 里，查询的性能较差。而宽表的优劣势正好与高表相反。在高并发大流量系统中，技术方案很多特性都可以妥协，但唯独性能永远是不能妥协的，所以我们选择宽表模式。</p>
+</blockquote>
+<p><strong>很多高并发系统都采用上行异步化，通过将操作转化为消息，写入消息队列，后台异步处理的方式来削峰填谷，并获得更好的可用性</strong>。大部分消息队列都支持单个消息被多个业务模块重复处理，并支持串联和并联。所以在这里我们将写入 HBase 的代码逻辑单独封装到一个模块中，将它配置为与写入旧 Mysql 代码串联或并联即可。</p>
+<p><strong>为了支持消息异步处理的重试机制，建议将业务模块设计成具有幂等特性，即同一条消息可以重试多次，而不会破坏最终的结果</strong>。有一些模块，如计数器，提醒等，业务本身不支持重试，可以通过“重复消息检测模块”为它们提供短时间内的重试支持。大部分 Mysql 存储都通过主键或者单独的 Unique key 索引来达到幂等要求，相应的，HBase 高表模式通过主键保证，宽表模式通过 column qualifier 保证。在粉丝列表迁移过程中，因为 column qualifier 不能保证幂等，导致数据一致性无法达到要求，最后也是通过引入额外的重复消息检测模块解决。</p>
+<blockquote>
+<p> 另外，HBase 当前不提供二级索引、覆盖索引、join、order by 等 Mysql 高级查询功能，需要在迁移之前做好评估，确定新方案能够支持所有的业务特性。比如粉丝列表一般都是查询最新的 5000 个粉丝，但如果还要支持查询最初 100 个粉丝列表的功能，就会比较费劲。</p>
+</blockquote>
+<p><strong>上线双写完成后，需要对双写的数据进行一致性校验。</strong></p>
+<p>数据一致性校验需要从两个维度进行：存储维度和业务维度。存储维度是指直接取 Mysql 和 HBase 里的数据进行对比；业务维度是指从最终用户看到的数据维度进行校验，即访问粉丝列表页面，看结果是否与原来一致。大型系统的数据一致性校验建议及格线是 6 个 9，即 99.9999%，也就是说每一百万条数据中，差别不能超过 1 条。</p>
+<h2 id="历史数据搬迁"><a href="#历史数据搬迁" class="headerlink" title="历史数据搬迁"></a>历史数据搬迁</h2><p>上线双写并校验确认通过后，就可以开始搬迁历史数据了。</p>
+<p>搬迁历史数据的步骤中，最大的困难是保证搬迁过程与线上业务写入互不干扰。对于列表类功能，最大的干扰是来自于这样一种业务场景：搬迁程序从 Mysql 中 select 出来一个列表，在插入到 HBase 之前，这个列表发生了变化。如果是增加一个元素，由于 HBase 的幂等保证，最终结果并不会产生偏差，但如果是删除一个或多个元素，那么最终会表现为 HBase 中删除操作未生效，因为线上业务执行完删除操作后，搬迁程序又执行了插入操作。本质上，这是因为我们在这样的数据量规模下不能使用事务引起的，如果引入事务，能够解决这个问题，但同时也会将搬迁耗时从几天延长到几周甚至几个月。为了解决这个问题，可以通过引入轻量级的 Memcache 锁来模拟 Serializable 级别的事务隔离。</p>
+<p><strong>历史数据搬迁完成后也需要进行一致性校验。</strong>实际上，建议在搬迁全量数据之前，先搬迁部分数据，并进行一致性校验。部分数据一致性校验通过后，再对全量数据进行搬迁。这种方式可以极大的节约搬迁时间，降低因为搬迁流程或代码不完善导致的延期风险。</p>
+<h2 id="切读"><a href="#切读" class="headerlink" title="切读"></a>切读</h2><p>全量数据搬迁并校验完成后，即可以进行读请求切换了。通用的切换方式是在代码中埋入开关，通过 Config Service 或类似机制进行切换操作。切换的流程为：Tcpcopy 环境 –&gt; 线上环境 uid 白名单（内部工程师）–&gt; 线上环境百分比灰度 0.01%，1%，10% –&gt; 线上环境全量。tcpcopy 环境用来验证代码在线上环境是否正常，uid 白名单用来验证功能是否正常，百分比灰度用来验证性能和资源压力是否正常，所有验证都通过后，最后才进行全量切换。一般这个过程会持续一周到两周。</p>
+<h2 id="清理沉淀"><a href="#清理沉淀" class="headerlink" title="清理沉淀"></a>清理沉淀</h2><p>切读完成后，整个数据迁移过程可以认为已经完成了。但项目工作并没有完结，旧的逻辑代码清理，旧的配套系统下线，旧资源回收，以及最重要的一个环节：经验教训总结、分享，流程完善，工具通用化改造。</p>
+<p>在线数据迁移并不是一项需要高深技术的工作，它更多需要的是对业务逻辑的把控，对操作流程的理解，对新旧系统特性的掌握，以及对细节的敬畏之心。</p>
+<blockquote>
+<p>参考文章 <a target="_blank" rel="noopener" href="https://www.infoq.cn/article/online-data-migration-experience">https://www.infoq.cn/article/online-data-migration-experience</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1210,106 +1333,6 @@
 <li>没有轮询或超时。</li>
 <li>由于您实现锁定的方式，很容易看到锁定争用、中断锁定、调试锁定问题等的数量。</li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/26/CountDownLatch%E3%80%81CyclicBarrier%E3%80%81Semaphore/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/26/CountDownLatch%E3%80%81CyclicBarrier%E3%80%81Semaphore/" class="post-title-link" itemprop="url">CountDownLatch、CyclicBarrier、Semaphore</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-09-26 03:53:22 / 修改时间：11:37:00" itemprop="dateCreated datePublished" datetime="2022-09-26T03:53:22+08:00">2022-09-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JUC/" itemprop="url" rel="index"><span itemprop="name">JUC</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h1><p><strong>发令枪</strong>（通知后，一组线程才开始工作）</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">CountDownLatch</span> <span class="variable">cdl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CountDownLatch</span>(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> i;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    cdl.await();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;end &quot;</span> + x);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">        Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        cdl.countDown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>屏障</strong>（一组线程完成后，主线程工作）</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">N</span> <span class="operator">=</span> <span class="number">5</span>;</span><br><span class="line">        <span class="type">CountDownLatch</span> <span class="variable">cdl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CountDownLatch</span>(N);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> i;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(<span class="string">&quot;end &quot;</span> + x);</span><br><span class="line">                cdl.countDown();</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">        cdl.await();</span><br><span class="line">        System.out.println(<span class="string">&quot;end main&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a>CyclicBarrier</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>CountDownLatch: 一个线程(或者多个)， 等待另外N个线程完成某个事情之后才能执行。</p>
-<p>CyclicBarrier: N个线程相互等待，任何一个线程完成之前，所有的线程都必须等待。</p>
-<p>这样应该就清楚一点了，对于CountDownLatch来说，重点是那个“一个线程”, 是它在等待， 而另外那N的线程在把“某个事情”做完之后可以继续等待，可以终止。而对于CyclicBarrier来说，重点是那N个线程，他们之间任何一个没有完成，所有的线程都必须等待。</p>
-<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1648906">CycliBarriar和CountdownLatch有什么区别</a></p>
 
       
     </div>

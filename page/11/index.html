@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">245</span>
+          <span class="site-state-item-count">246</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,117 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/15/Redis-pipeline/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/15/Redis-pipeline/" class="post-title-link" itemprop="url">Redis的pipeline</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-15 18:03:53" itemprop="dateCreated datePublished" datetime="2022-04-15T18:03:53+08:00">2022-04-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <img src="redis_mget.png" alt="redis_mget" style="zoom:50%;" />
+
+
+
+<img src="redis_pipeline.png" alt="redis_pipeline" style="zoom:50%;" />
+
+
+
+
+
+<ul>
+<li><p>普通请求：等待上一条命令应答后再执行，中间不仅仅多了RTT，而且还频繁的调用系统IO，发送网络请求</p>
+</li>
+<li><p>mget：节省RTT，但是前面的key需要等待最后一个key回复</p>
+</li>
+<li><p>pineline：节省RTT，减少IO调用次数</p>
+</li>
+</ul>
+<p>RTT(Round-Trip Time): 往返时延。在计算机网络中它是一个重要的性能指标，表示从发送端发送数据开始，到发送端收到来自接收端的确认（接收端收到数据后便立即发送确认），总共经历的时延。</p>
+<p>RTT&#x3D;传播时延（往返哒）+排队时延（路由器和交换机的）+数据处理时延（应用程序的）。</p>
+<h1 id="Pipeline实现原理"><a href="#Pipeline实现原理" class="headerlink" title="Pipeline实现原理"></a>Pipeline实现原理</h1><p>pipeline管道操作是需要客户端与服务端的支持，客户端将命令写入缓冲，最后再通过exec命令发送给服务端，服务端通过命令拆分，逐个执行返回结果。</p>
+<p>​    </p>
+<p>pipeline通过减少客户端与redis的通信次数来实现降低往返延时时间，而且Pipeline 实现的原理是队列，而队列的原理是时先进先出，这样就保证数据的顺序性。</p>
+<h1 id="Pipeline适用场景"><a href="#Pipeline适用场景" class="headerlink" title="Pipeline适用场景"></a>Pipeline适用场景</h1><p>  Pipeline在某些场景下非常有用，比如有多个command需要被”及时的”提交，而且他们对相应结果没有互相依赖，而且对结果响应也无需立即获得，那么pipeline就可以充当这种”批处理”的工具；而且在一定程度上，可以较大的提升性能,性能提升的原因主要是TCP链接中较少了”交互往返”的时间。</p>
+<p> 不过在编码时请注意，pipeline期间将”独占”链接，此期间将不能进行非”管道”类型的其他操作，直到pipeline关闭；比如在上述代码中间，使用jedis.set(key,value)等操作都将抛出异常。</p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904127001001991">https://juejin.cn/post/6844904127001001991</a></p>
+<p><a target="_blank" rel="noopener" href="https://redis.io/docs/manual/pipelining/">https://redis.io/docs/manual/pipelining/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1265,83 +1376,6 @@
           <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-an-array/">测试</a></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">static</span> <span class="type">int</span> N = <span class="number">50010</span>;</span><br><span class="line">    <span class="type">int</span> heap[N], size;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">down</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> least = x;</span><br><span class="line">        <span class="type">int</span> l = x &lt;&lt; <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> r = x &lt;&lt; <span class="number">1</span> | <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (l &lt;= size &amp;&amp; heap[l] &lt; heap[least]) least = l;</span><br><span class="line">        <span class="keyword">if</span> (r &lt;= size &amp;&amp; heap[r] &lt; heap[least]) least = r;</span><br><span class="line">        <span class="keyword">if</span> (least != x) &#123;</span><br><span class="line">            <span class="built_in">swap</span>(heap[x], heap[least]);</span><br><span class="line">            <span class="built_in">down</span>(least);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 迭代</span></span><br><span class="line"><span class="comment">//        while(x &lt;= size) &#123;</span></span><br><span class="line"><span class="comment">//            int least = x;</span></span><br><span class="line"><span class="comment">//            int l = x &lt;&lt; 1;</span></span><br><span class="line"><span class="comment">//            int r = x &lt;&lt; 1 | 1;</span></span><br><span class="line"><span class="comment">//            if (l &lt;= size &amp;&amp; heap[l] &lt; heap[least]) least = l;</span></span><br><span class="line"><span class="comment">//            if (r &lt;= size &amp;&amp; heap[r] &lt; heap[least]) least = r;</span></span><br><span class="line"><span class="comment">//            if (least == x) &#123;</span></span><br><span class="line"><span class="comment">//                break;</span></span><br><span class="line"><span class="comment">//            &#125;</span></span><br><span class="line"><span class="comment">//            swap(heap[x], heap[least]);</span></span><br><span class="line"><span class="comment">//            x = least;</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">up</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (x / <span class="number">2</span> &gt; <span class="number">0</span> &amp;&amp; heap[x] &lt; heap[x / <span class="number">2</span>]) &#123;</span><br><span class="line">            <span class="built_in">swap</span>(heap[x], heap[x / <span class="number">2</span>]);</span><br><span class="line">            <span class="built_in">up</span>(x / <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 迭代写法</span></span><br><span class="line"><span class="comment">//        while (x / 2 &gt; 0 &amp;&amp; heap[x] &lt; heap[x / 2]) &#123;</span></span><br><span class="line"><span class="comment">//            swap(heap[x], heap[x / 2]);</span></span><br><span class="line"><span class="comment">//            x &gt;&gt;= 1;</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 建堆</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">build_heap</span><span class="params">(<span class="type">const</span> vector&lt;<span class="type">int</span>&gt; &amp;nums)</span> </span>&#123;</span><br><span class="line">        size = nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; size; i++) heap[i + <span class="number">1</span>] = nums[i];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = size / <span class="number">2</span>; i &gt;= <span class="number">1</span>; i--) &#123;</span><br><span class="line">            <span class="built_in">down</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 依次取出堆顶，然后调整堆。</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">heap_sort</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> pos = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (size) &#123;</span><br><span class="line">            nums[pos++] = heap[<span class="number">1</span>];</span><br><span class="line">            heap[<span class="number">1</span>] = heap[size--];</span><br><span class="line">            <span class="built_in">down</span>(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">sortArray</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">build_heap</span>(nums);</span><br><span class="line">        <span class="built_in">heap_sort</span>(nums);</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/20/CDN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/20/CDN/" class="post-title-link" itemprop="url">CDN</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-20 16:42:02" itemprop="dateCreated datePublished" datetime="2022-03-20T16:42:02+08:00">2022-03-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-03-21 03:19:46" itemprop="dateModified" datetime="2022-03-21T03:19:46+08:00">2022-03-21</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/22916306">https://www.zhihu.com/question/22916306</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/400556541">https://zhuanlan.zhihu.com/p/400556541</a></p>
 
       
     </div>

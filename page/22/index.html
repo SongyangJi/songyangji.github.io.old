@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">245</span>
+          <span class="site-state-item-count">246</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,123 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/09/Ubuntu%E3%80%81MacOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%20RabbitMQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/09/Ubuntu%E3%80%81MacOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%20RabbitMQ/" class="post-title-link" itemprop="url">Ubuntu、MacOS环境下下载安装 RabbitMQ</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-09 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-09T00:00:00+08:00">2021-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-10-11 22:17:35" itemprop="dateModified" datetime="2021-10-11T22:17:35+08:00">2021-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h1><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>先更新一下资源。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br></pre></td></tr></table></figure>
+
+<p>由于rabbitMq需要erlang语言的支持，在安装rabbitMq之前需要安装erlang。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install -y erlang-nox</span><br></pre></td></tr></table></figure>
+
+<p>安装rabbitmq </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install -y rabbitmq-server</span><br></pre></td></tr></table></figure>
+
+
+<p>默认下载的地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:/etc/rabbitmq$ whereis rabbitmq</span><br><span class="line">rabbitmq: /usr/lib/rabbitmq /etc/rabbitmq /usr/share/rabbitmq</span><br></pre></td></tr></table></figure>
+
+<h2 id="开启、关闭"><a href="#开启、关闭" class="headerlink" title="开启、关闭"></a>开启、关闭</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># start</span></span><br><span class="line">sudo service rabbitmq-server start</span><br><span class="line"></span><br><span class="line"><span class="comment"># stop</span></span><br><span class="line">sudo service rabbitmq-server stop</span><br></pre></td></tr></table></figure>
+
+
+<p>直接到&#x2F;sbin目录下执行也是可以的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动 start</span></span><br><span class="line">sudo /sbin/service rabbitmq-server start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止 stop</span></span><br><span class="line">sudo /sbin/service rabbitmq-server stop</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动Web管理端"><a href="#启动Web管理端" class="headerlink" title="启动Web管理端"></a>启动Web管理端</h2><p>安装了Rabbitmq后，默认也安装了该管理工具，执行命令即可启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/rabbitmq</span><br><span class="line">sudo rabbitmq-plugins <span class="built_in">enable</span> rabbitmq_management</span><br></pre></td></tr></table></figure>
+
+<p>访问 localhost:15672<br>出现一下即可。<br><img src="https://img-blog.csdnimg.cn/20210402155642536.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ0ODQ2MzI0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="MacOS"><a href="#MacOS" class="headerlink" title="MacOS"></a>MacOS</h1><h2 id="下载-1"><a href="#下载-1" class="headerlink" title="下载"></a>下载</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew update</span><br><span class="line">brew install rabbitmq</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> RABBITMQ_HOME=/opt/homebrew/Cellar/rabbitmq/3.8.13</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$RABBITMQ_HOME</span>/sbin</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="启动、关闭"><a href="#启动、关闭" class="headerlink" title="启动、关闭"></a>启动、关闭</h2><p>这里是借助 brew 去管理的。如果直接使用  rabbitmq提供的脚本启动也是可以的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew services start rabbitmq</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew services stop rabbitmq</span><br></pre></td></tr></table></figure>
+
+<p>访问Web端是一样的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1995,97 +2112,6 @@
 <p>一个Redis的脚本是定义事务性的，所以一切都可以用Redis的事务做的，你也可以用一个脚本做的，平时脚本会更简单，更快速。<br>这种重复是由于以下事实：脚本是在Redis 2.6中引入的，而事务早已存在。但是，我们不太可能在短期内取消对事务的支持，因为在语义上似乎是适当的，即使不诉诸Redis脚本，仍然有可能避免竞争状况，尤其是因为Redis事务的实现复杂性极低。<br>但是，在不久的将来，我们会看到整个用户群只是在使用脚本，这并非不可能。如果发生这种情况，我们可能会弃用并最终删除事务。</p>
 </blockquote>
 <h1 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h1><p>与关系型数据库ACID的对比。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/16/%E5%85%B3%E4%BA%8ESpring%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/16/%E5%85%B3%E4%BA%8ESpring%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E8%A7%A3/" class="post-title-link" itemprop="url">关于Spring自动配置的一些注解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-09-16T00:00:00+08:00">2021-09-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-09-27 21:00:02" itemprop="dateModified" datetime="2021-09-27T21:00:02+08:00">2021-09-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="ConditionalXXX注解族"><a href="#ConditionalXXX注解族" class="headerlink" title="@ConditionalXXX注解族"></a>@ConditionalXXX注解族</h2><h3 id="ConditionalOnProperty"><a href="#ConditionalOnProperty" class="headerlink" title="@ConditionalOnProperty"></a>@ConditionalOnProperty</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(&#123; ElementType.TYPE, ElementType.METHOD &#125;)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Conditional(OnPropertyCondition.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ConditionalOnProperty &#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Alias for &#123;<span class="doctag">@link</span> #name()&#125;.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the names</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   String[] value() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * A prefix that should be applied to each property. The prefix automatically ends</span></span><br><span class="line"><span class="comment">    * with a dot if not specified. A valid prefix is defined by one or more words</span></span><br><span class="line"><span class="comment">    * separated with dots (e.g. &#123;<span class="doctag">@code</span> &quot;acme.system.feature&quot;&#125;).</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the prefix</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   String <span class="title function_">prefix</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * The name of the properties to test. If a prefix has been defined, it is applied to</span></span><br><span class="line"><span class="comment">    * compute the full key of each property. For instance if the prefix is</span></span><br><span class="line"><span class="comment">    * &#123;<span class="doctag">@code</span> app.config&#125; and one value is &#123;<span class="doctag">@code</span> my-value&#125;, the full key would be</span></span><br><span class="line"><span class="comment">    * &#123;<span class="doctag">@code</span> app.config.my-value&#125;</span></span><br><span class="line"><span class="comment">    * &lt;p&gt;</span></span><br><span class="line"><span class="comment">    * Use the dashed notation to specify each property, that is all lower case with a &quot;-&quot;</span></span><br><span class="line"><span class="comment">    * to separate words (e.g. &#123;<span class="doctag">@code</span> my-long-property&#125;).</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the names</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   String[] name() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * The string representation of the expected value for the properties. If not</span></span><br><span class="line"><span class="comment">    * specified, the property must &lt;strong&gt;not&lt;/strong&gt; be equal to &#123;<span class="doctag">@code</span> false&#125;.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the expected value</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   String <span class="title function_">havingValue</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Specify if the condition should match if the property is not set. Defaults to</span></span><br><span class="line"><span class="comment">    * &#123;<span class="doctag">@code</span> false&#125;.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> if should match if the property is missing</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">matchIfMissing</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>@ConditionalOnClass<br>@ConditionalOnBean<br>@ConditionalOnMissingBean</p>
-<p>@ConditionalOnSingleCandidate</p>
-<p><a target="_blank" rel="noopener" href="https://spring.hhui.top/spring-blog/2018/10/19/181019-SpringBoot%E5%9F%BA%E7%A1%80%E7%AF%87Bean%E4%B9%8B%E6%9D%A1%E4%BB%B6%E6%B3%A8%E5%85%A5-ConditionalOnProperty/">一篇很齐全的博客</a></p>
 
       
     </div>

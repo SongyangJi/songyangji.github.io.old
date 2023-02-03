@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">245</span>
+          <span class="site-state-item-count">246</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,233 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/27/JWT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/27/JWT/" class="post-title-link" itemprop="url">JWT</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-12-27 14:35:45 / 修改时间：23:59:33" itemprop="dateCreated datePublished" datetime="2021-12-27T14:35:45+08:00">2021-12-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>在一个web项目中总需要考虑的一个问题就是如何认证用户的身份。</p>
+</blockquote>
+<h1 id="用户的认证方式"><a href="#用户的认证方式" class="headerlink" title="用户的认证方式"></a>用户的认证方式</h1><h2 id="传统的session认证"><a href="#传统的session认证" class="headerlink" title="传统的session认证"></a>传统的session认证</h2><p>互联网服务离不开用户认证。一般流程是下面这样。</p>
+<blockquote>
+<p>1、用户向服务器发送用户名和密码。</p>
+<p>2、服务器验证通过后，在当前对话（session）里面保存相关数据，比如用户角色、登录时间等等。</p>
+<p>3、服务器向用户返回一个 session_id，写入用户的 Cookie。</p>
+<p>4、用户随后的每一次请求，都会通过 Cookie，将 session_id 传回服务器。</p>
+<p>5、服务器收到 session_id，找到前期保存的数据，由此得知用户的身份。</p>
+</blockquote>
+<p>我们知道，http协议本身是一种无状态的协议，而这就意味着如果用户向我们的应用提供了用户名和密码来进行用户认证，那么下一次请求时，用户还要再一次进行用户认证才行。</p>
+<p>因为根据http协议，我们并不能知道是哪个用户发出的请求，所以<strong>为了让我们的应用能识别是哪个用户发出的请求</strong>，我们只能<strong>在服务器存储一份用户登录的信息</strong>，这份登录信息会在响应时传递给浏览器，<strong>将SessionID告诉客户端保存在cookie中，以便下次请求时发送给我们的应用</strong>，这样我们的应用就能识别请求来自哪个用户了，这就是传统的基于session认证。</p>
+<p>但是这种基于session的认证使应用本身很难得到扩展，随着不同客户端用户的增加，独立的服务器已无法承载更多的用户，而这时候基于session认证应用的问题就会暴露出来。</p>
+<h3 id="基于session认证所显露的问题"><a href="#基于session认证所显露的问题" class="headerlink" title="基于session认证所显露的问题"></a>基于session认证所显露的问题</h3><ul>
+<li>Session: 每个用户经过我们的应用认证之后，我们的应用都要在服务端做一次记录，以方便用户下次请求的鉴别，通常而言session都是保存在内存中，而随着认证用户的增多，服务端的开销会明显增大。</li>
+<li>水平扩展困难: 用户认证之后，服务端做认证记录，如果认证的记录被保存在内存中的话，这意味着用户下次请求还必须要请求在这台服务器上,这样才能拿到授权的资源，这样在分布式的应用上，相应的限制了负载均衡器的能力。这也意味着限制了应用的扩展能力。</li>
+<li>CSRF: 因为是基于cookie来进行用户识别的, cookie如果被截获，用户就会很容易受到跨站请求伪造的攻击。</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://tech.meituan.com/2018/10/11/fe-security-csrf.html">前端安全系列（二）：如何防止CSRF攻击？</a></p>
+</blockquote>
+<h2 id="基于token的鉴权机制"><a href="#基于token的鉴权机制" class="headerlink" title="基于token的鉴权机制"></a>基于token的鉴权机制</h2><p>基于token的鉴权机制类似于http协议也是无状态的，它不需要在服务端去保留用户的认证信息或者会话信息。这就意味着基于token认证机制的应用不需要去考虑用户在哪一台服务器登录了，这就为应用的扩展提供了便利。</p>
+<p>流程：</p>
+<ol>
+<li>用户使用账户、密码来请求服务器</li>
+<li>服务器进行验证用户的信息</li>
+<li>服务器通过验证发送给用户一个token</li>
+<li>客户端存储token，并在每次请求时附送上这个token值</li>
+<li>服务端验证token值，并返回数据</li>
+</ol>
+<h1 id="JWT"><a href="#JWT" class="headerlink" title="JWT"></a>JWT</h1><h2 id="什么是JWT及原理"><a href="#什么是JWT及原理" class="headerlink" title="什么是JWT及原理"></a>什么是JWT及原理</h2><p>JWT(JSON Web Token) 是一个开放标准(RFC 7519)，它定义了一种<strong>紧凑的</strong>、<strong>自包含的</strong>（内部包含了一些会话信息）方式，</p>
+<p><strong>用于作为JSON对象在各方之间安全地传输信息****。该信息可以被验证和信任</strong>，因为它是有数字签名的。</p>
+<p>JWT 的原理是，服务器认证以后，生成一个 JSON 对象，发回给用户，就像下面这样。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;姓名&quot;</span><span class="punctuation">:</span> <span class="string">&quot;张三&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;角色&quot;</span><span class="punctuation">:</span> <span class="string">&quot;管理员&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;到期时间&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2018年7月1日0点0分&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>以后，用户与服务端通信的时候，都要发回这个 JSON 对象。服务器完全只靠这个对象认定用户身份。为了防止用户篡改数据，服务器在生成这个对象的时候，会加上签名（详见后文）。</p>
+<p>服务器就不保存任何 session 数据了，也就是说，服务器变成无状态了，从而比较容易实现扩展。</p>
+<h2 id="JWT的构成"><a href="#JWT的构成" class="headerlink" title="JWT的构成"></a>JWT的构成</h2><p>JWT由三部分组成，它们之间用圆点(.)连接。这三部分分别是：</p>
+<ul>
+<li>Header</li>
+<li>Payload</li>
+<li>Signature</li>
+</ul>
+<p>三种都是经过Base64URL编码后的串。</p>
+<p>写成一行，就是下面的样子。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Header</span>.<span class="property">Payload</span>.<span class="property">Signature</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>具体的构成方式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">base64(header).base64(payload).base64( HS256(base64(header) + &quot;.&quot; + base64(payload), secret) )</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h3><p>jwt的头部由两部分信息组成：</p>
+<ul>
+<li>type：声明类型，这里是jwt</li>
+<li>alg：声明加密的算法 通常直接使用 HMAC SHA256</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;typ&quot;</span><span class="punctuation">:</span><span class="string">&quot;jwt&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;alg&quot;</span><span class="punctuation">:</span><span class="string">&quot;HS256&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>对头部信息进行Base64编码的得到第一部分的信息。</p>
+<h3 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h3><p>载荷就是存放有效信息的地方,它包含声明（要求）。声明有三种类型：</p>
+<ul>
+<li>registered claims：标准中注册的声明。这里有一组预定义的声明，它们不是强制的，但是推荐</li>
+<li>public claims：公共的声明</li>
+<li>private claims：私有的声明</li>
+</ul>
+<p><strong>标准中注册的声明 (建议但不强制使用) ：</strong></p>
+<ul>
+<li>iss: jwt签发者</li>
+<li>sub: jwt所面向的用户</li>
+<li>aud: 接收jwt的一方</li>
+<li>exp: jwt的过期时间，这个过期时间必须要大于签发时间</li>
+<li>nbf: 定义在什么时间之前，该jwt都是不可用的</li>
+<li>iat: jwt的签发时间</li>
+<li>jti: jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击</li>
+</ul>
+<p><strong>公共的声明 ：</strong></p>
+<p>公共的声明可以添加任何的信息，一般添加用户的相关信息或其他业务需要的必要信息.但不建议添加敏感信息，因为该部分在客户端可解密.</p>
+<p><strong>私有的声明 ：</strong></p>
+<p>私有声明是提供者和消费者所共同定义的声明，一般不建议存放敏感信息，因为base64是对称解密的，意味着该部分信息可以归类为明文信息。</p>
+<p>对Payload进行Base64加密就得到了JWT第二部分的内容。</p>
+<h3 id="Signature"><a href="#Signature" class="headerlink" title="Signature"></a>Signature</h3><p>JWT的第三部分是一个签证信息，这个签证信息由三部分组成：</p>
+<ul>
+<li>header (base64后的)</li>
+<li>payload (base64后的)</li>
+<li>secret</li>
+</ul>
+<p><strong>Signature 部分是对前两部分的签名，防止数据篡改。</strong></p>
+<p>第三部分需要base64加密后的header和base64加密后的payload使用 <code>.</code> 连接组成的字符串，然后通过header中声明的加密方式进行加盐secret组合加密，然后就构成了JWT的第三部分。</p>
+<p><strong>注意：</strong><br> secret是保存在服务器端的，JWT的签发生成也是在服务器端的，<strong>secret就是用来进行JWT的签发和JWT的验证，所以，它就是你服务端的私钥，在任何场景都不应该流露出去</strong>。</p>
+<p>一旦客户端得知这个secret, 那就意味着客户端是可以自我签发JWT了。</p>
+<h2 id="JWT的几个特点"><a href="#JWT的几个特点" class="headerlink" title="JWT的几个特点"></a>JWT的几个特点</h2><p>（1）JWT 默认是不加密，但也是可以加密的。生成原始 Token 以后，可以用密钥再加密一次。（？？？）</p>
+<p>（2）JWT 不加密的情况下，不能将秘密数据写入 JWT。</p>
+<p>（3）JWT 不仅可以用于认证，也可以用于交换信息。有效使用 JWT，可以降低服务器查询数据库的次数。</p>
+<p>（4）JWT 的最大缺点是，由于服务器不保存 session 状态，因此无法在使用过程中废止某个 token，或者更改 token 的权限。也就是说，一旦 JWT 签发了，在到期之前就会始终有效，除非服务器部署额外的逻辑。</p>
+<p>（5）JWT 本身包含了认证信息，一旦泄露，任何人都可以获得该令牌的所有权限。为了减少盗用，JWT 的有效期应该设置得比较短。对于一些比较重要的权限，使用时应该再次对用户进行认证。</p>
+<p>（6）为了减少盗用，JWT 不应该使用 HTTP 协议明码传输，要使用 HTTPS 协议传输。</p>
+<h2 id="基于jjwt使用JWT"><a href="#基于jjwt使用JWT" class="headerlink" title="基于jjwt使用JWT"></a>基于jjwt使用JWT</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LearnJwtApplicationTests</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">secret</span> <span class="operator">=</span> <span class="string">&quot;secret&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String secretBase64;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        secretBase64 = Base64.getEncoder().encodeToString(secret.getBytes());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">testJwtCreate</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">JwtBuilder</span> <span class="variable">jwtBuilder</span> <span class="operator">=</span> Jwts.builder();</span><br><span class="line">        <span class="type">String</span> <span class="variable">token</span> <span class="operator">=</span> jwtBuilder</span><br><span class="line">                <span class="comment">// header</span></span><br><span class="line">                .setHeaderParam(<span class="string">&quot;alg&quot;</span>, <span class="string">&quot;HS256&quot;</span>)</span><br><span class="line">                .setHeaderParam(<span class="string">&quot;typ&quot;</span>, <span class="string">&quot;JWT&quot;</span>)</span><br><span class="line">                <span class="comment">// payload</span></span><br><span class="line">                .claim(<span class="string">&quot;sub&quot;</span>, <span class="string">&quot;1234567890&quot;</span>) <span class="comment">// 标准声明</span></span><br><span class="line">                .claim(<span class="string">&quot;iat&quot;</span>, <span class="number">1516239022</span>)   <span class="comment">// 标准声明</span></span><br><span class="line">                .claim(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;John Doe&quot;</span>)  <span class="comment">// 自定义声明</span></span><br><span class="line">                <span class="comment">// signature</span></span><br><span class="line">                .signWith(SignatureAlgorithm.HS256, secretBase64)</span><br><span class="line">                .compact();</span><br><span class="line"></span><br><span class="line">        System.out.println();</span><br><span class="line">        System.out.println(token);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">testJWTParse</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">token</span> <span class="operator">=</span> <span class="string">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.&quot;</span> +</span><br><span class="line"><span class="comment">//                &quot;eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.&quot;+</span></span><br><span class="line">                <span class="string">&quot;eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9vIiwiaWF0IjoxNTE2MjM5MDIyfQ.&quot;</span> +</span><br><span class="line">                <span class="string">&quot;XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o&quot;</span>;</span><br><span class="line">        <span class="type">JwtParser</span> <span class="variable">jwtParser</span> <span class="operator">=</span> Jwts.parser();</span><br><span class="line">        Jws&lt;Claims&gt; claimsJws = jwtParser.setSigningKey(secretBase64).parseClaimsJws(token);</span><br><span class="line">        <span class="type">JwsHeader</span> <span class="variable">header</span> <span class="operator">=</span> claimsJws.getHeader();</span><br><span class="line">        <span class="type">Claims</span> <span class="variable">body</span> <span class="operator">=</span> claimsJws.getBody();</span><br><span class="line">        <span class="type">String</span> <span class="variable">signature</span> <span class="operator">=</span> claimsJws.getSignature();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;----- header -----&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;alg : &quot;</span> + header.getAlgorithm());</span><br><span class="line">        System.out.println(<span class="string">&quot;typ : &quot;</span>+header.getType());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;----- body -----&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;sub : &quot;</span>+body.getSubject());</span><br><span class="line">        System.out.println(<span class="string">&quot;iat : &quot;</span>+body.getIssuedAt());</span><br><span class="line">        System.out.println(<span class="string">&quot;name : &quot;</span>+body.get(<span class="string">&quot;name&quot;</span>));</span><br><span class="line">        System.out.println(<span class="string">&quot;id : &quot;</span>+body.getId());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;----- signature -----&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;signature : &quot;</span> + signature);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<h1 id="JWT的使用方式"><a href="#JWT的使用方式" class="headerlink" title="JWT的使用方式"></a>JWT的使用方式</h1><h2 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h2><h3 id="前端储存JWT"><a href="#前端储存JWT" class="headerlink" title="前端储存JWT"></a>前端储存JWT</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span>;</span><br><span class="line">axios.<span class="title function_">post</span>(</span><br><span class="line">	<span class="string">&quot;/user/login&quot;</span>,</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="attr">username</span>: <span class="variable language_">this</span>.<span class="property">userId</span>,</span><br><span class="line">		<span class="attr">password</span>: <span class="variable language_">this</span>.<span class="property">userPsw</span>,</span><br><span class="line">	&#125;,</span><br><span class="line">).<span class="title function_">then</span>(<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (res.<span class="property">status</span> === <span class="number">200</span>) &#123;</span><br><span class="line">		<span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;token&quot;</span>, res.<span class="property">data</span>.<span class="property">data</span>);</span><br><span class="line">		<span class="variable language_">this</span>.$message(&#123;</span><br><span class="line">			<span class="attr">title</span>: <span class="string">&quot;登录成功&quot;</span>,</span><br><span class="line">			<span class="attr">message</span>: <span class="string">&quot;登录成功！正在为您跳转页面...&quot;</span>,</span><br><span class="line">			<span class="attr">type</span>: <span class="string">&quot;success&quot;</span>,</span><br><span class="line">			<span class="attr">duration</span>: <span class="number">1000</span>,</span><br><span class="line">			<span class="attr">showClose</span>: <span class="literal">false</span>,</span><br><span class="line">			<span class="attr">onClose</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">				<span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">dispatch</span>(<span class="string">&quot;setNoToken&quot;</span>, <span class="literal">false</span>);</span><br><span class="line">				<span class="variable language_">this</span>.<span class="property">$router</span>.<span class="title function_">go</span>(-<span class="number">1</span>);</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="variable language_">this</span>.$alert(</span><br><span class="line">			<span class="string">`错误代码<span class="subst">$&#123;res.data.code&#125;</span>：<span class="subst">$&#123;res.data.message&#125;</span>`</span>,</span><br><span class="line">			<span class="string">&quot;登录失败&quot;</span>,</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="attr">type</span>: <span class="string">&quot;error&quot;</span>,</span><br><span class="line">			&#125;</span><br><span class="line">		);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="请求携带JWT"><a href="#请求携带JWT" class="headerlink" title="请求携带JWT"></a>请求携带JWT</h3><p>客户端收到服务器返回的 JWT，可以储存在 Cookie 里面，也可以储存在 localStorage。</p>
+<p>此后，客户端每次与服务器通信，都要带上这个 JWT。你可以把它放在 Cookie 里面自动发送，但是这样不能跨域(<a target="_blank" rel="noopener" href="https://www.cnblogs.com/imgss/p/cors.html">cookie跨域那些事</a>)，所以更好的做法是放在 HTTP 请求的头信息<code>Authorization</code>字段里面。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Authorization</span>: <span class="title class_">Bearer</span> &lt;token&gt;</span><br></pre></td></tr></table></figure>
+
+<p>另一种做法是，跨域的时候，JWT 就放在 POST 请求的数据体里面。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span>;</span><br><span class="line">axios.<span class="title function_">post</span>(</span><br><span class="line">	<span class="string">&#x27;/test&#x27;</span>, <span class="comment">// url</span></span><br><span class="line">	&#123;<span class="attr">num</span>: <span class="number">1</span>&#125;, <span class="comment">// data</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="attr">headers</span>: &#123;</span><br><span class="line">			<span class="title class_">Authorization</span>: <span class="string">`Bearer <span class="subst">$&#123;token&#125;</span>`</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;, <span class="comment">// options</span></span><br><span class="line">).<span class="title function_">then</span>(<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(res);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<img src="JWT/jwt1.png" style="zoom:60%;" />
+
+
+
+
+
+<h3 id="前端提取JWT携带的信息"><a href="#前端提取JWT携带的信息" class="headerlink" title="前端提取JWT携带的信息"></a>前端提取JWT携带的信息</h3><p>前面也有提到，JWT的payload模块可以携带一些业务逻辑所必要的非敏感信息。因此，前端需要能够解析出JWT字符串。<br>举个例子，在sduoj中，需要判断用户的登录信息是否合法，其中一项评判标准就是JWT是否过期。在后端的服务器代码中存在这一部分逻辑，而在前端的代码中，也包含了这一段逻辑代码。<br>前端的代码逻辑中，仅在用户首次与sduoj的前端页面建立会话时进行判断。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 首先判断localStorage中是否存在token字段</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;token&quot;</span>) !== <span class="literal">null</span>) &#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 注意，由于localStorage是以字符串形式取出的</span></span><br><span class="line"><span class="comment">	 * 当token字段是空字符串时，javascript会将其转换为布尔值false。</span></span><br><span class="line"><span class="comment">	 * 因此需要增加!==null进行判断。	</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="comment">// 使用模块加载器将通过yarn安装的jsonwebtoken加载进来</span></span><br><span class="line">	<span class="keyword">let</span> jwt = <span class="built_in">require</span>(<span class="string">&quot;jsonwebtoken&quot;</span>); </span><br><span class="line">	<span class="comment">// 使用jsonwebtoken解析JWT字符串</span></span><br><span class="line">	<span class="keyword">const</span> <span class="variable constant_">TOKEN</span> = jwt.<span class="title function_">decode</span>(<span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;token&quot;</span>));</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 通过jsonwebtoken解析后将会得到包含payload非敏感部分明文的JSON对象</span></span><br><span class="line"><span class="comment">	 * 提取jwt的过期时间，过期时间处在exp字段下</span></span><br><span class="line"><span class="comment">	 * 注意：jwt的时间单位比javascript、java等语言的时间单位要大3个数量级</span></span><br><span class="line"><span class="comment">	 * 因此，需要给解析出的时间乘上1000</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">let</span> exp = <span class="variable constant_">TOKEN</span>.<span class="property">exp</span> * <span class="number">1000</span>;</span><br><span class="line">	<span class="comment">// 判断当前时间是否已超过token的过期时间</span></span><br><span class="line">	<span class="keyword">if</span> (exp &lt;= <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">getTime</span>()) &#123;</span><br><span class="line">		<span class="variable language_">this</span>.$message(&#123;</span><br><span class="line">			<span class="attr">message</span>: <span class="string">&quot;您的身份认证已过期，请重新登陆&quot;</span>,</span><br><span class="line">			<span class="attr">type</span>: <span class="string">&quot;warning&quot;</span>,</span><br><span class="line">			<span class="attr">duration</span>: <span class="number">1000</span>,</span><br><span class="line">			<span class="attr">onClose</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">				<span class="comment">/**</span></span><br><span class="line"><span class="comment">				 * 消息提示关闭后执行两项任务</span></span><br><span class="line"><span class="comment">				 * 1.将过期的token字段从localStorage中移除</span></span><br><span class="line"><span class="comment">				 * 2.为用户跳转至登录界面</span></span><br><span class="line"><span class="comment">				 */</span></span><br><span class="line">				<span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&quot;token&quot;</span>);</span><br><span class="line">				<span class="variable language_">this</span>.<span class="property">$router</span>.<span class="title function_">push</span>(<span class="string">&quot;/login&quot;</span>);</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">// 当localStorage中不存在token字段时，自动跳转至登录界面</span></span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">$router</span>.<span class="title function_">push</span>(<span class="string">&quot;/login&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="后端（SpringBoot）"><a href="#后端（SpringBoot）" class="headerlink" title="后端（SpringBoot）"></a>后端（SpringBoot）</h2><h3 id="生成、解析JWT"><a href="#生成、解析JWT" class="headerlink" title="生成、解析JWT"></a>生成、解析JWT</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jsy.learnjwt.util;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.jsy.learnjwt.entity.CheckResult;</span><br><span class="line"><span class="keyword">import</span> com.jsy.learnjwt.entity.SystemConstant;</span><br><span class="line"><span class="keyword">import</span> io.jsonwebtoken.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.crypto.SecretKey;</span><br><span class="line"><span class="keyword">import</span> javax.crypto.spec.SecretKeySpec;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtUtil</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 签发JWT</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id        JWT的唯一标识</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> subject   代表这个JWT的主体，即它的所有人，这个是一个json格式的字符串，可以存放什么userId，roleId之类的，作为什么用户的唯一标志</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ttlMillis 有效时间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">createJWT</span><span class="params">(String id, String subject, Long ttlMillis)</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">nowMillis</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">        <span class="type">Date</span> <span class="variable">now</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>(nowMillis);</span><br><span class="line">        <span class="type">SecretKey</span> <span class="variable">secretKey</span> <span class="operator">=</span> generalKey();</span><br><span class="line">        <span class="type">JwtBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> Jwts.builder()</span><br><span class="line">                .setId(id) <span class="comment">// 是JWT的唯一标识，根据业务需要，这个可以设置为一个不重复的值，主要用来作为一次性token,从而回避重放攻击。</span></span><br><span class="line">                .setSubject(subject)</span><br><span class="line">                .setIssuer(<span class="string">&quot;user&quot;</span>)     <span class="comment">// 颁发者是使用 HTTP 或 HTTPS 方案的 URL（区分大小写），其中包含方案、主机及（可选的）端口号和路径部分</span></span><br><span class="line">                .setIssuedAt(now)      <span class="comment">// jwt的签发时间</span></span><br><span class="line">                .signWith(SignatureAlgorithm.HS256, secretKey); <span class="comment">// 设置签名使用的签名算法和签名使用的秘钥</span></span><br><span class="line">        <span class="keyword">if</span> (ttlMillis &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="type">long</span> <span class="variable">expMillis</span> <span class="operator">=</span> nowMillis + ttlMillis;</span><br><span class="line">            <span class="type">Date</span> <span class="variable">expDate</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>(expMillis);</span><br><span class="line">            builder.setExpiration(expDate); <span class="comment">// 过期时间</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> builder.compact();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 验证JWT</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> CheckResult <span class="title function_">validateJWT</span><span class="params">(String jwtStr)</span> &#123;</span><br><span class="line">        <span class="type">CheckResult</span> <span class="variable">checkResult</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CheckResult</span>();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">Claims</span> <span class="variable">claims</span> <span class="operator">=</span> parseJWT(jwtStr);</span><br><span class="line">            checkResult.setClaims(claims);</span><br><span class="line">            checkResult.setSuccess(<span class="literal">true</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ExpiredJwtException e) &#123;  <span class="comment">// JWT 过期</span></span><br><span class="line">            checkResult.setErrCode(SystemConstant.JWT_ERRCODE_EXPIRE);</span><br><span class="line">            checkResult.setSuccess(<span class="literal">false</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            checkResult.setErrCode(SystemConstant.JWT_ERRCODE_FAIL);</span><br><span class="line">            checkResult.setSuccess(<span class="literal">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> checkResult;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SecretKey <span class="title function_">generalKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">byte</span>[] encodedKey = SystemConstant.JWT_SECRET.getBytes();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SecretKeySpec</span>(encodedKey, <span class="number">0</span>, encodedKey.length, <span class="string">&quot;AES&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解析JWT字符串</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Claims <span class="title function_">parseJWT</span><span class="params">(String jwt)</span> &#123;</span><br><span class="line">        <span class="type">SecretKey</span> <span class="variable">secretKey</span> <span class="operator">=</span> generalKey();</span><br><span class="line">        <span class="keyword">return</span> Jwts.parser()</span><br><span class="line">                .setSigningKey(secretKey)</span><br><span class="line">                .parseClaimsJws(jwt)</span><br><span class="line">                .getBody();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="拦截器处理token的验证"><a href="#拦截器处理token的验证" class="headerlink" title="拦截器处理token的验证"></a>拦截器处理token的验证</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jsy.learnjwt.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"><span class="keyword">import</span> com.jsy.learnjwt.entity.CheckResult;</span><br><span class="line"><span class="keyword">import</span> com.jsy.learnjwt.entity.SystemConstant;</span><br><span class="line"><span class="keyword">import</span> com.jsy.learnjwt.util.JwtUtil;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang3.StringUtils;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.HandlerInterceptor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.Cookie;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.nio.charset.StandardCharsets;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: SongyangJi</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span>: 2021/12/27</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyInterceptor</span> <span class="keyword">implements</span> <span class="title class_">HandlerInterceptor</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1.从Cookie获取token</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">token</span> <span class="operator">=</span> getTokenFromCookie(request);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(token)) &#123;</span><br><span class="line">            <span class="comment">// 2.从headers中获取</span></span><br><span class="line">            token = request.getHeader(<span class="string">&quot;token&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(token)) &#123;</span><br><span class="line">            <span class="comment">// 3.从请求参数获取</span></span><br><span class="line">            token = request.getParameter(<span class="string">&quot;token&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(token)) &#123;</span><br><span class="line">            <span class="comment">//输出响应流</span></span><br><span class="line">            <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">            jsonObject.put(<span class="string">&quot;msg&quot;</span>, <span class="string">&quot;403&quot;</span>);</span><br><span class="line">            response.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">            response.setContentType(<span class="string">&quot;application/json; charset=utf-8&quot;</span>);</span><br><span class="line">            response.getOutputStream().write(jsonObject.toString().getBytes(StandardCharsets.UTF_8));</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 验证token</span></span><br><span class="line">        <span class="type">CheckResult</span> <span class="variable">checkResult</span> <span class="operator">=</span> JwtUtil.validateJWT(token);</span><br><span class="line">        <span class="keyword">if</span> (checkResult.isSuccess()) &#123;</span><br><span class="line">            <span class="comment">// 验证通过</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (checkResult.getErrCode().equals(SystemConstant.JWT_ERRCODE_EXPIRE)) &#123;</span><br><span class="line">                <span class="comment">//输出响应流</span></span><br><span class="line">                <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">                jsonObject.put(<span class="string">&quot;msg&quot;</span>, SystemConstant.JWT_ERRCODE_EXPIRE);</span><br><span class="line">                response.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">                response.setContentType(<span class="string">&quot;application/json; charset=utf-8&quot;</span>);</span><br><span class="line">                response.getOutputStream().write(jsonObject.toString().getBytes(StandardCharsets.UTF_8));</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (checkResult.getErrCode().equals(SystemConstant.JWT_ERRCODE_FAIL)) &#123;</span><br><span class="line">                <span class="comment">//输出响应流</span></span><br><span class="line">                <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">                jsonObject.put(<span class="string">&quot;msg&quot;</span>, SystemConstant.JWT_ERRCODE_FAIL);</span><br><span class="line">                response.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">                response.setContentType(<span class="string">&quot;application/json; charset=utf-8&quot;</span>);</span><br><span class="line">                response.getOutputStream().write(jsonObject.toString().getBytes(StandardCharsets.UTF_8));</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//输出响应流</span></span><br><span class="line">            <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">            jsonObject.put(<span class="string">&quot;msg&quot;</span>, <span class="string">&quot;403&quot;</span>);</span><br><span class="line">            response.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">            response.setContentType(<span class="string">&quot;application/json; charset=utf-8&quot;</span>);</span><br><span class="line">            response.getOutputStream().write(jsonObject.toString().getBytes(StandardCharsets.UTF_8));</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">getTokenFromCookie</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">token</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        Cookie[] cookies = request.getCookies();</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> <span class="literal">null</span> == cookies ? <span class="number">0</span> : cookies.length;</span><br><span class="line">        <span class="keyword">if</span> (len &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : cookies) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookie.getName().equals(<span class="string">&quot;token&quot;</span>)) &#123;</span><br><span class="line">                    token = cookie.getValue();</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> token;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>设置对应路径的接口的拦截器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WebMvcConfig</span> <span class="keyword">implements</span> <span class="title class_">WebMvcConfigurer</span> &#123;</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> MyInterceptor myInterceptor;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> &#123;</span><br><span class="line">        <span class="comment">// 设置对应路径的接口的拦截器</span></span><br><span class="line">        registry.addInterceptor(myInterceptor).addPathPatterns(<span class="string">&quot;/token/**&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://jwt.io/">https://jwt.io/</a></p>
+<p><a target="_blank" rel="noopener" href="https://jwt.io/introduction/">https://jwt.io/introduction/</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.jsons.cn/allencrypt/">http://www.jsons.cn/allencrypt/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html">https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_53126706/article/details/120925322?spm=1001.2014.3001.5501">https://blog.csdn.net/qq_53126706/article/details/120925322?spm=1001.2014.3001.5501</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6623416161ff">https://www.jianshu.com/p/6623416161ff</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4a124a10fcaf">https://www.jianshu.com/p/4a124a10fcaf</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1567,157 +1794,6 @@
 <blockquote>
 <p>参考博客</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Hollake/article/details/90484027">https://blog.csdn.net/Hollake/article/details/90484027</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/12/ConcurrentHashMap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/12/ConcurrentHashMap/" class="post-title-link" itemprop="url">JUC之并发安全的HashMap —— ConcurrentHashMap</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-12 16:15:24" itemprop="dateCreated datePublished" datetime="2021-12-12T16:15:24+08:00">2021-12-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-03-22 15:19:33" itemprop="dateModified" datetime="2022-03-22T15:19:33+08:00">2022-03-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JUC/" itemprop="url" rel="index"><span itemprop="name">JUC</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本篇文章将要介绍的 ConcurrentHashMap 是 HashMap 的并发版本，它是线程安全的，并且在高并发的情境下，性能优于 Hashtable 很多。</p>
-<h2 id="历史版本的演变"><a href="#历史版本的演变" class="headerlink" title="历史版本的演变"></a>历史版本的演变</h2><blockquote>
-<p><em>一句话总结</em></p>
-<p>从JDK7版本的ReentrantLock+Segment+HashEntry，到JDK8版本中synchronized+CAS+HashEntry+红黑树。</p>
-</blockquote>
-<h3 id="JDK7的ConcurrentHashMap"><a href="#JDK7的ConcurrentHashMap" class="headerlink" title="JDK7的ConcurrentHashMap"></a>JDK7的ConcurrentHashMap</h3><p>JDK7 采用<strong>分段锁技术</strong>，<strong>整个 Hash 表被分成多个段（默认为16段），每个段中会对应一个 Segment 段锁</strong>，<strong>段与段之间可以并发访问，但是多线程想要操作同一个段是需要获取锁的</strong>。所有的 put，get，remove 等方法都是根据键的 hash 值对应到相应的段中，然后尝试获取锁进行访问。</p>
-<p>相当于通过增加锁的数量来降低锁的粒度（能支持 N 个 Segment 这么多次数的并发）。</p>
-<p><img src="/2021/12/12/ConcurrentHashMap/jdk7-segment.png"></p>
-<p>下图为JDK7的数据结构。</p>
-<p><img src="/2021/12/12/ConcurrentHashMap/jdk7-segment2.webp"></p>
-<p>Segment 是 ConcurrentHashMap 的一个内部类，主要的组成如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Segment</span>&lt;K,V&gt; <span class="keyword">extends</span> <span class="title class_">ReentrantLock</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> <span class="number">2249069246763182397L</span>;</span><br><span class="line">       </span><br><span class="line">       <span class="comment">// 和 HashMap 中的 HashEntry 作用一样，真正存放数据的桶</span></span><br><span class="line">       <span class="keyword">transient</span> <span class="keyword">volatile</span> HashEntry&lt;K,V&gt;[] table;</span><br><span class="line">       <span class="keyword">transient</span> <span class="type">int</span> count;</span><br><span class="line">       <span class="keyword">transient</span> <span class="type">int</span> modCount;</span><br><span class="line">       <span class="keyword">transient</span> <span class="type">int</span> threshold;</span><br><span class="line">       <span class="keyword">final</span> <span class="type">float</span> loadFactor;</span><br><span class="line">       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>原理上来说：ConcurrentHashMap 采用了分段锁技术，其中 Segment 继承于 ReentrantLock。不会像 HashTable 那样不管是 put 还是 get 操作都需要做同步处理，理论上 ConcurrentHashMap 支持 CurrencyLevel (Segment 数组数量)的线程并发。每当一个线程占用锁访问一个 Segment 时，不会影响到其他的 Segment。</p>
-<p>下面也来看看核心的 <code>put</code>、<code>get</code> 方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> V <span class="title function_">put</span><span class="params">(K key, V value)</span> &#123;</span><br><span class="line">    Segment&lt;K,V&gt; s;</span><br><span class="line">    <span class="keyword">if</span> (value == <span class="literal">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">    <span class="type">int</span> <span class="variable">hash</span> <span class="operator">=</span> hash(key);</span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> (hash &gt;&gt;&gt; segmentShift) &amp; segmentMask;</span><br><span class="line">    <span class="keyword">if</span> ((s = (Segment&lt;K,V&gt;)UNSAFE.getObject          <span class="comment">// nonvolatile; recheck</span></span><br><span class="line">         (segments, (j &lt;&lt; SSHIFT) + SBASE)) == <span class="literal">null</span>) <span class="comment">//  in ensureSegment</span></span><br><span class="line">        s = ensureSegment(j);</span><br><span class="line">    <span class="keyword">return</span> s.put(key, hash, value, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>首先是通过 key 定位到 Segment，之后在对应的 Segment 中进行具体的 put。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> V <span class="title function_">put</span><span class="params">(K key, <span class="type">int</span> hash, V value, <span class="type">boolean</span> onlyIfAbsent)</span> &#123;</span><br><span class="line">    HashEntry&lt;K,V&gt; node = tryLock() ? <span class="literal">null</span> :</span><br><span class="line">        scanAndLockForPut(key, hash, value); <span class="comment">// 尝试获取锁，如果获取失败肯定就有其他线程存在竞争</span></span><br><span class="line">    V oldValue;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        HashEntry&lt;K,V&gt;[] tab = table;</span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> (tab.length - <span class="number">1</span>) &amp; hash;</span><br><span class="line">        HashEntry&lt;K,V&gt; first = entryAt(tab, index);</span><br><span class="line">        <span class="keyword">for</span> (HashEntry&lt;K,V&gt; e = first;;) &#123;</span><br><span class="line">            <span class="keyword">if</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">                K k;</span><br><span class="line">                <span class="keyword">if</span> ((k = e.key) == key ||</span><br><span class="line">                    (e.hash == hash &amp;&amp; key.equals(k))) &#123;</span><br><span class="line">                    oldValue = e.value;</span><br><span class="line">                    <span class="keyword">if</span> (!onlyIfAbsent) &#123;</span><br><span class="line">                        e.value = value;</span><br><span class="line">                        ++modCount;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                e = e.next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (node != <span class="literal">null</span>)</span><br><span class="line">                    node.setNext(first);</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    node = <span class="keyword">new</span> <span class="title class_">HashEntry</span>&lt;K,V&gt;(hash, key, value, first);</span><br><span class="line">                <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> count + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span> (c &gt; threshold &amp;&amp; tab.length &lt; MAXIMUM_CAPACITY)</span><br><span class="line">                    rehash(node);</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    setEntryAt(tab, index, node);</span><br><span class="line">                ++modCount;</span><br><span class="line">                count = c;</span><br><span class="line">                oldValue = <span class="literal">null</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        unlock();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> oldValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>scanAndLockForPut</code>为第一步操作：获取锁，尝试自旋获取锁（try lock），如果重试的次数达到了 <code>MAX_SCAN_RETRIES</code> 则改为阻塞锁（lock）获取，保证能获取成功。</p>
-<p>再结合图看看 put 的流程。</p>
-<ol>
-<li>将当前 Segment 中的 table 通过 key 的 hashcode 定位到 HashEntry。</li>
-<li>遍历该 HashEntry，如果不为空则判断传入的 key 和当前遍历的 key 是否相等，相等则覆盖旧的 value。</li>
-<li>不为空则需要新建一个 HashEntry 并加入到 Segment 中，同时会先判断是否需要扩容。</li>
-<li>最后会解除在 1 中所获取当前 Segment 的锁。</li>
-</ol>
-<p><code>get</code>的逻辑比价简单：</p>
-<p>只需要将 Key 通过 Hash 之后定位到具体的 Segment ，再通过一次 Hash 定位到具体的元素上。</p>
-<p>由于 HashEntry 中的 value 属性是用 volatile 关键词修饰的，保证了内存可见性，所以每次获取时都是最新值。</p>
-<p>ConcurrentHashMap 的 get 方法是非常高效的，<strong>因为整个过程都不需要加锁</strong>。</p>
-<h3 id="JDK8的ConcurrentHashMap"><a href="#JDK8的ConcurrentHashMap" class="headerlink" title="JDK8的ConcurrentHashMap"></a>JDK8的ConcurrentHashMap</h3><p>J<strong>DK8 取消了基于 Segment 的分段锁思想</strong>，<strong>改用 CAS + synchronized 控制并发操作</strong>，在某些方面提升了性能。</p>
-<p><strong>并且追随 1.8 版本的 HashMap 底层实现，使用数组+链表+红黑树进行数据存储</strong>。本篇主要介绍 1.8 版本的 ConcurrentHashMap 的具体实现。</p>
-<h3 id="put流程"><a href="#put流程" class="headerlink" title="put流程"></a>put流程</h3><ul>
-<li>根据 key 计算出 hashcode 。</li>
-<li>判断是否需要进行初始化。</li>
-<li><code>f</code> 即为当前 key 定位出的 Node，<strong>如果为空表示当前位置可以写入数据，利用 CAS 尝试写入，失败则自旋保证成功</strong>。</li>
-<li>如果当前位置的 <code>hashcode == MOVED == -1</code>,则需要进行扩容。</li>
-<li>如果都不满足，则利用 synchronized 锁写入数据。</li>
-<li>如果数量大于 <code>TREEIFY_THRESHOLD</code> 则要转换为红黑树。</li>
-</ul>
-<p>有关其之前版本的实现情况，这里推荐几篇文章：</p>
-<p><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/e694f1e868ec">谈谈ConcurrentHashMap1.7和1.8的不同实现</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/everSeeker/p/5601861.html">ConcurrentHashMap在jdk1.8中的改进</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/study-everyday/p/6430462.html">ConcurrentHashMap原理分析（1.7与1.8）</a></p>
-<h3 id="JDK7与JDK8的区别"><a href="#JDK7与JDK8的区别" class="headerlink" title="JDK7与JDK8的区别"></a>JDK7与JDK8的区别</h3><ol>
-<li><strong>底层数据结构</strong>：<strong>取消了Segment分段锁的数据结构</strong>，取而代之的是Node数组+链表+红黑树的结构，从而实现了对每一行数据进行加锁，进一步减少并发冲突的概率。</li>
-</ol>
-<blockquote>
-<p>Node类成员变量Node的元素val和指针next都标注volatile，目的是在多线程环境下<strong>线程A修改结点的val或者新增节点的时候是对线程B可见的</strong>。</p>
-</blockquote>
-<blockquote>
-<p>ConcurrentHashMap有成员变量transient volatile Node&lt;K,V&gt;[] table，此volatile的目的是<strong>为了使Node数组在扩容的时候对其他线程具有可见性</strong>。（例如：volatile int array[10]是指array的地址是volatile的而不是数组元素的值是volatile的.）</p>
-</blockquote>
-<ol start="2">
-<li><strong>保证线程安全机制</strong>：JDK7采用segment的分段锁机制实现线程安全，其中segment继承自ReentrantLock。<strong>JDK8采用CAS(读)+Synchronized(写)保证线程安全</strong>。</li>
-<li><strong>锁的粒度</strong>：原来是对需要进行数据操作的Segment加锁<strong>，JDK8调整为对每个数组元素加锁（Node）</strong>。</li>
-<li><strong>链表转化为红黑树</strong>：定位结点的hash算法简化会带来弊端，Hash冲突加剧，因此在链表节点数量大于8时，会将链表转化为红黑树进行存储。</li>
-<li><strong>查询时间复杂度</strong>：从原来的遍历链表O(n)，变成遍历红黑树O(logN)。</li>
-</ol>
-<h3 id="Collections-synchronizedMap、Hashtable、ConcurrentHashMap区别"><a href="#Collections-synchronizedMap、Hashtable、ConcurrentHashMap区别" class="headerlink" title="Collections.synchronizedMap、Hashtable、ConcurrentHashMap区别"></a>Collections.synchronizedMap、Hashtable、ConcurrentHashMap区别</h3><blockquote>
-<p>参考文章</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yangming1996/p/8031199.html">为并发而生的 ConcurrentHashMap（Java 8）</a></p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903813892014087">解读Java8中ConcurrentHashMap是如何保证线程安全的</a></p>
-<p><a target="_blank" rel="noopener" href="https://crossoverjie.top/2018/07/23/java-senior/ConcurrentHashMap/">HashMap? ConcurrentHashMap? 相信看完这篇没人能难住你！</a></p>
 </blockquote>
 
       

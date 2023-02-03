@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">245</span>
+          <span class="site-state-item-count">246</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,6 +174,157 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/12/ConcurrentHashMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/12/ConcurrentHashMap/" class="post-title-link" itemprop="url">JUC之并发安全的HashMap —— ConcurrentHashMap</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-12 16:15:24" itemprop="dateCreated datePublished" datetime="2021-12-12T16:15:24+08:00">2021-12-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-22 15:19:33" itemprop="dateModified" datetime="2022-03-22T15:19:33+08:00">2022-03-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JUC/" itemprop="url" rel="index"><span itemprop="name">JUC</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本篇文章将要介绍的 ConcurrentHashMap 是 HashMap 的并发版本，它是线程安全的，并且在高并发的情境下，性能优于 Hashtable 很多。</p>
+<h2 id="历史版本的演变"><a href="#历史版本的演变" class="headerlink" title="历史版本的演变"></a>历史版本的演变</h2><blockquote>
+<p><em>一句话总结</em></p>
+<p>从JDK7版本的ReentrantLock+Segment+HashEntry，到JDK8版本中synchronized+CAS+HashEntry+红黑树。</p>
+</blockquote>
+<h3 id="JDK7的ConcurrentHashMap"><a href="#JDK7的ConcurrentHashMap" class="headerlink" title="JDK7的ConcurrentHashMap"></a>JDK7的ConcurrentHashMap</h3><p>JDK7 采用<strong>分段锁技术</strong>，<strong>整个 Hash 表被分成多个段（默认为16段），每个段中会对应一个 Segment 段锁</strong>，<strong>段与段之间可以并发访问，但是多线程想要操作同一个段是需要获取锁的</strong>。所有的 put，get，remove 等方法都是根据键的 hash 值对应到相应的段中，然后尝试获取锁进行访问。</p>
+<p>相当于通过增加锁的数量来降低锁的粒度（能支持 N 个 Segment 这么多次数的并发）。</p>
+<p><img src="/2021/12/12/ConcurrentHashMap/jdk7-segment.png"></p>
+<p>下图为JDK7的数据结构。</p>
+<p><img src="/2021/12/12/ConcurrentHashMap/jdk7-segment2.webp"></p>
+<p>Segment 是 ConcurrentHashMap 的一个内部类，主要的组成如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Segment</span>&lt;K,V&gt; <span class="keyword">extends</span> <span class="title class_">ReentrantLock</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">       <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> <span class="number">2249069246763182397L</span>;</span><br><span class="line">       </span><br><span class="line">       <span class="comment">// 和 HashMap 中的 HashEntry 作用一样，真正存放数据的桶</span></span><br><span class="line">       <span class="keyword">transient</span> <span class="keyword">volatile</span> HashEntry&lt;K,V&gt;[] table;</span><br><span class="line">       <span class="keyword">transient</span> <span class="type">int</span> count;</span><br><span class="line">       <span class="keyword">transient</span> <span class="type">int</span> modCount;</span><br><span class="line">       <span class="keyword">transient</span> <span class="type">int</span> threshold;</span><br><span class="line">       <span class="keyword">final</span> <span class="type">float</span> loadFactor;</span><br><span class="line">       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>原理上来说：ConcurrentHashMap 采用了分段锁技术，其中 Segment 继承于 ReentrantLock。不会像 HashTable 那样不管是 put 还是 get 操作都需要做同步处理，理论上 ConcurrentHashMap 支持 CurrencyLevel (Segment 数组数量)的线程并发。每当一个线程占用锁访问一个 Segment 时，不会影响到其他的 Segment。</p>
+<p>下面也来看看核心的 <code>put</code>、<code>get</code> 方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> V <span class="title function_">put</span><span class="params">(K key, V value)</span> &#123;</span><br><span class="line">    Segment&lt;K,V&gt; s;</span><br><span class="line">    <span class="keyword">if</span> (value == <span class="literal">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">    <span class="type">int</span> <span class="variable">hash</span> <span class="operator">=</span> hash(key);</span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> (hash &gt;&gt;&gt; segmentShift) &amp; segmentMask;</span><br><span class="line">    <span class="keyword">if</span> ((s = (Segment&lt;K,V&gt;)UNSAFE.getObject          <span class="comment">// nonvolatile; recheck</span></span><br><span class="line">         (segments, (j &lt;&lt; SSHIFT) + SBASE)) == <span class="literal">null</span>) <span class="comment">//  in ensureSegment</span></span><br><span class="line">        s = ensureSegment(j);</span><br><span class="line">    <span class="keyword">return</span> s.put(key, hash, value, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先是通过 key 定位到 Segment，之后在对应的 Segment 中进行具体的 put。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> V <span class="title function_">put</span><span class="params">(K key, <span class="type">int</span> hash, V value, <span class="type">boolean</span> onlyIfAbsent)</span> &#123;</span><br><span class="line">    HashEntry&lt;K,V&gt; node = tryLock() ? <span class="literal">null</span> :</span><br><span class="line">        scanAndLockForPut(key, hash, value); <span class="comment">// 尝试获取锁，如果获取失败肯定就有其他线程存在竞争</span></span><br><span class="line">    V oldValue;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        HashEntry&lt;K,V&gt;[] tab = table;</span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> (tab.length - <span class="number">1</span>) &amp; hash;</span><br><span class="line">        HashEntry&lt;K,V&gt; first = entryAt(tab, index);</span><br><span class="line">        <span class="keyword">for</span> (HashEntry&lt;K,V&gt; e = first;;) &#123;</span><br><span class="line">            <span class="keyword">if</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">                K k;</span><br><span class="line">                <span class="keyword">if</span> ((k = e.key) == key ||</span><br><span class="line">                    (e.hash == hash &amp;&amp; key.equals(k))) &#123;</span><br><span class="line">                    oldValue = e.value;</span><br><span class="line">                    <span class="keyword">if</span> (!onlyIfAbsent) &#123;</span><br><span class="line">                        e.value = value;</span><br><span class="line">                        ++modCount;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                e = e.next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (node != <span class="literal">null</span>)</span><br><span class="line">                    node.setNext(first);</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    node = <span class="keyword">new</span> <span class="title class_">HashEntry</span>&lt;K,V&gt;(hash, key, value, first);</span><br><span class="line">                <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> count + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span> (c &gt; threshold &amp;&amp; tab.length &lt; MAXIMUM_CAPACITY)</span><br><span class="line">                    rehash(node);</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    setEntryAt(tab, index, node);</span><br><span class="line">                ++modCount;</span><br><span class="line">                count = c;</span><br><span class="line">                oldValue = <span class="literal">null</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        unlock();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> oldValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>scanAndLockForPut</code>为第一步操作：获取锁，尝试自旋获取锁（try lock），如果重试的次数达到了 <code>MAX_SCAN_RETRIES</code> 则改为阻塞锁（lock）获取，保证能获取成功。</p>
+<p>再结合图看看 put 的流程。</p>
+<ol>
+<li>将当前 Segment 中的 table 通过 key 的 hashcode 定位到 HashEntry。</li>
+<li>遍历该 HashEntry，如果不为空则判断传入的 key 和当前遍历的 key 是否相等，相等则覆盖旧的 value。</li>
+<li>不为空则需要新建一个 HashEntry 并加入到 Segment 中，同时会先判断是否需要扩容。</li>
+<li>最后会解除在 1 中所获取当前 Segment 的锁。</li>
+</ol>
+<p><code>get</code>的逻辑比价简单：</p>
+<p>只需要将 Key 通过 Hash 之后定位到具体的 Segment ，再通过一次 Hash 定位到具体的元素上。</p>
+<p>由于 HashEntry 中的 value 属性是用 volatile 关键词修饰的，保证了内存可见性，所以每次获取时都是最新值。</p>
+<p>ConcurrentHashMap 的 get 方法是非常高效的，<strong>因为整个过程都不需要加锁</strong>。</p>
+<h3 id="JDK8的ConcurrentHashMap"><a href="#JDK8的ConcurrentHashMap" class="headerlink" title="JDK8的ConcurrentHashMap"></a>JDK8的ConcurrentHashMap</h3><p>J<strong>DK8 取消了基于 Segment 的分段锁思想</strong>，<strong>改用 CAS + synchronized 控制并发操作</strong>，在某些方面提升了性能。</p>
+<p><strong>并且追随 1.8 版本的 HashMap 底层实现，使用数组+链表+红黑树进行数据存储</strong>。本篇主要介绍 1.8 版本的 ConcurrentHashMap 的具体实现。</p>
+<h3 id="put流程"><a href="#put流程" class="headerlink" title="put流程"></a>put流程</h3><ul>
+<li>根据 key 计算出 hashcode 。</li>
+<li>判断是否需要进行初始化。</li>
+<li><code>f</code> 即为当前 key 定位出的 Node，<strong>如果为空表示当前位置可以写入数据，利用 CAS 尝试写入，失败则自旋保证成功</strong>。</li>
+<li>如果当前位置的 <code>hashcode == MOVED == -1</code>,则需要进行扩容。</li>
+<li>如果都不满足，则利用 synchronized 锁写入数据。</li>
+<li>如果数量大于 <code>TREEIFY_THRESHOLD</code> 则要转换为红黑树。</li>
+</ul>
+<p>有关其之前版本的实现情况，这里推荐几篇文章：</p>
+<p><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/e694f1e868ec">谈谈ConcurrentHashMap1.7和1.8的不同实现</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/everSeeker/p/5601861.html">ConcurrentHashMap在jdk1.8中的改进</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/study-everyday/p/6430462.html">ConcurrentHashMap原理分析（1.7与1.8）</a></p>
+<h3 id="JDK7与JDK8的区别"><a href="#JDK7与JDK8的区别" class="headerlink" title="JDK7与JDK8的区别"></a>JDK7与JDK8的区别</h3><ol>
+<li><strong>底层数据结构</strong>：<strong>取消了Segment分段锁的数据结构</strong>，取而代之的是Node数组+链表+红黑树的结构，从而实现了对每一行数据进行加锁，进一步减少并发冲突的概率。</li>
+</ol>
+<blockquote>
+<p>Node类成员变量Node的元素val和指针next都标注volatile，目的是在多线程环境下<strong>线程A修改结点的val或者新增节点的时候是对线程B可见的</strong>。</p>
+</blockquote>
+<blockquote>
+<p>ConcurrentHashMap有成员变量transient volatile Node&lt;K,V&gt;[] table，此volatile的目的是<strong>为了使Node数组在扩容的时候对其他线程具有可见性</strong>。（例如：volatile int array[10]是指array的地址是volatile的而不是数组元素的值是volatile的.）</p>
+</blockquote>
+<ol start="2">
+<li><strong>保证线程安全机制</strong>：JDK7采用segment的分段锁机制实现线程安全，其中segment继承自ReentrantLock。<strong>JDK8采用CAS(读)+Synchronized(写)保证线程安全</strong>。</li>
+<li><strong>锁的粒度</strong>：原来是对需要进行数据操作的Segment加锁<strong>，JDK8调整为对每个数组元素加锁（Node）</strong>。</li>
+<li><strong>链表转化为红黑树</strong>：定位结点的hash算法简化会带来弊端，Hash冲突加剧，因此在链表节点数量大于8时，会将链表转化为红黑树进行存储。</li>
+<li><strong>查询时间复杂度</strong>：从原来的遍历链表O(n)，变成遍历红黑树O(logN)。</li>
+</ol>
+<h3 id="Collections-synchronizedMap、Hashtable、ConcurrentHashMap区别"><a href="#Collections-synchronizedMap、Hashtable、ConcurrentHashMap区别" class="headerlink" title="Collections.synchronizedMap、Hashtable、ConcurrentHashMap区别"></a>Collections.synchronizedMap、Hashtable、ConcurrentHashMap区别</h3><blockquote>
+<p>参考文章</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yangming1996/p/8031199.html">为并发而生的 ConcurrentHashMap（Java 8）</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903813892014087">解读Java8中ConcurrentHashMap是如何保证线程安全的</a></p>
+<p><a target="_blank" rel="noopener" href="https://crossoverjie.top/2018/07/23/java-senior/ConcurrentHashMap/">HashMap? ConcurrentHashMap? 相信看完这篇没人能难住你！</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2044,302 +2195,6 @@
 <p><strong>实例</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Server</span></span><br><span class="line">redis_version:3.2.3					 # Redis 的版本</span><br><span class="line">redis_git_sha1:00000000				 # Redis 的版本</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:9e93d0c7997bcfef</span><br><span class="line">redis_mode:standalone				 # 运行模式：单机（集群）</span><br><span class="line">os:Linux 2.6.32-431.el6.x86_64 x86_64 # 操作系统</span><br><span class="line">arch_bits:64						  # 操作系统位数</span><br><span class="line">multiplexing_api:epoll				 # redis所使用的事件处理机制</span><br><span class="line">gcc_version:4.4.7					 # gcc版本号</span><br><span class="line">process_id:1606						 # 当前 Redis 服务器进程id</span><br><span class="line">run_id:17e79b1966f1f891eff203a8e496151ee8a3a7a7</span><br><span class="line">tcp_port:7001						 # 端口号</span><br><span class="line">uptime_in_seconds:4360189			 # 运行时间(秒)</span><br><span class="line">uptime_in_days:50					 # 运行时间(天)</span><br><span class="line">hz:10								 # redis内部调度（进行关闭timeout的客户端，删除过期key等等）频率，程序规定serverCron每秒运行10次。</span><br><span class="line">lru_clock:5070330					 # Redis的逻辑时钟</span><br><span class="line">executable:/usr/local/bin/redis-server			# 启动脚本路径</span><br><span class="line">config_file:/opt/redis3/conf/redis_7001.conf	# 启动指定的配置文件路径</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Clients</span></span><br><span class="line">connected_clients:660				 # 连接的客户端数量</span><br><span class="line">client_longest_output_list:0		 # 当前连接的客户端当中，最长的输出列表</span><br><span class="line">client_biggest_input_buf:0			 # 当前连接的客户端当中，最大输入缓存</span><br><span class="line">blocked_clients:0					 # 阻塞的客户端数量</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Memory</span></span><br><span class="line">used_memory:945408832				# 使用内存（B）</span><br><span class="line">used_memory_human:901.61M			# 使用内存（MB）	</span><br><span class="line">used_memory_rss:1148919808			# 系统给redis分配的内存（即常驻内存），这个值和top命令的输出一致</span><br><span class="line">used_memory_rss_human:1.07G</span><br><span class="line">used_memory_peak:1162079480			# 内存使用的峰值</span><br><span class="line">used_memory_peak_human:1.08G		</span><br><span class="line">total_system_memory:6136483840		# 整个系统内存</span><br><span class="line">total_system_memory_human:5.72G</span><br><span class="line">used_memory_lua:122880				# Lua脚本存储占用的内存</span><br><span class="line">used_memory_lua_human:120.00K		</span><br><span class="line">maxmemory:2147483648				# Redis实例的最大内存配置</span><br><span class="line">maxmemory_human:2.00G</span><br><span class="line">maxmemory_policy:allkeys-lru		# 当达到maxmemory时的淘汰策略</span><br><span class="line">mem_fragmentation_ratio:1.22		# used_memory_rss/used_memory的比例。一般情况下，used_memory_rss略高于used_memory，当内存碎片较多时，则mem_fragmentation_ratio会较大，可以反映内存碎片是否很多</span><br><span class="line">mem_allocator:jemalloc-4.0.3		# 内存分配器</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Persistence</span>	</span><br><span class="line">loading:0								  # 服务器是否正在载入持久化文件</span><br><span class="line">rdb_changes_since_last_save:82423954	  #	离最近一次成功生成rdb文件，写入命令的个数                      </span><br><span class="line">rdb_bgsave_in_progress:0		          # 服务器是否正在创建rdb文件           </span><br><span class="line">rdb_last_save_time:1560991229		      # 最近一次成功rdb文件的时间戳               </span><br><span class="line">rdb_last_bgsave_status:ok		          # 最近一次成功rdb文件的状态           </span><br><span class="line">rdb_last_bgsave_time_sec:-1		          # 最近一次成功rdb文件的耗时            </span><br><span class="line">rdb_current_bgsave_time_sec:-1		      # 若当前正在创建rdb文件，指当前的创建操作已经耗费的时间                </span><br><span class="line">aof_enabled:0		                      # aof是否开启</span><br><span class="line">aof_rewrite_in_progress:0		          # aof的rewrite操作是否在进行中            </span><br><span class="line">aof_rewrite_scheduled:0		              # rewrite任务计划，当客户端发送bgrewriteaof指令，如果当前rewrite子进程正在执行，那么将客户端请求的bgrewriteaof变为计划任务，待aof子进程结束后执行rewrite        </span><br><span class="line">aof_last_rewrite_time_sec:-1		      # 最近一次aof rewrite耗费时长              </span><br><span class="line">aof_current_rewrite_time_sec:-1		      # 若当前正在执行aof rewrite，指当前的已经耗费的时间                </span><br><span class="line">aof_last_bgrewrite_status:ok		      # 最近一次aof bgrewrite的状态         </span><br><span class="line">aof_last_write_status:ok		          # 最近一次aof写入状态  </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">开启aof后增加的一些info信息</span></span><br><span class="line">-----------------------------  </span><br><span class="line">aof_current_size:0                 # aof当前大小</span><br><span class="line">aof_base_size:0                    # aof上次启动或rewrite的大小</span><br><span class="line">aof_pending_rewrite:0              # 同上面的aof_rewrite_scheduled</span><br><span class="line">aof_buffer_length:0                # aof buffer的大小</span><br><span class="line">aof_rewrite_buffer_length:0        # aof rewrite buffer的大小</span><br><span class="line">aof_pending_bio_fsync:0            # 后台IO队列中等待fsync任务的个数</span><br><span class="line">aof_delayed_fsync:0                # 延迟的fsync计数器 </span><br><span class="line">-----------------------------           </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Stats</span></span><br><span class="line">total_connections_received:15815		# 自启动起连接过的总数。如果连接过多，说明短连接严重或连接池使用有问题，需调研代码的连接设置</span><br><span class="line">total_commands_processed:502953838      # 自启动起运行命令的总数</span><br><span class="line">instantaneous_ops_per_sec:7             # 每秒执行的命令数，相当于QPS</span><br><span class="line">total_net_input_bytes:532510481889      # 网络入口流量字节数</span><br><span class="line">total_net_output_bytes:1571444057940    # 网络出口流量字节数</span><br><span class="line">instantaneous_input_kbps:0.37           # 网络入口kps</span><br><span class="line">instantaneous_output_kbps:0.59          # 网络出口kps</span><br><span class="line">rejected_connections:0                  # 拒绝的连接个数，由于maxclients限制，拒绝新连接的个数</span><br><span class="line">sync_full:1                             # 主从完全同步成功次数</span><br><span class="line">sync_partial_ok:0                       # 主从部分同步成功次数</span><br><span class="line">sync_partial_err:0                      # 主从部分同步失败次数</span><br><span class="line">expired_keys:4404930                    # 自启动起过期的key的总数</span><br><span class="line">evicted_keys:0                          # 使用内存大于maxmemory后，淘汰的key的总数</span><br><span class="line">keyspace_hits:337104556                 # 在main dictionary字典中成功查到的key个数</span><br><span class="line">keyspace_misses:22865229                # 同上，未命中的key的个数</span><br><span class="line">pubsub_channels:1                       # 发布/订阅频道数</span><br><span class="line">pubsub_patterns:0                       # 发布/订阅模式数</span><br><span class="line">latest_fork_usec:707                    # 上次的fork操作使用的时间（单位ms）</span><br><span class="line">migrate_cached_sockets:0                # 是否已经缓存了到该地址的连接</span><br><span class="line">slave_expires_tracked_keys:0			# 从实例到期key数量</span><br><span class="line">active_defrag_hits:0                    # 主动碎片整理命中次数</span><br><span class="line">active_defrag_misses:0                  # 主动碎片整理未命中次数</span><br><span class="line">active_defrag_key_hits:0                # 主动碎片整理key命中次数</span><br><span class="line">active_defrag_key_misses:0              # 主动碎片整理key未命中次数</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Replication</span></span><br><span class="line">role:master							  # 当前实例的角色master还是slave</span><br><span class="line">connected_slaves:1					  # slave的数量</span><br><span class="line">master_replid:8f81c045a2cb00f16a7fc5c90a95e02127413bcc		# 主实例启动随机字符串</span><br><span class="line">master_replid2:0000000000000000000000000000000000000000     # 主实例启动随机字符串2</span><br><span class="line">slave0:ip=172.17.12.251,port=7002,state=online,offset=506247209326,lag=1	# slave机器的信息、状态</span><br><span class="line">master_repl_offset:506247209478		  # 主从同步偏移量,此值如果和上面的offset相同说明主从一致没延迟，与master_replid可被用来标识主实例复制流中的位置。</span><br><span class="line">second_repl_offset					  # 主从同步偏移量2,此值如果和上面的offset相同说明主从一致没延迟</span><br><span class="line">repl_backlog_active:1				  # 复制缓冲区是否开启</span><br><span class="line">repl_backlog_size:157286400			  # 复制缓冲区大小</span><br><span class="line">repl_backlog_first_byte_offset:506089923079		# 复制缓冲区里偏移量的大小</span><br><span class="line">repl_backlog_histlen:157286400		  # 此值等于 master_repl_offset - repl_backlog_first_byte_offset,该值不会超过repl_backlog_size的大小</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">CPU</span></span><br><span class="line">used_cpu_sys:6834.06				  # 将所有redis主进程在核心态所占用的CPU时求和累计起来</span><br><span class="line">used_cpu_user:8282.10				  # 将所有redis主进程在用户态所占用的CPU时求和累计起来</span><br><span class="line">used_cpu_sys_children:0.11			  # 后台进程的核心态cpu使用率</span><br><span class="line">used_cpu_user_children:0.91           # 后台进程的用户态cpu使用率</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Cluster</span></span><br><span class="line">cluster_enabled:0		# 实例是否启用集群模式</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Keyspace		<span class="comment"># 各个数据库（0-15）的 key 的数量，带有生存期的 key 的数量，平均存活时间</span></span></span><br><span class="line">db0:keys=267906,expires=109608,avg_ttl=3426011859194</span><br><span class="line">db1:keys=182,expires=179,avg_ttl=503527626</span><br><span class="line">db8:keys=6,expires=0,avg_ttl=0</span><br><span class="line">db15:keys=2,expires=0,avg_ttl=0</span><br></pre></td></tr></table></figure>
 
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/09/Redis-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/09/Redis-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="post-title-link" itemprop="url">Redis-主从复制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-12-09 13:19:34 / 修改时间：14:56:32" itemprop="dateCreated datePublished" datetime="2021-12-09T13:19:34+08:00">2021-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>主从复制，是指将一台Redis服务器的数据，复制到其他的Redis服务器。前者称为主节点(master)，后者称为从节点(slave)；数据的复制是单向的，只能由主节点到从节点。</p>
-<p>默认情况下，每台Redis服务器都是主节点；且一个主节点可以有多个从节点(或没有从节点)，但一个从节点只能有一个主节点。</p>
-<p><strong>主从复制的作用</strong></p>
-<p>主从复制的作用主要包括：</p>
-<ol>
-<li><p><strong>数据备份</strong>：主从复制实现了<strong>数据的热备份</strong>，是持久化之外的一种数据冗余方式。</p>
-</li>
-<li><p>故障恢复：当主节点出现问题时，可以由从节点提供服务，实现快速的故障恢复；实际上是一种服务的冗余。</p>
-</li>
-<li><p><strong>负载均衡</strong>：在主从复制的基础上，配合<strong>读写分离</strong>，可以<strong>由主节点提供写服务，由从节点提供读服务</strong>（即写Redis数据时应用连接主节点，读Redis数据时应用连接从节点），分担服务器负载；尤其是在写少读多的场景下，通过多个从节点分担读负载，可以大大提高Redis服务器的并发量。</p>
-<p>默认情况下，从库只能读，不可写。</p>
-</li>
-<li><p>高可用基石：除了上述作用以外，<strong>主从复制还是哨兵和集群能够实施的基础</strong>，因此说主从复制是Redis高可用的基础。</p>
-</li>
-</ol>
-<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><ol>
-<li><strong>建立复制</strong></li>
-</ol>
-<p>需要注意，主从复制的开启，完全是在从节点发起的；不需要我们在主节点做任何事情。</p>
-<p>从节点开启主从复制，有3种方式：</p>
-<p>（1）配置文件</p>
-<p>在从服务器的配置文件中加入：slaveof masterip masterport</p>
-<p>（2）启动命令</p>
-<p>redis-server启动命令后加入 –slaveof masterip masterport</p>
-<p>（3）客户端命令</p>
-<p>Redis服务器启动后，直接通过客户端执行命令：slaveof masterip masterport，则该Redis实例成为从节点。</p>
-<p>上述3种方式是等效的，下面以客户端命令的方式为例，看一下当执行了slaveof后，Redis主节点和从节点的变化。</p>
-<ol start="2">
-<li><strong>改变主库</strong></li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slaveof masterip masterport</span><br></pre></td></tr></table></figure>
-
-
-
-<ol start="3">
-<li><strong>停止复制</strong></li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slaveof no one</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-<h2 id="上手实战"><a href="#上手实战" class="headerlink" title="上手实战"></a>上手实战</h2><p><strong>启动一主二从的集群架构</strong></p>
-<p>分别在3个shell窗口中</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-server</span><br><span class="line">redis-server --port 6380 --slaveof 127.0.0.1 6379</span><br><span class="line">redis-server --port 6381 --slaveof 127.0.0.1 6379</span><br></pre></td></tr></table></figure>
-
-<p>当然这里也可以在配置文件里修改然后指定配置文件启动。</p>
-<p><strong>使用客户端连接</strong></p>
-<p>分别在3个shell窗口中</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p 6379</span><br><span class="line">redis-cli -p 6380</span><br><span class="line">redis-cli -p 6381</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>使用<code>info replication</code>检查复制状态：</p>
-<p><strong>主库状态</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info replication</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Replication</span></span><br><span class="line">role:master # 角色：主库</span><br><span class="line">connected_slaves:2 # 从库数量</span><br><span class="line">slave0:ip=127.0.0.1,port=6380,state=online,offset=224,lag=0 # ip、端口、状态、复制偏移量</span><br><span class="line">slave1:ip=127.0.0.1,port=6381,state=online,offset=224,lag=1 </span><br><span class="line">master_failover_state:no-failover</span><br><span class="line">master_replid:4b6a1f35a960797cfce477656751eb3add4b320a</span><br><span class="line">master_replid2:0000000000000000000000000000000000000000</span><br><span class="line">master_repl_offset:224</span><br><span class="line">second_repl_offset:-1</span><br><span class="line">repl_backlog_active:1  # 复制缓冲区</span><br><span class="line">repl_backlog_size:1048576 # 复制缓冲区大小（默认是1MB）</span><br><span class="line">repl_backlog_first_byte_offset:1</span><br><span class="line">repl_backlog_histlen:224</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p><strong>从库状态</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; info replication</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Replication</span></span><br><span class="line">role:slave # 角色：从库</span><br><span class="line">master_host:127.0.0.1</span><br><span class="line">master_port:6379</span><br><span class="line">master_link_status:up</span><br><span class="line">master_last_io_seconds_ago:3</span><br><span class="line">master_sync_in_progress:0</span><br><span class="line">slave_repl_offset:238 # 从库偏移量</span><br><span class="line">slave_priority:100</span><br><span class="line">slave_read_only:1 # 从库只读（默认）</span><br><span class="line">replica_announced:1</span><br><span class="line">connected_slaves:0</span><br><span class="line">master_failover_state:no-failover</span><br><span class="line">master_replid:4b6a1f35a960797cfce477656751eb3add4b320a</span><br><span class="line">master_replid2:0000000000000000000000000000000000000000</span><br><span class="line">master_repl_offset:238 # 主库 偏移量 (二者相同表示复制没有延迟)</span><br><span class="line">second_repl_offset:-1</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:1</span><br><span class="line">repl_backlog_histlen:238</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="主从复制的步骤"><a href="#主从复制的步骤" class="headerlink" title="主从复制的步骤"></a>主从复制的步骤</h2><h3 id="连接建立阶段"><a href="#连接建立阶段" class="headerlink" title="连接建立阶段"></a>连接建立阶段</h3><p>该阶段的主要作用是在主从节点之间建立连接，为数据同步做好准备。</p>
-<ol>
-<li><p><strong>保存主节点信息</strong><br>从节点服务器内部维护了两个字段，即masterhost和masterport字段，用于存储主节点的ip和port信息。需要注意的是，slaveof是异步命令，从节点完成主节点ip和port的保存后，向发送slaveof命令的客户端直接返回OK，实际的复制操作在这之后才开始进行。</p>
-</li>
-<li><p><strong>建立socket连接</strong><br>从节点每秒1次调用复制定时函数replicationCron()，如果发现了有主节点可以连接，便会根据主节点的ip和port，创建socket连接。如果连接成功，则：<strong>从节点为该socket建立一个专门处理复制工作的文件事件处理器，负责后续的复制工作，如接收RDB文件、接收命令传播等</strong>。<strong>主节点接收到从节点的socket连接后（即accept之后），为该socket创建相应的客户端状态，并将从节点看做是连接到主节点的一个客户端，后面的步骤会以从节点向主节点发送命令请求的形式来进行</strong>。</p>
-</li>
-<li><p><strong>发送ping命令检测</strong><br>从节点成为主节点的客户端之后，发送ping命令进行首次请求，<strong>目的是检查socket连接是否可用，以及主节点当前是否能够处理请求</strong>。从节点发送ping命令后，可能出现3种情况：</p>
-<p>（1）返回pong：说明socket连接正常，且主节点当前可以处理请求，复制过程继续。</p>
-<p>（2）超时：一定时间后从节点仍未收到主节点的回复，说明socket连接不可用，则从节点断开socket连接，并重连。</p>
-<p>（3）返回pong以外的结果：如果主节点返回其他结果，如正在处理超时运行的脚本，说明主节点当前无法处理命令，则从节点断开socket连接，并重连。</p>
-</li>
-</ol>
-<h3 id="数据同步阶段"><a href="#数据同步阶段" class="headerlink" title="数据同步阶段"></a>数据同步阶段</h3><p>主从节点之间的连接建立以后，便可以开始进行数据同步，该阶段可以理解为从节点数据的初始化。具体执行的方式是：从节点向主节点发送<code>psync</code>命令（Redis2.8以前是<code>sync</code>命令），开始同步。</p>
-<p><strong>数据同步阶段是主从复制最核心的阶段</strong>，根据主从节点当前状态的不同，可以分为<strong>全量复制</strong>和<strong>增量复制</strong>，下面会有一章专门讲解这两种复制方式以及psync命令的执行过程，这里不再详述。</p>
-<h3 id="命令传播阶段"><a href="#命令传播阶段" class="headerlink" title="命令传播阶段"></a>命令传播阶段</h3><p>数据同步阶段完成后，主从节点进入命令传播阶段；在这个阶段主节点将自己执行的写命令发送给从节点，从节点接收命令并执行，从而保证主从节点数据的一致性。</p>
-<p>在命令传播阶段，除了发送写命令，主从节点还维持着<strong>心跳机制：PING和REPLCONF ACK</strong>。由于心跳机制的原理涉及增量复制，因此将在介绍了部分复制的相关内容后单独介绍该心跳机制。</p>
-<p><strong>延迟与不一致</strong></p>
-<p>需要注意的是，命令传播是异步的过程，即主节点发送写命令后并不会等待从节点的回复；因此实际上主从节点之间很难保持实时的一致性，延迟在所难免。</p>
-<p>数据不一致的程度，与<strong>主从节点之间的网络状况</strong>、<strong>主节点写命令的执行频率</strong>、以及<strong>主节点中的repl-disable-tcp-nodelay配置</strong>等有关。</p>
-<p><code>repl-disable-tcp-nodelay no</code>：该配置作用于命令传播阶段，控制主节点是否禁止与从节点的TCP_NODELAY；默认no，即不禁止TCP_NODELAY。当设置为yes时，TCP会对包进行合并从而减少带宽，但是发送的频率会降低，从节点数据延迟增加，一致性变差；具体发送频率与Linux内核的配置有关，默认配置为40ms。当设置为no时，TCP会立马将主节点的数据发送给从节点，带宽增加但延迟变小。</p>
-<p>一般来说，只有当应用对Redis数据不一致的容忍度较高，且主从节点之间网络状况不好时，才会设置为yes；多数情况使用默认值no。</p>
-<h2 id="数据同步阶段（全量复制和部分复制）"><a href="#数据同步阶段（全量复制和部分复制）" class="headerlink" title="数据同步阶段（全量复制和部分复制）"></a>数据同步阶段（全量复制和部分复制）</h2><p>在Redis2.8以前，从节点向主节点发送<code>sync</code>命令请求同步数据，此时的同步方式是全量复制；</p>
-<p>在Redis2.8及以后，从节点可以发送<code>psync</code>命令请求同步数据，此时<strong>根据主从节点当前状态的不同</strong>，同步方式可能是全量复制或部分复制。后文介绍以Redis2.8及以后版本为例。</p>
-<ol>
-<li>全量复制：<strong>用于初次复制或其他无法进行部分复制的情况</strong>，<strong>将主节点中的所有数据都发送给从节点</strong>，是一个非常重量级的操作。</li>
-<li>部分复制：<strong>用于网络中断等情况后的复制</strong>，<strong>只将中断期间主节点执行的写命令发送给从节点</strong>，与全量复制相比更加高效。需要注意的是，<strong>如果网络中断时间过长，导致主节点没有能够完整地保存中断期间执行的写命令，则无法进行部分复制，仍使用全量复制</strong>。</li>
-</ol>
-<h3 id="全量复制"><a href="#全量复制" class="headerlink" title="全量复制"></a>全量复制</h3><p>Redis通过<code>psync</code>命令进行全量复制的过程如下：</p>
-<p>（1）从节点判断无法进行部分复制，向主节点发送全量复制的请求；或从节点发送部分复制的请求，但主节点判断无法进行部分复制；具体判断过程需要在讲述了部分复制原理后再介绍。</p>
-<p>（2）主节点收到全量复制的命令后，执行bgsave，<strong>在后台生成RDB文件</strong>，<strong>并使用一个缓冲区（称为复制缓冲区）记录从现在开始执行的所有写命令。</strong></p>
-<p>（3）主节点的bgsave执行完成后，<strong>将RDB文件发送给从节点</strong>；从节点首先清除自己的旧数据，然后载入接收的RDB文件，将数据库状态更新至主节点执行bgsave时的数据库状态。</p>
-<p>（4）主节点<strong>将前述复制缓冲区中的所有写命令发送给从节点</strong>，从节点执行这些写命令，将数据库状态更新至主节点的最新状态</p>
-<p>（5）如果<strong>从节点开启了AOF，则会触发bgrewriteaof的执行</strong>，从而保证AOF文件更新至主节点的最新状态。</p>
-<p>通过全量复制的过程可以看出，全量复制是非常重型的操作：</p>
-<p>（1）主节点通过bgsave命令fork子进程进行RDB持久化，该过程是非常消耗CPU、内存(页表复制)、硬盘IO的；</p>
-<p>（2）主节点通过网络将RDB文件发送给从节点，对主从节点的带宽都会带来很大的消耗；</p>
-<p>（3）<strong>从节点清空老数据、载入新RDB文件的过程是阻塞的</strong>，无法响应客户端的命令；如果从节点执行bgrewriteaof，也会带来额外的消耗。</p>
-<blockquote>
-<p>可以使用无硬盘复制，也就是说在复制初始化阶段，主节点不会把RDB写到磁盘上之后再一次性发给客户端，而是通过网络直接发个从节点。</p>
-</blockquote>
-<h3 id="增量复制"><a href="#增量复制" class="headerlink" title="增量复制"></a>增量复制</h3><p>由于全量复制在主节点数据量较大时效率太低，因此Redis2.8开始提供部分复制，用于处理网络中断时的数据同步。</p>
-<blockquote>
-<p>虽然不同版本的redis的复制有差异，不过前后兼容。</p>
-</blockquote>
-<p>部分复制的实现，依赖于三个重要的概念：</p>
-<p>（1）<strong>复制偏移量</strong></p>
-<p><strong>主节点和从节点分别维护一个复制偏移量（offset）</strong>，代表的是<strong>主节点向从节点传递的字节数</strong>；主节点每次向从节点传播N个字节数据时，主节点的offset增加N；从节点每次收到主节点传来的N个字节数据时，从节点的offset增加N。</p>
-<p><strong>复制偏移量offset用于判断主从节点的数据库状态是否一致</strong>：如果二者offset相同，则一致；如果offset不同，则不一致，此时可以根据两个offset找出从节点缺少的那部分数据。</p>
-<p>例如，如果主节点的offset是1000，而从节点的offset是500，那么部分复制就需要将offset为501-1000的数据传递给从节点。而offset为501-1000的数据存储的位置，就是下面要介绍的复制积压缓冲区。</p>
-<p>（2）<strong>复制积压缓冲区</strong></p>
-<p><strong>复制积压缓冲区是由主节点维护的、固定长度的、先进先出(FIFO)队列</strong>，默认大小1MB；当主节点开始有从节点时创建，其作用是备份主节点最近发送给从节点的数据。<strong>注意，无论主节点有一个还是多个从节点，都只需要一个复制积压缓冲区</strong>。</p>
-<p>在命令传播阶段，<strong>主节点除了将写命令发送给从节点，还会发送一份给复制积压缓冲区，作为写命令的备份</strong>；除了存储写命令，复制积压缓冲区中还存储了其中的每个字节对应的复制偏移量（offset）。由于复制积压缓冲区定长且是先进先出，所以它保存的是主节点最近执行的写命令；<strong>时间较早的写命令会被挤出缓冲区</strong>。</p>
-<p>由于该缓冲区长度固定且有限，因此可以备份的写命令也有限，<strong>当主从节点offset的差距过大超过缓冲区长度时，将无法执行部分复制，只能执行全量复制。</strong>反过来说，为了提高网络中断时部分复制执行的概率，可以根据需要增大复制积压缓冲区的大小(通过配置<code>repl-backlog-size</code>)；例如如果网络中断的平均时间是60s，而主节点平均每秒产生的写命令(特定协议格式)所占的字节数为100KB，则复制积压缓冲区的平均需求为6MB，保险起见，可以设置为12MB，来保证绝大多数断线情况都可以使用部分复制。</p>
-<p><strong>从节点将自己的消费offset发送给主节点后，主节点根据offset和缓冲区大小决定能否执行部分复制</strong>：</p>
-<ul>
-<li>如果offset偏移量之后的数据，仍然都在复制积压缓冲区里，则执行部分复制；</li>
-<li>如果offset偏移量之后的数据已不在复制积压缓冲区中（数据已被挤出），则执行全量复制。</li>
-</ul>
-<p>（3）<strong>服务器运行ID(runid)</strong></p>
-<p>**每个Redis节点(无论主从)，在启动时都会自动生成一个随机ID(每次启动都不一样)**，由40个随机的十六进制字符组成；runid用来唯一识别一个Redis节点。通过info Server命令，可以查看节点的runid。</p>
-<p>主从节点初次复制时，主节点将自己的runid发送给从节点，从节点将这个runid保存起来；</p>
-<p><strong>当断线重连时，从节点会将这个runid发送给主节点；主节点根据runid判断能否进行部分复制</strong>：</p>
-<ul>
-<li>如果从节点保存的runid与主节点现在的runid相同，说明主从节点之前同步过，主节点会继续尝试使用部分复制(到底能不能部分复制还要看offset和复制积压缓冲区的情况)；</li>
-<li>如果从节点保存的runid与主节点现在的runid不同，说明从节点在断线前同步的Redis节点并不是当前的主节点，只能进行全量复制。</li>
-</ul>
-<h2 id="命令传播阶段（心跳机制）"><a href="#命令传播阶段（心跳机制）" class="headerlink" title="命令传播阶段（心跳机制）"></a>命令传播阶段（心跳机制）</h2><h3 id="主-gt-从-PING"><a href="#主-gt-从-PING" class="headerlink" title="主-&gt;从 : PING"></a>主-&gt;从 : PING</h3><p>每隔指定的时间，主节点会向从节点发送<code>PING</code>命令，这个PING命令的作用，主要是为了让从节点进行超时判断。</p>
-<p>PING发送的频率由repl-ping-slave-period参数控制，单位是秒，默认值是10s。</p>
-<p>关于该PING命令究竟是由主节点发给从节点，还是相反，有一些争议；因为在Redis的官方文档中，对该参数的注释中说明是从节点向主节点发送PING命令。</p>
-<h3 id="从-gt-主：REPLCONF-ACK"><a href="#从-gt-主：REPLCONF-ACK" class="headerlink" title="从-&gt;主：REPLCONF ACK"></a>从-&gt;主：REPLCONF ACK</h3><p>在命令传播阶段，从节点会向主节点发送<code>REPLCONF ACK</code>命令，频率是每秒1次；命令格式为：<code>REPLCONF ACK &#123;offset&#125;</code>，其中offset指从节点保存的复制偏移量。REPLCONF ACK命令的作用包括：</p>
-<p>（1）<strong>实时监测主从节点网络状态</strong>：<strong>该命令会被主节点用于复制超时的判断</strong>。此外，在主节点中使用info Replication，可以看到其从节点的状态中的lag值，代表的是主节点上次收到该REPLCONF ACK命令的时间间隔，在正常情况下，该值应该是0或1。</p>
-<p>（2）<strong>检测命令丢失</strong>：从节点发送了自身的offset，主节点会与自己的offset对比，如果从节点数据缺失（如网络丢包），主节点会重新推送缺失的数据（这里也会利用复制积压缓冲区）。注意<strong>，offset和复制积压缓冲区，不仅可以用于部分复制，也可以用于处理命令丢失等情形</strong>；区别在于前者是在断线重连后进行的，而后者是在主从节点没有断线的情况下进行的。</p>
-<p>（3）<strong>辅助保证从节点的数量和延迟</strong>：Redis主节点中使用<code>min-slaves-to-write</code>和<code>min-slaves-max-lag</code>参数，来保证主节点在不安全的情况下不会执行写命令；</p>
-<p>所谓不安全，是指从节点数量太少，或延迟过高。</p>
-<p>例如<code>min-slaves-to-write</code>和<code>min-slaves-max-lag</code>分别是3和10，含义是如果从节点数量小于3个，或所有从节点的延迟值都大于10s，则主节点拒绝执行写命令。</p>
-<p>而这里从节点延迟值的获取，就是通过主节点接收到REPLCONF ACK命令的时间来判断的，即前面所说的info Replication中的lag值。</p>
-<h1 id="实际应用的问题"><a href="#实际应用的问题" class="headerlink" title="实际应用的问题"></a>实际应用的问题</h1><h2 id="1-读写分离及其中的问题"><a href="#1-读写分离及其中的问题" class="headerlink" title="1. 读写分离及其中的问题"></a>1. 读写分离及其中的问题</h2><h3 id="（1）延迟与不一致问题"><a href="#（1）延迟与不一致问题" class="headerlink" title="（1）延迟与不一致问题"></a>（1）延迟与不一致问题</h3><p>由于<strong>主从复制的命令传播是异步的</strong>，延迟与数据的不一致不可避免。如果应用对数据不一致的接受程度程度较低，可能的优化措施包括：优化主从节点之间的网络环境（如在同机房部署）；监控主从节点延迟（通过offset）判断，<strong>如果从节点延迟过大，通知应用不再通过该从节点读取数据</strong>；<strong>使用集群同时扩展写负载和读负载等</strong>。</p>
-<p>在命令传播阶段以外的其他情况下，从节点的数据不一致可能更加严重，例如连接在数据同步阶段，或从节点失去与主节点的连接时等。从节点的<code>slave-serve-stale-data</code>参数便与此有关：它控制这种情况下从节点的表现；如果为yes（默认值），则从节点仍能够响应客户端的命令，如果为no，则从节点只能响应info、slaveof等少数命令。该参数的设置与应用对数据一致性的要求有关；<strong>如果对数据一致性要求很高，则应设置为no</strong>。</p>
-<h3 id="（2）数据过期问题"><a href="#（2）数据过期问题" class="headerlink" title="（2）数据过期问题"></a>（2）数据过期问题</h3><p>在单机版Redis中，存在两种删除策略：</p>
-<ul>
-<li>惰性删除：服务器不会主动删除数据，只有当客户端查询某个数据时，服务器判断该数据是否过期，如果过期则删除。</li>
-<li>定期删除：服务器执行定时任务删除过期数据，但是考虑到内存和CPU的折中（删除会释放内存，但是频繁的删除操作对CPU不友好），该删除的频率和执行时间都受到了限制。</li>
-</ul>
-<p>在主从复制场景下，<strong>为了主从节点的数据一致性，从节点不会主动删除数据</strong>，而是由主节点控制从节点中过期数据的删除。由于主节点的惰性删除和定期删除策略，都不能保证主节点及时对过期数据执行删除操作，因此，当客户端通过Redis从节点读取数据时，很容易读取到已经过期的数据。</p>
-<p><strong>Redis 3.2中，从节点在读取数据时，增加了对数据是否过期的判断</strong>：如果该数据已过期，则不返回给客户端；将Redis升级到3.2可以解决数据过期问题。</p>
-<h3 id="（3）故障切换问题"><a href="#（3）故障切换问题" class="headerlink" title="（3）故障切换问题"></a>（3）故障切换问题</h3><p><strong>在没有使用哨兵的读写分离场景下</strong>，应用针对读和写分别连接不同的Redis节点；当主节点或从节点出现问题而发生更改时，需要及时修改应用程序读写Redis数据的连接；连接的切换可以手动进行，或者自己写监控程序进行切换，但前者响应慢、容易出错，后者实现复杂，成本都不算低。(所以后面有<strong>哨兵机制</strong>)</p>
-<h2 id="2-各场景下复制的选择及优化技巧"><a href="#2-各场景下复制的选择及优化技巧" class="headerlink" title="2. 各场景下复制的选择及优化技巧"></a>2. 各场景下复制的选择及优化技巧</h2><p>在介绍了Redis复制的种种细节之后，现在我们可以来总结一下，在下面常见的场景中，何时使用部分复制，以及需要注意哪些问题。</p>
-<h3 id="（1）第一次建立复制"><a href="#（1）第一次建立复制" class="headerlink" title="（1）第一次建立复制"></a>（1）第一次建立复制</h3><p>此时全量复制不可避免，但仍有几点需要注意：</p>
-<p><strong>如果主节点的数据量较大，应该尽量避开流量的高峰期</strong>，避免造成阻塞；</p>
-<p><strong>如果有多个从节点需要建立对主节点的复制，可以考虑将几个从节点错开</strong>，避免主节点带宽占用过大。</p>
-<p><strong>如果从节点过多，也可以调整主从复制的拓扑结构，由一主多从结构变为树状结构</strong>（中间的节点既是其主节点的从节点，也是其从节点的主节点）；但使用树状结构应该谨慎：虽然主节点的直接从节点减少，降低了主节点的负担，但是多层从节点的延迟增大，数据一致性变差；且结构复杂，维护相当困难。</p>
-<h3 id="（2）主节点重启"><a href="#（2）主节点重启" class="headerlink" title="（2）主节点重启"></a>（2）主节点重启</h3><p>主节点重启可以分为两种情况来讨论，一种是故障导致宕机，另一种则是有计划的重启。</p>
-<p><strong>主节点宕机</strong></p>
-<p>主节点宕机重启后，runid会发生变化，因此不能进行部分复制，只能全量复制。</p>
-<p>实际上在主节点宕机的情况下，应进行故障转移处理，将其中的一个从节点升级为主节点，其他从节点从新的主节点进行复制；且故障转移应尽量的自动化，后面文章将要介绍的哨兵便可以进行自动的故障转移。</p>
-<p><strong>安全重启：debug reload</strong></p>
-<p>在一些场景下，可能希望对主节点进行重启，例如主节点内存碎片率过高，或者<strong>希望调整一些只能在启动时调整的参数</strong>。如果使用普通的手段重启主节点，会使得runid发生变化，可能导致不必要的全量复制。</p>
-<p>为了解决这个问题，Redis提供了<code>debug reload</code>的重启方式：重启后，主节点的runid和offset都不受影响，避免了全量复制。</p>
-<p>如下图所示，debug reload重启后runid和offset都未受影响：</p>
-<h3 id="（3）从节点重启"><a href="#（3）从节点重启" class="headerlink" title="（3）从节点重启"></a>（3）从节点重启</h3><p>从节点宕机重启后，其保存的主节点的runid会丢失，因此即使再次执行slaveof，也无法进行部分复制。</p>
-<h3 id="（4）网络中断"><a href="#（4）网络中断" class="headerlink" title="（4）网络中断"></a>（4）网络中断</h3><p>如果主从节点之间出现网络问题，造成短时间内网络中断，可以分为多种情况讨论。</p>
-<p>第一种情况：网络问题时间极为短暂，只造成了短暂的丢包，主从节点都没有判定超时（未触发repl-timeout）；此时只需要通过REPLCONF ACK来补充丢失的数据即可。</p>
-<p>第二种情况：网络问题时间很长，主从节点判断超时（触发了repl-timeout），且丢失的数据过多，超过了复制积压缓冲区所能存储的范围；此时主从节点无法进行部分复制，只能进行全量复制。<strong>为了尽可能避免这种情况的发生，应该根据实际情况适当调整复制积压缓冲区的大小</strong>；此外及时发现并修复网络中断，也可以减少全量复制。</p>
-<p>第三种情况：介于前述两种情况之间，主从节点判断超时，且丢失的数据仍然都在复制积压缓冲区中；此时主从节点可以进行部分复制。</p>
-<h2 id="3-复制相关的配置"><a href="#3-复制相关的配置" class="headerlink" title="3. 复制相关的配置"></a>3. 复制相关的配置</h2><p>这一节总结一下与复制有关的配置，说明这些配置的作用、起作用的阶段，以及配置方法等；通过了解这些配置，一方面加深对Redis复制的了解，另一方面掌握这些配置的方法，可以优化Redis的使用，少走坑。</p>
-<p>配置大致可以分为主节点相关配置、从节点相关配置以及与主从节点都有关的配置，下面分别说明。</p>
-<h3 id="（1）与主从节点都有关的配置"><a href="#（1）与主从节点都有关的配置" class="headerlink" title="（1）与主从节点都有关的配置"></a>（1）与主从节点都有关的配置</h3><p>首先介绍最特殊的配置，它决定了该节点是主节点还是从节点：</p>
-<ol>
-<li><p>slaveof masterip masterport：Redis启动时起作用；作用是建立复制关系，开启了该配置的Redis服务器在启动后成为从节点。该注释默认注释掉，即Redis服务器默认都是主节点。</p>
-</li>
-<li><p>repl-timeout 60：与各个阶段<strong>主从节点连接超时判断</strong>有关，见前面的介绍。</p>
-</li>
-</ol>
-<h3 id="（2）主节点相关配置"><a href="#（2）主节点相关配置" class="headerlink" title="（2）主节点相关配置"></a>（2）主节点相关配置</h3><ol>
-<li><p>repl-diskless-sync no：作用于全量复制阶段，控制主节点是否使用diskless复制（无盘复制）。所谓diskless复制，是指在全量复制时，主节点不再先把数据写入RDB文件，而是直接写入slave的socket中，整个过程中不涉及硬盘；diskless复制在磁盘IO很慢而网速很快时更有优势。需要注意的是，截至Redis3.0，diskless复制处于实验阶段，默认是关闭的。</p>
-</li>
-<li><p>repl-diskless-sync-delay 5：该配置作用于全量复制阶段，当主节点使用diskless复制时，该配置决定主节点向从节点发送之前停顿的时间，单位是秒；只有当diskless复制打开时有效，默认5s。之所以设置停顿时间，是基于以下两个考虑：(1)向slave的socket的传输一旦开始，新连接的slave只能等待当前数据传输结束，才能开始新的数据传输 (2)多个从节点有较大的概率在短时间内建立主从复制。</p>
-</li>
-<li><p>client-output-buffer-limit slave 256MB 64MB 60：与<strong>全量复制阶段主节点的缓冲区大小</strong>有关，见前面的介绍。</p>
-</li>
-<li><p>repl-disable-tcp-nodelay no：与<strong>命令传播阶段的延迟</strong>有关，见前面的介绍。</p>
-</li>
-<li><p>masterauth master-password：与连接建立阶段的身份验证有关，见前面的介绍。</p>
-</li>
-<li><p>repl-ping-slave-period 10：与<strong>命令传播阶段主从节点的超时判断</strong>有关，见前面的介绍。</p>
-</li>
-<li><p>repl-backlog-size 1mb：<strong>复制积压缓冲区的大小</strong>，见前面的介绍。</p>
-</li>
-<li><p>repl-backlog-ttl 3600：当主节点没有从节点时，复制积压缓冲区保留的时间，这样当断开的从节点重新连进来时，可以进行部分复制；默认3600s。如果设置为0，则永远不会释放复制积压缓冲区。</p>
-</li>
-<li><p>min-slaves-to-write 3：规定了<strong>主节点的最小从节点数目</strong>。</p>
-</li>
-<li><p>min-slaves-max-lag 10：<strong>从节点对应的最大延迟</strong>，见前面的介绍。</p>
-</li>
-</ol>
-<h3 id="（3）从节点相关配置"><a href="#（3）从节点相关配置" class="headerlink" title="（3）从节点相关配置"></a>（3）从节点相关配置</h3><ol>
-<li><p>slave-serve-stale-data yes：与<strong>从节点数据陈旧时是否响应客户端命令</strong>有关，见前面的介绍。</p>
-</li>
-<li><p>slave-read-only yes：<strong>从节点是否只读</strong>；默认是只读的。由于从节点开启写操作容易导致主从节点的数据不一致，因此该配置尽量不要修改。</p>
-</li>
-</ol>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kismetv/p/9236731.html"><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kismetv/p/9236731.html">深入学习Redis（3）：主从复制 </a></a></p>
-</blockquote>
 
       
     </div>
