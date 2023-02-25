@@ -146,13 +146,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">246</span>
+          <span class="site-state-item-count">247</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -174,6 +174,112 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/16/Docker%E5%AE%B9%E5%99%A8%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/16/Docker%E5%AE%B9%E5%99%A8%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5/" class="post-title-link" itemprop="url">Docker容器健康检查</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-16 10:11:25" itemprop="dateCreated datePublished" datetime="2022-05-16T10:11:25+08:00">2022-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-17 16:11:50" itemprop="dateModified" datetime="2022-05-17T16:11:50+08:00">2022-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="结构体定义"><a href="#结构体定义" class="headerlink" title="结构体定义"></a>结构体定义</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Health states</span></span><br><span class="line">const (</span><br><span class="line">   NoHealthcheck = <span class="string">&quot;none&quot;</span>      <span class="comment">// Indicates there is no healthcheck</span></span><br><span class="line">   Starting      = <span class="string">&quot;starting&quot;</span>  <span class="comment">// Starting indicates that the container is not yet ready</span></span><br><span class="line">   Healthy       = <span class="string">&quot;healthy&quot;</span>   <span class="comment">// Healthy indicates that the container is running correctly</span></span><br><span class="line">   Unhealthy     = <span class="string">&quot;unhealthy&quot;</span> <span class="comment">// Unhealthy indicates that the container has a problem</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Health stores information about the container&#x27;s healthcheck results</span></span><br><span class="line">type Health struct <span class="punctuation">&#123;</span></span><br><span class="line">   Status        string               <span class="comment">// Status is one of Starting, Healthy or Unhealthy</span></span><br><span class="line">   FailingStreak int                  <span class="comment">// FailingStreak is the number of consecutive failures</span></span><br><span class="line">   Log           <span class="punctuation">[</span><span class="punctuation">]</span>*HealthcheckResult <span class="comment">// Log contains the last few results (oldest first)</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ContainerState stores container&#x27;s running state</span></span><br><span class="line"><span class="comment">// it&#x27;s part of ContainerJSONBase and will return by &quot;inspect&quot; command</span></span><br><span class="line">type ContainerState struct <span class="punctuation">&#123;</span></span><br><span class="line">   Status     string <span class="comment">// String representation of the container state. Can be one of &quot;created&quot;, &quot;running&quot;, &quot;paused&quot;, &quot;restarting&quot;, &quot;removing&quot;, &quot;exited&quot;, or &quot;dead&quot;</span></span><br><span class="line">   Running    bool</span><br><span class="line">   Paused     bool</span><br><span class="line">   Restarting bool</span><br><span class="line">   OOMKilled  bool</span><br><span class="line">   Dead       bool</span><br><span class="line">   Pid        int</span><br><span class="line">   ExitCode   int</span><br><span class="line">   Error      string</span><br><span class="line">   StartedAt  string</span><br><span class="line">   FinishedAt string</span><br><span class="line">   Health     *Health `json<span class="punctuation">:</span><span class="string">&quot;,omitempty&quot;</span>`</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="容器状态举例"><a href="#容器状态举例" class="headerlink" title="容器状态举例"></a>容器状态举例</h3><h4 id="正在运行、有健康检查"><a href="#正在运行、有健康检查" class="headerlink" title="正在运行、有健康检查"></a>正在运行、有健康检查</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;Id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;62b16c0d39e0d53cb9b650abbec981c6a05487b44ca5a3e0a70add7ab0b65cba&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;State&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;Status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Running&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Paused&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Restarting&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;OOMKilled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Dead&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Pid&quot;</span><span class="punctuation">:</span> <span class="number">667960</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;ExitCode&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Error&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;StartedAt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-14T20:38:38.295539629Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;FinishedAt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0001-01-01T00:00:00Z&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="正在运行、无健康检查"><a href="#正在运行、无健康检查" class="headerlink" title="正在运行、无健康检查"></a>正在运行、无健康检查</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;Id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;d8338185a6bfc54dca030c59abb5186161bf77094c1af8979c58b93540599905&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;State&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;Status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;running&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Running&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Paused&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Restarting&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;OOMKilled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Dead&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Pid&quot;</span><span class="punctuation">:</span> <span class="number">458280</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;ExitCode&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Error&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;StartedAt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-14T13:02:57.171746945Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;FinishedAt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0001-01-01T00:00:00Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Health&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;Status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;healthy&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;FailingStreak&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">                <span class="comment">// output 为日志的输出，这里省略</span></span><br><span class="line">                <span class="attr">&quot;Log&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                    <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;Start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-16T10:20:11.364683294+08:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;End&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-16T10:20:11.489168017+08:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;ExitCode&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;Output&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;Start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-16T10:20:41.555034247+08:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;End&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-16T10:20:41.669428317+08:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;ExitCode&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;Output&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;Start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-16T10:21:11.743222508+08:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;End&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-16T10:21:11.873154539+08:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;ExitCode&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;Output&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;Start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-16T10:21:41.942537086+08:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;End&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-16T10:21:42.074005305+08:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;ExitCode&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;Output&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;Start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-16T10:22:12.145717622+08:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;End&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-16T10:22:12.298673054+08:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;ExitCode&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;Output&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">]</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="punctuation">&#125;</span>  </span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="正常退出"><a href="#正常退出" class="headerlink" title="正常退出"></a>正常退出</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;Id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;e6c371ee6eff329e7fea4411b3fe1f7374f155c89f0defe40469d24fe4966c84&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;State&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;Status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;exited&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Running&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Paused&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Restarting&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;OOMKilled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Dead&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Pid&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;ExitCode&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Error&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;StartedAt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-04-05T09:35:31.758578263Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;FinishedAt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-04-05T09:35:31.75743118Z&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="非正常退出"><a href="#非正常退出" class="headerlink" title="非正常退出"></a>非正常退出</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;Id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;9960fb71ac67b3d0869ba699d722c1c2b1513e257bfa661d4357f3d0cc80712e&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;State&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;Status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;exited&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Running&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Paused&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Restarting&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;OOMKilled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Dead&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Pid&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;ExitCode&quot;</span><span class="punctuation">:</span> <span class="number">255</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;Error&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;StartedAt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-04-05T20:12:33.193708879Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;FinishedAt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-05-07T18:10:37.476409625Z&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h2><h3 id="一个简单的健康检测"><a href="#一个简单的健康检测" class="headerlink" title="一个简单的健康检测"></a>一个简单的健康检测</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hasHealthCheck</span><span class="params">(ctx context.Context, containerID <span class="type">string</span>)</span></span> (enabled <span class="type">bool</span>) &#123;</span><br><span class="line">	containerJSON, err := cli.ContainerInspect(ctx, containerID)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Error: [hasHealthCheck]&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> containerJSON.Config != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> containerJSON.Config.Healthcheck != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">checkIsRunning</span><span class="params">(ctx context.Context, containerID <span class="type">string</span>)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">	containerJSON, err := cli.ContainerInspect(ctx, containerID)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Printf(<span class="string">&quot;Error: [checkIsRunning] fail, err=%v&quot;</span>, err.Error())</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> containerJSON.State != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> containerJSON.State.Running</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//No such container</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MonitorContainerHealth</span><span class="params">(ctx context.Context, containerID <span class="type">string</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	containerList, err := cli.ContainerList(ctx, types.ContainerListOptions&#123;All: <span class="literal">true</span>&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Printf(<span class="string">&quot;[MonitorContainerHealth] error=%v&quot;</span>, err)</span><br><span class="line">		os.Exit(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	containerExists := <span class="literal">false</span></span><br><span class="line">	<span class="keyword">for</span> _, container := <span class="keyword">range</span> containerList &#123;</span><br><span class="line">		<span class="keyword">if</span> container.ID == containerID &#123;</span><br><span class="line">			containerExists = <span class="literal">true</span></span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> !containerExists &#123;</span><br><span class="line">		log.Printf(<span class="string">&quot;[MonitorContainerHealth] container:%s not exists&quot;</span>, containerID)</span><br><span class="line">		os.Exit(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> checkContainerIsHealthy <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context, containerID <span class="type">string</span>)</span></span> <span class="type">bool</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> hasHealthCheck(ctx, containerID) &#123;</span><br><span class="line">		checkContainerIsHealthy = checkIsRunning <span class="comment">// todo 默认</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		checkContainerIsHealthy = checkIsRunning</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(containerIsHealthy <span class="keyword">func</span>(ctx context.Context, containerID <span class="type">string</span>)</span></span> <span class="type">bool</span>) &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> !containerIsHealthy(ctx, containerID) &#123;</span><br><span class="line">				log.Printf(<span class="string">&quot;[MonitorContainerHealth] container:%s is not running, so the monitor process terminate...&quot;</span>, containerID)</span><br><span class="line">				os.Exit(<span class="number">0</span>)</span><br><span class="line">			&#125;</span><br><span class="line">			time.Sleep(time.Second) <span class="comment">// todo default 1s</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;(checkContainerIsHealthy)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -211,9 +317,24 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-05-14 02:59:24 / 修改时间：02:59:40" itemprop="dateCreated datePublished" datetime="2022-05-14T02:59:24+08:00">2022-05-14</time>
+      <time title="创建时间：2022-05-14 02:59:24" itemprop="dateCreated datePublished" datetime="2022-05-14T02:59:24+08:00">2022-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-26 02:23:46" itemprop="dateModified" datetime="2023-02-26T02:23:46+08:00">2023-02-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a>
+        </span>
     </span>
 
   
@@ -1618,7 +1739,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/02/linux%E6%9F%A5%E7%9C%8B%E7%A1%AC%E4%BB%B6%E3%80%81%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF/" class="post-title-link" itemprop="url">Linux查看硬件、系统信息</a>
+          <a href="/2022/05/02/linux%E6%9F%A5%E7%9C%8B%E7%A1%AC%E4%BB%B6%E3%80%81%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF/" class="post-title-link" itemprop="url">Linux查看系统信息——内存、CPU、磁盘</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1636,7 +1757,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-11-07 09:38:26" itemprop="dateModified" datetime="2022-11-07T09:38:26+08:00">2022-11-07</time>
+      <time title="修改时间：2023-02-26 02:57:32" itemprop="dateModified" datetime="2023-02-26T02:57:32+08:00">2023-02-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1849,96 +1970,6 @@
 <p>安全性： 这种算法非常可靠，密钥越长，它就越难破解。根据已经披露的文献，目前被破解的最长RSA密钥是768个二进制位。也就是说，长度超过768位的密钥，还无法破解（至少没人公开宣布）。因此可以认为，1024位的RSA密钥基本安全，2048位的密钥极其安全。所以我们在用ssh-keygen命令时候要注意密钥长度，具体参数为：<code>-b bits</code>（指定密钥长度。对于RSA密钥，最小要求768位，默认是2048位。DSA密钥必须恰好是1024位(FIPS 186-2 标准的要求)。）<br>至少不能少于768。一般不用写默认就是2048了。</p>
 </blockquote>
 <p>注意：ssh 和 https 协议的区别，ssh 没有CA认证中心的概念。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/26/ulimit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/26/ulimit/" class="post-title-link" itemprop="url">ulimit</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-04-26 21:29:48 / 修改时间：21:47:03" itemprop="dateCreated datePublished" datetime="2022-04-26T21:29:48+08:00">2022-04-26</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="ulimit"><a href="#ulimit" class="headerlink" title="ulimit"></a>ulimit</h1><p>  系统性能一直是一个受关注的话题，如何通过最简单的设置来实现最有效的性能调优，如何在有限资源的条件下保证程序的运作，ulimit 是我们在处理这些问题时，经常使用的一种<strong>简单手段</strong>。ulimit 是一种 Linux 系统的内键功能，它具有一套参数集，用于为由<strong>它生成的 shell进程及其子进程</strong>的资源使用设置限制。</p>
-<h2 id="ulimit命令"><a href="#ulimit命令" class="headerlink" title="ulimit命令"></a>ulimit命令</h2><p>ulimit 通过一些参数选项来管理不同种类的系统资源。<br>ulimit 命令的格式为：ulimit [options] [limit]</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">选项 含义</span><br><span class="line"> </span><br><span class="line">-a 显示当前系统所有的limit资源信息。 </span><br><span class="line"> </span><br><span class="line">-H 设置硬资源限制，一旦设置不能增加。例如：ulimit – Hs 64；限制硬资源，线程栈大小为 64K。</span><br><span class="line"> </span><br><span class="line">-S 设置软资源限制，设置后可以增加，但是不能超过硬资源设置。例如：ulimit – Sn 32；限制软资源，32 个文件描述符。</span><br><span class="line"> </span><br><span class="line">-c 最大的core文件的大小，以 blocks 为单位。例如：ulimit – c unlimited； 对生成的 core 文件的大小不进行限制。</span><br><span class="line"> </span><br><span class="line">-f 进程可以创建文件的最大值，以blocks 为单位.例如：ulimit – f 2048；限制进程可以创建的最大文件大小为 2048 blocks。</span><br><span class="line"> </span><br><span class="line">-d 进程最大的数据段的大小，以Kbytes 为单位。例如：ulimit -d unlimited；对进程的数据段大小不进行限制。</span><br><span class="line"> </span><br><span class="line">-m 最大内存大小，以Kbytes为单位。例如：ulimit – m unlimited；对最大内存不进行限制。</span><br><span class="line"> </span><br><span class="line">-n 可以打开的最大文件描述符的数量。例如：ulimit – n 128；限制最大可以使用 128 个文件描述符</span><br><span class="line"> </span><br><span class="line">-s 线程栈大小，以Kbytes为单位。例如:ulimit – s 512；限制线程栈的大小为 512 Kbytes。</span><br><span class="line"> </span><br><span class="line">-p 管道缓冲区的大小，以Kbytes 为单位。例如ulimit – p 512；限制管道缓冲区的大小为 512 Kbytes。</span><br><span class="line"> </span><br><span class="line">-u 用户最大可用的进程数。例如 limit – u 65536；限制用户最多可以使用 65536个进程。</span><br><span class="line"> </span><br><span class="line">-v 进程最大可用的虚拟内存，以Kbytes 为单位。ulimit – v 200000；限制最大可用的虚拟内存为 200000 Kbytes。</span><br><span class="line"> </span><br><span class="line">-t 最大CPU占用时间，以秒为单位。ulimit – t unlimited；对最大的 CPU 占用时间不进行限制。</span><br><span class="line"> </span><br><span class="line">-l 最大可加锁内存大小，以Kbytes 为单位。</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用ulimit的几种方案"><a href="#使用ulimit的几种方案" class="headerlink" title="使用ulimit的几种方案"></a>使用ulimit的几种方案</h2><h3 id="在用户的启动脚本中"><a href="#在用户的启动脚本中" class="headerlink" title="在用户的启动脚本中"></a>在用户的启动脚本中</h3><pre><code>    如果用户使用的是 bash，就可以在用户的目录下的 .bashrc 文件中，加入 ulimit – u 64，来限制用户最多可以使用 64 个进程。此外，可以在与 .bashrc 功能相当的启动脚本中加入 ulimt。
-</code></pre>
-<h3 id="在应用程序的启动脚本中"><a href="#在应用程序的启动脚本中" class="headerlink" title="在应用程序的启动脚本中"></a>在应用程序的启动脚本中</h3><p>如果用户要对某个应用程序 myapp 进行限制，可以写一个简单的脚本 startmyapp。</p>
-<p>ulimit – s 512<br>myapp</p>
-<p>以后只要通过脚本 startmyapp 来启动应用程序，就可以限制应用程序 myapp 的线程栈大小为 512K。</p>
-<h3 id="直接在控制台输入"><a href="#直接在控制台输入" class="headerlink" title="直接在控制台输入"></a>直接在控制台输入</h3><p>ulimit – p 256 </p>
-<p>限制管道的缓冲区为 256K。</p>
-<h3 id="修改所有-linux-用户的环境变量文件："><a href="#修改所有-linux-用户的环境变量文件：" class="headerlink" title="修改所有 linux 用户的环境变量文件："></a>修改所有 linux 用户的环境变量文件：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line"></span><br><span class="line">ulimit -u 10000</span><br><span class="line"></span><br><span class="line">ulimit -n 4096</span><br><span class="line"></span><br><span class="line">ulimit -d unlimited</span><br><span class="line"></span><br><span class="line">ulimit -m unlimited</span><br><span class="line"></span><br><span class="line">ulimit -s unlimited</span><br><span class="line"></span><br><span class="line">ulimit -t unlimited</span><br><span class="line"></span><br><span class="line">ulimit -v unlimited</span><br></pre></td></tr></table></figure>
-<p> 保存后运行#source &#x2F;etc&#x2F;profile 使其生效</p>
-<h3 id="也可以针对单个用户的-bash-profile设置："><a href="#也可以针对单个用户的-bash-profile设置：" class="headerlink" title="也可以针对单个用户的.bash_profile设置："></a>也可以针对单个用户的.bash_profile设置：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi ~./.bash_profile</span><br><span class="line"></span><br><span class="line">ulimit -n 1024</span><br></pre></td></tr></table></figure>
-<p>重新登陆ok</p>
-<h2 id="限制资源的作用范围"><a href="#限制资源的作用范围" class="headerlink" title="限制资源的作用范围"></a>限制资源的作用范围</h2><p>ulimit 作为对资源使用限制的一种工作，是有其作用范围的。那么，它限制的对象是单个用户，单个进程，还是整个系统呢？事实上，ulimit 限制的是当前 shell 进程以及其派生的子进程。举例来说，如果用户同时运行了两个 shell 终端进程，只在其中一个环境中执行了 ulimit – s 100，则该 shell 进程里创建文件的大小收到相应的限制，而同时另一个 shell终端包括其上运行的子程序都不会受其影响。</p>
-<h3 id="针对用户永久生效"><a href="#针对用户永久生效" class="headerlink" title="针对用户永久生效"></a>针对用户永久生效</h3><p>那么，是否有针对某个具体用户的资源加以限制的方法呢？答案是有的，方法是通过修改系统的 &#x2F;etc&#x2F;security&#x2F;limits.conf配置文件。该文件不仅能限制指定用户的资源使用，还能限制指定组的资源使用。该文件的每一行都是对限定的一个描述。<br>imits.conf的格式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;domain&gt;                  &lt;type&gt;      &lt;item&gt;     &lt;value&gt; </span><br><span class="line">username|@groupname       type        resource          limit</span><br></pre></td></tr></table></figure>
-<p>domain：username|@groupname：设置需要被限制的用户名，组名前面加@和用户名区别。也可以用通配符*来做所有用户的限制。</p>
-<p>type：有 soft，hard 和 -，soft 指的是当前系统生效的设置值。hard 表明系统中所能设定的最大值。soft 的最大值不能超过hard的值。用 – 就表明同时设置了 soft 和 hard 的值。</p>
-<p>resource：<br>    core – 限制内核文件的大小<br>    date – 最大数据大小<br>    fsize – 最大文件大小<br>    memlock – 最大锁定内存地址空间<br>    nofile – 打开文件的最大数目<br>    rss – 最大持久设置大小<br>    stack – 最大栈大小<br>    cpu – 以分钟为单位的最多 CPU 时间<br>    noproc – 进程的最大数目（系统的最大进程数）<br>    as – 地址空间限制<br>    maxlogins – 此用户允许登录的最大数目<br>要使 limits.conf 文件配置生效，必须要确保 pam_limits.so 文件被加入到启动文件中。<br>查看 &#x2F;etc&#x2F;pam.d&#x2F;login 文件中有：session required &#x2F;lib&#x2F;security&#x2F;pam_limits.so</p>
 
       
     </div>

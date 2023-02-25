@@ -146,13 +146,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">246</span>
+          <span class="site-state-item-count">247</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -174,6 +174,155 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/16/Redis%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0%20%E2%80%94%E2%80%94%20%E4%BA%8B%E5%8A%A1%EF%BC%88Transactions%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/09/16/Redis%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0%20%E2%80%94%E2%80%94%20%E4%BA%8B%E5%8A%A1%EF%BC%88Transactions%EF%BC%89/" class="post-title-link" itemprop="url">Redis官方文档笔记 —— 事务（Transactions）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-09-16T00:00:00+08:00">2021-09-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-01 10:19:14" itemprop="dateModified" datetime="2021-12-01T10:19:14+08:00">2021-12-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>相关命令</strong></p>
+<blockquote>
+<p>MULTI<br>EXEC<br>DISCARD<br>WATCH<br>UNWATCH</p>
+</blockquote>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><p>事务是一组命令的集合。3</p>
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ul>
+<li>事务中的<strong>所有命令都被序列化并顺序执行</strong>。在Redis事务的执行过程中（指定的是 <code>exec</code>后的真正的执行过程，而不是用<code>multi</code>后的入队过程），永远不会执行另一个客户端发出的请求（**命令不会加塞）。</li>
+<li>所有命令都将被执行，或者所有命令都不执行，因此<strong>Redis事务也是原子的</strong>（这句话有可能会引起争议）。</li>
+</ul>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>使用<code>MULTI</code>命令输入Redis事务。该命令始终以答复OK。<br>此时，用户可以发出多个命令。<strong>Redis不会执行这些命令，而是将它们排队。</strong><br><strong>一旦调用EXEC，将执行所有命令。</strong>，并且<strong>EXEC返回了一个答复数组</strong>，其中每个元素都是事务中单个命令的答复，其发出顺序与命令相同。<br>如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; SET k1 v1</span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; SET k2 v2</span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; GET k1</span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; EXEC</span><br><span class="line"><span class="number">1</span>) OK</span><br><span class="line"><span class="number">2</span>) OK</span><br><span class="line"><span class="number">3</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; </span><br></pre></td></tr></table></figure>
+<p>需要强调的是，<code>MULTI</code>之后的命令并不会执行，它们只是入队而已，知道<code>EXEC</code>命令发出，所有命令才会一起执行。</p>
+<h2 id="事务中的错误"><a href="#事务中的错误" class="headerlink" title="事务中的错误"></a>事务中的错误</h2><h3 id="命令排队入队错误"><a href="#命令排队入队错误" class="headerlink" title="命令排队入队错误"></a>命令排队入队错误</h3><p>这种常见的错误有 ① 命令不存在 ② 命令参数的个数不对。<br>这种错误一旦发生，<strong>这个事务就会失败，也就是说事务中的命令全都不会执行</strong>。<br>如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; multi</span><br><span class="line">OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; set a <span class="number">1</span></span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; get b <span class="number">1</span></span><br><span class="line">(<span class="built_in">error</span>) ERR wrong number of arguments <span class="keyword">for</span> <span class="string">&#x27;get&#x27;</span> command</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; set c <span class="number">3</span></span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; exec</span><br><span class="line">(<span class="built_in">error</span>) EXECABORT Transaction discarded because of previous errors.</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; </span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; </span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; get a</span><br><span class="line">(<span class="literal">nil</span>)</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; get c</span><br><span class="line">(<span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
+
+<p>可见即使是正确的命令也没有执行成功。</p>
+<blockquote>
+<p>从Redis 2.6.5开始，服务器会记住命令累积期间发生错误，并且将拒绝执行事务，并且在EXEC期间还会返回错误并自动丢弃该事务。</p>
+</blockquote>
+<h3 id="命令执行错误"><a href="#命令执行错误" class="headerlink" title="命令执行错误"></a>命令执行错误</h3><p>常见的有，命令与键的类型冲突，给一个字符串类型的键自增但是键值不是数字，等等。</p>
+<p>EXEC之后发生的错误不会以特殊方式处理:<strong>即使在事务期间某些命令失败，也会执行所有其他命令</strong>。<br>也正是因为一点，让Redis事务的原子性受到质疑。</p>
+<p>如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; SET a hello</span><br><span class="line">OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; INCR a</span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; SET b <span class="number">2</span></span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; EXEC</span><br><span class="line"><span class="number">1</span>) (<span class="built_in">error</span>) ERR value is <span class="keyword">not</span> an integer <span class="keyword">or</span> out of range</span><br><span class="line"><span class="number">2</span>) OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; GET b</span><br><span class="line"><span class="string">&quot;2&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; </span><br></pre></td></tr></table></figure>
+<p>即使在<code>INCR</code>命令执行错误之后，可以看到之后的合法的命令仍然执行成功了。</p>
+<h2 id="为什么Redis不支持回滚"><a href="#为什么Redis不支持回滚" class="headerlink" title="为什么Redis不支持回滚"></a>为什么Redis不支持回滚</h2><p>大致有三点原因：</p>
+<ol>
+<li>程序员自身犯的错误是无法避免的。</li>
+<li>不支持回滚可以使得Redis事务的实现更加高效。</li>
+<li>发生错误一般发生在开发过程中，不太可能进入到生产环境中。</li>
+</ol>
+<h2 id="DISCARD命令队列"><a href="#DISCARD命令队列" class="headerlink" title="DISCARD命令队列"></a>DISCARD命令队列</h2><p>之前说，一旦客户端给Redis服务器发送一个<code>MULTI</code>此时，Redis受到的命令不会立即执行，而是存储在队列里。<br>也就是此时客户端和服务器的连接状态进入一种<strong>事务状态</strong>。<br><strong>而<code>DISCARD</code>命令相反，它用来结束这种状态的，当然之前队列里的命令组也会被清空。</strong>	</p>
+<p>注意，此命令只在客户端和服务器之间有<code>MULTI</code>执行之后，才会返回<strong>OK</strong>,否则返回<br><strong>(error) ERR DISCARD without MULTI</strong>。</p>
+<h2 id="WATCH实现乐观锁"><a href="#WATCH实现乐观锁" class="headerlink" title="WATCH实现乐观锁"></a>WATCH实现乐观锁</h2><blockquote>
+<p><code>WATCH</code>用于为Redis事务提供检查设置（CAS check-ans-set）行为。</p>
+</blockquote>
+<p>被WATCH的键，如果在事务执行（exec）前发生了变化，那么之后事务就不会执行，返回（null）。</p>
+<p>下面的实现自增<code>INCR</code>命令组在多个客户端并发访问服务器的时候，就会产生竞争条件。<br>比如，一开始键的值的是10，向后两个客户端执行了自增命令，最终值应该是12。<br>但是，两个客户端可能先后拿到10，然后分别自增，最后分别赋值11。<br>就出现错误。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val = GET mykey</span><br><span class="line">val = val + <span class="number">1</span></span><br><span class="line">SET mykey $val</span><br></pre></td></tr></table></figure>
+
+<p>可能初学者，有这样的想法，将这组命令当成一个事务执行，不就解决问题了吗。<br>不过，事务执行的结果是在<code>exec</code>之后才能拿到的，无法中途拿到（其次你也要知道的是 multi 之后也是不加任何锁的）</p>
+<p>这个时候就需要<code>WATCH</code>命令了。<br>不妨换思路，</p>
+<ol>
+<li>监控我们需要自增的键。</li>
+<li>然后获取键值，并让值加1。</li>
+<li>最后用<code>set</code>命令赋值。如果，在赋值的时候，发现值已经被另一个客户端修改了，这个时候如果还去set就会出现上面的情况，所以此次事务就放弃执行。</li>
+</ol>
+<p><strong>基于这个思路，我们采取先check后set的方式，执行事务，如果事务失败，再执行一次，并期望这次没有产生冲突，直到这个事务执行成功。</strong><br>这种锁的形式成为<strong>乐观锁</strong>。</p>
+<p>最终借助<code>WATCH</code>和事务实现了自增命令如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">WATCH mykey</span><br><span class="line">val = GET mykey</span><br><span class="line">val = val + <span class="number">1</span></span><br><span class="line">MULTI</span><br><span class="line">SET mykey $val</span><br><span class="line">EXEC</span><br></pre></td></tr></table></figure>
+
+<p>关于<code>watch</code>命令还有如下补充：</p>
+<ul>
+<li><code>watch</code> 可以在<code>multi</code>之前多次调用，并且可以一次watch多个键，只要有一个键被改变，事务就不会执行。</li>
+<li>当<code>exec</code>被调用时，所有键都会恢复 <strong>UNWATCHED</strong> 的状态，不管事务是否中止与否。<br>同样，当客户端连接关闭时，所有键都会被<strong>UNWATCHED</strong>。</li>
+<li>也可以使用<code>unwatch</code>命令（不带参数）来刷新所有监视的键。</li>
+<li>注意，很重要的一点是，<strong>键是否被监控都是相对于每个客户端而言的，也就是说它不是对于服务器的一个全局状态</strong>。以后会在Redis的实现里具体探讨。</li>
+</ul>
+<p>一个例子：有序集合zset是没有弹出第一个元素的原子性命令的，我们可以使用watch和事务实现它。<br><strong>使用WATCH实现ZPOP</strong></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">WATCH zset</span><br><span class="line">element = ZRANGE zset <span class="number">0</span> <span class="number">0</span></span><br><span class="line">MULTI</span><br><span class="line">ZREM zset element</span><br><span class="line">EXEC</span><br></pre></td></tr></table></figure>
+
+<p>如果EXEC失败（即返回Null答复），我们将重复该操作。</p>
+<h2 id="Redis脚本和事务"><a href="#Redis脚本和事务" class="headerlink" title="Redis脚本和事务"></a>Redis脚本和事务</h2><blockquote>
+<p>一个Redis的脚本是定义事务性的，所以一切都可以用Redis的事务做的，你也可以用一个脚本做的，平时脚本会更简单，更快速。<br>这种重复是由于以下事实：脚本是在Redis 2.6中引入的，而事务早已存在。但是，我们不太可能在短期内取消对事务的支持，因为在语义上似乎是适当的，即使不诉诸Redis脚本，仍然有可能避免竞争状况，尤其是因为Redis事务的实现复杂性极低。<br>但是，在不久的将来，我们会看到整个用户群只是在使用脚本，这并非不可能。如果发生这种情况，我们可能会弃用并最终删除事务。</p>
+</blockquote>
+<h1 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h1><p>与关系型数据库ACID的对比。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2032,130 +2181,6 @@
 <p>这里不再赘述，放在spring 的事务管理里细述。</p>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://mybatis.org/mybatis-3/zh/getting-started.html">MyBatis 3 文档</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/05/ThreadLocal%E4%BD%BF%E7%94%A8%E3%80%81%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/05/ThreadLocal%E4%BD%BF%E7%94%A8%E3%80%81%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" class="post-title-link" itemprop="url">ThreadLocal使用、源码解析</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-05 00:00:00" itemprop="dateCreated datePublished" datetime="2021-08-05T00:00:00+08:00">2021-08-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-05 02:57:48" itemprop="dateModified" datetime="2023-01-05T02:57:48+08:00">2023-01-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">Java多线程</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="ThreadLocal的作用"><a href="#ThreadLocal的作用" class="headerlink" title="ThreadLocal的作用"></a>ThreadLocal的作用</h1><ol>
-<li>方便传参（参考反面例子，go没有适用于goroutine的threadlocal，只能显式函数传参）</li>
-<li>资源隔离（数据库连接）</li>
-</ol>
-<h1 id="使用ThreadLocal线程ID工具类"><a href="#使用ThreadLocal线程ID工具类" class="headerlink" title="使用ThreadLocal线程ID工具类"></a>使用ThreadLocal线程ID工具类</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">实现了一个线程ID工具类</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">-----来自源码文档demo</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ThreadId</span> &#123;</span><br><span class="line">    <span class="comment">// Atomic integer containing the next thread ID to be assigned</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">nextId</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Thread local variable containing each thread&#x27;s ID</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Integer&gt; threadId =</span><br><span class="line">            ThreadLocal.withInitial(nextId::getAndIncrement);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Returns the current thread&#x27;s unique ID, assigning it if necessary</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">get</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> threadId.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(()-&gt;&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;A: &quot;</span>+ThreadId.get());</span><br><span class="line">            System.out.println(<span class="string">&quot;A: &quot;</span>+ThreadId.get());</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(()-&gt;&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;B: &quot;</span>+ThreadId.get());</span><br><span class="line">            System.out.println(<span class="string">&quot;B: &quot;</span>+ThreadId.get());</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(()-&gt;&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;C: &quot;</span>+ThreadId.get());</span><br><span class="line">            System.out.println(<span class="string">&quot;C: &quot;</span>+ThreadId.get());</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.lang;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ThreadLocal</span>&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 此ThreadLocal对象的“自定义”的哈希吗</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">threadLocalHashCode</span> <span class="operator">=</span> nextHashCode();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态的线程安全的循环计数器</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">AtomicInteger</span> <span class="variable">nextHashCode</span> <span class="operator">=</span></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 连续的 ThreadLocal的哈希值的增量差异（此 magic number 可以产生离散程度很好的哈希表）</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">HASH_INCREMENT</span> <span class="operator">=</span> <span class="number">0x61c88647</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取下一个 hash 值的工具方法</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">nextHashCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> nextHashCode.getAndAdd(HASH_INCREMENT);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回当前线程获取此 thread-local 对象的初始值</span></span><br><span class="line">    <span class="comment">// 可以用匿名内部类（lambda表达式代替）覆盖此方法，以提供初始值</span></span><br><span class="line">    <span class="keyword">protected</span> T <span class="title function_">initialValue</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ThreadLocal</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回此线程局部变量的当前线程中的值</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    	步骤：</span></span><br><span class="line"><span class="comment">    	1、获取当前线程</span></span><br><span class="line"><span class="comment">    	2、获取此线程拥有的 ThreadLocalMap</span></span><br><span class="line"><span class="comment">    	3、在 ThreadLocalMap 中根据此 ThreadLocal 对象拿到值</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">get</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">        <span class="type">ThreadLocalMap</span> <span class="variable">map</span> <span class="operator">=</span> getMap(t);</span><br><span class="line">        <span class="keyword">if</span> (map != <span class="literal">null</span>) &#123;</span><br><span class="line">            ThreadLocalMap.<span class="type">Entry</span> <span class="variable">e</span> <span class="operator">=</span> map.getEntry(<span class="built_in">this</span>);</span><br><span class="line">            <span class="keyword">if</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">                <span class="type">T</span> <span class="variable">result</span> <span class="operator">=</span> (T)e.value;</span><br><span class="line">                <span class="keyword">return</span> result;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> setInitialValue();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">  	<span class="comment">/*</span></span><br><span class="line"><span class="comment">    	步骤：</span></span><br><span class="line"><span class="comment">    	1、获取当前线程</span></span><br><span class="line"><span class="comment">    	2、获取此线程拥有的 ThreadLocalMap</span></span><br><span class="line"><span class="comment">    	3、调用map 的 setter 方法（ 如果未初始化，则先初始化 ）</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">set</span><span class="params">(T value)</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">        <span class="type">ThreadLocalMap</span> <span class="variable">map</span> <span class="operator">=</span> getMap(t);</span><br><span class="line">        <span class="keyword">if</span> (map != <span class="literal">null</span>) &#123;</span><br><span class="line">            map.set(<span class="built_in">this</span>, value);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 创建此线程的自己的 ThreadLocalMap</span></span><br><span class="line">            createMap(t, value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">     <span class="comment">// ThreadLocal 允许线程”删除“它的线程本地量</span></span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">remove</span><span class="params">()</span> &#123;</span><br><span class="line">         <span class="type">ThreadLocalMap</span> <span class="variable">m</span> <span class="operator">=</span> getMap(Thread.currentThread());</span><br><span class="line">         <span class="keyword">if</span> (m != <span class="literal">null</span>) &#123;</span><br><span class="line">             m.remove(<span class="built_in">this</span>);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 每个线程有自己的 ThreadLocalMap实例，用 Thread 类的 threadLocals 字段设置</span></span><br><span class="line">    <span class="comment">// 然后在某个 ThreadLocalMap实例 中根据 threadLocal实例 取值</span></span><br><span class="line">    ThreadLocalMap <span class="title function_">getMap</span><span class="params">(Thread t)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> t.threadLocals;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置线程的threadLocals</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">createMap</span><span class="params">(Thread t, T firstValue)</span> &#123;</span><br><span class="line">        t.threadLocals = <span class="keyword">new</span> <span class="title class_">ThreadLocalMap</span>(<span class="built_in">this</span>, firstValue);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="ThreadLocal的内部类-ThreadLocalMap"><a href="#ThreadLocal的内部类-ThreadLocalMap" class="headerlink" title="ThreadLocal的内部类 ThreadLocalMap"></a>ThreadLocal的内部类 ThreadLocalMap</h2><blockquote>
-<p>ThreadLocalMap 是一种定制的哈希映射，仅适用于维护线程本地值。</p>
-</blockquote>
-<p>每个线程有自己的 ThreadLocalMap实例，用 Thread 类的 threadLocals 字段设置。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">ThreadLocalMap</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 注意这里的弱引用 */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Entry</span> <span class="keyword">extends</span> <span class="title class_">WeakReference</span>&lt;ThreadLocal&lt;?&gt;&gt; &#123;</span><br><span class="line">        <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">        Object value;</span><br><span class="line"></span><br><span class="line">        Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">            <span class="built_in">super</span>(k);</span><br><span class="line">            value = v;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// table 的默认容量</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">INITIAL_CAPACITY</span> <span class="operator">=</span> <span class="number">16</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 有需要就扩容，容量大小为 2 的整数次幂</span></span><br><span class="line">    <span class="keyword">private</span> Entry[] table;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The number of entries in the table.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 下一次进行 resize 的阈值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> threshold; <span class="comment">// Default to 0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 负载因子为 2/3 </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">setThreshold</span><span class="params">(<span class="type">int</span> len)</span> &#123;</span><br><span class="line">        threshold = len * <span class="number">2</span> / <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 取模意义下的 ”后一个位置“</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">nextIndex</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> len)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ((i + <span class="number">1</span> &lt; len) ? i + <span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 取模意义下的 ”前一个位置“</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">prevIndex</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> len)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ((i - <span class="number">1</span> &gt;= <span class="number">0</span>) ? i - <span class="number">1</span> : len - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化惰性构造</span></span><br><span class="line">    ThreadLocalMap(ThreadLocal&lt;?&gt; firstKey, Object firstValue) &#123;</span><br><span class="line">        table = <span class="keyword">new</span> <span class="title class_">Entry</span>[INITIAL_CAPACITY];</span><br><span class="line">        <span class="comment">// 一样的技巧 —— 位运算代替取模</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> firstKey.threadLocalHashCode &amp; (INITIAL_CAPACITY - <span class="number">1</span>);</span><br><span class="line">        table[i] = <span class="keyword">new</span> <span class="title class_">Entry</span>(firstKey, firstValue);</span><br><span class="line">        size = <span class="number">1</span>;</span><br><span class="line">        setThreshold(INITIAL_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Entry <span class="title function_">getEntry</span><span class="params">(ThreadLocal&lt;?&gt; key)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> key.threadLocalHashCode &amp; (table.length - <span class="number">1</span>);</span><br><span class="line">        <span class="type">Entry</span> <span class="variable">e</span> <span class="operator">=</span> table[i];</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="literal">null</span> &amp;&amp; e.get() == key)</span><br><span class="line">            <span class="keyword">return</span> e;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> getEntryAfterMiss(key, i, e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="内存泄漏分析demo"><a href="#内存泄漏分析demo" class="headerlink" title="内存泄漏分析demo"></a>内存泄漏分析demo</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">        <span class="type">byte</span>[] bytes = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">1024</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)&#123;</span><br><span class="line">            ThreadLocal&lt;Node&gt; threadLocal = <span class="keyword">new</span> <span class="title class_">ThreadLocal</span>&lt;&gt;();</span><br><span class="line">            <span class="type">Node</span> <span class="variable">node</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Node</span>()</span><br><span class="line">            threadLocal.set(<span class="keyword">new</span> <span class="title class_">Node</span>());</span><br><span class="line"><span class="comment">//            System.out.println(threadLocal.get());</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>引用链分析</strong>:</p>
-<ul>
-<li>GC对象Node:<br>局部变量引用node，</li>
-</ul>
-<p>另一条引用链</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Thread.currentThread()-&gt;threadLocals(ThreadLocalMap)-&gt;table(Entry[])-&gt;Entry--&gt;threadLocal</span><br></pre></td></tr></table></figure>
-<p>最后一个是弱引用</p>
-<ul>
-<li>GC对象ThreadLocal<br>局部变量引用 threadLocal，</li>
-</ul>
-<p>另一条引用链</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Thread.currentThread()-&gt;threadLocals(ThreadLocalMap)-&gt;table(Entry[])-&gt;Entry-&gt;node</span><br></pre></td></tr></table></figure>
-<p>都是强引用。</p>
-<blockquote>
-<p>(Weakly Reachable )[<a target="_blank" rel="noopener" href="https://www.cs.fsu.edu/~jtbauer/cis3931/tutorial/refobjs/about/weak.html]">https://www.cs.fsu.edu/~jtbauer/cis3931/tutorial/refobjs/about/weak.html]</a></p>
 </blockquote>
 
       

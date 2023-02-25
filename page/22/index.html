@@ -146,13 +146,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">246</span>
+          <span class="site-state-item-count">247</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -174,6 +174,170 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/10/%E8%BF%90%E8%A1%8C%E3%80%81%E7%AE%A1%E7%90%86%E3%80%81%E9%85%8D%E7%BD%AERabbitMQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/10/%E8%BF%90%E8%A1%8C%E3%80%81%E7%AE%A1%E7%90%86%E3%80%81%E9%85%8D%E7%BD%AERabbitMQ/" class="post-title-link" itemprop="url">运行、管理、配置RabbitMQ</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-10T00:00:00+08:00">2021-10-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="Erlang节点与应用程序"><a href="#Erlang节点与应用程序" class="headerlink" title="Erlang节点与应用程序"></a>Erlang节点与应用程序</h2><p>Erlang节点指的是Erlang虚拟机运行erlang程序的Erlang虚拟机实例。</p>
+<p>和Java不同，同一个Erlang节点可以运行多个erlang程序。</p>
+<h2 id="RabbitMQ节点"><a href="#RabbitMQ节点" class="headerlink" title="RabbitMQ节点"></a>RabbitMQ节点</h2><p>RabbitMQ节点包含Erlang节点和rabbitmq程序两个概念。</p>
+<h1 id="启动、关闭"><a href="#启动、关闭" class="headerlink" title="启动、关闭"></a>启动、关闭</h1><p>将 rabbitmq的安装目录下的 .&#x2F;sbin加入PATH变量后。</p>
+<ul>
+<li>启动</li>
+</ul>
+<p>下面的命令就会同时启动 Rabbit和erlang实例。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-server -detached # -detached表示后台启动</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>关闭节点</li>
+</ul>
+<p>下面的命令会将整个Rabbit节点关闭，包括erlang实例。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl stop</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>打开应用程序</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl start_app</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>关闭应用程序<br>仅停止rabbitmq应用程序。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl stop_app</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>mac通过brew安装、Ubuntu通过apt安装可能通过 rabbitmq-env.conf文件中的<code>CONFIG_FILE</code>配置项去找到配置文件。</p>
+<p><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/configure.html">配置文档参考</a></p>
+<p>默认情况下，通过上述安装方式是没有按照配置文件的，需要自行配置。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rabbitmq/rabbitmq-server/blob/master/docs/rabbitmq.conf.example">rabbitmq.conf.example下载地址</a></p>
+<h1 id="使用-rabbitmqctl"><a href="#使用-rabbitmqctl" class="headerlink" title="使用 rabbitmqctl"></a>使用 rabbitmqctl</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看手册</span></span><br><span class="line">rabbitmqctl --help</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看某个具体的命令如何使用</span></span><br><span class="line">rabbitmqctl &lt;command&gt; --help</span><br></pre></td></tr></table></figure>
+
+<h2 id="请求许可"><a href="#请求许可" class="headerlink" title="请求许可"></a>请求许可</h2><h3 id="管理用户"><a href="#管理用户" class="headerlink" title="管理用户"></a>管理用户</h3><blockquote>
+<p>这里展示出最常用的</p>
+</blockquote>
+<ul>
+<li><p>添加用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl add_user &#123;user_name&#125; &#123;password&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl delete_user &#123;user_name&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看所有用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl list_users</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="权限相关"><a href="#权限相关" class="headerlink" title="权限相关"></a>权限相关</h3><ul>
+<li><p>分配权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl set_permissions -p &#123;vhost&#125; &#123;username&#125; &#123;conf&#125; &#123;write&#125; &#123;read&#125;</span><br></pre></td></tr></table></figure>
+<p>举例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">分配给 alice 用户所有权限</span></span><br><span class="line">rabbitmqctl set_permissions -p / alice &quot;.*&quot; &quot;.*&quot; &quot;*&quot;</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>清除权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl clear_permissions -p &#123;vhost&#125; &#123;username&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl list_permissions -p &#123;vhost&#125;</span><br><span class="line">rabbitmqctl list_user_permissions &#123;username&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="操作Demo"><a href="#操作Demo" class="headerlink" title="操作Demo"></a>操作Demo</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir ~ % sudo rabbitmqctl add_user jsy-mac0 8888</span><br><span class="line">Password:</span><br><span class="line">Adding user <span class="string">&quot;jsy-mac0&quot;</span> ...</span><br><span class="line">Done. Don<span class="string">&#x27;t forget to grant the user permissions to some virtual hosts! See &#x27;</span>rabbitmqctl <span class="built_in">help</span> set_permissions<span class="string">&#x27; to learn more.</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir ~ % sudo rabbitmqctl set_user_tags jsy-mac0 administrator</span><br><span class="line">Password:</span><br><span class="line">Setting tags <span class="keyword">for</span> user <span class="string">&quot;jsy-mac0&quot;</span> to [administrator] ...</span><br><span class="line"></span><br><span class="line"><span class="comment">#然后就可以通过http://host:15672 登录management界面管理rabbitmq了，但此时用户jsy-mac0还没有访问队列资源的权限</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir ~ % rabbitmqctl set_permissions -p / jsy-mac0 <span class="string">&quot;.*&quot;</span> <span class="string">&quot;.*&quot;</span> <span class="string">&quot;.*&quot;</span></span><br><span class="line">Setting permissions <span class="keyword">for</span> user <span class="string">&quot;jsy-mac0&quot;</span> <span class="keyword">in</span> vhost <span class="string">&quot;/&quot;</span> ...</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ sudo rabbitmqctl add_user mac 8888</span><br><span class="line">[sudo] songyangji 的密码： </span><br><span class="line">Adding user <span class="string">&quot;mac&quot;</span> ...</span><br><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ sudo rabbitmqctl set_user_tags mac administrator</span><br><span class="line">Setting tags <span class="keyword">for</span> user <span class="string">&quot;mac&quot;</span> to [administrator] ...</span><br><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ sudo rabbitmqctl set_permissions -p /  mac <span class="string">&quot;.*&quot;</span> <span class="string">&quot;.*&quot;</span> <span class="string">&quot;.*&quot;</span></span><br><span class="line">Setting permissions <span class="keyword">for</span> user <span class="string">&quot;mac&quot;</span> <span class="keyword">in</span> vhost <span class="string">&quot;/&quot;</span> ...</span><br><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ </span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br></pre></td><td class="code"><pre><span class="line">Usage</span><br><span class="line"></span><br><span class="line">rabbitmqctl [--node &lt;node&gt;] [--timeout &lt;timeout&gt;] [--longnames] [--quiet] &lt;command&gt; [&lt;command options&gt;]</span><br><span class="line"></span><br><span class="line">Available commands:</span><br><span class="line"></span><br><span class="line">Help:</span><br><span class="line"></span><br><span class="line">   autocomplete                  Provides command name autocomplete variants</span><br><span class="line">   help                          Displays usage information for a command</span><br><span class="line">   version                       Displays CLI tools version</span><br><span class="line"></span><br><span class="line">Nodes:</span><br><span class="line"></span><br><span class="line">   await_startup                 Waits for the RabbitMQ application to start on the target node</span><br><span class="line">   reset                         Instructs a RabbitMQ node to leave the cluster and return to its virgin state</span><br><span class="line">   rotate_logs                   Does nothing [deprecated]</span><br><span class="line">   shutdown                      Stops RabbitMQ and its runtime (Erlang VM). Monitors progress for local nodes. Does not require a PID file path.</span><br><span class="line">   start_app                     Starts the RabbitMQ application but leaves the runtime (Erlang VM) running</span><br><span class="line">   stop                          Stops RabbitMQ and its runtime (Erlang VM). Requires a local node pid file path to monitor progress.</span><br><span class="line">   stop_app                      Stops the RabbitMQ application, leaving the runtime (Erlang VM) running</span><br><span class="line">   wait                          Waits for RabbitMQ node startup by monitoring a local PID file. See also &#x27;rabbitmqctl await_online_nodes&#x27;</span><br><span class="line"></span><br><span class="line">Cluster:</span><br><span class="line"></span><br><span class="line">   await_online_nodes            Waits for &lt;count&gt; nodes to join the cluster</span><br><span class="line">   change_cluster_node_type      Changes the type of the cluster node</span><br><span class="line">   cluster_status                Displays all the nodes in the cluster grouped by node type, together with the currently running nodes</span><br><span class="line">   force_boot                    Forces node to start even if it cannot contact or rejoin any of its previously known peers</span><br><span class="line">   force_reset                   Forcefully returns a RabbitMQ node to its virgin state</span><br><span class="line">   forget_cluster_node           Removes a node from the cluster</span><br><span class="line">   join_cluster                  Instructs the node to become a member of the cluster that the specified node is in</span><br><span class="line">   rename_cluster_node           Renames cluster nodes in the local database</span><br><span class="line">   update_cluster_nodes          Instructs a cluster member node to sync the list of known cluster members from &lt;seed_node&gt;</span><br><span class="line"></span><br><span class="line">Replication:</span><br><span class="line"></span><br><span class="line">   cancel_sync_queue             Instructs a synchronising mirrored queue to stop synchronising itself</span><br><span class="line">   sync_queue                    Instructs a mirrored queue with unsynchronised mirrors (follower replicas) to synchronise them</span><br><span class="line"></span><br><span class="line">Users:</span><br><span class="line"></span><br><span class="line">   add_user                      Creates a new user in the internal database. This user will have no permissions for any virtual hosts by default.</span><br><span class="line">   authenticate_user             Attempts to authenticate a user. Exits with a non-zero code if authentication fails.</span><br><span class="line">   change_password               Changes the user password</span><br><span class="line">   clear_password                Clears (resets) password and disables password login for a user</span><br><span class="line">   clear_user_limits             Clears user connection/channel limits</span><br><span class="line">   delete_user                   Removes a user from the internal database. Has no effect on users provided by external backends such as LDAP</span><br><span class="line">   list_user_limits              Displays configured user limits</span><br><span class="line">   list_users                    List user names and tags</span><br><span class="line">   set_user_limits               Sets user limits</span><br><span class="line">   set_user_tags                 Sets user tags</span><br><span class="line"></span><br><span class="line">Access Control:</span><br><span class="line"></span><br><span class="line">   clear_permissions             Revokes user permissions for a vhost</span><br><span class="line">   clear_topic_permissions       Clears user topic permissions for a vhost or exchange</span><br><span class="line">   list_permissions              Lists user permissions in a virtual host</span><br><span class="line">   list_topic_permissions        Lists topic permissions in a virtual host</span><br><span class="line">   list_user_permissions         Lists permissions of a user across all virtual hosts</span><br><span class="line">   list_user_topic_permissions   Lists user topic permissions</span><br><span class="line">   list_vhosts                   Lists virtual hosts</span><br><span class="line">   set_permissions               Sets user permissions for a vhost</span><br><span class="line">   set_topic_permissions         Sets user topic permissions for an exchange</span><br><span class="line"></span><br><span class="line">Monitoring, observability and health checks:</span><br><span class="line"></span><br><span class="line">   list_bindings                 Lists all bindings on a vhost</span><br><span class="line">   list_channels                 Lists all channels in the node</span><br><span class="line">   list_ciphers                  Lists cipher suites supported by encoding commands</span><br><span class="line">   list_connections              Lists AMQP 0.9.1 connections for the node</span><br><span class="line">   list_consumers                Lists all consumers for a vhost</span><br><span class="line">   list_exchanges                Lists exchanges</span><br><span class="line">   list_hashes                   Lists hash functions supported by encoding commands</span><br><span class="line">   list_node_auth_attempt_stats  Lists authentication attempts on the target node</span><br><span class="line">   list_queues                   Lists queues and their properties</span><br><span class="line">   list_unresponsive_queues      Tests queues to respond within timeout. Lists those which did not respond</span><br><span class="line">   ping                          Checks that the node OS process is up, registered with EPMD and CLI tools can authenticate with it</span><br><span class="line">   report                        Generate a server status report containing a concatenation of all server status information for support purposes</span><br><span class="line">   schema_info                   Lists schema database tables and their properties</span><br><span class="line">   status                        Displays status of a node</span><br><span class="line"></span><br><span class="line">Parameters:</span><br><span class="line"></span><br><span class="line">   clear_global_parameter        Clears a global runtime parameter</span><br><span class="line">   clear_parameter               Clears a runtime parameter.</span><br><span class="line">   list_global_parameters        Lists global runtime parameters</span><br><span class="line">   list_parameters               Lists runtime parameters for a virtual host</span><br><span class="line">   set_global_parameter          Sets a runtime parameter.</span><br><span class="line">   set_parameter                 Sets a runtime parameter.</span><br><span class="line"></span><br><span class="line">Policies:</span><br><span class="line"></span><br><span class="line">   clear_operator_policy         Clears an operator policy</span><br><span class="line">   clear_policy                  Clears (removes) a policy</span><br><span class="line">   list_operator_policies        Lists operator policy overrides for a virtual host</span><br><span class="line">   list_policies                 Lists all policies in a virtual host</span><br><span class="line">   set_operator_policy           Sets an operator policy that overrides a subset of arguments in user policies</span><br><span class="line">   set_policy                    Sets or updates a policy</span><br><span class="line"></span><br><span class="line">Virtual hosts:</span><br><span class="line"></span><br><span class="line">   add_vhost                     Creates a virtual host</span><br><span class="line">   clear_vhost_limits            Clears virtual host limits</span><br><span class="line">   delete_vhost                  Deletes a virtual host</span><br><span class="line">   list_vhost_limits             Displays configured virtual host limits</span><br><span class="line">   restart_vhost                 Restarts a failed vhost data stores and queues</span><br><span class="line">   set_vhost_limits              Sets virtual host limits</span><br><span class="line">   set_vhost_tags                Sets virtual host tags</span><br><span class="line">   trace_off</span><br><span class="line">   trace_on</span><br><span class="line"></span><br><span class="line">Configuration and Environment:</span><br><span class="line"></span><br><span class="line">   decode                        Decrypts an encrypted configuration value</span><br><span class="line">   encode                        Encrypts a sensitive configuration value</span><br><span class="line">   environment                   Displays the name and value of each variable in the application environment for each running application</span><br><span class="line">   set_cluster_name              Sets the cluster name</span><br><span class="line">   set_disk_free_limit           Sets the disk_free_limit setting</span><br><span class="line">   set_log_level                 Sets log level in the running node</span><br><span class="line">   set_vm_memory_high_watermark  Sets the vm_memory_high_watermark setting</span><br><span class="line"></span><br><span class="line">Definitions:</span><br><span class="line"></span><br><span class="line">   export_definitions            Exports definitions in JSON or compressed Erlang Term Format.</span><br><span class="line">   import_definitions            Imports definitions in JSON or compressed Erlang Term Format.</span><br><span class="line"></span><br><span class="line">Feature flags:</span><br><span class="line"></span><br><span class="line">   enable_feature_flag           Enables a feature flag or all supported feature flags on the target node</span><br><span class="line">   list_feature_flags            Lists feature flags</span><br><span class="line"></span><br><span class="line">Operations:</span><br><span class="line"></span><br><span class="line">   close_all_connections         Instructs the broker to close all connections for the specified vhost or entire RabbitMQ node</span><br><span class="line">   close_all_user_connections    Instructs the broker to close all connections of the specified user</span><br><span class="line">   close_connection              Instructs the broker to close the connection associated with the Erlang process id</span><br><span class="line">   eval                          Evaluates a snippet of Erlang code on the target node</span><br><span class="line">   eval_file                     Evaluates a file that contains a snippet of Erlang code on the target node</span><br><span class="line">   exec                          Evaluates a snippet of Elixir code on the CLI node</span><br><span class="line">   force_gc                      Makes all Erlang processes on the target node perform/schedule a full sweep garbage collection</span><br><span class="line">   resume_listeners              Resumes client connection listeners making them accept client connections again</span><br><span class="line">   suspend_listeners             Suspends client connection listeners so that no new client connections are accepted</span><br><span class="line"></span><br><span class="line">Queues:</span><br><span class="line"></span><br><span class="line">   delete_queue                  Deletes a queue</span><br><span class="line">   purge_queue                   Purges a queue (removes all messages in it)</span><br><span class="line"></span><br><span class="line">AMQP 1.0 plugin:</span><br><span class="line"></span><br><span class="line">   list_amqp10_connections       Lists AMQP 1.0 connections on the target node</span><br><span class="line"></span><br><span class="line">MQTT plugin:</span><br><span class="line"></span><br><span class="line">   decommission_mqtt_node        Removes cluster member and permanently deletes its cluster-wide MQTT state</span><br><span class="line">   list_mqtt_connections         Lists MQTT connections on the target node</span><br><span class="line"></span><br><span class="line">STOMP plugin:</span><br><span class="line"></span><br><span class="line">   list_stomp_connections        Lists STOMP connections on the target node</span><br><span class="line"></span><br><span class="line">Deprecated:</span><br><span class="line"></span><br><span class="line">   hipe_compile                  DEPRECATED. This command is a no-op. HiPE is no longer supported by modern Erlang versions</span><br><span class="line">   node_health_check             DEPRECATED. Performs intrusive, opinionated health checks on a fully booted node. See https://www.rabbitmq.com/monitoring.html#health-checks instead</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<blockquote>
+<p>参考博客</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b5f8057a1cd5">Rabbitmq用户权限配置</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1963,155 +2127,6 @@
 
 <h2 id="测试-Bitmap"><a href="#测试-Bitmap" class="headerlink" title="测试 Bitmap"></a>测试 Bitmap</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BitMapInJedis</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Jedis</span> <span class="variable">jedis</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Jedis</span>(<span class="string">&quot;localhost&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;连接成功&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;服务正在运行: &quot;</span> + jedis.ping());</span><br><span class="line">        System.out.println(<span class="string">&quot;——————————————————————————————————————————&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//        先清空一下</span></span><br><span class="line">        jedis.flushAll();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> <span class="string">&quot;key_bitmap&quot;</span>;</span><br><span class="line"></span><br><span class="line">        jedis.setbit(key,<span class="number">0</span>,<span class="literal">true</span>);</span><br><span class="line">        jedis.setbit(<span class="string">&quot;key_bitmap&quot;</span>,<span class="number">1</span>,<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(key+<span class="number">1</span>+<span class="string">&quot; :&quot;</span>+jedis.getbit(key, <span class="number">1</span>));</span><br><span class="line">        System.out.println(key+<span class="number">2</span>+<span class="string">&quot; : &quot;</span>+jedis.getbit(key, <span class="number">2</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 只允许 0、1</span></span><br><span class="line">        jedis.setbit(key,<span class="number">131</span>,<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        jedis.setbit(key,<span class="number">132</span>,<span class="string">&quot;0&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/16/Redis%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0%20%E2%80%94%E2%80%94%20%E4%BA%8B%E5%8A%A1%EF%BC%88Transactions%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/16/Redis%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0%20%E2%80%94%E2%80%94%20%E4%BA%8B%E5%8A%A1%EF%BC%88Transactions%EF%BC%89/" class="post-title-link" itemprop="url">Redis官方文档笔记 —— 事务（Transactions）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-09-16T00:00:00+08:00">2021-09-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-01 10:19:14" itemprop="dateModified" datetime="2021-12-01T10:19:14+08:00">2021-12-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>相关命令</strong></p>
-<blockquote>
-<p>MULTI<br>EXEC<br>DISCARD<br>WATCH<br>UNWATCH</p>
-</blockquote>
-<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><p>事务是一组命令的集合。3</p>
-<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ul>
-<li>事务中的<strong>所有命令都被序列化并顺序执行</strong>。在Redis事务的执行过程中（指定的是 <code>exec</code>后的真正的执行过程，而不是用<code>multi</code>后的入队过程），永远不会执行另一个客户端发出的请求（**命令不会加塞）。</li>
-<li>所有命令都将被执行，或者所有命令都不执行，因此<strong>Redis事务也是原子的</strong>（这句话有可能会引起争议）。</li>
-</ul>
-<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>使用<code>MULTI</code>命令输入Redis事务。该命令始终以答复OK。<br>此时，用户可以发出多个命令。<strong>Redis不会执行这些命令，而是将它们排队。</strong><br><strong>一旦调用EXEC，将执行所有命令。</strong>，并且<strong>EXEC返回了一个答复数组</strong>，其中每个元素都是事务中单个命令的答复，其发出顺序与命令相同。<br>如：</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; SET k1 v1</span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; SET k2 v2</span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; GET k1</span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; EXEC</span><br><span class="line"><span class="number">1</span>) OK</span><br><span class="line"><span class="number">2</span>) OK</span><br><span class="line"><span class="number">3</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; </span><br></pre></td></tr></table></figure>
-<p>需要强调的是，<code>MULTI</code>之后的命令并不会执行，它们只是入队而已，知道<code>EXEC</code>命令发出，所有命令才会一起执行。</p>
-<h2 id="事务中的错误"><a href="#事务中的错误" class="headerlink" title="事务中的错误"></a>事务中的错误</h2><h3 id="命令排队入队错误"><a href="#命令排队入队错误" class="headerlink" title="命令排队入队错误"></a>命令排队入队错误</h3><p>这种常见的错误有 ① 命令不存在 ② 命令参数的个数不对。<br>这种错误一旦发生，<strong>这个事务就会失败，也就是说事务中的命令全都不会执行</strong>。<br>如：</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; multi</span><br><span class="line">OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; set a <span class="number">1</span></span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; get b <span class="number">1</span></span><br><span class="line">(<span class="built_in">error</span>) ERR wrong number of arguments <span class="keyword">for</span> <span class="string">&#x27;get&#x27;</span> command</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; set c <span class="number">3</span></span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; exec</span><br><span class="line">(<span class="built_in">error</span>) EXECABORT Transaction discarded because of previous errors.</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; </span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; </span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; get a</span><br><span class="line">(<span class="literal">nil</span>)</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; get c</span><br><span class="line">(<span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
-
-<p>可见即使是正确的命令也没有执行成功。</p>
-<blockquote>
-<p>从Redis 2.6.5开始，服务器会记住命令累积期间发生错误，并且将拒绝执行事务，并且在EXEC期间还会返回错误并自动丢弃该事务。</p>
-</blockquote>
-<h3 id="命令执行错误"><a href="#命令执行错误" class="headerlink" title="命令执行错误"></a>命令执行错误</h3><p>常见的有，命令与键的类型冲突，给一个字符串类型的键自增但是键值不是数字，等等。</p>
-<p>EXEC之后发生的错误不会以特殊方式处理:<strong>即使在事务期间某些命令失败，也会执行所有其他命令</strong>。<br>也正是因为一点，让Redis事务的原子性受到质疑。</p>
-<p>如：</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; SET a hello</span><br><span class="line">OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; INCR a</span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; SET b <span class="number">2</span></span><br><span class="line">QUEUED</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; EXEC</span><br><span class="line"><span class="number">1</span>) (<span class="built_in">error</span>) ERR value is <span class="keyword">not</span> an integer <span class="keyword">or</span> out of range</span><br><span class="line"><span class="number">2</span>) OK</span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; GET b</span><br><span class="line"><span class="string">&quot;2&quot;</span></span><br><span class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt; </span><br></pre></td></tr></table></figure>
-<p>即使在<code>INCR</code>命令执行错误之后，可以看到之后的合法的命令仍然执行成功了。</p>
-<h2 id="为什么Redis不支持回滚"><a href="#为什么Redis不支持回滚" class="headerlink" title="为什么Redis不支持回滚"></a>为什么Redis不支持回滚</h2><p>大致有三点原因：</p>
-<ol>
-<li>程序员自身犯的错误是无法避免的。</li>
-<li>不支持回滚可以使得Redis事务的实现更加高效。</li>
-<li>发生错误一般发生在开发过程中，不太可能进入到生产环境中。</li>
-</ol>
-<h2 id="DISCARD命令队列"><a href="#DISCARD命令队列" class="headerlink" title="DISCARD命令队列"></a>DISCARD命令队列</h2><p>之前说，一旦客户端给Redis服务器发送一个<code>MULTI</code>此时，Redis受到的命令不会立即执行，而是存储在队列里。<br>也就是此时客户端和服务器的连接状态进入一种<strong>事务状态</strong>。<br><strong>而<code>DISCARD</code>命令相反，它用来结束这种状态的，当然之前队列里的命令组也会被清空。</strong>	</p>
-<p>注意，此命令只在客户端和服务器之间有<code>MULTI</code>执行之后，才会返回<strong>OK</strong>,否则返回<br><strong>(error) ERR DISCARD without MULTI</strong>。</p>
-<h2 id="WATCH实现乐观锁"><a href="#WATCH实现乐观锁" class="headerlink" title="WATCH实现乐观锁"></a>WATCH实现乐观锁</h2><blockquote>
-<p><code>WATCH</code>用于为Redis事务提供检查设置（CAS check-ans-set）行为。</p>
-</blockquote>
-<p>被WATCH的键，如果在事务执行（exec）前发生了变化，那么之后事务就不会执行，返回（null）。</p>
-<p>下面的实现自增<code>INCR</code>命令组在多个客户端并发访问服务器的时候，就会产生竞争条件。<br>比如，一开始键的值的是10，向后两个客户端执行了自增命令，最终值应该是12。<br>但是，两个客户端可能先后拿到10，然后分别自增，最后分别赋值11。<br>就出现错误。</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val = GET mykey</span><br><span class="line">val = val + <span class="number">1</span></span><br><span class="line">SET mykey $val</span><br></pre></td></tr></table></figure>
-
-<p>可能初学者，有这样的想法，将这组命令当成一个事务执行，不就解决问题了吗。<br>不过，事务执行的结果是在<code>exec</code>之后才能拿到的，无法中途拿到（其次你也要知道的是 multi 之后也是不加任何锁的）</p>
-<p>这个时候就需要<code>WATCH</code>命令了。<br>不妨换思路，</p>
-<ol>
-<li>监控我们需要自增的键。</li>
-<li>然后获取键值，并让值加1。</li>
-<li>最后用<code>set</code>命令赋值。如果，在赋值的时候，发现值已经被另一个客户端修改了，这个时候如果还去set就会出现上面的情况，所以此次事务就放弃执行。</li>
-</ol>
-<p><strong>基于这个思路，我们采取先check后set的方式，执行事务，如果事务失败，再执行一次，并期望这次没有产生冲突，直到这个事务执行成功。</strong><br>这种锁的形式成为<strong>乐观锁</strong>。</p>
-<p>最终借助<code>WATCH</code>和事务实现了自增命令如下：</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">WATCH mykey</span><br><span class="line">val = GET mykey</span><br><span class="line">val = val + <span class="number">1</span></span><br><span class="line">MULTI</span><br><span class="line">SET mykey $val</span><br><span class="line">EXEC</span><br></pre></td></tr></table></figure>
-
-<p>关于<code>watch</code>命令还有如下补充：</p>
-<ul>
-<li><code>watch</code> 可以在<code>multi</code>之前多次调用，并且可以一次watch多个键，只要有一个键被改变，事务就不会执行。</li>
-<li>当<code>exec</code>被调用时，所有键都会恢复 <strong>UNWATCHED</strong> 的状态，不管事务是否中止与否。<br>同样，当客户端连接关闭时，所有键都会被<strong>UNWATCHED</strong>。</li>
-<li>也可以使用<code>unwatch</code>命令（不带参数）来刷新所有监视的键。</li>
-<li>注意，很重要的一点是，<strong>键是否被监控都是相对于每个客户端而言的，也就是说它不是对于服务器的一个全局状态</strong>。以后会在Redis的实现里具体探讨。</li>
-</ul>
-<p>一个例子：有序集合zset是没有弹出第一个元素的原子性命令的，我们可以使用watch和事务实现它。<br><strong>使用WATCH实现ZPOP</strong></p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">WATCH zset</span><br><span class="line">element = ZRANGE zset <span class="number">0</span> <span class="number">0</span></span><br><span class="line">MULTI</span><br><span class="line">ZREM zset element</span><br><span class="line">EXEC</span><br></pre></td></tr></table></figure>
-
-<p>如果EXEC失败（即返回Null答复），我们将重复该操作。</p>
-<h2 id="Redis脚本和事务"><a href="#Redis脚本和事务" class="headerlink" title="Redis脚本和事务"></a>Redis脚本和事务</h2><blockquote>
-<p>一个Redis的脚本是定义事务性的，所以一切都可以用Redis的事务做的，你也可以用一个脚本做的，平时脚本会更简单，更快速。<br>这种重复是由于以下事实：脚本是在Redis 2.6中引入的，而事务早已存在。但是，我们不太可能在短期内取消对事务的支持，因为在语义上似乎是适当的，即使不诉诸Redis脚本，仍然有可能避免竞争状况，尤其是因为Redis事务的实现复杂性极低。<br>但是，在不久的将来，我们会看到整个用户群只是在使用脚本，这并非不可能。如果发生这种情况，我们可能会弃用并最终删除事务。</p>
-</blockquote>
-<h1 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h1><p>与关系型数据库ACID的对比。</p>
 
       
     </div>

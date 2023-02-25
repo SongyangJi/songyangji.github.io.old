@@ -146,13 +146,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">246</span>
+          <span class="site-state-item-count">247</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -174,6 +174,174 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/25/SpringBoot%E6%95%B4%E5%90%88Kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/25/SpringBoot%E6%95%B4%E5%90%88Kafka/" class="post-title-link" itemprop="url">SpringBoot整合Kafka收发消息</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-25 09:58:57" itemprop="dateCreated datePublished" datetime="2021-10-25T09:58:57+08:00">2021-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-09 03:12:19" itemprop="dateModified" datetime="2023-01-09T03:12:19+08:00">2023-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Maven依赖"><a href="#Maven依赖" class="headerlink" title="Maven依赖"></a>Maven依赖</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.kafka<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-kafka<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- kafka 流处理相关 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.kafka<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>kafka-streams<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 本地嵌入式kafka，测试用，可无需依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.kafka<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-kafka-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h1><p>使用SpringBoot,  一个默认配置的 KafkaAdmin 会被注入，可以直接使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> KafkaAdmin <span class="title function_">admin</span><span class="params">()</span> &#123;</span><br><span class="line">    Map&lt;String, Object&gt; configs = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    <span class="comment">// configs.put(AdminClientConfig.BOOTSTRAPx_SERVERS_CONFIG, ...); </span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">KafkaAdmin</span>(configs);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>使用<code>TopicBuilder</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> NewTopic <span class="title function_">topic1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> TopicBuilder.name(<span class="string">&quot;topic1&quot;</span>)  <span class="comment">// 主题名</span></span><br><span class="line">            .partitions(<span class="number">10</span>) <span class="comment">// 分区数</span></span><br><span class="line">            .replicas(<span class="number">3</span>)    <span class="comment">// 备份数</span></span><br><span class="line">            .compact()</span><br><span class="line">            .build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h1><h2 id="使用KafkaTemplate"><a href="#使用KafkaTemplate" class="headerlink" title="使用KafkaTemplate"></a>使用KafkaTemplate</h2><p>使用<code>KafkaTemplate</code>来发送消息, API</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 需要设置默认的主题： public void setDefaultTopic(String defaultTopic)</span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">sendDefault</span><span class="params">(V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">sendDefault</span><span class="params">(K key, V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">sendDefault</span><span class="params">(Integer partition, K key, V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">sendDefault</span><span class="params">(Integer partition, Long timestamp, K key, V data)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.必须指定主题、值（数据）</span></span><br><span class="line"><span class="comment">// 可以指定分区、键、时间戳</span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(String topic, V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(String topic, K key, V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(String topic, Integer partition, K key, V data)</span>;</span><br><span class="line"></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(String topic, Integer partition, Long timestamp, K key, V data)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3.使用 kafka-clients 提供的 ProducerRecord </span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(ProducerRecord&lt;K, V&gt; record)</span>;</span><br><span class="line"><span class="comment">// 4.使用 spring 封装提供的 message</span></span><br><span class="line">ListenableFuture&lt;SendResult&lt;K, V&gt;&gt; <span class="title function_">send</span><span class="params">(Message&lt;?&gt; message)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>返回值值得注意,<code>ListenableFuture</code>是spring提供的拓展了juc下<code>Future</code>接口的增加了添加了回调功能增强版Future。</p>
+<h2 id="发送模式"><a href="#发送模式" class="headerlink" title="发送模式"></a>发送模式</h2><h3 id="fire-and-forget（发完即忘）"><a href="#fire-and-forget（发完即忘）" class="headerlink" title="fire-and-forget（发完即忘）"></a>fire-and-forget（发完即忘）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafkaTemplate.send(...)</span><br></pre></td></tr></table></figure>
+
+<p>也就是发完之后完全不做任何处理，发送失败也无所谓，比如传送一些日志的时候。</p>
+<h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>因为返回的是 <code>ListenableFuture</code>，所以可以阻塞式的等待结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一直阻塞</span></span><br><span class="line">kafkaTemplate.send().get();</span><br><span class="line"><span class="comment">// 等待固定时间</span></span><br><span class="line">kafkaTemplate.send().get(<span class="number">10</span>, TimeUnit.SECONDS);</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendToKafka</span><span class="params">(<span class="keyword">final</span> MyOutputData data)</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> ProducerRecord&lt;String, String&gt; record = createRecord(data);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        template.send(record).get(<span class="number">10</span>, TimeUnit.SECONDS);</span><br><span class="line">        handleSuccess(data);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">        handleFailure(data, record, e.getCause());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (TimeoutException | InterruptedException e) &#123;</span><br><span class="line">        handleFailure(data, record, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="非阻塞"><a href="#非阻塞" class="headerlink" title="非阻塞"></a>非阻塞</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendToKafka</span><span class="params">(<span class="keyword">final</span> MyOutputData data)</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> ProducerRecord&lt;String, String&gt; record = createRecord(data);</span><br><span class="line"></span><br><span class="line">    ListenableFuture&lt;SendResult&lt;Integer, String&gt;&gt; future = template.send(record);</span><br><span class="line">    <span class="comment">// 添加处理回调</span></span><br><span class="line">    future.addCallback(<span class="keyword">new</span> <span class="title class_">KafkaSendCallback</span>&lt;SendResult&lt;Integer, String&gt;&gt;() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(SendResult&lt;Integer, String&gt; result)</span> &#123;</span><br><span class="line">            handleSuccess(data);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onFailure</span><span class="params">(KafkaProducerException ex)</span> &#123;</span><br><span class="line">            handleFailure(data, record, ex);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>当然，还有种粗粒度的添加回调，在kafkaTemplate上添加回调：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// LoggingProducerListener，它会记录错误并且在发送成功时不执行任何操作。</span></span><br><span class="line">kafkaTemplate.setProducerListener(<span class="keyword">new</span> <span class="title class_">LoggingProducerListener</span>&lt;&gt;());</span><br><span class="line">kafkaTemplate.setProducerListener(<span class="keyword">new</span> <span class="title class_">ProducerListener</span>&lt;String, String&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onSuccess</span><span class="params">(ProducerRecord&lt;String, String&gt; producerRecord, RecordMetadata recordMetadata)</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(ProducerRecord&lt;String, String&gt; producerRecord, RecordMetadata recordMetadata, Exception exception)</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="使用ReplyingKafkaTemplate"><a href="#使用ReplyingKafkaTemplate" class="headerlink" title="使用ReplyingKafkaTemplate"></a>使用ReplyingKafkaTemplate</h3><p>不过需要注意，这个<code>ReplyingKafkaTemplate</code>SpringBoot并没有注入，需要自行构造。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> ReplyingKafkaTemplate&lt;String, String, String&gt; <span class="title function_">replyingTemplate</span><span class="params">(</span></span><br><span class="line"><span class="params">        ProducerFactory&lt;String, String&gt; pf,</span></span><br><span class="line"><span class="params">        ConcurrentMessageListenerContainer&lt;String, String&gt; repliesContainer)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ReplyingKafkaTemplate</span>&lt;&gt;(pf, repliesContainer);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> ConcurrentMessageListenerContainer&lt;String, String&gt; <span class="title function_">repliesContainer</span><span class="params">(</span></span><br><span class="line"><span class="params">        ConcurrentKafkaListenerContainerFactory&lt;String, String&gt; containerFactory)</span> &#123;</span><br><span class="line"></span><br><span class="line">    ConcurrentMessageListenerContainer&lt;String, String&gt; repliesContainer =</span><br><span class="line">            containerFactory.createContainer(<span class="string">&quot;replies&quot;</span>);</span><br><span class="line">    repliesContainer.getContainerProperties().setGroupId(<span class="string">&quot;repliesGroup&quot;</span>);</span><br><span class="line">    repliesContainer.setAutoStartup(<span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">return</span> repliesContainer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>API</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RequestReplyFuture&lt;K, V, R&gt; <span class="title function_">sendAndReceive</span><span class="params">(ProducerRecord&lt;K, V&gt; record)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// replyTimeout为等待回复的超时时间</span></span><br><span class="line">RequestReplyFuture&lt;K, V, R&gt; <span class="title function_">sendAndReceive</span><span class="params">(ProducerRecord&lt;K, V&gt; record,</span></span><br><span class="line"><span class="params">    Duration replyTimeout)</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如何使用这个返回值<code>RequestReplyFuture</code>呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RequestReplyFuture&lt;String, String, String&gt; replyFuture = template.sendAndReceive(record);</span><br><span class="line"><span class="comment">// 发送结果</span></span><br><span class="line">SendResult&lt;String, String&gt; sendResult = replyFuture.getSendFuture().get();</span><br><span class="line">System.out.println(<span class="string">&quot;Sent ok: &quot;</span> + sendResult.getRecordMetadata());</span><br><span class="line"><span class="comment">// 返回的结果</span></span><br><span class="line">ConsumerRecord&lt;String, String&gt; consumerRecord = replyFuture.get();</span><br><span class="line">System.out.println(<span class="string">&quot;Return value: &quot;</span> + consumerRecord.value()); <span class="comment">// 返回值</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="接受消息"><a href="#接受消息" class="headerlink" title="接受消息"></a>接受消息</h2><p>大的方向有两种接受消息的方式,一个low-level一点，一个high-level一点。</p>
+<ol>
+<li>配置<code>MessageListenerContainer</code>并提供<code>MessageListener</code>。</li>
+<li>使用<code>@KafkaListener</code>。</li>
+</ol>
+<p>其中第二种方法类似于其他MQ的监听器，如<code>@RabbitListener</code>,使用简单方便。</p>
+<p>第一种方法相当于SpringBoot提供了一个消息监听器的容器，这个容器负责<code>kafkaConsumer.poll</code>调用，</p>
+<p>以及MessageListener的方法调用，主要的动能就是让用户无需关注多线程并发代码的编写，着力于消息的消费与处理。</p>
+<p>值得注意的是，即使你没有直接使用第一种方法，<code>@KafkaListener</code>所注解的类也被封装成<code>MessagingMessageListenerAdapter</code>然后由<code>MessageListenerContainer</code>调度。</p>
+<p>下面主要介绍@KafkaListener的使用。</p>
+<blockquote>
+<p>只列出最常用的属性</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> KafkaListener &#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 订阅的主题</span></span><br><span class="line">	String[] topics() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 用于匹配主题的pattern</span></span><br><span class="line">	String <span class="title function_">topicPattern</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 主题分区</span></span><br><span class="line">	TopicPartition[] topicPartitions() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">	String <span class="title function_">errorHandler</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 消费组id</span></span><br><span class="line">	String <span class="title function_">groupId</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 线程数</span></span><br><span class="line">	String <span class="title function_">concurrency</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  </span><br><span class="line">  String[] properties() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> TopicPartition &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	String <span class="title function_">topic</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">	String[] partitions() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	PartitionOffset[] partitionOffsets() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> PartitionOffset &#123;</span><br><span class="line"></span><br><span class="line">	String <span class="title function_">partition</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	String <span class="title function_">initialOffset</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	String <span class="title function_">relativeToCurrent</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;false&quot;</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1999,170 +2167,6 @@
 <h1 id="业务上实现"><a href="#业务上实现" class="headerlink" title="业务上实现"></a>业务上实现</h1><h2 id="投递失败的消息如何处理"><a href="#投递失败的消息如何处理" class="headerlink" title="投递失败的消息如何处理"></a>投递失败的消息如何处理</h2><h2 id="消费的幂等性如何做到"><a href="#消费的幂等性如何做到" class="headerlink" title="消费的幂等性如何做到"></a>消费的幂等性如何做到</h2><h2 id="消息中间件实现分布式事务"><a href="#消息中间件实现分布式事务" class="headerlink" title="消息中间件实现分布式事务"></a>消息中间件实现分布式事务</h2><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://blog.rabbitmq.com/posts/2011/02/introducing-publisher-confirms">介绍发布者确认</a></p>
 <p><a target="_blank" rel="noopener" href="https://rabbitmq.com/tutorials/tutorial-seven-java.html">发布者确认</a> </p>
 <p><a target="_blank" rel="noopener" href="https://rabbitmq.com/confirms.html#consumer-acks-api-elements">消费者确认和发布者确认</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/10/%E8%BF%90%E8%A1%8C%E3%80%81%E7%AE%A1%E7%90%86%E3%80%81%E9%85%8D%E7%BD%AERabbitMQ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/10/%E8%BF%90%E8%A1%8C%E3%80%81%E7%AE%A1%E7%90%86%E3%80%81%E9%85%8D%E7%BD%AERabbitMQ/" class="post-title-link" itemprop="url">运行、管理、配置RabbitMQ</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-10T00:00:00+08:00">2021-10-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="Erlang节点与应用程序"><a href="#Erlang节点与应用程序" class="headerlink" title="Erlang节点与应用程序"></a>Erlang节点与应用程序</h2><p>Erlang节点指的是Erlang虚拟机运行erlang程序的Erlang虚拟机实例。</p>
-<p>和Java不同，同一个Erlang节点可以运行多个erlang程序。</p>
-<h2 id="RabbitMQ节点"><a href="#RabbitMQ节点" class="headerlink" title="RabbitMQ节点"></a>RabbitMQ节点</h2><p>RabbitMQ节点包含Erlang节点和rabbitmq程序两个概念。</p>
-<h1 id="启动、关闭"><a href="#启动、关闭" class="headerlink" title="启动、关闭"></a>启动、关闭</h1><p>将 rabbitmq的安装目录下的 .&#x2F;sbin加入PATH变量后。</p>
-<ul>
-<li>启动</li>
-</ul>
-<p>下面的命令就会同时启动 Rabbit和erlang实例。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-server -detached # -detached表示后台启动</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>关闭节点</li>
-</ul>
-<p>下面的命令会将整个Rabbit节点关闭，包括erlang实例。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl stop</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>打开应用程序</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl start_app</span><br></pre></td></tr></table></figure>
-
-</li>
-<li><p>关闭应用程序<br>仅停止rabbitmq应用程序。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl stop_app</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>mac通过brew安装、Ubuntu通过apt安装可能通过 rabbitmq-env.conf文件中的<code>CONFIG_FILE</code>配置项去找到配置文件。</p>
-<p><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/configure.html">配置文档参考</a></p>
-<p>默认情况下，通过上述安装方式是没有按照配置文件的，需要自行配置。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/rabbitmq/rabbitmq-server/blob/master/docs/rabbitmq.conf.example">rabbitmq.conf.example下载地址</a></p>
-<h1 id="使用-rabbitmqctl"><a href="#使用-rabbitmqctl" class="headerlink" title="使用 rabbitmqctl"></a>使用 rabbitmqctl</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看手册</span></span><br><span class="line">rabbitmqctl --help</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看某个具体的命令如何使用</span></span><br><span class="line">rabbitmqctl &lt;command&gt; --help</span><br></pre></td></tr></table></figure>
-
-<h2 id="请求许可"><a href="#请求许可" class="headerlink" title="请求许可"></a>请求许可</h2><h3 id="管理用户"><a href="#管理用户" class="headerlink" title="管理用户"></a>管理用户</h3><blockquote>
-<p>这里展示出最常用的</p>
-</blockquote>
-<ul>
-<li><p>添加用户</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl add_user &#123;user_name&#125; &#123;password&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除用户</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl delete_user &#123;user_name&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看所有用户</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl list_users</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="权限相关"><a href="#权限相关" class="headerlink" title="权限相关"></a>权限相关</h3><ul>
-<li><p>分配权限</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl set_permissions -p &#123;vhost&#125; &#123;username&#125; &#123;conf&#125; &#123;write&#125; &#123;read&#125;</span><br></pre></td></tr></table></figure>
-<p>举例</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">分配给 alice 用户所有权限</span></span><br><span class="line">rabbitmqctl set_permissions -p / alice &quot;.*&quot; &quot;.*&quot; &quot;*&quot;</span><br></pre></td></tr></table></figure>
-
-</li>
-<li><p>清除权限</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl clear_permissions -p &#123;vhost&#125; &#123;username&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看权限</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rabbitmqctl list_permissions -p &#123;vhost&#125;</span><br><span class="line">rabbitmqctl list_user_permissions &#123;username&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="操作Demo"><a href="#操作Demo" class="headerlink" title="操作Demo"></a>操作Demo</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir ~ % sudo rabbitmqctl add_user jsy-mac0 8888</span><br><span class="line">Password:</span><br><span class="line">Adding user <span class="string">&quot;jsy-mac0&quot;</span> ...</span><br><span class="line">Done. Don<span class="string">&#x27;t forget to grant the user permissions to some virtual hosts! See &#x27;</span>rabbitmqctl <span class="built_in">help</span> set_permissions<span class="string">&#x27; to learn more.</span></span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir ~ % sudo rabbitmqctl set_user_tags jsy-mac0 administrator</span><br><span class="line">Password:</span><br><span class="line">Setting tags <span class="keyword">for</span> user <span class="string">&quot;jsy-mac0&quot;</span> to [administrator] ...</span><br><span class="line"></span><br><span class="line"><span class="comment">#然后就可以通过http://host:15672 登录management界面管理rabbitmq了，但此时用户jsy-mac0还没有访问队列资源的权限</span></span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jisongyang@SongyangJi-MacBookAir ~ % rabbitmqctl set_permissions -p / jsy-mac0 <span class="string">&quot;.*&quot;</span> <span class="string">&quot;.*&quot;</span> <span class="string">&quot;.*&quot;</span></span><br><span class="line">Setting permissions <span class="keyword">for</span> user <span class="string">&quot;jsy-mac0&quot;</span> <span class="keyword">in</span> vhost <span class="string">&quot;/&quot;</span> ...</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ sudo rabbitmqctl add_user mac 8888</span><br><span class="line">[sudo] songyangji 的密码： </span><br><span class="line">Adding user <span class="string">&quot;mac&quot;</span> ...</span><br><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ sudo rabbitmqctl set_user_tags mac administrator</span><br><span class="line">Setting tags <span class="keyword">for</span> user <span class="string">&quot;mac&quot;</span> to [administrator] ...</span><br><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ sudo rabbitmqctl set_permissions -p /  mac <span class="string">&quot;.*&quot;</span> <span class="string">&quot;.*&quot;</span> <span class="string">&quot;.*&quot;</span></span><br><span class="line">Setting permissions <span class="keyword">for</span> user <span class="string">&quot;mac&quot;</span> <span class="keyword">in</span> vhost <span class="string">&quot;/&quot;</span> ...</span><br><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ </span><br></pre></td></tr></table></figure>
-
-
-
-
-<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br></pre></td><td class="code"><pre><span class="line">Usage</span><br><span class="line"></span><br><span class="line">rabbitmqctl [--node &lt;node&gt;] [--timeout &lt;timeout&gt;] [--longnames] [--quiet] &lt;command&gt; [&lt;command options&gt;]</span><br><span class="line"></span><br><span class="line">Available commands:</span><br><span class="line"></span><br><span class="line">Help:</span><br><span class="line"></span><br><span class="line">   autocomplete                  Provides command name autocomplete variants</span><br><span class="line">   help                          Displays usage information for a command</span><br><span class="line">   version                       Displays CLI tools version</span><br><span class="line"></span><br><span class="line">Nodes:</span><br><span class="line"></span><br><span class="line">   await_startup                 Waits for the RabbitMQ application to start on the target node</span><br><span class="line">   reset                         Instructs a RabbitMQ node to leave the cluster and return to its virgin state</span><br><span class="line">   rotate_logs                   Does nothing [deprecated]</span><br><span class="line">   shutdown                      Stops RabbitMQ and its runtime (Erlang VM). Monitors progress for local nodes. Does not require a PID file path.</span><br><span class="line">   start_app                     Starts the RabbitMQ application but leaves the runtime (Erlang VM) running</span><br><span class="line">   stop                          Stops RabbitMQ and its runtime (Erlang VM). Requires a local node pid file path to monitor progress.</span><br><span class="line">   stop_app                      Stops the RabbitMQ application, leaving the runtime (Erlang VM) running</span><br><span class="line">   wait                          Waits for RabbitMQ node startup by monitoring a local PID file. See also &#x27;rabbitmqctl await_online_nodes&#x27;</span><br><span class="line"></span><br><span class="line">Cluster:</span><br><span class="line"></span><br><span class="line">   await_online_nodes            Waits for &lt;count&gt; nodes to join the cluster</span><br><span class="line">   change_cluster_node_type      Changes the type of the cluster node</span><br><span class="line">   cluster_status                Displays all the nodes in the cluster grouped by node type, together with the currently running nodes</span><br><span class="line">   force_boot                    Forces node to start even if it cannot contact or rejoin any of its previously known peers</span><br><span class="line">   force_reset                   Forcefully returns a RabbitMQ node to its virgin state</span><br><span class="line">   forget_cluster_node           Removes a node from the cluster</span><br><span class="line">   join_cluster                  Instructs the node to become a member of the cluster that the specified node is in</span><br><span class="line">   rename_cluster_node           Renames cluster nodes in the local database</span><br><span class="line">   update_cluster_nodes          Instructs a cluster member node to sync the list of known cluster members from &lt;seed_node&gt;</span><br><span class="line"></span><br><span class="line">Replication:</span><br><span class="line"></span><br><span class="line">   cancel_sync_queue             Instructs a synchronising mirrored queue to stop synchronising itself</span><br><span class="line">   sync_queue                    Instructs a mirrored queue with unsynchronised mirrors (follower replicas) to synchronise them</span><br><span class="line"></span><br><span class="line">Users:</span><br><span class="line"></span><br><span class="line">   add_user                      Creates a new user in the internal database. This user will have no permissions for any virtual hosts by default.</span><br><span class="line">   authenticate_user             Attempts to authenticate a user. Exits with a non-zero code if authentication fails.</span><br><span class="line">   change_password               Changes the user password</span><br><span class="line">   clear_password                Clears (resets) password and disables password login for a user</span><br><span class="line">   clear_user_limits             Clears user connection/channel limits</span><br><span class="line">   delete_user                   Removes a user from the internal database. Has no effect on users provided by external backends such as LDAP</span><br><span class="line">   list_user_limits              Displays configured user limits</span><br><span class="line">   list_users                    List user names and tags</span><br><span class="line">   set_user_limits               Sets user limits</span><br><span class="line">   set_user_tags                 Sets user tags</span><br><span class="line"></span><br><span class="line">Access Control:</span><br><span class="line"></span><br><span class="line">   clear_permissions             Revokes user permissions for a vhost</span><br><span class="line">   clear_topic_permissions       Clears user topic permissions for a vhost or exchange</span><br><span class="line">   list_permissions              Lists user permissions in a virtual host</span><br><span class="line">   list_topic_permissions        Lists topic permissions in a virtual host</span><br><span class="line">   list_user_permissions         Lists permissions of a user across all virtual hosts</span><br><span class="line">   list_user_topic_permissions   Lists user topic permissions</span><br><span class="line">   list_vhosts                   Lists virtual hosts</span><br><span class="line">   set_permissions               Sets user permissions for a vhost</span><br><span class="line">   set_topic_permissions         Sets user topic permissions for an exchange</span><br><span class="line"></span><br><span class="line">Monitoring, observability and health checks:</span><br><span class="line"></span><br><span class="line">   list_bindings                 Lists all bindings on a vhost</span><br><span class="line">   list_channels                 Lists all channels in the node</span><br><span class="line">   list_ciphers                  Lists cipher suites supported by encoding commands</span><br><span class="line">   list_connections              Lists AMQP 0.9.1 connections for the node</span><br><span class="line">   list_consumers                Lists all consumers for a vhost</span><br><span class="line">   list_exchanges                Lists exchanges</span><br><span class="line">   list_hashes                   Lists hash functions supported by encoding commands</span><br><span class="line">   list_node_auth_attempt_stats  Lists authentication attempts on the target node</span><br><span class="line">   list_queues                   Lists queues and their properties</span><br><span class="line">   list_unresponsive_queues      Tests queues to respond within timeout. Lists those which did not respond</span><br><span class="line">   ping                          Checks that the node OS process is up, registered with EPMD and CLI tools can authenticate with it</span><br><span class="line">   report                        Generate a server status report containing a concatenation of all server status information for support purposes</span><br><span class="line">   schema_info                   Lists schema database tables and their properties</span><br><span class="line">   status                        Displays status of a node</span><br><span class="line"></span><br><span class="line">Parameters:</span><br><span class="line"></span><br><span class="line">   clear_global_parameter        Clears a global runtime parameter</span><br><span class="line">   clear_parameter               Clears a runtime parameter.</span><br><span class="line">   list_global_parameters        Lists global runtime parameters</span><br><span class="line">   list_parameters               Lists runtime parameters for a virtual host</span><br><span class="line">   set_global_parameter          Sets a runtime parameter.</span><br><span class="line">   set_parameter                 Sets a runtime parameter.</span><br><span class="line"></span><br><span class="line">Policies:</span><br><span class="line"></span><br><span class="line">   clear_operator_policy         Clears an operator policy</span><br><span class="line">   clear_policy                  Clears (removes) a policy</span><br><span class="line">   list_operator_policies        Lists operator policy overrides for a virtual host</span><br><span class="line">   list_policies                 Lists all policies in a virtual host</span><br><span class="line">   set_operator_policy           Sets an operator policy that overrides a subset of arguments in user policies</span><br><span class="line">   set_policy                    Sets or updates a policy</span><br><span class="line"></span><br><span class="line">Virtual hosts:</span><br><span class="line"></span><br><span class="line">   add_vhost                     Creates a virtual host</span><br><span class="line">   clear_vhost_limits            Clears virtual host limits</span><br><span class="line">   delete_vhost                  Deletes a virtual host</span><br><span class="line">   list_vhost_limits             Displays configured virtual host limits</span><br><span class="line">   restart_vhost                 Restarts a failed vhost data stores and queues</span><br><span class="line">   set_vhost_limits              Sets virtual host limits</span><br><span class="line">   set_vhost_tags                Sets virtual host tags</span><br><span class="line">   trace_off</span><br><span class="line">   trace_on</span><br><span class="line"></span><br><span class="line">Configuration and Environment:</span><br><span class="line"></span><br><span class="line">   decode                        Decrypts an encrypted configuration value</span><br><span class="line">   encode                        Encrypts a sensitive configuration value</span><br><span class="line">   environment                   Displays the name and value of each variable in the application environment for each running application</span><br><span class="line">   set_cluster_name              Sets the cluster name</span><br><span class="line">   set_disk_free_limit           Sets the disk_free_limit setting</span><br><span class="line">   set_log_level                 Sets log level in the running node</span><br><span class="line">   set_vm_memory_high_watermark  Sets the vm_memory_high_watermark setting</span><br><span class="line"></span><br><span class="line">Definitions:</span><br><span class="line"></span><br><span class="line">   export_definitions            Exports definitions in JSON or compressed Erlang Term Format.</span><br><span class="line">   import_definitions            Imports definitions in JSON or compressed Erlang Term Format.</span><br><span class="line"></span><br><span class="line">Feature flags:</span><br><span class="line"></span><br><span class="line">   enable_feature_flag           Enables a feature flag or all supported feature flags on the target node</span><br><span class="line">   list_feature_flags            Lists feature flags</span><br><span class="line"></span><br><span class="line">Operations:</span><br><span class="line"></span><br><span class="line">   close_all_connections         Instructs the broker to close all connections for the specified vhost or entire RabbitMQ node</span><br><span class="line">   close_all_user_connections    Instructs the broker to close all connections of the specified user</span><br><span class="line">   close_connection              Instructs the broker to close the connection associated with the Erlang process id</span><br><span class="line">   eval                          Evaluates a snippet of Erlang code on the target node</span><br><span class="line">   eval_file                     Evaluates a file that contains a snippet of Erlang code on the target node</span><br><span class="line">   exec                          Evaluates a snippet of Elixir code on the CLI node</span><br><span class="line">   force_gc                      Makes all Erlang processes on the target node perform/schedule a full sweep garbage collection</span><br><span class="line">   resume_listeners              Resumes client connection listeners making them accept client connections again</span><br><span class="line">   suspend_listeners             Suspends client connection listeners so that no new client connections are accepted</span><br><span class="line"></span><br><span class="line">Queues:</span><br><span class="line"></span><br><span class="line">   delete_queue                  Deletes a queue</span><br><span class="line">   purge_queue                   Purges a queue (removes all messages in it)</span><br><span class="line"></span><br><span class="line">AMQP 1.0 plugin:</span><br><span class="line"></span><br><span class="line">   list_amqp10_connections       Lists AMQP 1.0 connections on the target node</span><br><span class="line"></span><br><span class="line">MQTT plugin:</span><br><span class="line"></span><br><span class="line">   decommission_mqtt_node        Removes cluster member and permanently deletes its cluster-wide MQTT state</span><br><span class="line">   list_mqtt_connections         Lists MQTT connections on the target node</span><br><span class="line"></span><br><span class="line">STOMP plugin:</span><br><span class="line"></span><br><span class="line">   list_stomp_connections        Lists STOMP connections on the target node</span><br><span class="line"></span><br><span class="line">Deprecated:</span><br><span class="line"></span><br><span class="line">   hipe_compile                  DEPRECATED. This command is a no-op. HiPE is no longer supported by modern Erlang versions</span><br><span class="line">   node_health_check             DEPRECATED. Performs intrusive, opinionated health checks on a fully booted node. See https://www.rabbitmq.com/monitoring.html#health-checks instead</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<blockquote>
-<p>参考博客</p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b5f8057a1cd5">Rabbitmq用户权限配置</a></p>
-</blockquote>
 
       
     </div>

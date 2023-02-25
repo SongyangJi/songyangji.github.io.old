@@ -146,13 +146,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">246</span>
+          <span class="site-state-item-count">247</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -174,6 +174,132 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/01/09/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E9%93%BE%E8%A1%A8%E3%80%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/01/09/%E3%80%8A%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E9%93%BE%E8%A1%A8%E3%80%8B/" class="post-title-link" itemprop="url">《刷题——链表》</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-01-09 04:28:05 / 修改时间：15:11:32" itemprop="dateCreated datePublished" datetime="2023-01-09T04:28:05+08:00">2023-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">算法题</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h3 id="链表中的节点每k个一组翻转"><a href="#链表中的节点每k个一组翻转" class="headerlink" title="链表中的节点每k个一组翻转"></a>链表中的节点每k个一组翻转</h3><p>题：将给出的链表中的节点每 k 个一组翻转，返回翻转后的链表<br>如果链表中的节点数不是 k 的倍数，将最后剩下的节点保持原样<br>你不能更改节点中的值，只能更改节点本身。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> head ListNode类 </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> k int整型 </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> ListNode类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">len</span><span class="params">(ListNode* head)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">cnt</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(head) &#123;</span><br><span class="line">            ++cnt;</span><br><span class="line">            head = head-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cnt;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ListNode* reverseKGroup(ListNode* head, <span class="type">int</span> k) &#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        ListNode *dum = <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>), *cur = dum;</span><br><span class="line">        ListNode* p = head;</span><br><span class="line">        <span class="keyword">while</span>(p) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">l</span> <span class="operator">=</span> len(p);</span><br><span class="line">            <span class="keyword">if</span>(l &lt; k) &#123;</span><br><span class="line">                cur-&gt;next = p;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            ListNode *res = nullptr, *q = p;</span><br><span class="line">            <span class="comment">// 头插</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">                <span class="type">auto</span> <span class="variable">nxt</span> <span class="operator">=</span> q-&gt;next;</span><br><span class="line">                q-&gt;next = res;</span><br><span class="line">                res = q;</span><br><span class="line">                q = nxt;</span><br><span class="line">            &#125;</span><br><span class="line">            cur-&gt;next = res; <span class="comment">// 接上</span></span><br><span class="line">            cur = p; <span class="comment">// cur 移动</span></span><br><span class="line">            p = q; <span class="comment">// p 移动</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dum-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ListNode* reverseKGroup(ListNode* head, <span class="type">int</span> k) &#123;</span><br><span class="line">        ListNode* dumb = <span class="keyword">new</span> <span class="title class_">ListNode</span>();</span><br><span class="line">        dumb-&gt;next = head;</span><br><span class="line">        ListNode *pre = dumb, *end = dumb;</span><br><span class="line">        <span class="keyword">while</span> (end-&gt;next != nullptr) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; k &amp;&amp; end != nullptr; ++i) &#123;</span><br><span class="line">                end = end-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (end == nullptr) <span class="keyword">break</span>;</span><br><span class="line">            ListNode* nxt = end-&gt;next; <span class="comment">// 拿到后继</span></span><br><span class="line">            ListNode* start = pre-&gt;next; <span class="comment">// 拿到头</span></span><br><span class="line">            end-&gt;next = nullptr; <span class="comment">// 断开</span></span><br><span class="line">            pre-&gt;next = reverse(start); <span class="comment">// 反转</span></span><br><span class="line">            start-&gt;next = nxt; <span class="comment">// 接上链表</span></span><br><span class="line">            pre = end = start; <span class="comment">// “头”变成”尾“，从这出发</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dumb-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ListNode* reverse(ListNode* head) &#123;</span><br><span class="line">        ListNode* pre = nullptr, *cur = head;</span><br><span class="line">        <span class="keyword">while</span> (cur != nullptr) &#123;</span><br><span class="line">            ListNode* nxt = cur-&gt;   next;</span><br><span class="line">            cur-&gt;next = pre;</span><br><span class="line">            pre = cur;</span><br><span class="line">            cur = nxt;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pre;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+<h3 id="判断链表中是否有环（快慢指针）"><a href="#判断链表中是否有环（快慢指针）" class="headerlink" title="判断链表中是否有环（快慢指针）"></a>判断链表中是否有环（快慢指针）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasCycle</span><span class="params">(ListNode head)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">slow</span> <span class="operator">=</span> head, fast = head;</span><br><span class="line">        <span class="keyword">while</span>(fast != <span class="literal">null</span>) &#123;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next;</span><br><span class="line">            <span class="keyword">if</span>(fast != <span class="literal">null</span>) fast = fast.next;</span><br><span class="line">            <span class="keyword">if</span>(fast == slow) <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// 检查</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="环的入口"><a href="#环的入口" class="headerlink" title="环的入口"></a>环的入口</h3><p><a target="_blank" rel="noopener" href="https://song-yang-ji.blog.csdn.net/article/details/108997251">题解</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">EntryNodeOfLoop</span><span class="params">(ListNode pHead)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(pHead == <span class="literal">null</span> || pHead.next == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">slow</span> <span class="operator">=</span> pHead, fast = pHead;</span><br><span class="line">        <span class="keyword">while</span>(fast != <span class="literal">null</span>) &#123;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next;</span><br><span class="line">            <span class="keyword">if</span>(fast != <span class="literal">null</span>) fast = fast.next;</span><br><span class="line">            <span class="keyword">if</span>(slow == fast) &#123;</span><br><span class="line">                <span class="type">ListNode</span> <span class="variable">cur</span> <span class="operator">=</span> pHead;</span><br><span class="line">                <span class="comment">// a+(n+1)b+nc=2(a+b)⟹a=c+(n−1)(b+c)</span></span><br><span class="line">                <span class="comment">// a == c</span></span><br><span class="line">                <span class="keyword">while</span>(cur != slow) &#123;</span><br><span class="line">                    cur = cur.next;</span><br><span class="line">                    slow = slow.next;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> cur;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="链表相交"><a href="#链表相交" class="headerlink" title="链表相交"></a>链表相交</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (headA == <span class="literal">null</span> || headB == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">pA</span> <span class="operator">=</span> headA, pB = headB;</span><br><span class="line">        <span class="comment">// a + c + b == b + c + a (c是公共部分)</span></span><br><span class="line">        <span class="keyword">while</span> (pA != pB) &#123;</span><br><span class="line">            pA = pA == <span class="literal">null</span> ? headB : pA.next;</span><br><span class="line">            pB = pB == <span class="literal">null</span> ? headA : pB.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="删除给出链表中的重复元素"><a href="#删除给出链表中的重复元素" class="headerlink" title="删除给出链表中的重复元素"></a>删除给出链表中的重复元素</h3><p><strong>删除给出链表中的重复元素</strong>（链表中元素从小到大有序），<strong>使链表中的所有元素都只出现一次</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">deleteDuplicates</span> <span class="params">(ListNode head)</span> &#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">p</span> <span class="operator">=</span> head;</span><br><span class="line">        <span class="keyword">if</span>(p == <span class="literal">null</span>) <span class="keyword">return</span> head;</span><br><span class="line">        <span class="keyword">while</span>(p.next != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(p.val == p.next.val) &#123;</span><br><span class="line">                p.next = p.next.next;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                p = p.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>删除给出链表中的重复元素，一个也不留</strong>（链表中元素从小到大有序）<br><strong>删除有序链表中重复的元素-II</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ListNode* deleteDuplicates(ListNode* head) &#123;</span><br><span class="line">        ListNode* dum = <span class="keyword">new</span> <span class="title class_">ListNode</span>, *cur = dum;</span><br><span class="line">        ListNode* p = head;</span><br><span class="line">        <span class="keyword">while</span>(p) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> p-&gt;val;</span><br><span class="line">            <span class="keyword">if</span>(p-&gt;next &amp;&amp; p-&gt;next-&gt;val == val) &#123;</span><br><span class="line">                ListNode* q = p;</span><br><span class="line">                <span class="keyword">while</span>(q &amp;&amp; q-&gt;val == val) &#123;</span><br><span class="line">                    q = q-&gt;next;</span><br><span class="line">                &#125;</span><br><span class="line">                p = q;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                ListNode* q = p-&gt;next;</span><br><span class="line">                p-&gt;next = nullptr; <span class="comment">// 断开</span></span><br><span class="line">                cur-&gt;next = p;</span><br><span class="line">                cur = p;</span><br><span class="line">                p = q;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dum-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="K路归并问题"><a href="#K路归并问题" class="headerlink" title="K路归并问题"></a>K路归并问题</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/merge-k-sorted-lists/">23. 合并K个升序链表</a></p>
+<ul>
+<li>堆<br><strong>k路归并问题</strong><br>时间复杂度:$O(kn*log(k))$</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode *next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) : val(x), next(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">        ListNode* p;</span><br><span class="line">        <span class="built_in">Node</span>(ListNode*p):<span class="built_in">p</span>(p)&#123;&#125;</span><br><span class="line">        <span class="type">bool</span> <span class="keyword">operator</span>&lt;(<span class="type">const</span> Node&amp; b) <span class="type">const</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> p-&gt;val&gt;b.p-&gt;val;</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">mergeKLists</span><span class="params">(vector&lt;ListNode*&gt;&amp; lists)</span> </span>&#123;</span><br><span class="line">        ListNode* preHead = <span class="keyword">new</span> ListNode; <span class="comment">//哨兵</span></span><br><span class="line">        ListNode* pre = preHead;</span><br><span class="line">        priority_queue&lt;Node&gt; pq;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;lists.<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(lists[i]) pq.<span class="built_in">push</span>(<span class="built_in">Node</span>(lists[i]));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(pq.<span class="built_in">size</span>())&#123;</span><br><span class="line">            Node node = pq.<span class="built_in">top</span>();</span><br><span class="line">            pq.<span class="built_in">pop</span>();</span><br><span class="line">            pre-&gt;next = node.p;</span><br><span class="line">            pre = pre-&gt;next; <span class="comment">// 尾插</span></span><br><span class="line">            <span class="keyword">if</span>(node.p-&gt;next)&#123;</span><br><span class="line">                pq.<span class="built_in">push</span>(<span class="built_in">Node</span>(node.p-&gt;next));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> preHead-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>分治算法<br>如果两两合并的话，时间复杂度 $O(k^2*n)$</li>
+</ul>
+<p>分治的话：一次合并区间的一半。就像是<strong>归并排序</strong>一样。<br>时间复杂度：$O(k*log(k)*n)$</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">mergeKLists</span><span class="params">(vector&lt;ListNode*&gt;&amp; lists)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">devide_conquer</span>(lists,<span class="number">0</span>,(<span class="type">int</span>)lists.<span class="built_in">size</span>()<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">ListNode* <span class="title">devide_conquer</span><span class="params">(vector&lt;ListNode*&gt;&amp; lists,<span class="type">int</span> l,<span class="type">int</span> r)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l==r) <span class="keyword">return</span> lists[l];</span><br><span class="line">        <span class="keyword">if</span>(l&gt;r) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="type">int</span> mid = l + (r - l)/<span class="number">2</span>;</span><br><span class="line">        <span class="comment">// 和归并排序一样的做法,先处理一半，再合并到一起</span></span><br><span class="line">        ListNode* left = <span class="built_in">devide_conquer</span>(lists, l, mid)</span><br><span class="line">        ListNode* right = <span class="built_in">devide_conquer</span>(lists, mid + <span class="number">1</span>, r);</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">mergeTwoLists</span>(left,right);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 双链合并的标准写法写法 </span></span><br><span class="line">    <span class="function">ListNode* <span class="title">mergeTwoLists</span><span class="params">(ListNode* l1, ListNode* l2)</span> </span>&#123;</span><br><span class="line">        ListNode* preHead = <span class="keyword">new</span> ListNode; <span class="comment">// 哨兵</span></span><br><span class="line">        ListNode* pre = preHead;  <span class="comment">// 移动的哨兵</span></span><br><span class="line">        <span class="keyword">while</span>(l1 &amp;&amp; l2)&#123;</span><br><span class="line">            <span class="keyword">if</span>(l1-&gt;val&lt;l2-&gt;val)&#123;</span><br><span class="line">                pre-&gt;next = l1;</span><br><span class="line">                l1 = l1-&gt;next;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                pre-&gt;next = l2;</span><br><span class="line">                l2 = l2-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            pre = pre-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        pre-&gt;next = (l1 ? l1 : l2);</span><br><span class="line">        <span class="keyword">return</span> preHead-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>多路归并</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">mergeKLists</span><span class="params">(ArrayList&lt;ListNode&gt; lists)</span> &#123;</span><br><span class="line">        PriorityQueue&lt;ListNode&gt; pq = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;((o1, o2) -&gt; o1.val - o2.val);</span><br><span class="line">        <span class="keyword">for</span>(ListNode node : lists) &#123;</span><br><span class="line">            <span class="keyword">if</span>(node != <span class="literal">null</span>) pq.offer(node);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">dum</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListNode</span>(-<span class="number">1</span>), cur = dum;</span><br><span class="line">        <span class="keyword">while</span>(pq.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="type">ListNode</span> <span class="variable">node</span> <span class="operator">=</span> pq.poll();</span><br><span class="line">            cur.next = node;</span><br><span class="line">            cur = node;</span><br><span class="line">            <span class="keyword">if</span>(node.next != <span class="literal">null</span>) &#123;</span><br><span class="line">               pq.offer(node.next);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dum.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1421,75 +1547,6 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title function_">maxInWindows</span><span class="params">(<span class="type">int</span> [] num, <span class="type">int</span> size)</span> &#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; ans = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> num.length;</span><br><span class="line">        <span class="keyword">if</span>(size &gt; n  || size == <span class="number">0</span>) <span class="keyword">return</span> ans; <span class="comment">// 单调不升</span></span><br><span class="line">        Deque&lt;Integer&gt; q = <span class="keyword">new</span> <span class="title class_">ArrayDeque</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i &gt;= size &amp;&amp; q.peekFirst() == num[i - size]) &#123;</span><br><span class="line">                q.pollFirst();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(q.size() &gt; <span class="number">0</span> &amp;&amp; q.peekLast() &lt; num[i]) &#123; </span><br><span class="line">            <span class="comment">// 直到 last &gt;= cur</span></span><br><span class="line">                q.pollLast();</span><br><span class="line">            &#125;</span><br><span class="line">            q.offerLast(num[i]);</span><br><span class="line">            <span class="keyword">if</span>(i &gt;= size - <span class="number">1</span>) &#123;</span><br><span class="line">                ans.add(q.peekFirst()); <span class="comment">// 队首最大</span></span><br><span class="line">            &#125;            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/09/GoLang%E2%80%94-%E7%BB%93%E6%9E%84%E4%BD%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/12/09/GoLang%E2%80%94-%E7%BB%93%E6%9E%84%E4%BD%93/" class="post-title-link" itemprop="url">GoLang—-结构体</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-12-09 16:02:59 / 修改时间：16:04:53" itemprop="dateCreated datePublished" datetime="2022-12-09T16:02:59+08:00">2022-12-09</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="嵌套结构体"><a href="#嵌套结构体" class="headerlink" title="嵌套结构体"></a>嵌套结构体</h1>
       
     </div>
 

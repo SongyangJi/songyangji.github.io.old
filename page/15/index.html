@@ -146,13 +146,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">246</span>
+          <span class="site-state-item-count">247</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -174,6 +174,386 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/" class="post-title-link" itemprop="url">JVM垃圾回收算法和垃圾回收器</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-12 18:31:40" itemprop="dateCreated datePublished" datetime="2021-12-12T18:31:40+08:00">2021-12-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-05 03:04:06" itemprop="dateModified" datetime="2023-01-05T03:04:06+08:00">2023-01-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="GC的基础知识"><a href="#GC的基础知识" class="headerlink" title="GC的基础知识"></a>GC的基础知识</h1><h2 id="一、垃圾回收的区域"><a href="#一、垃圾回收的区域" class="headerlink" title="一、垃圾回收的区域"></a>一、垃圾回收的区域</h2><ul>
+<li>栈：栈中的生命周期是跟随线程，所以一般不需要关注。</li>
+<li>堆：堆中的对象是垃圾回收的重点。</li>
+<li>方法区：这一块也会发生垃圾回收，不过这块的效率比较低，一般不是我们关注的重点。</li>
+</ul>
+<h2 id="二、怎么判断对象的存活"><a href="#二、怎么判断对象的存活" class="headerlink" title="二、怎么判断对象的存活"></a>二、怎么判断对象的存活</h2><p>一般有两种方式（引用计数法、可达性分析），<strong>JVM使用的是可达性分析</strong>。</p>
+<h3 id="1-引用计数法"><a href="#1-引用计数法" class="headerlink" title="1. 引用计数法"></a>1. 引用计数法</h3><p>给对象添加一个引用计数器，当对象增加一个引用时计数器加 1，引用失效时计数器减 1。引用计数为 0 的对象可被回收（Python 在用，但主流虚拟机没有使用）。</p>
+<ul>
+<li>优点：快，方便，实现简单。</li>
+<li>缺陷：对象相互引用时（A.instance&#x3D;B 同时 B.instance&#x3D;A），很难判断对象是否该回收。</li>
+</ul>
+<h3 id="2-可达性分析"><a href="#2-可达性分析" class="headerlink" title="2. 可达性分析"></a>2. 可达性分析</h3><p>来判定对象是否存活的。这个算法的基本思路就是通过一系列的称为“GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链（Reference Chain），当一个对象到 GC Roots 没有任何引用链相连时，则证明此对象是不可用的。</p>
+<p>作为 GC Roots 的对象包括下面几种：</p>
+<ul>
+<li>虚拟机栈（栈帧中的本地变量表）中引用的对象；</li>
+<li>方法区中类静态属性引用的对象；</li>
+<li>方法区中常量引用的对象；</li>
+<li>本地方法栈中JNI（即一般说的Native方法）引用的对象；</li>
+</ul>
+<h2 id="三、-垃圾回收算法"><a href="#三、-垃圾回收算法" class="headerlink" title="三、 垃圾回收算法"></a>三、 垃圾回收算法</h2><p>本节具体介绍一下各种垃圾回收算法的思想：</p>
+<h3 id="1-标记-清除算法"><a href="#1-标记-清除算法" class="headerlink" title="1. 标记-清除算法"></a>1. 标记-清除算法</h3><p>标记-清除算法对<strong>根集合</strong>进行扫描，对<strong>存活</strong>的对象进行标记。标记完成后，再对整个空间内<strong>未被标记</strong>的对象扫描，进行回收。</p>
+<ul>
+<li><p><strong>优点</strong>：</p>
+<p><strong>实现简单，不需要进行对象进行移动</strong>。</p>
+</li>
+<li><p><strong>缺点</strong>：</p>
+<p>标记、清除过程效率低，<strong>产生大量不连续的内存碎片</strong>，提高了垃圾回收的频率。</p>
+</li>
+</ul>
+<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/mark-sweep.png"></p>
+<h3 id="2-标记-复制算法"><a href="#2-标记-复制算法" class="headerlink" title="2. 标记-复制算法"></a>2. 标记-复制算法</h3><p>这种收集算法解决了标记清除算法存在的效率问题。它将内存区域划分成相同的两个<strong>内存块</strong>。每次仅使用一半的空间，<code>JVM</code>生成的新对象放在一半空间中。当一半空间用完时进行<code>GC</code>，把可到达对象复制到另一半空间，然后把使用过的内存空间一次清理掉。</p>
+<ul>
+<li><p><strong>优点</strong>：</p>
+<p>按顺序分配内存即可，实现简单、运行高效，不用考虑内存碎片。</p>
+</li>
+<li><p><strong>缺点</strong>：</p>
+<p><strong>可用的内存大小缩小为原来的一半</strong>，<strong>对象存活率高时会频繁进行复制</strong>。</p>
+</li>
+</ul>
+<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/gc-copy.png"></p>
+<h3 id="3-标记-整理算法"><a href="#3-标记-整理算法" class="headerlink" title="3. 标记-整理算法"></a>3. 标记-整理算法</h3><p><strong>标记-整理算法</strong> 采用和 <strong>标记-清除算法</strong> 一样的方式进行对象的标记，但后续不直接对可回收对象进行清理，而是将所有的<strong>存活对象</strong>往一端<strong>空闲空间</strong>移动，然后清理掉端边界以外的内存空间。</p>
+<ul>
+<li><p><strong>优点</strong>：</p>
+<p><strong>解决了标记-清理算法存在的内存碎片问题</strong>。</p>
+</li>
+<li><p><strong>缺点</strong>：</p>
+<p>仍<strong>需要进行局部对象移动，一定程度上降低了效率</strong>。</p>
+<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/mark-compact.png"></p>
+</li>
+</ul>
+<h3 id="4-分代收集技术"><a href="#4-分代收集技术" class="headerlink" title="4. 分代收集技术"></a>4. 分代收集技术</h3><h4 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h4><ul>
+<li>部分收集（Partial GC）指目标不是完整收集整个Java堆的垃圾收集，其中可以分为：</li>
+<li><ul>
+<li>新生代收集（Minor GC&#x2F;Young GC）: 指目标只是新生代的垃圾收集；</li>
+<li>老年代收集（Major GC&#x2F;Old GC）: 指目标只是老年代的垃圾收集。注意这个名词可能有歧义，有的也指整堆收集。</li>
+<li>混合收集（Mixed GC）：指目标是收集整个新生代以及部分老年代的来及收集。目前只有G1收集器有这种行为。</li>
+</ul>
+</li>
+<li>整堆收集（Full GC）：收集整个Java堆和方法区的垃圾收集。</li>
+</ul>
+<p>当前商业虚拟机都采用<strong>分代收集</strong>的垃圾收集算法。分代收集算法，顾名思义是根据对象的<strong>存活周期</strong>将内存划分为几块。一般包括<strong>年轻代</strong>、<strong>老年代</strong> 和 <strong>永久代</strong>，如图所示：</p>
+<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/gc-generation.png"></p>
+<blockquote>
+<p>上图中的 永久（Permanent）代在 JDK8之后便被取消。</p>
+</blockquote>
+<h4 id="新生代（Young-generation）"><a href="#新生代（Young-generation）" class="headerlink" title="新生代（Young generation）"></a>新生代（Young generation）</h4><p>绝大多数最新被创建的对象会被分配到这里，由于<strong>大部分对象</strong>在创建后会很快变得<strong>不可达</strong>，所以很多对象被创建在<strong>新生代</strong>，然后<strong>消失</strong>。对象从这个区域消失的过程我们称之为 <code>minor GC</code>。</p>
+<p><strong>新生代</strong> 中存在一个<code>Eden</code>区和两个<code>Survivor</code>区（Survivor 区里面分为 from 和 to 区），每次只使用Eden和其中的一块Survivor区。新对象会首先分配在<code>Eden</code>中（<strong>如果新对象过大，会直接分配在老年代</strong>中）。在<code>GC</code>中，<code>Eden</code>中的对象会被移动到<code>Survivor</code>中，直至对象满足一定的年纪（定义为熬过<code>GC</code>的次数），会被移动到<strong>老年代</strong>。</p>
+<p>可以设置<strong>新生代</strong>和<strong>老年代</strong>的相对大小。这种方式的优点是新生代大小会随着整个<strong>堆</strong>大小<strong>动态扩展</strong>。参数 <code>-XX:NewRatio</code> 设置<strong>老年代</strong>与<strong>新生代</strong>的比例。例如 <code>-XX:NewRatio=8</code> 指定 <strong>老年代&#x2F;新生代</strong> 为<code>8/1</code>. <strong>老年代</strong> 占堆大小的 <code>7/8</code> ，<strong>新生代</strong> 占堆大小的 <code>1/8</code>（默认即是 <code>1/8</code>）。</p>
+<p><strong>当Eden区满了的时候，会触发Young GC。</strong></p>
+<h4 id="老年代（Old-generation）"><a href="#老年代（Old-generation）" class="headerlink" title="老年代（Old generation）"></a>老年代（Old generation）</h4><p>对象没有变得不可达，并且从新生代中<strong>存活</strong>下来，会被<strong>拷贝</strong>到这里。其所占用的空间要比新生代多。也正由于其相对<strong>较大的空间</strong>，发生在<strong>老年代</strong>上的<code>GC</code>要比<strong>新生代</strong>要<strong>少得多</strong>。对象从<strong>老年代</strong>中消失的过程，可以称之为<code>major GC</code>（或者<code>full GC</code>）。</p>
+<p><code>JDK8</code>堆内存一般是划分为<strong>年轻代</strong>和<strong>老年代</strong>，<strong>不同年代</strong> 根据自身特性采用<strong>不同的垃圾收集算法</strong>。</p>
+<p>对于<strong>新生代</strong>，每次<code>GC</code>时都有<strong>大量</strong>的对象死亡，只有<strong>少量</strong>对象存活。考虑到复制成本低，适合采用<strong>复制算法</strong>。因此有了<code>From Survivor</code>和<code>To Survivor</code>区域。</p>
+<p>对于<strong>老年代</strong>，因为对象<strong>存活率高</strong>，没有额外的内存空间对它进行担保。因而适合采用<strong>标记-清除算法</strong>和<strong>标记-整理算法</strong>进行回收。</p>
+<h1 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h1><p>Jvm 垃圾回收器把上面的三种算法全部用到了，采用分代收集。</p>
+<h2 id="新生代：复制算法。"><a href="#新生代：复制算法。" class="headerlink" title="新生代：复制算法。"></a>新生代：复制算法。</h2><table>
+<thead>
+<tr>
+<th>收集器</th>
+<th>收集对象和算法</th>
+<th>收集器类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Serial</td>
+<td>新生代，<strong>标记复制算法</strong></td>
+<td>单线程</td>
+</tr>
+<tr>
+<td>ParNew</td>
+<td>新生代，<strong>标记复制算法</strong></td>
+<td>并行的多线程收集器</td>
+</tr>
+<tr>
+<td>Parallel Scavenge</td>
+<td>新生代，<strong>标记复制算法</strong></td>
+<td>并行的多线程收集器</td>
+</tr>
+</tbody></table>
+<h2 id="老年代：标记清除算法和标记整理算法"><a href="#老年代：标记清除算法和标记整理算法" class="headerlink" title="老年代：标记清除算法和标记整理算法"></a>老年代：标记清除算法和标记整理算法</h2><table>
+<thead>
+<tr>
+<th>收集器</th>
+<th>收集对象和算法</th>
+<th>收集器类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Serial Old</td>
+<td>老年代，标记整理算法</td>
+<td>单线程</td>
+</tr>
+<tr>
+<td>Parallel Old</td>
+<td>老年代，标记整理算法</td>
+<td>并行的多线程收集器</td>
+</tr>
+<tr>
+<td>CMS（Concurrent Mark Sweep ）</td>
+<td>老年代，<strong>标记清除算法</strong></td>
+<td>并行和并发收集器</td>
+</tr>
+<tr>
+<td>G1（Garbage First）</td>
+<td>跨新生代和老年代，复制算法 + 标记整理算法</td>
+<td>并行和并发收集器</td>
+</tr>
+</tbody></table>
+<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/gc-machines.png"></p>
+<p><strong>注：</strong></p>
+<ul>
+<li><strong>并行：垃圾收集的多线程的同时进行</strong>。</li>
+<li><strong>并发：垃圾收集的多线程和用户应用的多线程同时进行</strong>。</li>
+<li>使用 <code>jps -v</code> 可以看到使用的垃圾收集器，例如：<code>-XX:+UseConcMarkSweepGC</code> （CMS）</li>
+</ul>
+<h2 id="Serial-x2F-Serial-Old"><a href="#Serial-x2F-Serial-Old" class="headerlink" title="Serial&#x2F;Serial Old"></a>Serial&#x2F;Serial Old</h2><p>最古老的，单线程，独占式，成熟，适合单 CPU 服务器。<code>-XX:+UseSerialGC</code> 新生代和老年代都用串行收集器。</p>
+<h2 id="ParNew"><a href="#ParNew" class="headerlink" title="ParNew"></a>ParNew</h2><p>ParNew 和 Serial 基本没区别，唯一的区别：多线程，多 CPU 的，停顿时间比 Serial 少 。</p>
+<p><code>-XX:+UseParNewGC</code>新生代使用 ParNew，老年代使用 Serial Old 。</p>
+<p>可以和CMS搭配使用。</p>
+<h2 id="Parallel-Scavenge（ParallerGC）-x2F-Parallel-Old"><a href="#Parallel-Scavenge（ParallerGC）-x2F-Parallel-Old" class="headerlink" title="Parallel Scavenge（ParallerGC）&#x2F;Parallel Old"></a>Parallel Scavenge（ParallerGC）&#x2F;Parallel Old</h2><p><strong>关注吞吐量的垃圾收集器</strong>，<strong>高吞吐量则可以高效率地利用 CPU 时间</strong>（但对响应时间有负面影响），尽快完成程序的运算任务，主要适合在后台运算而不需要太多交互的任务。所谓吞吐量就是 CPU 用于运行用户代码的时间与 CPU 总消耗时间的比值，即吞吐量&#x3D;运行用户代码时间&#x2F;（运行用户代码时间+垃圾收集时间）</p>
+<h2 id="CMS（Concurrent-Mark-Sweep）"><a href="#CMS（Concurrent-Mark-Sweep）" class="headerlink" title="CMS（Concurrent Mark Sweep）"></a>CMS（Concurrent Mark Sweep）</h2><p>CMS收集器是一种<strong>以获取最短回收停顿时间为目标</strong>的收集器。目前很大一部分的 Java 应用集中在互联网站或者 B&#x2F;S 系统的服务端上，这类应用尤其<strong>重视服务的响应速度，希望系统停顿时间最短</strong>，以给用户带来较好的体验。</p>
+<p>CMS 收集器就非常符合这类应用的需求。<code>-XX:+UseConcMarkSweepGC</code> ，<strong>一般新生代使用 ParNew，老年代的用 CMS</strong>，从名字（包含“Mark Sweep”）上就可以看出，CMS 收集器是基于“标记—清除”算法实现的，它的运作过程相对于前面几种收集器来说更复杂一些。</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/gc-cms.png"></p>
+<p>整个过程分为 4 个步骤，包括：</p>
+<p>1、<strong>初始标记</strong>：仅仅只是标记一下 <strong>GC Roots 能直接关联到的对象</strong>，速度很快，需要停顿（STW -Stop the world）。（需要 STW）</p>
+<p>2、<strong>并发标记</strong>：从 GC Root 开始对堆中对象进行可达性分析，找到存活对象，它在整个回收过程中耗时最长，不需要停顿。（无需STW）</p>
+<p>3、<strong>重新标记</strong>：<strong>为了修正并发标记期间因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，</strong>。这个阶段的停顿时间一般会比初始标记阶段稍长一些，但远比并发标记的时间短。(因为用户在并发标记阶段对对象做的修改相对来讲是比较少的)。（需要STW)</p>
+<ol start="4">
+<li><strong>并发清除</strong>：（无需STW）</li>
+</ol>
+<blockquote>
+<p><strong>Stop The World</strong></p>
+<p>Java中Stop-The-World机制简称STW，是在执行垃圾收集算法时，Java应用程序的其他所有线程都被挂起（除了垃圾收集帮助器之外）。Java中一种全局暂停现象，全局停顿，所有Java代码停止，native代码可以执行，但不能与JVM交互。</p>
+</blockquote>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><ol>
+<li>优点</li>
+</ol>
+<p>由于整个过程中耗时最长的并发标记和并发清除过程收集器线程都可以与用户线程一起工作，所以，从<strong>总体上来说，CMS 收集器的内存回收过程是与用户线程一起并发执行的</strong>。</p>
+<ol start="2">
+<li>缺点</li>
+</ol>
+<ul>
+<li><strong>CPU 资源敏感</strong>：因为并发阶段多线程占据 CPU 资源，如果 CPU 资源不足，效率会明显降低。</li>
+<li><strong>会产生内存碎片</strong>：<strong>标记-清除算法</strong> 会导致产生不连续的内存碎片。</li>
+<li>由于 CMS <strong>并发清理阶段</strong> 用户线程还在运行着，伴随程序运行自然就还会有新的垃圾不断产生，这一部分垃圾出现在标记过程之后，CMS 无法在当次收集中处理掉它们，只好留待下一次 GC 时再清理掉。这一部分垃圾就称为 <strong>浮动垃圾</strong>。</li>
+<li>由于浮动垃圾的存在，因此需要预留出一部分内存，意味着 CMS 收集不能像其它收集器那样等待老年代快满的时候再回收。在 1.6 的版本中老年代空间使用率阈值(92%)，如果预留的内存不够存放浮动垃圾，就会出现 Concurrent Mode Failure，这时虚拟机将临时启用 Serial Old 来替代 CMS。</li>
+</ul>
+<h2 id="G1"><a href="#G1" class="headerlink" title="G1"></a>G1</h2><p><strong>G1相比较CMS的改进</strong></p>
+<ul>
+<li><strong>基于标记-整理算法, 不会产生空间碎片</strong>，分配大对象时不会无法得到连续的空间而提前触发一次full gc 。</li>
+<li><strong>停顿时间相对可控</strong>： G1可以通过设置预期停顿时间（Pause time）来控制垃圾收集时间，但是<strong>这个预期停顿时间G1只能尽量做到，而不是一定能做到</strong>。</li>
+</ul>
+<p>G1 收集器之所以能建立可预测的停顿时间模型，是因为它可以<strong>有计划地避免在整个 Java 堆中进行全区域的垃圾收集</strong>。</p>
+<p>G1 跟踪各个 Region 里面的垃圾堆积的价值大小（回收所获得的空间大小以及回收所需时间的经验值），<strong>在后台维护一个优先列表</strong>，<strong>每次根据允许的收集时间，优先回收价值最大的 Region</strong>（这也就是 <strong>Garbage-First</strong> 名称的来由）。</p>
+<p><strong>这种使用 Region 划分内存空间以及有优先级的区域回收方式</strong>，<strong>保证了 G1 收集器在有限的时间内可以获取尽可高的收集效率</strong>。</p>
+<h3 id="Region如何划分"><a href="#Region如何划分" class="headerlink" title="Region如何划分"></a>Region如何划分</h3><p>G1 把堆划分成多个大小相等的 <strong>独立区域</strong>（Region），<strong>新生代和老年代不再物理隔离</strong>。</p>
+<p>G1 算法将堆划分为若干个独立区域（Region），它仍然属于分代收集器。</p>
+<p>不过，这些区域的一部分包含新生代，<strong>新生代的垃圾收集依然采用暂停所有应用线程的方式，将存活对象拷贝到老年代或者 Survivor 空间</strong>。</p>
+<p>例如其中一个独立区域如图：</p>
+<p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/g1-region.png"></p>
+<h3 id="步骤-1"><a href="#步骤-1" class="headerlink" title="步骤"></a>步骤</h3><p><img src="/2021/12/12/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%E5%92%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/gc-g1.png"></p>
+<p>大致分为4个步骤：</p>
+<ol>
+<li><strong>初始标记</strong>：仅仅只是标记一下 GC Roots 能直接关联到的对象，并且修改 TAMS（Nest Top Mark Start）的值，让下一阶段用户程序并发运行时，能在正确可以的 Region 中创建对象，此阶段需要停顿线程(STW)，但耗时很短。</li>
+<li><strong>并发标记</strong>：从 GC Root 开始对堆中对象进行可达性分析，找到存活对象，此阶段耗时较长，但可与用户程序并发执行。</li>
+<li><strong>最终标记</strong>：<strong>为了修正在并发标记期间因用户程序继续运作而导致标记产生变动的那一部分标记记录</strong>，虚拟机将这段时间对象变化记录在线程的 <code>Remembered Set Logs</code> 里面，最终标记阶段需要把 Remembered Set Logs 的数据合并到 Remembered Set 中。这阶段需要停顿线程(STW)，但是可并行执行。</li>
+<li><strong>筛选回收</strong>：<strong>首先对各个 Region 中的回收价值和成本进行排序，根据用户所期望的 GC 停顿时间来制定回收计划</strong>。此阶段其实也可以做到与用户程序一起并发执行，但是因为只回收一部分 Region，时间是用户可控制的，而且停顿用户线程将大幅度提高收集效率。</li>
+</ol>
+<p>G1 从整体来看是基于<strong>标记整理</strong>算法实现的收集器，从局部（两个Region之间）上来看是基于复制算法实现的。</p>
+<h2 id="垃圾回收器的一些重要参数"><a href="#垃圾回收器的一些重要参数" class="headerlink" title="垃圾回收器的一些重要参数"></a>垃圾回收器的一些重要参数</h2><p>使用<code>java -XX:+PrintCommandLineFlags -version</code>查看关于垃圾收集器的一些信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-XX:InitialHeapSize=268435456 -XX:MaxHeapSize=4294967296 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC</span><br><span class="line">java version &quot;1.8.0_281&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_281-b09)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.281-b09, mixed mode)</span><br></pre></td></tr></table></figure>
+
+
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UseSerialGC</td>
+<td>虚拟机运行在 Client 模式下的默认值，打开此开关后，使用 Serial+Serial Old 的收集器组合进行内存回收</td>
+</tr>
+<tr>
+<td>UseParNewGC</td>
+<td>打开此开关后，使用 ParNew + Serial Old 的收集器组合进行内存回收</td>
+</tr>
+<tr>
+<td>UseConcMarkSweepGC</td>
+<td>打开此开关后，使用 ParNew + CMS + Serial Old 的收集器组合进行内存回收。Serial Old 收集器将作为 CMS 收集器出现 Concurrent Mode Failure 失败后的后备收集器使用</td>
+</tr>
+<tr>
+<td><strong>UseParallelGC</strong></td>
+<td><strong>虚拟机运行在 Server 模式下的默认值</strong>，打开此开关后，使用 <strong>Parallel Scavenge + Serial Old(PS MarkSweep)</strong> 的收集器组合进行内存回收</td>
+</tr>
+<tr>
+<td>UseParallelOldGC</td>
+<td>打开此开关后，使用 Parallel Scavenge + Parallel Old 的收集器组合进行内存回收</td>
+</tr>
+<tr>
+<td>SurvivorRatio</td>
+<td>新生代中 Eden 区域与 Survivor 区域的容量比值，默认为 8，代表 Eden : Survivor &#x3D; 8 : 1</td>
+</tr>
+<tr>
+<td>PretenureSizeThreshold</td>
+<td>直接晋升到老年代的对象大小，设置这个参数后，大于这个参数的对象将直接在老年代分配</td>
+</tr>
+<tr>
+<td>MaxTenuringThreshold</td>
+<td>晋升到老年代的对象年龄，每个对象在坚持过一次 Minor GC 之后，年龄就增加 1，当超过这个参数值时就进入老年代</td>
+</tr>
+<tr>
+<td>UseAdaptiveSizePolicy</td>
+<td>动态调整 Java 堆中各个区域的大小以及进入老年代的年龄</td>
+</tr>
+<tr>
+<td>HandlePromotionFailure</td>
+<td>是否允许分配担保失败，即老年代的剩余空间不足以应付新生代的整个 Eden 和 Survivor 区的所有对象都存活的极端情况</td>
+</tr>
+<tr>
+<td>ParallelGCThreads</td>
+<td>设置并行 GC 时进行内存回收的线程数</td>
+</tr>
+<tr>
+<td>GCTimeRatio GC</td>
+<td>时间占总时间的比率，默认值为 99，即允许 1% 的 GC 时间，仅在使用 Parallel Scavenge 收集器生效</td>
+</tr>
+<tr>
+<td>MaxGCPauseMillis</td>
+<td>设置 GC 的最大停顿时间，仅在使用 Parallel Scavenge 收集器时生效</td>
+</tr>
+<tr>
+<td>CMSInitiatingOccupancyFraction</td>
+<td>设置 CMS 收集器在老年代空间被使用多少后触发垃圾收集，默认值为 68%，仅在使用 CMS 收集器时生效</td>
+</tr>
+<tr>
+<td>UseCMSCompactAtFullCollection</td>
+<td>设置 CMS 收集器在完成垃圾收集后是否要进行一次内存碎片整理，仅在使用 CMS 收集器时生效</td>
+</tr>
+<tr>
+<td>CMSFullGCsBeforeCompaction</td>
+<td>设置 CMS 收集器在进行若干次垃圾收集后再启动一次内存碎片整理，仅在使用 CMS 收集器时生效</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904148404535309">JVM垃圾回收算法和垃圾回收器</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903639794843656">JVM系列(五) - JVM垃圾回收算法</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1582661">Full GC 和 Minor GC，傻傻分不清楚</a></p>
+</blockquote>
+<h1 id="FullGC"><a href="#FullGC" class="headerlink" title="FullGC"></a>FullGC</h1><h2 id="什么时候会触发FullGC"><a href="#什么时候会触发FullGC" class="headerlink" title="什么时候会触发FullGC"></a>什么时候会触发FullGC</h2><h3 id="System-gc-方法的调用"><a href="#System-gc-方法的调用" class="headerlink" title="System.gc()方法的调用"></a>System.gc()方法的调用</h3><p>此方法的调用是建议JVM进行Full GC,虽然只是建议而非一定,但很多情况下它会触发 Full GC,从而增加Full GC的频率,也即增加了间歇性停顿的次数。强烈影响系建议能不使用此方法就别使用，让虚拟机自己去管理它的内存，可通过通过<code>-XX:+ DisableExplicitGC</code>来禁止RMI调用System.gc。</p>
+<h3 id="Metaspace区内存达到阈值"><a href="#Metaspace区内存达到阈值" class="headerlink" title="Metaspace区内存达到阈值"></a>Metaspace区内存达到阈值</h3><p>从JDK8开始，永久代(PermGen)的概念被废弃掉了，取而代之的是一个称为Metaspace的存储空间。Metaspace使用的是本地内存，而不是堆内存，也就是说在默认情况下Metaspace的大小只与本地内存大小有关。-XX:MetaspaceSize&#x3D;21810376B（约为20.8MB）超过这个值就会引发Full GC，这个值不是固定的，是会随着JVM的运行进行动态调整的，与此相关的参数还有多个，详细情况请参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/bolg_hero/article/details/78189621">这篇文章</a></p>
+<h3 id="老年代空间不足"><a href="#老年代空间不足" class="headerlink" title="老年代空间不足"></a>老年代空间不足</h3><blockquote>
+<p><strong>Survivor区域对象晋升到老年代有两种情况</strong>：</p>
+<p>一种是给每个对象定义一个对象计数器，如果对象在Eden区域出生，并且经过了第一次GC，那么就将他的年龄设置为1，在Survivor区域的对象每熬过一次GC，年龄计数器加一，等到到达默认值15时，就会被移动到老年代中，默认值可以通过-XX:MaxTenuringThreshold来设置。<br>另外一种情况是如果JVM发现Survivor区域中的相同年龄的对象占到所有对象的一半以上时，就会将大于这个年龄的对象移动到老年代，在这批对象在统计后发现可以晋升到老年代，但是发现老年代没有足够的空间来放置这些对象，这就会引起Full GC。</p>
+</blockquote>
+<p>老年代空间只有在<strong>新生代对象转入</strong>及<strong>创建大对象、大数组</strong>时才会出现不足的现象，</p>
+<p>当执行Full GC后空间仍然不足，则抛出如下错误：<code>java.lang.OutOfMemoryError: Java heap space</code><br>为避免以上两种状况引起的Full GC，调优时应尽量做到让对象在Minor GC阶段被回收、让对象在新生代多存活一段时间及不要创建过大的对象及数组。</p>
+<h3 id="堆中分配很大的对象"><a href="#堆中分配很大的对象" class="headerlink" title="堆中分配很大的对象"></a>堆中分配很大的对象</h3><p>这个参数可以通过<code>-XX:PretenureSizeThreshold</code>进行设定，大对象或者长期存活的对象进入老年代，典型的大对象就是很长的字符串或者数组，它们在被创建后会直接进入老年代，虽然可能新生代中的Eden区域可以放置这个对象，在要放置的时候JVM如果发现老年代的空间不足时，会触发GC。</p>
+<p>所谓大对象，是指需要大量连续内存空间的java对象，例如很长的数组，<strong>此种对象会直接进入老年代，而老年代虽然有很大的剩余空间，但是无法找到足够大的连续空间来分配给当前对象</strong>，此种情况就会触发JVM进行Full GC。</p>
+<p>为了解决这个问题，CMS垃圾收集器提供了一个可配置的参数，即-XX:+UseCMSCompactAtFullCollection开关参数，用于在“享受”完Full GC服务之后额外免费赠送一个碎片整理的过程，<strong>内存整理的过程无法并发的，空间碎片问题没有了，但提顿时间不得不变长了</strong>，JVM设计者们还提供了另外一个参数 -XX:CMSFullGCsBeforeCompaction,这个参数用于设置在执行多少次不压缩的Full GC后,跟着来一次带压缩的。</p>
+<h3 id="统计得到的Minor-GC晋升到旧生代的平均大小大于老年代的剩余空间"><a href="#统计得到的Minor-GC晋升到旧生代的平均大小大于老年代的剩余空间" class="headerlink" title="统计得到的Minor GC晋升到旧生代的平均大小大于老年代的剩余空间"></a>统计得到的Minor GC晋升到旧生代的平均大小大于老年代的剩余空间</h3><p>这是一个较为复杂的触发情况，Hotspot<strong>为了避免由于新生代对象晋升到旧生代导致旧生代空间不足的现象</strong>，在进行Minor GC时，做了一个判断，<strong>如果之前统计所得到的Minor GC晋升到旧生代的平均大小大于旧生代的剩余空间，那么就直接触发Full GC</strong>。</p>
+<blockquote>
+<p>例如程序第一次触发Minor GC后，有6MB的对象晋升到旧生代，那么当下一次Minor GC发生时，首先检查旧生代的剩余空间是否大于6MB，如果小于6MB，则执行Full GC（相当于，提前进行fullgc，而不是把新生代的对象移动过去之后发现内存不足才fullgc）。</p>
+<p>当新生代采用PS GC时，方式稍有不同，PS GC是在Minor GC后也会检查，例如上面的例子中第一次Minor GC后，PS GC会检查此时旧生代的剩余空间是否大于6MB，如小于，则触发对旧生代的回收。<br>除了以上4种状况外，对于使用RMI来进行RPC或管理的Sun JDK应用而言，默认情况下会一小时执行一次Full GC。可通过在启动时通过- java -Dsun.rmi.dgc.client.gcInterval&#x3D;3600000来设置Full GC执行的间隔时间或通过-XX:+ DisableExplicitGC来禁止RMI调用System.gc。</p>
+</blockquote>
+<h3 id="CMS-GC时出现promotion-failed和concurrent-mode-failure"><a href="#CMS-GC时出现promotion-failed和concurrent-mode-failure" class="headerlink" title="CMS GC时出现promotion failed和concurrent mode failure"></a>CMS GC时出现promotion failed和concurrent mode failure</h3><p>对于采用CMS进行老年代GC的程序而言，尤其要注意GC日志中是否有<strong>promotion failed</strong>和<strong>concurrent mode failure</strong>两种状况，当这两种状况出现时可能会触发Full GC。</p>
+<p>promotion failed是在进行Minor GC时，survivor space放不下、对象只能放入老年代，而此时老年代也放不下造成的；concurrent mode failure是在</p>
+<p>执行CMS GC的过程中同时有对象要放入老年代，而此时老年代空间不足造成的（有时候“空间不足”是CMS GC时当前的浮动垃圾过多导致暂时性的空间不足触发Full GC）。<br>应对措施为：增大survivor space、老年代空间或调低触发并发GC的比率，但在JDK 5.0+、6.0+的版本中有可能会由于JDK的bug29导致CMS在remark完毕后很久才触发sweeping动作。对于这种状况，可通过设置-XX: CMSMaxAbortablePrecleanTime&#x3D;5（单位为ms）来避免。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>可以发现其实堆内存的Full GC一般都是<strong>两个原因</strong>引起的，<strong>要么是老年代内存过小，要么是老年代连续内存过小。</strong>无非是这两点，而<strong>元数据区Metaspace引发的Full GC可能是阈值引起的</strong>。</p>
+<h2 id="如何排查"><a href="#如何排查" class="headerlink" title="如何排查"></a>如何排查</h2><p><strong>检测JVM堆的情况</strong></p>
+<p>方法1. 可以使用JDK的bin目录下的jvisualvm.exe工具来进行实时监测，这个是图形化界面，最为直观，这是一个强大的工具。<br>方法2. 采用jps找到进行id，然后使用jstat -gc pid来实时进行检测。<br>方法3. 运行程序前设置-XX:+PrintGCDetails，-XX:+PrintGCDateStamps参数打印GC的详细信息进行分析。</p>
+<blockquote>
+<p>参考博客</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Hollake/article/details/90484027">https://blog.csdn.net/Hollake/article/details/90484027</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1635,566 +2015,6 @@
 <p><a target="_blank" rel="noopener" href="https://zinglix.xyz/2020/06/25/raft/">https://zinglix.xyz/2020/06/25/raft/</a></p>
 <p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ZmRS9Gjh9P-4lPLZ9jWk_A">https://mp.weixin.qq.com/s/ZmRS9Gjh9P-4lPLZ9jWk_A</a></p>
 </blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/09/Redis-Info%E5%91%BD%E4%BB%A4%E8%BE%93%E5%87%BA%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/09/Redis-Info%E5%91%BD%E4%BB%A4%E8%BE%93%E5%87%BA%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">Redis-Info命令输出详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-12-09 13:34:10 / 修改时间：13:59:00" itemprop="dateCreated datePublished" datetime="2021-12-09T13:34:10+08:00">2021-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Redis-Info-输出详解"><a href="#Redis-Info-输出详解" class="headerlink" title="Redis Info 输出详解"></a>Redis Info 输出详解</h1><p>Redis 的 info 命令是使用频率很高的一个命令，它主要是显示 Redis 服务器当前状态，故我们经常用于监控Redis 服务器。我收集了一些参数解释，方便随时查询</p>
-<h1 id="Info命令简介"><a href="#Info命令简介" class="headerlink" title="Info命令简介"></a>Info命令简介</h1><p>在使用Redis的过程中，可能会遇到很多问题，需要我们去诊断、去观察Redis的健康情况。Redis给我们提供了的 <code>info</code> 命令，可以让我们近距离的接触它，观察它各方面的信息、运行状况。下面让我们看看 <code>info</code> 命令都给我们带来了哪些信息。</p>
-<p>命令格式：<code>INFO [section]</code></p>
-<p>Info 指令显示的信息分为 9 大块，每块都有很多参数。我们也可以通过给定可选的参数 section ，可以让命令只返回某一部分的信息。这 9 块分别是:</p>
-<ul>
-<li><code>server</code> 部分记录了 Redis 服务器的信息</li>
-<li><code>clients</code> 部分记录了已连接客户端的信息</li>
-<li><code>memory</code> 部分记录了服务器的内存信息</li>
-<li><code>persistence</code> 部分记录了跟 RDB 持久化和 AOF 持久化有关的信息</li>
-<li><code>stats</code> 部分记录了一般统计信息</li>
-<li><code>replication</code> 部分记录了主&#x2F;从复制的相关信息</li>
-<li><code>cpu</code> 部分记录了 CPU 的计算量统计信息</li>
-<li><code>cluster</code> 部分记录了和集群有关的信息</li>
-<li><code>keyspace</code> 部分记录了数据库相关的统计信息</li>
-</ul>
-<blockquote>
-<p>不同版本的 Redis 可能对返回的一些域进行了增加或删减。 因此，一个健壮的客户端程序在对 INFO [section] 命令的输出进行分析时，应该能够跳过不认识的域，并且妥善地处理丢失不见的域。</p>
-</blockquote>
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h2><table>
-<thead>
-<tr>
-<th>参数名称</th>
-<th>参数含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>redis_version</td>
-<td>Redis 的服务器版本</td>
-</tr>
-<tr>
-<td>redis_git_sha1</td>
-<td>Redis 的服务器版本</td>
-</tr>
-<tr>
-<td>redis_git_dirty</td>
-<td>Git dirty flag</td>
-</tr>
-<tr>
-<td>redis_build_id</td>
-<td></td>
-</tr>
-<tr>
-<td>redis_mode</td>
-<td>运行模式：单机（集群）</td>
-</tr>
-<tr>
-<td>os</td>
-<td>Redis 服务器的宿主操作系统</td>
-</tr>
-<tr>
-<td>arch_bits</td>
-<td>架构（32 或 64 位）</td>
-</tr>
-<tr>
-<td>multiplexing_api</td>
-<td>Redis 所使用的事件处理机制，如epoll</td>
-</tr>
-<tr>
-<td>gcc_version</td>
-<td>编译 Redis 时所使用的 GCC 版本</td>
-</tr>
-<tr>
-<td>process_id</td>
-<td>服务器进程的 PID</td>
-</tr>
-<tr>
-<td>run_id</td>
-<td>Redis 服务器的随机标识符（用于 Sentinel 和集群）</td>
-</tr>
-<tr>
-<td>tcp_port</td>
-<td>TCP&#x2F;IP 监听端口</td>
-</tr>
-<tr>
-<td>uptime_in_seconds</td>
-<td>自 Redis 服务器启动以来，经过的秒数</td>
-</tr>
-<tr>
-<td>uptime_in_days</td>
-<td>自 Redis 服务器启动以来，经过的天数</td>
-</tr>
-<tr>
-<td>hz</td>
-<td>redis内部调度（进行关闭timeout的客户端，删除过期key等等）频率，程序规定serverCron每秒运行10次。</td>
-</tr>
-<tr>
-<td>lru_clock</td>
-<td>以分钟为单位进行自增的时钟，用于 LRU 管理</td>
-</tr>
-<tr>
-<td>executable</td>
-<td>启动脚本路径</td>
-</tr>
-<tr>
-<td>config_file</td>
-<td>启动时指定的配置文件（redis.conf）路径</td>
-</tr>
-</tbody></table>
-<h2 id="Clients"><a href="#Clients" class="headerlink" title="Clients"></a>Clients</h2><table>
-<thead>
-<tr>
-<th>参数名称</th>
-<th>参数含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>connected_clients</td>
-<td>已连接客户端的数量（不包括通过从属服务器连接的客户端）</td>
-</tr>
-<tr>
-<td>client_longest_output_list</td>
-<td>当前连接的客户端当中，最长的输出列表</td>
-</tr>
-<tr>
-<td>client_longest_input_buf</td>
-<td>当前连接的客户端当中，最大输入缓存</td>
-</tr>
-<tr>
-<td>blocked_clients</td>
-<td>正在等待阻塞命令（BLPOP、BRPOP、BRPOPLPUSH）的客户端的数量</td>
-</tr>
-</tbody></table>
-<h2 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h2><table>
-<thead>
-<tr>
-<th>参数名称</th>
-<th>参数含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>used_memory</td>
-<td>使用内存（B）</td>
-</tr>
-<tr>
-<td>used_memory_human</td>
-<td>人类可读的格式的使用内存（MB）</td>
-</tr>
-<tr>
-<td>used_memory_rss</td>
-<td>操作系统角度，返回redis已分配的内存（即常驻内存），这个值和top、ps命令的输出一致</td>
-</tr>
-<tr>
-<td>used_memory_rss_human</td>
-<td>如上</td>
-</tr>
-<tr>
-<td>used_memory_peak</td>
-<td>内存使用的峰值</td>
-</tr>
-<tr>
-<td>used_memory_peak_human</td>
-<td>如上</td>
-</tr>
-<tr>
-<td>total_system_memory</td>
-<td>整个系统内存</td>
-</tr>
-<tr>
-<td>total_system_memory_human</td>
-<td>如上</td>
-</tr>
-<tr>
-<td>used_memory_lua</td>
-<td>Lua脚本存储占用的内存</td>
-</tr>
-<tr>
-<td>used_memory_lua_human</td>
-<td>如上</td>
-</tr>
-<tr>
-<td>maxmemory</td>
-<td>Redis实例的最大内存配置</td>
-</tr>
-<tr>
-<td>maxmemory_human</td>
-<td>如上</td>
-</tr>
-<tr>
-<td>maxmemory_policy</td>
-<td>当达到maxmemory时的淘汰策略</td>
-</tr>
-<tr>
-<td>mem_fragmentation_ratio</td>
-<td>used_memory_rss&#x2F;used_memory的值。一般情况下，used_memory_rss略高于used_memory，当内存碎片较多时，则mem_fragmentation_ratio会较大，可以反映内存碎片是否很多</td>
-</tr>
-<tr>
-<td>mem_allocator</td>
-<td>内存分配器。可以是libc 、 jemalloc 或者 tcmalloc</td>
-</tr>
-</tbody></table>
-<p>在理想情况下， <code>used_memory_rss</code> 的值应该只比 <code>used_memory</code> 稍微高一点儿。 当 <code>rss &gt; used</code> ，且两者的值相差较大时，表示存在（内部或外部的）内存碎片。 内存碎片的比率可以通过 <code>mem_fragmentation_ratio</code> 的值看出。 当 <code>used &gt; rss</code> 时，表示 Redis 的部分内存被操作系统换出到交换空间（swap）了，在这种情况下，操作可能会产生明显的延迟，需要重点关注。即：<code>mem_fragmentation_ratio</code> 小于1时</p>
-<h2 id="Persistence"><a href="#Persistence" class="headerlink" title="Persistence"></a>Persistence</h2><table>
-<thead>
-<tr>
-<th>参数名称</th>
-<th>参数含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>loading</td>
-<td>服务器是否正在载入持久化文件</td>
-</tr>
-<tr>
-<td>rdb_changes_since_last_save</td>
-<td>离最近一次成功生成rdb文件，写入命令的个数</td>
-</tr>
-<tr>
-<td>rdb_bgsave_in_progress</td>
-<td>服务器是否正在创建rdb文件</td>
-</tr>
-<tr>
-<td>rdb_last_save_time</td>
-<td>最近一次成功rdb文件的时间戳</td>
-</tr>
-<tr>
-<td>rdb_last_bgsave_status</td>
-<td>最近一次成功rdb文件的状态</td>
-</tr>
-<tr>
-<td>rdb_last_bgsave_time_sec</td>
-<td>最近一次成功rdb文件的耗时</td>
-</tr>
-<tr>
-<td>rdb_current_bgsave_time_sec</td>
-<td>若当前正在创建rdb文件，指当前的创建操作已经耗费的时间</td>
-</tr>
-<tr>
-<td>aof_enabled</td>
-<td>aof是否开启</td>
-</tr>
-<tr>
-<td>aof_rewrite_in_progress</td>
-<td>aof的rewrite操作是否在进行中</td>
-</tr>
-<tr>
-<td>aof_rewrite_scheduled</td>
-<td>rewrite任务计划，当客户端发送bgrewriteaof指令，如果当前rewrite子进程正在执行，那么将客户端请求的bgrewriteaof变为计划任务，待aof子进程结束后执行rewrite</td>
-</tr>
-<tr>
-<td>aof_last_rewrite_time_sec</td>
-<td>最近一次aof rewrite耗费时长</td>
-</tr>
-<tr>
-<td>aof_current_rewrite_time_sec</td>
-<td>若当前正在执行aof rewrite，指当前的已经耗费的时间</td>
-</tr>
-<tr>
-<td>aof_last_bgrewrite_status</td>
-<td>最近一次aof bgrewrite的状态</td>
-</tr>
-<tr>
-<td>aof_last_write_status</td>
-<td>最近一次aof写入状态</td>
-</tr>
-<tr>
-<td>开启 aof 后增加的一些info信息</td>
-<td></td>
-</tr>
-<tr>
-<td>aof_current_size</td>
-<td>aof文件当前大小</td>
-</tr>
-<tr>
-<td>aof_base_size</td>
-<td>服务器启动时或者最近一次AOF重写后，文件的大小</td>
-</tr>
-<tr>
-<td>aof_pending_rewrite</td>
-<td>同上面的aof_rewrite_scheduled</td>
-</tr>
-<tr>
-<td>aof_buffer_length</td>
-<td>aof 缓冲区的大小</td>
-</tr>
-<tr>
-<td>aof_rewrite_buffer_length</td>
-<td>aof 重写缓冲区的大小</td>
-</tr>
-<tr>
-<td>aof_pending_bio_fsync</td>
-<td>后台IO队列中，等待fsync任务的个数</td>
-</tr>
-<tr>
-<td>aof_delayed_fsync</td>
-<td>被延迟的 fsync 调用数量</td>
-</tr>
-</tbody></table>
-<h2 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h2><table>
-<thead>
-<tr>
-<th>参数名称</th>
-<th>参数含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>total_connections_received</td>
-<td>自启动起连接过的总数。如果连接过多，说明短连接严重或连接池使用有问题，需调研代码的连接设置</td>
-</tr>
-<tr>
-<td>total_commands_processed</td>
-<td>自启动起运行命令的总数</td>
-</tr>
-<tr>
-<td>instantaneous_ops_per_sec</td>
-<td>每秒执行的命令数，相当于QPS</td>
-</tr>
-<tr>
-<td>total_net_input_bytes</td>
-<td>网络入口流量字节数</td>
-</tr>
-<tr>
-<td>total_net_output_bytes</td>
-<td>网络出口流量字节数</td>
-</tr>
-<tr>
-<td>instantaneous_input_kbps</td>
-<td>网络入口kps</td>
-</tr>
-<tr>
-<td>instantaneous_output_kbps</td>
-<td>网络出口kps</td>
-</tr>
-<tr>
-<td>rejected_connections</td>
-<td>拒绝的连接个数，由于maxclients限制，拒绝新连接的个数</td>
-</tr>
-<tr>
-<td>sync_full</td>
-<td>主从完全同步成功次数</td>
-</tr>
-<tr>
-<td>sync_partial_ok</td>
-<td>主从部分同步成功次数</td>
-</tr>
-<tr>
-<td>sync_partial_err</td>
-<td>主从部分同步失败次数</td>
-</tr>
-<tr>
-<td>expired_keys</td>
-<td>自启动起过期的key的总数</td>
-</tr>
-<tr>
-<td>evicted_keys</td>
-<td>使用内存大于maxmemory后，淘汰的key的总数</td>
-</tr>
-<tr>
-<td>keyspace_hits</td>
-<td>在main dictionary字典中成功查到的key个数</td>
-</tr>
-<tr>
-<td>keyspace_misses</td>
-<td>同上，未命中的key的个数</td>
-</tr>
-<tr>
-<td>pubsub_channels</td>
-<td>发布&#x2F;订阅频道数</td>
-</tr>
-<tr>
-<td>pubsub_patterns</td>
-<td>发布&#x2F;订阅模式数</td>
-</tr>
-<tr>
-<td>latest_fork_usec</td>
-<td>上次的fork操作使用的时间（单位ms）</td>
-</tr>
-<tr>
-<td>migrate_cached_sockets</td>
-<td>是否已经缓存了到该地址的连接</td>
-</tr>
-<tr>
-<td>slave_expires_tracked_keys</td>
-<td>从实例到期key数量</td>
-</tr>
-<tr>
-<td>active_defrag_hits</td>
-<td>主动碎片整理命中次数</td>
-</tr>
-<tr>
-<td>active_defrag_misses</td>
-<td>主动碎片整理未命中次数</td>
-</tr>
-<tr>
-<td>active_defrag_key_hits</td>
-<td>主动碎片整理key命中次数</td>
-</tr>
-<tr>
-<td>active_defrag_key_misses</td>
-<td>主动碎片整理key未命中次数</td>
-</tr>
-</tbody></table>
-<h2 id="Replication"><a href="#Replication" class="headerlink" title="Replication"></a>Replication</h2><table>
-<thead>
-<tr>
-<th>参数名称</th>
-<th>参数含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>role</td>
-<td>当前实例的角色master还是slave</td>
-</tr>
-<tr>
-<td>connected_slaves:</td>
-<td>slave的数量</td>
-</tr>
-<tr>
-<td>master_replid</td>
-<td>主实例启动随机字符串</td>
-</tr>
-<tr>
-<td>master_replid2</td>
-<td>主实例启动随机字符串2</td>
-</tr>
-<tr>
-<td>slave0</td>
-<td>slave机器的信息、状态</td>
-</tr>
-<tr>
-<td>master_repl_offset</td>
-<td>主从同步偏移量,此值如果和上面的offset相同说明主从一致没延迟，与master_replid可被用来标识主实例复制流中的位置。</td>
-</tr>
-<tr>
-<td>second_repl_offset</td>
-<td>主从同步偏移量2,此值如果和上面的offset相同说明主从一致没延迟</td>
-</tr>
-<tr>
-<td>repl_backlog_active</td>
-<td>复制缓冲区是否开启</td>
-</tr>
-<tr>
-<td>repl_backlog_size</td>
-<td>复制缓冲区大小</td>
-</tr>
-<tr>
-<td>repl_backlog_first_byte_offset</td>
-<td>复制缓冲区里偏移量的大小</td>
-</tr>
-<tr>
-<td>repl_backlog_histlen</td>
-<td>此值等于 master_repl_offset - repl_backlog_first_byte_offset,该值不会超过repl_backlog_size的大小</td>
-</tr>
-</tbody></table>
-<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><table>
-<thead>
-<tr>
-<th>参数名称</th>
-<th>参数含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>used_cpu_sys</td>
-<td>Redis 服务器耗费的系统 CPU</td>
-</tr>
-<tr>
-<td>used_cpu_user</td>
-<td>Redis 服务器耗费的用户 CPU</td>
-</tr>
-<tr>
-<td>used_cpu_sys_children</td>
-<td>后台进程耗费的系统 CPU</td>
-</tr>
-<tr>
-<td>used_cpu_user_children</td>
-<td>后台进程耗费的用户 CPU</td>
-</tr>
-</tbody></table>
-<h2 id="Keyspace"><a href="#Keyspace" class="headerlink" title="Keyspace"></a>Keyspace</h2><table>
-<thead>
-<tr>
-<th>参数名称</th>
-<th>参数含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>dbXXX:keys&#x3D;XXX,expires&#x3D;XXX</td>
-<td>各个数据库（0-15）的 key 的数量，带有生存期的 key 的数量，平均存活时间</td>
-</tr>
-</tbody></table>
-<p><strong>实例</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Server</span></span><br><span class="line">redis_version:3.2.3					 # Redis 的版本</span><br><span class="line">redis_git_sha1:00000000				 # Redis 的版本</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:9e93d0c7997bcfef</span><br><span class="line">redis_mode:standalone				 # 运行模式：单机（集群）</span><br><span class="line">os:Linux 2.6.32-431.el6.x86_64 x86_64 # 操作系统</span><br><span class="line">arch_bits:64						  # 操作系统位数</span><br><span class="line">multiplexing_api:epoll				 # redis所使用的事件处理机制</span><br><span class="line">gcc_version:4.4.7					 # gcc版本号</span><br><span class="line">process_id:1606						 # 当前 Redis 服务器进程id</span><br><span class="line">run_id:17e79b1966f1f891eff203a8e496151ee8a3a7a7</span><br><span class="line">tcp_port:7001						 # 端口号</span><br><span class="line">uptime_in_seconds:4360189			 # 运行时间(秒)</span><br><span class="line">uptime_in_days:50					 # 运行时间(天)</span><br><span class="line">hz:10								 # redis内部调度（进行关闭timeout的客户端，删除过期key等等）频率，程序规定serverCron每秒运行10次。</span><br><span class="line">lru_clock:5070330					 # Redis的逻辑时钟</span><br><span class="line">executable:/usr/local/bin/redis-server			# 启动脚本路径</span><br><span class="line">config_file:/opt/redis3/conf/redis_7001.conf	# 启动指定的配置文件路径</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Clients</span></span><br><span class="line">connected_clients:660				 # 连接的客户端数量</span><br><span class="line">client_longest_output_list:0		 # 当前连接的客户端当中，最长的输出列表</span><br><span class="line">client_biggest_input_buf:0			 # 当前连接的客户端当中，最大输入缓存</span><br><span class="line">blocked_clients:0					 # 阻塞的客户端数量</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Memory</span></span><br><span class="line">used_memory:945408832				# 使用内存（B）</span><br><span class="line">used_memory_human:901.61M			# 使用内存（MB）	</span><br><span class="line">used_memory_rss:1148919808			# 系统给redis分配的内存（即常驻内存），这个值和top命令的输出一致</span><br><span class="line">used_memory_rss_human:1.07G</span><br><span class="line">used_memory_peak:1162079480			# 内存使用的峰值</span><br><span class="line">used_memory_peak_human:1.08G		</span><br><span class="line">total_system_memory:6136483840		# 整个系统内存</span><br><span class="line">total_system_memory_human:5.72G</span><br><span class="line">used_memory_lua:122880				# Lua脚本存储占用的内存</span><br><span class="line">used_memory_lua_human:120.00K		</span><br><span class="line">maxmemory:2147483648				# Redis实例的最大内存配置</span><br><span class="line">maxmemory_human:2.00G</span><br><span class="line">maxmemory_policy:allkeys-lru		# 当达到maxmemory时的淘汰策略</span><br><span class="line">mem_fragmentation_ratio:1.22		# used_memory_rss/used_memory的比例。一般情况下，used_memory_rss略高于used_memory，当内存碎片较多时，则mem_fragmentation_ratio会较大，可以反映内存碎片是否很多</span><br><span class="line">mem_allocator:jemalloc-4.0.3		# 内存分配器</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Persistence</span>	</span><br><span class="line">loading:0								  # 服务器是否正在载入持久化文件</span><br><span class="line">rdb_changes_since_last_save:82423954	  #	离最近一次成功生成rdb文件，写入命令的个数                      </span><br><span class="line">rdb_bgsave_in_progress:0		          # 服务器是否正在创建rdb文件           </span><br><span class="line">rdb_last_save_time:1560991229		      # 最近一次成功rdb文件的时间戳               </span><br><span class="line">rdb_last_bgsave_status:ok		          # 最近一次成功rdb文件的状态           </span><br><span class="line">rdb_last_bgsave_time_sec:-1		          # 最近一次成功rdb文件的耗时            </span><br><span class="line">rdb_current_bgsave_time_sec:-1		      # 若当前正在创建rdb文件，指当前的创建操作已经耗费的时间                </span><br><span class="line">aof_enabled:0		                      # aof是否开启</span><br><span class="line">aof_rewrite_in_progress:0		          # aof的rewrite操作是否在进行中            </span><br><span class="line">aof_rewrite_scheduled:0		              # rewrite任务计划，当客户端发送bgrewriteaof指令，如果当前rewrite子进程正在执行，那么将客户端请求的bgrewriteaof变为计划任务，待aof子进程结束后执行rewrite        </span><br><span class="line">aof_last_rewrite_time_sec:-1		      # 最近一次aof rewrite耗费时长              </span><br><span class="line">aof_current_rewrite_time_sec:-1		      # 若当前正在执行aof rewrite，指当前的已经耗费的时间                </span><br><span class="line">aof_last_bgrewrite_status:ok		      # 最近一次aof bgrewrite的状态         </span><br><span class="line">aof_last_write_status:ok		          # 最近一次aof写入状态  </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">开启aof后增加的一些info信息</span></span><br><span class="line">-----------------------------  </span><br><span class="line">aof_current_size:0                 # aof当前大小</span><br><span class="line">aof_base_size:0                    # aof上次启动或rewrite的大小</span><br><span class="line">aof_pending_rewrite:0              # 同上面的aof_rewrite_scheduled</span><br><span class="line">aof_buffer_length:0                # aof buffer的大小</span><br><span class="line">aof_rewrite_buffer_length:0        # aof rewrite buffer的大小</span><br><span class="line">aof_pending_bio_fsync:0            # 后台IO队列中等待fsync任务的个数</span><br><span class="line">aof_delayed_fsync:0                # 延迟的fsync计数器 </span><br><span class="line">-----------------------------           </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Stats</span></span><br><span class="line">total_connections_received:15815		# 自启动起连接过的总数。如果连接过多，说明短连接严重或连接池使用有问题，需调研代码的连接设置</span><br><span class="line">total_commands_processed:502953838      # 自启动起运行命令的总数</span><br><span class="line">instantaneous_ops_per_sec:7             # 每秒执行的命令数，相当于QPS</span><br><span class="line">total_net_input_bytes:532510481889      # 网络入口流量字节数</span><br><span class="line">total_net_output_bytes:1571444057940    # 网络出口流量字节数</span><br><span class="line">instantaneous_input_kbps:0.37           # 网络入口kps</span><br><span class="line">instantaneous_output_kbps:0.59          # 网络出口kps</span><br><span class="line">rejected_connections:0                  # 拒绝的连接个数，由于maxclients限制，拒绝新连接的个数</span><br><span class="line">sync_full:1                             # 主从完全同步成功次数</span><br><span class="line">sync_partial_ok:0                       # 主从部分同步成功次数</span><br><span class="line">sync_partial_err:0                      # 主从部分同步失败次数</span><br><span class="line">expired_keys:4404930                    # 自启动起过期的key的总数</span><br><span class="line">evicted_keys:0                          # 使用内存大于maxmemory后，淘汰的key的总数</span><br><span class="line">keyspace_hits:337104556                 # 在main dictionary字典中成功查到的key个数</span><br><span class="line">keyspace_misses:22865229                # 同上，未命中的key的个数</span><br><span class="line">pubsub_channels:1                       # 发布/订阅频道数</span><br><span class="line">pubsub_patterns:0                       # 发布/订阅模式数</span><br><span class="line">latest_fork_usec:707                    # 上次的fork操作使用的时间（单位ms）</span><br><span class="line">migrate_cached_sockets:0                # 是否已经缓存了到该地址的连接</span><br><span class="line">slave_expires_tracked_keys:0			# 从实例到期key数量</span><br><span class="line">active_defrag_hits:0                    # 主动碎片整理命中次数</span><br><span class="line">active_defrag_misses:0                  # 主动碎片整理未命中次数</span><br><span class="line">active_defrag_key_hits:0                # 主动碎片整理key命中次数</span><br><span class="line">active_defrag_key_misses:0              # 主动碎片整理key未命中次数</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Replication</span></span><br><span class="line">role:master							  # 当前实例的角色master还是slave</span><br><span class="line">connected_slaves:1					  # slave的数量</span><br><span class="line">master_replid:8f81c045a2cb00f16a7fc5c90a95e02127413bcc		# 主实例启动随机字符串</span><br><span class="line">master_replid2:0000000000000000000000000000000000000000     # 主实例启动随机字符串2</span><br><span class="line">slave0:ip=172.17.12.251,port=7002,state=online,offset=506247209326,lag=1	# slave机器的信息、状态</span><br><span class="line">master_repl_offset:506247209478		  # 主从同步偏移量,此值如果和上面的offset相同说明主从一致没延迟，与master_replid可被用来标识主实例复制流中的位置。</span><br><span class="line">second_repl_offset					  # 主从同步偏移量2,此值如果和上面的offset相同说明主从一致没延迟</span><br><span class="line">repl_backlog_active:1				  # 复制缓冲区是否开启</span><br><span class="line">repl_backlog_size:157286400			  # 复制缓冲区大小</span><br><span class="line">repl_backlog_first_byte_offset:506089923079		# 复制缓冲区里偏移量的大小</span><br><span class="line">repl_backlog_histlen:157286400		  # 此值等于 master_repl_offset - repl_backlog_first_byte_offset,该值不会超过repl_backlog_size的大小</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">CPU</span></span><br><span class="line">used_cpu_sys:6834.06				  # 将所有redis主进程在核心态所占用的CPU时求和累计起来</span><br><span class="line">used_cpu_user:8282.10				  # 将所有redis主进程在用户态所占用的CPU时求和累计起来</span><br><span class="line">used_cpu_sys_children:0.11			  # 后台进程的核心态cpu使用率</span><br><span class="line">used_cpu_user_children:0.91           # 后台进程的用户态cpu使用率</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Cluster</span></span><br><span class="line">cluster_enabled:0		# 实例是否启用集群模式</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Keyspace		<span class="comment"># 各个数据库（0-15）的 key 的数量，带有生存期的 key 的数量，平均存活时间</span></span></span><br><span class="line">db0:keys=267906,expires=109608,avg_ttl=3426011859194</span><br><span class="line">db1:keys=182,expires=179,avg_ttl=503527626</span><br><span class="line">db8:keys=6,expires=0,avg_ttl=0</span><br><span class="line">db15:keys=2,expires=0,avg_ttl=0</span><br></pre></td></tr></table></figure>
-
 
       
     </div>
