@@ -146,13 +146,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">247</span>
+          <span class="site-state-item-count">251</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -174,6 +174,523 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/13/Redis%E7%9A%84%E7%83%ADkey%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">Redis的热key问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-13 23:50:26" itemprop="dateCreated datePublished" datetime="2022-08-13T23:50:26+08:00">2022-08-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-17 10:52:52" itemprop="dateModified" datetime="2022-10-17T10:52:52+08:00">2022-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>上面提到，所谓热key问题就是，突然有几十万的请求去访问redis上的某个特定key。那么，这样会造成流量过于集中，达到物理网卡上限，从而导致这台redis的服务器宕机。那接下来这个key的请求，就会直接怼到你的数据库上，导致你的服务不可用。</p>
+</blockquote>
+<h2 id="热Key的危害"><a href="#热Key的危害" class="headerlink" title="热Key的危害"></a>热Key的危害</h2><ul>
+<li>流量集中，达到服务器处理上限（<code>CPU</code>、网络 <code>IO</code> 等）；</li>
+<li>会影响在同一个 <code>Redis</code> 实例上其他 <code>Key</code> 的读写请求操作；</li>
+<li>热 <code>Key</code> 请求落到同一个 <code>Redis</code> 实例上，无法通过扩容解决；</li>
+<li>大量 <code>Redis</code> 请求失败，查询操作可能打到数据库，拖垮数据库，导致整个服务不可用。</li>
+</ul>
+<h2 id="如何发现热Key"><a href="#如何发现热Key" class="headerlink" title="如何发现热Key"></a>如何发现热Key</h2><h3 id="凭借业务经验，预估热-Key-出现"><a href="#凭借业务经验，预估热-Key-出现" class="headerlink" title="凭借业务经验，预估热 Key 出现"></a>凭借业务经验，预估热 Key 出现</h3><p>根据业务系统上线的一些活动和功能，我们是可以在某些场景下提前预估热 <code>Key</code> 的出现的，比如业务需要进行一场商品秒杀活动，秒杀商品信息和数量一般都会缓存到 <code>Redis</code> 中，这种场景极有可能出现热 <code>Key</code> 问题的。</p>
+<ul>
+<li>优点：简单，凭经验发现热 <code>Key</code>，提早发现提早处理；</li>
+<li>缺点：没有办法预测所有热 <code>Key</code> 出现，比如某些热点新闻事件，无法提前预测。</li>
+</ul>
+<h3 id="客户端进行收集"><a href="#客户端进行收集" class="headerlink" title="客户端进行收集"></a>客户端进行收集</h3><p>一般我们在连接 <code>Redis</code> 服务器时都要使用专门的 SDK（比如：<code>Java</code> 的客户端工具 <code>Jedis</code>、<code>Redisson</code>），我们可以对客户端工具进行封装，在发送请求前进行收集采集，同时定时把收集到的数据上报到统一的服务进行聚合计算。</p>
+<ul>
+<li>优点：方案简单</li>
+<li>缺点：<ul>
+<li>对客户端代码有一定入侵，或者需要对 <code>SDK</code> 工具进行二次开发；</li>
+<li>没法适应多语言架构，每一种语言的 <code>SDK</code> 都需要进行开发，后期开发维护成本较高。</li>
+</ul>
+</li>
+</ul>
+<h3 id="在代理层进行收集"><a href="#在代理层进行收集" class="headerlink" title="在代理层进行收集"></a>在代理层进行收集</h3><p>如果所有的 <code>Redis</code> 请求都经过 <code>Proxy</code>（代理）的话，可以考虑改动 <code>Proxy</code> 代码进行收集，思路与客户端基本类似。</p>
+<p><img src="https://gitee.com/dongzl/article-images/raw/master/2021/03-Redis-Hot-Key/Redis-Hot-Key-02.png" alt="img"></p>
+<ul>
+<li>优点：对使用方完全透明，能够解决客户端 <code>SDK</code> 的语言异构和版本升级问题；</li>
+<li>缺点：<ul>
+<li>开发成本会比客户端高些；</li>
+<li>并不是所有的 <code>Redis</code> 集群架构中都有 <code>Proxy</code> 代理（使用这种方式必须要部署 <code>Proxy</code>）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用-Redis-自带命令"><a href="#使用-Redis-自带命令" class="headerlink" title="使用 Redis 自带命令"></a>使用 Redis 自带命令</h3><ol>
+<li><strong>hotkeys 参数</strong></li>
+</ol>
+<p><code>Redis</code> 在 <code>4.0.3</code> 版本中添加了 <a target="_blank" rel="noopener" href="https://github.com/redis/redis/pull/4392">hotkeys</a> 查找特性，可以直接利用 <code>redis-cli --hotkeys</code> 获取当前 <code>keyspace</code> 的热点 <code>key</code>，实现上是通过 <code>scan + object freq</code> 完成的。</p>
+<ul>
+<li>优点：无需进行二次开发，能够直接利用现成的工具；</li>
+<li>缺点：<ul>
+<li>由于需要扫描整个 <code>keyspace</code>，实时性上比较差;</li>
+<li>扫描时间与 <code>key</code> 的数量正相关，如果 <code>key</code> 的数量比较多，耗时可能会非常长。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>hotkeys<br><a target="_blank" rel="noopener" href="https://www.zhangbj.com/p/765.html">https://www.zhangbj.com/p/765.html</a></p>
+</blockquote>
+<ol start="2">
+<li><a target="_blank" rel="noopener" href="https://redis.io/commands/monitor">monitor</a> 命令</li>
+</ol>
+<p><code>monitor</code> 命令可以实时抓取出 <code>Redis</code> 服务器接收到的命令，通过 <code>redis-cli monitor</code> 抓取数据，同时结合一些现成的分析工具，比如 <a target="_blank" rel="noopener" href="https://github.com/facebookarchive/redis-faina">redis-faina</a>，统计出热 Key。</p>
+<ul>
+<li>优点：无需进行二次开发，能够直接利用现成的工具；</li>
+<li>缺点：该命令在高并发的条件下，有内存增暴增的隐患，还会降低 <code>Redis</code> 的性能。</li>
+</ul>
+<h3 id="Redis-节点抓包分析"><a href="#Redis-节点抓包分析" class="headerlink" title="Redis 节点抓包分析"></a>Redis 节点抓包分析</h3><p><code>Redis</code> 客户端使用 <code>TCP</code> 协议与服务端进行交互，通信协议采用的是 <code>RESP</code> 协议。自己写程序监听端口，按照 <code>RESP</code> 协议规则解析数据，进行分析。或者我们可以使用一些抓包工具，比如 <code>tcpdump</code> 工具，抓取一段时间内的流量进行解析。</p>
+<ul>
+<li>优点：对 <code>SDK</code> 或者 <code>Proxy</code> 代理层没有入侵；</li>
+<li>缺点：<ul>
+<li>有一定的开发成本；</li>
+<li>热 <code>Key</code> 节点的网络流量和系统负载已经比较高了，抓包可能会导致情况进一步恶化。</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h2><h3 id="增加-Redis-实例副本数量"><a href="#增加-Redis-实例副本数量" class="headerlink" title="增加 Redis 实例副本数量"></a>增加 Redis 实例副本数量</h3><p>对于出现热 <code>Key</code> 的 <code>Redis</code> 实例，我们可以通过水平扩容增加副本数量，将读请求的压力分担到不同副本节点上。</p>
+<p>(通过<strong>主从复制-读写分离</strong>，将读请求分散多个机器上。)</p>
+<h3 id="二级缓存（本地缓存）"><a href="#二级缓存（本地缓存）" class="headerlink" title="二级缓存（本地缓存）"></a>二级缓存（本地缓存）</h3><p>当出现热 <code>Key</code> 以后，把热 <code>Key</code> 加载到系统的 <code>JVM</code> 中。后续针对这些热 <code>Key</code> 的请求，会直接从 <code>JVM</code> 中获取，而不会走到 <code>Redis</code> 层。这些本地缓存的工具很多，比如 <code>Ehcache</code>，或者 <code>Google Guava</code> 中 <code>Cache</code> 工具，或者直接使用 <code>HashMap</code> 作为本地缓存工具都是可以的。</p>
+<p><strong>使用本地缓存需要注意两个问题：</strong></p>
+<ul>
+<li>如果对热 <code>Key</code> 进行本地缓存，需要防止本地缓存过大，影响系统性能；</li>
+<li>需要处理本地缓存和 <code>Redis</code> 集群数据的一致性问题。</li>
+</ul>
+<h3 id="热-Key-备份"><a href="#热-Key-备份" class="headerlink" title="热 Key 备份"></a>热 Key 备份</h3><p>通过前面的分析，我们可以了解到，之所以出现热 <code>Key</code>，是因为有大量的对同一个 <code>Key</code> 的请求落到同一个 <code>Redis</code> 实例上，如果我们可以有办法将这些请求打散到不同的实例上，防止出现流量倾斜的情况，那么热 <code>Key</code> 问题也就不存在了。</p>
+<p>那么如何将对某个热 <code>Key</code> 的请求打散到不同实例上呢？我们就可以通过热 <code>Key</code> 备份的方式，基本的思路就是，我们<strong>可以给热 <code>Key</code> 加上前缀或者后缀，把一个热 <code>Key</code> 的数量变成 <code>Redis</code> 实例个数 <code>N</code> 的倍数 <code>M</code>，从而由访问一个 <code>Redis</code> <code>Key</code> 变成访问 <code>N * M</code> 个 <code>Redis</code> <code>Key</code>。 <code>N * M</code> 个 <code>Redis</code> <code>Key</code> 经过分片分布到不同的实例上，将访问量均摊到所有实例</strong>。</p>
+<p>具体的逻辑：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// N 为 Redis 实例个数，M 为 N 的 <span class="number">2</span>倍</span><br><span class="line">const M = N * <span class="number">2</span></span><br><span class="line">//生成随机数</span><br><span class="line"><span class="built_in">random</span> = GenRandom(<span class="number">0</span>, M)</span><br><span class="line">//构造备份新 Key</span><br><span class="line">bakHotKey = hotKey + <span class="string">&quot;_&quot;</span> + <span class="built_in">random</span></span><br><span class="line">// 先从备份key中取</span><br><span class="line">data = redis.GET(bakHotKey)</span><br><span class="line"><span class="keyword">if</span> data == NULL &#123;</span><br><span class="line">    data = redis.GET(hotKey)</span><br><span class="line">    <span class="keyword">if</span> data == NULL &#123;</span><br><span class="line">        data = GetFromDB()</span><br><span class="line">        // 可以利用原子锁来写入数据保证数据一致性</span><br><span class="line">        redis.SET(hotKey, data, expireTime)</span><br><span class="line">        redis.SET(bakHotKey, data, expireTime + GenRandom(<span class="number">0</span>, <span class="number">5</span>))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        redis.SET(bakHotKey, data, expireTime + GenRandom(<span class="number">0</span>, <span class="number">5</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在这段代码中，通过一个大于等于 <code>1</code> 小于 <code>M</code> 的随机数，得到一个 <code>bakHotKey</code>，程序会优先访问 <code>bakHotKey</code>，在得不到数据的情况下，再访问原来的 <code>hotkey</code>，并将 <code>hotkey</code> 的内容写回 <code>bakHotKey</code>。</p>
+<p>值得注意的是，<code>backHotKey</code> 的过期时间是 <code>hotkey</code> 的过期时间加上一个较小的随机正整数，这是通过坡度过期的方式，保证在 <code>hotkey</code> 过期时，所有 <code>backHotKey</code> 不会同时过期而造成缓存雪崩。</p>
+<blockquote>
+<p>参考博客</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/12/%E9%9D%A2%E8%AF%95%E5%9C%BA%E6%99%AF%E7%AE%97%E6%B3%95%E9%A2%98/" class="post-title-link" itemprop="url">面试场景算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-12 10:47:21" itemprop="dateCreated datePublished" datetime="2022-08-12T10:47:21+08:00">2022-08-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-09 00:18:03" itemprop="dateModified" datetime="2023-01-09T00:18:03+08:00">2023-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E7%A8%8B%E5%90%91%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">工程向算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="SP1-某云ES倒排索引"><a href="#SP1-某云ES倒排索引" class="headerlink" title="SP1 某云ES倒排索引"></a>SP1 某云ES倒排索引</h2><p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/7ba676741a3c4920b7846476be520779?tpId=332&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=/exam/oj?page=1&tab=%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587&topicId=332">https://www.nowcoder.com/practice/7ba676741a3c4920b7846476be520779?tpId=332&amp;tags=&amp;title=&amp;difficulty=0&amp;judgeStatus=0&amp;rp=0&amp;sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D332</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ID      int整型ArrayList</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> content string字符串ArrayList</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> word    string字符串</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> int整型ArrayList</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title function_">invertedIndex</span><span class="params">(ArrayList&lt;Integer&gt; ID, ArrayList&lt;String&gt; content, String word)</span> &#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        HashMap&lt;String, LinkedHashSet&lt;Integer&gt;&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; ID.size(); i++) &#123;</span><br><span class="line">            String[] split = content.get(i).split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">            <span class="keyword">for</span> (String s : split) &#123;</span><br><span class="line">                LinkedHashSet&lt;Integer&gt; linkedHashSet = map.getOrDefault(s, <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;());</span><br><span class="line">                linkedHashSet.add(ID.get(i));</span><br><span class="line">                map.put(s, linkedHashSet);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(map.getOrDefault(word, <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/zh/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95">倒排索引wiki</a></p>
+<h2 id="SP4-某音一致性哈希"><a href="#SP4-某音一致性哈希" class="headerlink" title="SP4 某音一致性哈希"></a><strong>SP4</strong> <strong>某音一致性哈希</strong></h2><p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/a93bd04c71d445c090565da14990a421?tpId=332&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=/exam/oj?page=1&tab=%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587&topicId=332">https://www.nowcoder.com/practice/a93bd04c71d445c090565da14990a421?tpId=332&amp;tags=&amp;title=&amp;difficulty=0&amp;judgeStatus=0&amp;rp=0&amp;sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26tab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D332</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConsistentHashing</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">static</span> <span class="keyword">class</span> <span class="title class_">Section</span> &#123;</span><br><span class="line">        <span class="type">int</span> id;</span><br><span class="line">        <span class="type">int</span> l, r;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Section</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.l = l;</span><br><span class="line">            <span class="keyword">this</span>.r = r;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Section</span><span class="params">(<span class="type">int</span> id, <span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.id = id;</span><br><span class="line">            <span class="keyword">this</span>.l = l;</span><br><span class="line">            <span class="keyword">this</span>.r = r;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @<span class="function">Override</span></span><br><span class="line"><span class="function">        <span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;&#123;&quot;</span> +</span><br><span class="line">                    <span class="string">&quot;id=&quot;</span> + id +</span><br><span class="line">                    <span class="string">&quot;, l=&quot;</span> + l +</span><br><span class="line">                    <span class="string">&quot;, r=&quot;</span> + r +</span><br><span class="line">                    <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> machineId = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="type">int</span> <span class="title">nextMachineId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> machineId++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    PriorityQueue&lt;Section&gt; sectionLengthPQ;</span><br><span class="line">    TreeSet&lt;Section&gt; lSet;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> capacity;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConsistentHashing</span><span class="params">(<span class="type">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.capacity = capacity;</span><br><span class="line">        <span class="built_in">init</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        sectionLengthPQ = <span class="keyword">new</span> PriorityQueue&lt;&gt;(<span class="keyword">new</span> <span class="built_in">Comparator</span>&lt;Section&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="type">int</span> <span class="built_in">compare</span>(Section o1, Section o2) &#123;</span><br><span class="line">                <span class="type">int</span> cmp = (o2.r - o2.l) - (o1.r - o1.l);</span><br><span class="line">                <span class="keyword">if</span> (cmp != <span class="number">0</span>) <span class="keyword">return</span> cmp;</span><br><span class="line">                <span class="keyword">return</span> o1.id - o2.id;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        lSet = <span class="keyword">new</span> TreeSet&lt;&gt;(Comparator.<span class="built_in">comparingInt</span>(o -&gt; o.l));</span><br><span class="line">        Section section = <span class="keyword">new</span> <span class="built_in">Section</span>(<span class="built_in">nextMachineId</span>(), <span class="number">0</span>, <span class="keyword">this</span>.capacity - <span class="number">1</span>);</span><br><span class="line">        sectionLengthPQ.<span class="built_in">offer</span>(section);</span><br><span class="line">        lSet.<span class="built_in">add</span>(section);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">void</span> <span class="title">addNode</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            Section section = sectionLengthPQ.<span class="built_in">poll</span>();</span><br><span class="line">            <span class="type">int</span> oldId = section.id;</span><br><span class="line">            <span class="type">int</span> newId = <span class="built_in">nextMachineId</span>();</span><br><span class="line">            <span class="type">int</span> l = section.l;</span><br><span class="line">            <span class="type">int</span> r = section.r;</span><br><span class="line">            lSet.<span class="built_in">remove</span>(section);</span><br><span class="line">            <span class="type">int</span> l1 = l, r1 = (r - l) / <span class="number">2</span> + l;</span><br><span class="line">            <span class="type">int</span> l2 = r1 + <span class="number">1</span>, r2 = r;</span><br><span class="line">            Section section1 = <span class="keyword">new</span> <span class="built_in">Section</span>(oldId, l1, r1);</span><br><span class="line">            Section section2 = <span class="keyword">new</span> <span class="built_in">Section</span>(newId, l2, r2);</span><br><span class="line">            sectionLengthPQ.<span class="built_in">offer</span>(section1);</span><br><span class="line">            sectionLengthPQ.<span class="built_in">offer</span>(section2);</span><br><span class="line">            lSet.<span class="built_in">add</span>(section1);</span><br><span class="line">            lSet.<span class="built_in">add</span>(section2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">int</span> <span class="title">querySection</span><span class="params">(<span class="type">int</span> ID)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> id = ID % capacity;</span><br><span class="line">        Section section = <span class="keyword">new</span> <span class="built_in">Section</span>(id, id);</span><br><span class="line">        <span class="keyword">return</span> lSet.<span class="built_in">floor</span>(section).id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * @param n  int整型</span></span><br><span class="line"><span class="comment">     * @param ID int整型</span></span><br><span class="line"><span class="comment">     * @return int整型</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">int</span> <span class="title">consistentHashing</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span> ID)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// write code here</span></span><br><span class="line">        ConsistentHashing consistentHashing = <span class="keyword">new</span> <span class="built_in">ConsistentHashing</span>(<span class="number">800</span>);</span><br><span class="line">        consistentHashing.<span class="built_in">addNode</span>(n - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> consistentHashing.<span class="built_in">querySection</span>(ID);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">static</span> <span class="type">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Solution solution = <span class="keyword">new</span> <span class="built_in">Solution</span>();</span><br><span class="line">        System.out.<span class="built_in">println</span>(solution.<span class="built_in">consistentHashing</span>(<span class="number">10</span>, <span class="number">999</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%80%E8%87%B4%E5%93%88%E5%B8%8C">一致哈希</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000021199728">https://segmentfault.com/a/1190000021199728</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/378056811">https://zhuanlan.zhihu.com/p/378056811</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/12/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/12/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95/" class="post-title-link" itemprop="url">倒排索引</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-12 10:23:03" itemprop="dateCreated datePublished" datetime="2022-08-12T10:23:03+08:00">2022-08-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>正向索引：存储每个文档的单词的列表。</p>
+<p>正向索引的查询往往满足每个文档有序频繁的全文查询。</p>
+</blockquote>
+<h1 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h1><blockquote>
+<p>反向索引数据结构是典型的<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E">搜索引擎</a><a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/%E6%AA%A2%E7%B4%A2">检索</a><a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/%E7%AE%97%E6%B3%95">算法</a>重要的部分。</p>
+</blockquote>
+<p><strong>倒排索引</strong>（英语：Inverted index），也常被称为<strong>反向索引</strong>、<strong>置入档案</strong>或<strong>反向档案</strong>，是一种索引方法，被<strong>用来存储在全文搜索下某个单词在一个文档或者一组文档中的存储位置的映射</strong>。它是<em>文档检索系统</em>中最常用的数据结构。</p>
+<p>有两种不同的反向索引形式：</p>
+<ul>
+<li>一条记录的水平反向索引（或者<strong>反向档案索引</strong>）包含每个引用单词的文档的[列表]。</li>
+<li>一个单词的水平反向索引（或者<strong>完全反向索引</strong>）又包含每个单词在一个文档中的位置。</li>
+</ul>
+<p>后者的形式提供了更多的兼容性（比如<em>短语搜索</em>），但是需要更多的时间和空间来创建。</p>
+<p>举例，下面是要被索引的文本：</p>
+<ul><li><span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle T_{0}=}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msub>
+          <mi>T</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>0</mn>
+          </mrow>
+        </msub>
+        <mo>=</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle T_{0}=}</annotation>
+  </semantics></math></span><noscript><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/1ab3d9202f18a678affe9a339511bef0a7b8b110" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:4.865ex; height:2.509ex;" alt="{\displaystyle T_{0}=}"></noscript><img width="0" height="0" class="mwe-math-fallback-image-inline image-lazy-loaded" alt="{\displaystyle T_{0}=}" usemap="undefined" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/1ab3d9202f18a678affe9a339511bef0a7b8b110" srcset="" style="width: 4.865ex; height: 2.509ex; vertical-align: -0.671ex;"></span><code>0. "it is what it is"</code></li>
+<li><span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle T_{1}=}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msub>
+          <mi>T</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>1</mn>
+          </mrow>
+        </msub>
+        <mo>=</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle T_{1}=}</annotation>
+  </semantics></math></span><noscript><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/57ac5840245616f79874f4635b3bcb2e3da344dd" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:4.865ex; height:2.509ex;" alt="{\displaystyle T_{1}=}"></noscript><img width="0" height="0" class="mwe-math-fallback-image-inline image-lazy-loaded" alt="{\displaystyle T_{1}=}" usemap="undefined" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/57ac5840245616f79874f4635b3bcb2e3da344dd" srcset="" style="width: 4.865ex; height: 2.509ex; vertical-align: -0.671ex;"></span><code>1. "what is it"</code></li>
+<li><span class="mwe-math-element"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle T_{2}=}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msub>
+          <mi>T</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msub>
+        <mo>=</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle T_{2}=}</annotation>
+  </semantics></math></span><noscript><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/5713cf5634b3846b4d68c3383b65db289511d8bf" class="mwe-math-fallback-image-inline" aria-hidden="true" style="vertical-align: -0.671ex; width:4.865ex; height:2.509ex;" alt="{\displaystyle T_{2}=}"></noscript><img width="0" height="0" class="mwe-math-fallback-image-inline image-lazy-loaded" alt="{\displaystyle T_{2}=}" usemap="undefined" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/5713cf5634b3846b4d68c3383b65db289511d8bf" srcset="" style="width: 4.865ex; height: 2.509ex; vertical-align: -0.671ex;"></span><code>2. "it is a banana"</code></li></ul>
+
+
+
+<h2 id="反向档案索引"><a href="#反向档案索引" class="headerlink" title="反向档案索引"></a>反向档案索引</h2><p>我们就能得到下面的反向文件索引：</p>
+<pre> "a":      {2}
+ "banana": {2}
+ "is":     {0, 1, 2}
+ "it":     {0, 1, 2}
+ "what":   {0, 1}
+</pre>
+<p>如果要检索 ‘what’、’is’、’it’将对应这个集合：<br>$$<br>{0,1}\cap{0,1,2}\cap{0,1,2}&#x3D;{0,1}<br>$$</p>
+<h2 id="完全反向索引"><a href="#完全反向索引" class="headerlink" title="完全反向索引"></a>完全反向索引</h2><p>对相同的文字，我们得到后面这些完全反向索引，由文档数量和当前查询的单词结果组成的的成对数据。 同样，文档数量和当前查询的单词结果都从零开始。所以，”banana”: {(2, 3)} 就是说 “banana”在第三个文档里 T2，而且在第三个文档的位置是第四个单词(地址为 3)。</p>
+<pre>"a":      {(2, 2)}
+"banana": {(2, 3)}
+"is":     {(0, 1), (0, 4), <b>(1, 1)</b>, (2, 1)}
+"it":     {(0, 0), (0, 3), <b>(1, 2)</b>, (2, 0)} 
+"what":   {(0, 2), <b>(1, 0)</b>}
+</pre>
+
+
+<p>如果我们执行短语搜索<code>&quot;what is it&quot;</code> 我们得到这个短语的全部单词各自的结果所在文档为文档0和文档1。但是这个短语检索的连续的条件仅仅在文档1得到。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/26/JUnit%E5%92%8CMockito/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/07/26/JUnit%E5%92%8CMockito/" class="post-title-link" itemprop="url">JUnit和Mockito</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-26 02:03:06" itemprop="dateCreated datePublished" datetime="2022-07-26T02:03:06+08:00">2022-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Ming8006/p/6297333.html">教程</a><br><a target="_blank" rel="noopener" href="https://site.mockito.org/">官网</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/36615330/mockito-doanswer-vs-thenreturn">thenAnswer VS thenReturn</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/blueZhangFun/article/details/103665393">verify用法</a><br><a target="_blank" rel="noopener" href="https://breeze924.github.io/2018/08/26/JUnit%E7%9F%A5%E8%AF%86%E7%82%B9%E4%B8%89%E5%88%99/">@Mock和@InjectMocks的区别</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hezhiyao/p/9440277.html">@Before、@After、@Test</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -937,9 +1454,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-06-10 10:49:04 / 修改时间：12:45:37" itemprop="dateCreated datePublished" datetime="2022-06-10T10:49:04+08:00">2022-06-10</time>
+      <time title="创建时间：2022-06-10 10:49:04" itemprop="dateCreated datePublished" datetime="2022-06-10T10:49:04+08:00">2022-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-08 16:04:56" itemprop="dateModified" datetime="2023-04-08T16:04:56+08:00">2023-04-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -982,7 +1505,7 @@
 
 
 <p>此脚本输出得分最高的 40 个进程，并进行了排序：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171213130216597-1179723743.png"></p>
+<p><img src="/2022/06/10/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory-0.png"></p>
 <p>第一列显示进程的得分，mysqld 排到的第一名。显示为 node server.js 的都是容器进程，排名普遍比较靠前。红框中的是 docker daemon 进程，非常的靠后，都排到了 sshd 的后面。</p>
 <p>有了上面的机制后是否就可以高枕无忧了呢！不是的，docker 的官方文档中一直强调这只是一种缓解的方案，并且为我们提供了一些降低风险的建议：</p>
 <ul>
@@ -992,7 +1515,8 @@
 <li>为主机配置 swap</li>
 </ul>
 <p>其实就是说：通过限制容器使用的内存上限，可以降低主机内存耗尽时带来的各种风险。</p>
-<h1 id="限制Memory"><a href="#限制Memory" class="headerlink" title="限制Memory"></a>限制Memory</h1><h2 id="限制内存使用上限"><a href="#限制内存使用上限" class="headerlink" title="限制内存使用上限"></a>限制内存使用上限</h2><p>使用<code>-m(--memory=)</code>可以限制容器使用的最大内存。</p>
+<h1 id="限制Memory"><a href="#限制Memory" class="headerlink" title="限制Memory"></a>限制Memory</h1><p>&#x2F;Users&#x2F;jisongyang&#x2F;go&#x2F;pkg&#x2F;mod&#x2F;github.com&#x2F;docker&#x2F;<a href="mailto:&#100;&#x6f;&#x63;&#107;&#101;&#x72;&#x40;&#118;&#x32;&#48;&#46;&#49;&#48;&#46;&#x31;&#53;">&#100;&#x6f;&#x63;&#107;&#101;&#x72;&#x40;&#118;&#x32;&#48;&#46;&#49;&#48;&#46;&#x31;&#53;</a>+incompatible&#x2F;api&#x2F;types&#x2F;container&#x2F;host_config.go</p>
+<h2 id="限制内存使用上限"><a href="#限制内存使用上限" class="headerlink" title="限制内存使用上限"></a>限制内存使用上限</h2><p>使用<code>-m(--memory=)</code>可以限制容器使用的最大内存。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -m 300M --memory-swap -1 --name con1 u-stress /bin/bash</span><br></pre></td></tr></table></figure>
 
 
@@ -1000,8 +1524,8 @@
 <p>下面的 stress 命令会创建一个进程并通过 malloc 函数分配内存：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stress --vm 1 --vm-bytes 500M</span><br></pre></td></tr></table></figure>
 
-<p>通过 docker stats 命令查看实际情况：<br><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171213130510707-38147422.png"></p>
-<p>上面的 docker run 命令中通过 -m 选项限制容器使用的内存上限为 300M。同时设置 memory-swap 值为 -1，它表示容器程序使用内存的受限，而可以使用的 swap 空间使用不受限制(宿主机有多少 swap 容器就可以使用多少)。<br>下面我们通过 top 命令来查看 stress 进程内存的实际情况：<br><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171213130752754-1982342098.png"></p>
+<p>通过 docker stats 命令查看实际情况：<br><img src="/2022/06/10/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory-1.png"></p>
+<p>上面的 docker run 命令中通过 -m 选项限制容器使用的内存上限为 300M。同时设置 memory-swap 值为 -1，它表示容器程序使用内存的受限，而可以使用的 swap 空间使用不受限制(宿主机有多少 swap 容器就可以使用多少)。<br>下面我们通过 top 命令来查看 stress 进程内存的实际情况：<br><img src="/2022/06/10/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory-2.png"></p>
 <p>上面的截图中先通过 pgrep 命令查询 stress 命令相关的进程，进程号比较大的那个是用来消耗内存的进程，我们就查看它的内存信息。VIRT 是进程虚拟内存的大小，所以它应该是 500M。RES 为实际分配的物理内存数量，我们看到这个值就在 300M 上下浮动。看样子我们已经成功的限制了容器能够使用的物理内存数量。</p>
 <h2 id="限制可用的-swap-大小"><a href="#限制可用的-swap-大小" class="headerlink" title="限制可用的 swap 大小"></a>限制可用的 swap 大小</h2><p>强调一下 –memory-swap 是必须要与 –memory 一起使用的。</p>
 <p>正常情况下， –memory-swap 的值包含容器可用内存和可用 swap。所以 –memory&#x3D;”300m” –memory-swap&#x3D;”1g” 的含义为：<br>容器可以使用 300M 的物理内存，并且可以使用 700M(1G -300M) 的 swap。–memory-swap 是容器可以使用的物理内存和可以使用的 swap 之和。</p>
@@ -1009,364 +1533,12 @@
 <p><strong>如果 –memory-swap 的值和 –memory 相同，则容器不能使用 swap</strong>。下面的 demo 演示了在没有 swap 可用的情况下向系统申请大量内存的场景：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run -it --<span class="built_in">rm</span> -m 300M --memory-swap=300M u-stress /bin/bash</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">stress --vm 1 --vm-bytes 500M</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171213130735519-39244675.png"></p>
+<p><img src="/2022/06/10/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6Memory-3.png"></p>
 <p>demo 中容器的物理内存被限制在 300M，但是进程却希望申请到 500M 的物理内存。在没有 swap 可用的情况下，进程直接被 OOM kill 了。如果有足够的 swap，程序至少还可以正常的运行。</p>
 <p>我们可以通过 –oom-kill-disable 选项强行阻止 OOM kill 的发生，但是最好不要。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过限制容器可用的物理内存，可以避免容器内服务异常导致大量消耗主机内存的情况(此时让容器重启是较好的策略)，因此可以降低主机内存被耗尽带来的风险。</p>
+<p><a target="_blank" rel="noopener" href="https://sanhe-dev-exp-share.readthedocs.io/03-Docker/03-Restrict-CPU-Memory-and-GPU/README.html">https://sanhe-dev-exp-share.readthedocs.io/03-Docker/03-Restrict-CPU-Memory-and-GPU/README.html</a></p>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/" class="post-title-link" itemprop="url">Docker容器限制CPU</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-06-09 11:11:04 / 修改时间：22:22:34" itemprop="dateCreated datePublished" datetime="2022-06-09T11:11:04+08:00">2022-06-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="压测工具"><a href="#压测工具" class="headerlink" title="压测工具"></a>压测工具</h1><p>使用ubuntu的<code>stress</code> 作为压测工具，并制作镜像</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:latest</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">        apt-get install stress</span></span><br></pre></td></tr></table></figure>
-<p>shell命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t u-stress:latest .</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="限制CPU资源"><a href="#限制CPU资源" class="headerlink" title="限制CPU资源"></a>限制CPU资源</h1><h2 id="限制CPU核心个数（百分比）"><a href="#限制CPU核心个数（百分比）" class="headerlink" title="限制CPU核心个数（百分比）"></a>限制CPU核心个数（百分比）</h2><p>在 docker 1.13 及更高的版本上，能够很容易的限制容器可以使用的主机 CPU 核心个数。<br>只需要通过 –cpus 选项指定容器可以使用的 CPU 个数就可以了，并且还可以指定如 1.5 之类的小数。（为什么还可以是小数呢，后面解释）</p>
-<p>通过下面的命令创建容器，–cpus&#x3D;2 表示容器最多可以使用主机上两个 CPU：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --cpus=2 u-stress:latest /bin/bash</span><br></pre></td></tr></table></figure>
-<p>然后由 stress 命令创建四个繁忙的进程消耗 CPU 资源：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stress -c 4</span><br></pre></td></tr></table></figure>
-<p>使用<code>docker stats</code>查看容状态，发现容器 CPU 的负载为 200%左右，它的含义为单个 CPU 负载的两倍。我们也可以把它理解为有两颗 CPU核心在 100% 的为它工作。</p>
-<p>再让我们通过 top 命令看看主机 CPU 的真实负载情况：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163457514-1473983991.png" alt="img"></p>
-<p>实际的情况并不是两个 CPU 负载 100%，而另外两个负载 0%。四个 CPU 的负载都是 50%，加起来容器消耗的 CPU 总量就是两个 CPU 100% 的负载。</p>
-<p><strong>所以对于进程来说是没有 CPU 个数这一概念的</strong>，内核只能通过进程消耗的 CPU 时间片来统计出进程占用 CPU 的百分比。这也是我们看到的各种工具中都使用百分比来说明 CPU 使用率的原因。<br>并且 –cpus 选项支持设为小数也从侧面说明了对 CPU 的计量只能是百分比。</p>
-<h2 id="指定固定的-CPU集"><a href="#指定固定的-CPU集" class="headerlink" title="指定固定的 CPU集"></a>指定固定的 CPU集</h2><p>通过 –cpus 选项我们无法让容器始终在一个或某几个 CPU 上运行，但是通过<code>--cpuset-cpus</code> 选项却可以做到！这是非常有意义的，因为现在的多核系统中每个核心都有自己的缓存，如果频繁的调度进程在不同的核心上执行势必会带来缓存失效等开销。下面我们就演示如何设置容器使用固定的 CPU，下面的命令为容器设置了 –cpuset-cpus 选项，指定运行容器的 CPU 编号为 1：(编号从0开始)</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --cpuset-cpus=&quot;1&quot; u-stress:latest /bin/bash</span><br></pre></td></tr></table></figure>
-
-
-
-<p>再启动压力测试命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stress -c 4</span><br></pre></td></tr></table></figure>
-
-<p>然后查看主机 CPU 的负载情况：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163742921-1627559356.png" alt="img"></p>
-<p>这次只有 Cpu1 达到了 100%，其它的 CPU 并未被容器使用。我们还可以反复的执行 stress -c 4 命令，但是始终都是 Cpu1 在干活。<br>再看看容器的 CPU 负载，也是只有 100%：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163808468-652259868.png"></p>
-<p>-cpuset-cpus 选项还可以一次指定多个 CPU：<br>比如：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --cpuset-cpus=&quot;1,3&quot; u-stress:latest /bin/bash</span><br></pre></td></tr></table></figure>
-<p>–cpuset-cpus 选项的一个缺点是必须指定 CPU 在操作系统中的编号，这对于动态调度的环境(无法预测容器会在哪些主机上运行，只能通过程序动态的检测系统中的 CPU 编号，并生成 docker run 命令)会带来一些不便。</p>
-<h2 id="设置使用-CPU-的权重"><a href="#设置使用-CPU-的权重" class="headerlink" title="设置使用 CPU 的权重"></a>设置使用 CPU 的权重</h2><p>当 CPU 资源充足时，设置 CPU 的权重是没有意义的。只有在容器争用 CPU 资源的情况下， CPU 的权重才能让不同的容器分到不同的 CPU 用量。–cpu-shares 选项用来设置 CPU 权重，它的默认值为 1024。我们可以把它设置为 2 表示很低的权重，但是设置为 0 表示使用默认值 1024。<br>下面我们分别运行两个容器，指定它们都使用 Cpu0，并分别设置 –cpu-shares 为 512 和 1024：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run -it --<span class="built_in">rm</span> --cpuset-cpus=<span class="string">&quot;0&quot;</span> --cpu-shares=512 u-stress:latest /bin/bash</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run -it --<span class="built_in">rm</span> --cpuset-cpus=<span class="string">&quot;0&quot;</span> --cpu-shares=1024 u-stress:latest /bin/bash</span></span><br></pre></td></tr></table></figure>
-
-<p>在两个容器中都运行 stress -c 4 命令。</p>
-<p>此时主机 Cpu0 的负载为 100%：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164142218-723091322.png"></p>
-<p>容器中 CPU 的负载为：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164255702-1003240099.png"></p>
-<p>两个容器分享一个 CPU，所以总量应该是 100%。具体每个容器分得的负载则取决于 –cpu-shares 选项的设置！我们的设置分别是 512 和 1024，则它们分得的比例为 1:2。在本例中如果想让两个容器各占 50%，只要把 –cpu-shares 选项设为相同的值就可以了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/28/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%A7%A6%E5%8F%91Jenkins%E6%B5%81%E6%B0%B4%E7%BA%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/28/%E5%A4%9A%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%A7%A6%E5%8F%91Jenkins%E6%B5%81%E6%B0%B4%E7%BA%BF/" class="post-title-link" itemprop="url">多种方式触发Jenkins流水线</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-05-28 12:12:34 / 修改时间：12:13:55" itemprop="dateCreated datePublished" datetime="2022-05-28T12:12:34+08:00">2022-05-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Jenkins/" itemprop="url" rel="index"><span itemprop="name">Jenkins</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="代码来源"><a href="#代码来源" class="headerlink" title="代码来源"></a>代码来源</h3><h3 id="源项目"><a href="#源项目" class="headerlink" title="源项目"></a>源项目</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl $&#123;src_url&#125; -o $&#123;service_id&#125;.tar.gz &amp;&amp; mkdir $&#123;service_id&#125; &amp;&amp; tar -xzf $&#123;service_id&#125;.tar.gz -C $&#123;service_id&#125; &amp;&amp; rm $&#123;service_id&#125;.tar.gz</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/19/MacOS%E5%AE%89%E8%A3%85Jenkins/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/19/MacOS%E5%AE%89%E8%A3%85Jenkins/" class="post-title-link" itemprop="url">MacOS安装Jenkins</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-05-19 15:53:36 / 修改时间：17:45:44" itemprop="dateCreated datePublished" datetime="2022-05-19T15:53:36+08:00">2022-05-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Jenkins/" itemprop="url" rel="index"><span itemprop="name">Jenkins</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Mac用户使用brew安装jenkins最为方便了</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装</span></span><br><span class="line">brew update</span><br><span class="line">brew install jenkins</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">更新</span></span><br><span class="line">brew upgrade jenkins</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动</span></span><br><span class="line">brew services start jenkins</span><br></pre></td></tr></table></figure>
-
-
-
-<p>查看admin密码</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat .jenkins/secrets/initialAdminPassword</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">a5f8fbee0dfe4fec807b71ae42a1a1f8</span></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/18/CSRF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/18/CSRF/" class="post-title-link" itemprop="url">CSRF</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-18 04:22:51" itemprop="dateCreated datePublished" datetime="2022-05-18T04:22:51+08:00">2022-05-18</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
       
     </div>
 
@@ -1385,7 +1557,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/10/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

@@ -146,13 +146,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">247</span>
+          <span class="site-state-item-count">251</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -174,6 +174,759 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/30/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/30/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/" class="post-title-link" itemprop="url">Redis系列笔记之 —— 缓存与数据库一致性</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-30 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-30T00:00:00+08:00">2021-10-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-11-30 08:14:54" itemprop="dateModified" datetime="2021-11-30T08:14:54+08:00">2021-11-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="使用缓存的两种模式"><a href="#使用缓存的两种模式" class="headerlink" title="使用缓存的两种模式"></a>使用缓存的两种模式</h2><h3 id="Cache-Aside-Pattern（旁路缓存模式）"><a href="#Cache-Aside-Pattern（旁路缓存模式）" class="headerlink" title="Cache-Aside Pattern（旁路缓存模式）"></a>Cache-Aside Pattern（旁路缓存模式）</h3><ol>
+<li>失效：程序先从缓存中读取数据，如果没有命中，则从数据库中读取，成功之后将数据放到缓存中；</li>
+<li>命中：程序先从缓存中读取数据，如果命中，则直接返回；</li>
+<li>更新：程序<strong>先更新数据库，再删除缓存</strong>。（这个操作顺序之后在细讲）。</li>
+</ol>
+<h3 id="Write-behind（异步缓存写入）"><a href="#Write-behind（异步缓存写入）" class="headerlink" title="Write-behind（异步缓存写入）"></a>Write-behind（异步缓存写入）</h3><p>这种使用模式的读缓存机制和上是一样的。但是更新缓存的策略为：</p>
+<p><strong>更新时只更新缓存，不直接更新数据库</strong>，通过<strong>批量异步</strong> 的方式来更新数据库。</p>
+<p>这个设计的好处就是让数据的I&#x2F;O操作飞快无比（因为直接操作内存嘛 ），因为异步，write backg还可以合并对同一个数据的多次操作，所以性能的提高是相当可观的。</p>
+<p>但是，其带来的问题是，数据不是强一致性的，而且可能会丢失（我们知道Unix&#x2F;Linux非正常关机会导致数据丢失，就是因为这个事）。</p>
+<p>另外，Write Back实现逻辑比较复杂，因为他需要track有哪数据是被更新了的，需要刷到持久层上。操作系统的write back会在仅当这个cache需要失效的时候，才会被真正持久起来，比如，内存不够了，或是进程退出了等情况，这又叫lazy write。</p>
+<p>这种方式下，缓存和数据库的一致性不强，<strong>对一致性要求高的系统要谨慎使用</strong> 。但是它适合频繁写的场景，MySQL的<strong>InnoDB Buffer Pool机制</strong> 就使用到这种模式。</p>
+<blockquote>
+<p>不过本篇文章只对第一种模式进行拓展解析。</p>
+</blockquote>
+<h2 id="具体的更新缓存策略"><a href="#具体的更新缓存策略" class="headerlink" title="具体的更新缓存策略"></a>具体的更新缓存策略</h2><ol>
+<li>操作缓存的时候，到底是<strong>删除缓存</strong>呢，还是<strong>更新缓存</strong>？</li>
+<li>双写的情况下，<strong>先操作数据库</strong>还是<strong>先操作缓存</strong>？</li>
+</ol>
+<p>组合起来就有四种情况：</p>
+<ol>
+<li>先更新缓存，再更新数据库</li>
+<li>先更新数据库，再更新缓存</li>
+<li>先删除缓存，再更新数据库</li>
+<li>先更新数据库，再删除缓存</li>
+</ol>
+<h3 id="先更新缓存，再更新数据库"><a href="#先更新缓存，再更新数据库" class="headerlink" title="先更新缓存，再更新数据库"></a>先更新缓存，再更新数据库</h3><p>这种方式可轻易排除，因为如果先更新缓存成功，但是数据库更新失败，则肯定会造成数据不一致。</p>
+<p>绝对不要使用。</p>
+<h3 id="先更新数据库，再更新缓存"><a href="#先更新数据库，再更新缓存" class="headerlink" title="先更新数据库，再更新缓存"></a>先更新数据库，再更新缓存</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">updateDB();</span><br><span class="line">updateRedis();</span><br></pre></td></tr></table></figure>
+
+<p>这种缓存更新策略俗称双写。</p>
+<p><strong>存在问题是：并发更新数据库场景下，会将脏数据刷到缓存。</strong></p>
+<p>注意上面的代码并非是原子的，在并发环境下，很明显很有可能出现数据不一致的情况。</p>
+<p>比如下面的竞态条件：</p>
+<p><img src="/2021/10/30/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/%E5%85%88%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C%E5%86%8D%E6%9B%B4%E6%96%B0%E7%BC%93%E5%AD%98.png" alt="先更新数据库，再更新缓存"></p>
+<h3 id="先删除缓存，再更新数据库"><a href="#先删除缓存，再更新数据库" class="headerlink" title="先删除缓存，再更新数据库"></a>先删除缓存，再更新数据库</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deleteRedis();</span><br><span class="line">updateDB();</span><br></pre></td></tr></table></figure>
+
+<p><strong>存在问题：更新数据库之前，若有查询请求，会将脏数据刷到缓存。</strong></p>
+<p><img src="/2021/10/30/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/%E5%85%88%E5%88%A0%E9%99%A4%E7%BC%93%E5%AD%98%EF%BC%8C%E5%86%8D%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93.png" alt="先删除缓存，再更新数据库"></p>
+<h3 id="先更新数据库，再删除缓存"><a href="#先更新数据库，再删除缓存" class="headerlink" title="先更新数据库，再删除缓存"></a>先更新数据库，再删除缓存</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">updateDB();</span><br><span class="line">deleteRedis();</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>存在问题：在更新数据库之前有查询请求，并且缓存失效了，会查询数据库，然后更新缓存。如果在查询数据库和更新缓存之间进行了数据库更新的操作，那么就会把脏数据刷到缓存。</strong></p>
+<p><img src="/2021/10/30/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/%E5%85%88%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C%E5%86%8D%E5%88%A0%E9%99%A4%E7%BC%93%E5%AD%98.png" alt="先更新数据库，再删除缓存"></p>
+<p>如果发生上述情况，确实是会发生脏数据。但是发生上述情况有一个先天性条件，就是写数据库操作比读数据库操作耗时更短。</p>
+<p><strong>不过数据库的读操作的速度远快于写操作的</strong></p>
+<p>因此这一情形导致数据不一致性的概率比上面3种可能性都要小。</p>
+<h2 id="对上面四种方式的总结"><a href="#对上面四种方式的总结" class="headerlink" title="对上面四种方式的总结"></a>对上面四种方式的总结</h2><p>为什么无论按照哪种做法都有可能导致数据不一致？</p>
+<p>上面的四种策略其实到最后<strong>有两步操作</strong>，而<strong>这两步操作并不是原子性的</strong>，在并发场景下总会导致缓存和数据库的不一致。 </p>
+<h3 id="更新缓存还是删除缓存？"><a href="#更新缓存还是删除缓存？" class="headerlink" title="更新缓存还是删除缓存？"></a>更新缓存还是删除缓存？</h3><p>对于一个不能保证事务性的操作，一定涉及“哪个任务先做，哪个任务后做”的问题，解决这个问题的方向是：如果出现不一致，谁先做对业务的影响较小，就谁先执行。</p>
+<p>更新缓存：</p>
+<p>缺点：</p>
+<ul>
+<li><strong>更新缓存需要有一定的维护成本</strong>；</li>
+<li>存在<strong>并发更新</strong>的问题；</li>
+<li>写多读少的情况下，读请求还没有来，<strong>缓存会被无用地更新很多次</strong>，没有起到缓存的作用；</li>
+</ul>
+<p>删除缓存</p>
+<ul>
+<li>优点：简单、成本低，容易开发；</li>
+<li>缺点：会造成一次cache miss；</li>
+</ul>
+<p>如果更新缓存开销较小并且读多写少，基本不会有高写并发的时候可以才用更新缓存，否则<strong>通用做法还是删除缓存</strong>。</p>
+<h2 id="推荐的做法"><a href="#推荐的做法" class="headerlink" title="推荐的做法"></a>推荐的做法</h2><h3 id="设置一个合理的redis过期时间"><a href="#设置一个合理的redis过期时间" class="headerlink" title="设置一个合理的redis过期时间"></a>设置一个合理的redis过期时间</h3><p><strong>缓存必须要有过期时间</strong>。</p>
+<p>为什么必须要有过期时间？</p>
+<p>首先，对于缓存来说，当它的命中率越高的时候，我们的系统性能也就越好。如果某个缓存项没有过期时间，而它命中的概率又很低，这就是在浪费缓存的空间。</p>
+<p>其次，设置过期时间还有一个最大好处，就是当数据库跟缓存出现数据不一致的情况时，这个可以<strong>作为一个最后的兜底手段</strong>。也就是说，当数据确实出现不一致的情况时，过期时间可以保证只有在出现不一致的时间点到缓存过期这段时间之内，数据库跟缓存的数据是不一致的，因此也<strong>保证了数据的最终一致性</strong>。</p>
+<p>所以，如果可以设置一个比较小的过期时间，那么<strong>数据不一致终归是暂时的，最终一致性可以保证</strong>。</p>
+<h3 id="延迟双删"><a href="#延迟双删" class="headerlink" title="延迟双删"></a>延迟双删</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">write</span><span class="params">(String key,Object data)</span>&#123;</span><br><span class="line">     redis.del(key);  <span class="comment">// 第一次删除缓存</span></span><br><span class="line">     db.update(data); <span class="comment">// 操作数据库</span></span><br><span class="line">     Thread.sleep(<span class="number">1000</span>);  <span class="comment">// 延时一段时间，在这段时间内有可能读操作设置的redis脏数据</span></span><br><span class="line">     redis.del(key); <span class="comment">// 第二次删除缓存</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>大家应该评估自己的项目的读数据业务逻辑的耗时，然后写数据的休眠时间，则在读数据业务逻辑的耗时基础上即可加几百 ms 即可。</p>
+<p>这么做的目的，就是<strong>尽可能确保读请求结束，写请求可以删除读请求造成的缓存脏数据。</strong>（也就是说为了避免产生第四种策略的问题）</p>
+<p>当然，完全可能在第二次删除缓存之后，还有读操作设置了旧的缓存数据。</p>
+<p>是的，所以<strong>延迟双删这种方案说到底也只是降低了数据不一致的概率，不是强一致性</strong>。</p>
+<h3 id="延时的具体实现"><a href="#延时的具体实现" class="headerlink" title="延时的具体实现"></a>延时的具体实现</h3><p>上面的阻塞只是语义上的延时，实际不会这样做，否则这个用户线程就阻塞在这了。</p>
+<p>实际处理时，可以如下方法：</p>
+<ol>
+<li>线程池提交任务，任务中睡眠</li>
+<li>Quartz定时任务</li>
+<li>Rabbitmq的延时队列</li>
+<li>Java中的DelayedQueue</li>
+</ol>
+<h3 id="删除缓存失败的重试机制"><a href="#删除缓存失败的重试机制" class="headerlink" title="删除缓存失败的重试机制"></a>删除缓存失败的重试机制</h3><p>采取<strong>先更新数据库，再删除缓存</strong>这种方案，我们没有考虑操作数据库或者操作缓存可能失败的情况，而这种情况也是客观存在的。那么在这里我们简单讨论下，首先是如果更新数据库失败了，其实没有太大关系，因为此时数据库和缓存中都还是老数据，不存在不一致的问题。</p>
+<p>假设删除缓存失败了呢？此时确实会存在数据不一致的情况。除了设置缓存过期时间这种兜底方案之外，如果我们希望尽可能保证缓存可以被及时删除，那么我们必须<strong>要考虑对删除操作进行重试</strong>。</p>
+<p>最简单方式，就是在代码中进行重试删除，但是这样的代码侵入比较严重。</p>
+<p>另外考虑到，分布式环境下一台需要删除redis缓存的机器可能会宕机，导致需要删除的缓存没有得到正确删除，此时需要删除的key的信息就会丢失。</p>
+<p>这个时候可以引入 <strong>消息中间件</strong>, 将需要删除的key发往消息中间件，然后消费端负责根据拉下来的key删除缓存，删除失败就把这条消息重新入队，直到成功。</p>
+<p><img src="/2021/10/30/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/del-key.png" alt="图片"></p>
+<p>上面的做法的确点就是对业务代码有入侵，可以采用一种订阅数据库binlog的方式，用非业务代码完成对缓存的删除。</p>
+<p><img src="/2021/10/30/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/binlog-mq.png" alt="img"></p>
+<p>启动一个订阅程序去订阅数据库的 binlog，获得需要操作的数据。在应用程序中，另起一段程序，获得这个订阅程序传来的信息，进行删除缓存操作。</p>
+<h2 id="怎么做到强一致性？"><a href="#怎么做到强一致性？" class="headerlink" title="怎么做到强一致性？"></a>怎么做到强一致性？</h2><p>上面讲述的所有的方案都是最终一致性的， 如果我们就要实现强一致性呢？</p>
+<h3 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h3><p>假设我们仍然使用<code> Cache-Aside Pattern</code>, 所谓导致数据不一致的情况</p>
+<p>实际上根本原因是<strong>写操作的两个方法</strong>（更新数据库-删除缓存）与<strong>读操作两个方法</strong>（查询数据库-更新缓存）不是串行化的执行。</p>
+<p>所以，为了做到这样的强一致性，我们可以引入<strong>读写锁</strong>，去完成这样<strong>写读-读写-读读-写写</strong>操作之间的串行化操作。</p>
+<p>使用读写锁之后：</p>
+<p>回到”先更新数据库，再删除缓存”这个方案本身上来，从字面上来看，这里有两步操作，因此在数据库更新之前，到缓存被删除这段时间之内，读请求读取到的都是脏数据。</p>
+<p>如果要实现这两者的强一致性，只能是在更新完数据库之前，所有的读请求都必须要被阻塞直到缓存最终被删除为止，读请求和读请求之间并不没有冲突，而这个同步语义正由<strong>读写锁</strong>提供。</p>
+<p>需要注意是，</p>
+<ol>
+<li>要使用分布式读写锁；</li>
+<li>锁的粒度要尽可能小。</li>
+</ol>
+<h3 id="分布式一致性算法"><a href="#分布式一致性算法" class="headerlink" title="分布式一致性算法"></a>分布式一致性算法</h3><p>虽然这里谈论的是Redis缓存和数据库的数据一致性，但是逻辑模型上这里和CAP定理中的C是一回事。</p>
+<p>因而在分布式系统中为了达到多副本单操作的一致性的各种一致性算法都可以派上用场，来达到这里的缓存与数据库一致性的目的。</p>
+<p>比如2PC、3PC、Paxos和Raft 等。</p>
+<p>说到这里，你可以看到为了做到 <strong>缓存-数据库一致性</strong>的强一致性并不是一件很容易的事，实际上分布式环境下的一致性问题一直都是一个痛点，如果你使用了redis缓存来加快数据库多读少写场景下的业务，同时又想确保<strong>缓存-数据库一致性</strong>，是不现实的，或者说实现成本太高，即使实现效果也不好。</p>
+<p>这个时候，你需要考虑，如果真的就需要保证强一致性，还不如将读写串行化，甚至去掉缓存。</p>
+<h2 id="分布式架构、读写分离环境下的一致性保证"><a href="#分布式架构、读写分离环境下的一致性保证" class="headerlink" title="分布式架构、读写分离环境下的一致性保证"></a>分布式架构、读写分离环境下的一致性保证</h2><p>上面的谈论的缓存-数据库一致性的架构仍然是单数据库-单应用程序的架构，如果是数据库读写分离环境下的呢？</p>
+<p>我们知道数据库（以Mysql为例）主从之间的数据同步是通过binlog同步来实现的，因此这里可以考虑订阅binlog（可以使用canal之类的中间件实现，提取出要删除的缓存项，然后作为消息写入消息队列，然后再由消费端进行慢慢的消费去删除redis缓存和重试。</p>
+<p><img src="/2021/10/30/Redis%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%E4%B9%8B%20%E2%80%94%E2%80%94%20%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/redis-mysql.png"></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903941646319623#heading-10">聊聊数据库与缓存数据一致性问题</a></p>
+<p>[缓存更新的套路](Redis系列笔记之 —— 缓存与数据库一致性&#x2F;17416.html)</p>
+<p><a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/47241d099404a1565e168fad4">缓存与数据库一致性问题深度剖析</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/29/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94InnoDB%20Buffer%20Pool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/29/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94InnoDB%20Buffer%20Pool/" class="post-title-link" itemprop="url">MySQL系列——InnoDB Buffer Pool</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-29 10:03:19" itemprop="dateCreated datePublished" datetime="2021-10-29T10:03:19+08:00">2021-10-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-11-03 16:12:02" itemprop="dateModified" datetime="2021-11-03T16:12:02+08:00">2021-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="InnoDB-Buffer-Pool"><a href="#InnoDB-Buffer-Pool" class="headerlink" title="InnoDB Buffer Pool"></a>InnoDB Buffer Pool</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>磁盘太慢，用内存作为缓冲区很有必要——这是缓存的基本思想，将数据存放在读写速度更快的存储介质中。</p>
+<p>不过这里的缓冲区指的不是 Redis、Memchached这些外部的内存性缓冲，还是MySQL自治的一块内存缓冲区。</p>
+<p>所谓自治，就是说完全由MySQL自己去管理这块内存区域，自己完成脏数据的刷盘，使用MySQL执行CRUD无需也无法自己做这方面的操作——不过你可以修改其中的配置以调整缓存的具体行为。</p>
+<p>InnoDB Buffer Pool 本质上是MySQL在向操作系统申请的一大块内存，默认是128MB（比较小，完全可以开大一点）。</p>
+<h2 id="内部组成"><a href="#内部组成" class="headerlink" title="内部组成"></a>内部组成</h2><p>Buffer Pool 对应的一大块内存被划分一个又一个页面，页面大小和InnoDB表空间的页面大小一致，默认是16KB，不妨称它为<strong>缓冲页。</strong></p>
+<p>由于这些缓冲业本身较大，如果已过用户的调整可能更大，不便于直接管理。于是为每个缓冲页创建一个控制块，</p>
+<p>每个控制块包含该页所属的表空间编号、页号、缓冲页在Buffer Pool 中的地址等关键信息。</p>
+<p>每个控制块的所占用的内存大小是一致的，大概只有16KB的5%左右（aka 800个字节）。</p>
+<img src="innodb-buffer.png" style="zoom:35%;" />
+
+
+
+
+
+<h2 id="free-链表"><a href="#free-链表" class="headerlink" title="free 链表"></a>free 链表</h2><p>缓冲页一开始都为空（逻辑上的空），随着从磁盘读取数据会逐渐使用buffer pool中的页。</p>
+<p>如何区分这些空闲的页和非空闲的页呢？</p>
+<p>MySQL的做法并不特殊，使用一条链表将空闲也组织起来。</p>
+<p>具体的数据结构，下面的图说的很清楚了。</p>
+<p>红色对应的空闲的控制块，蓝色对应的是相应的缓冲页。</p>
+<img src="free.png" style="zoom:40%;" />
+
+
+
+<h2 id="flush-链表"><a href="#flush-链表" class="headerlink" title="flush 链表"></a>flush 链表</h2><p>读缓存的逻辑比较简单，就是把磁盘中的页读到内存中（不过还要设计缓冲页的淘汰问题）。</p>
+<p>写缓存呢？</p>
+<p>和上面，我们需要把buffer pool中的写过的页（也就是和磁盘的上的页不一致的页），也就是脏页管理起来，然后按照某种刷盘逻辑将这些脏页在未来某个时刻写到磁盘上。</p>
+<p>具体的组织结构也是链表，和上面的的形式几乎一致。不再赘述。</p>
+<h2 id="缓冲页的哈希表"><a href="#缓冲页的哈希表" class="headerlink" title="缓冲页的哈希表"></a>缓冲页的哈希表</h2><p>如何根据快速知道某个是否在缓冲池中，毫无疑问，哈希表可以派上用场。</p>
+<p>具体的，可以使用 <strong>表空间号+页号</strong> 作为键来定位一个页，值是页控制块的内存地址。</p>
+<h2 id="LRU链表的使用管理"><a href="#LRU链表的使用管理" class="headerlink" title="LRU链表的使用管理"></a>LRU链表的使用管理</h2><p>只要涉及到缓存，就必然涉及到缓存区不够用，需要淘汰部分缓存的情况。对于innodb buffer pool来说也不意外。</p>
+<p>不过，这里的LRU算法不是最朴素的实现（比如每使用一次页，就把它对应的控制块移动到LRU链表的头部），<br>这里的LRU链表是变种。</p>
+<h3 id="数据冷热分离"><a href="#数据冷热分离" class="headerlink" title="数据冷热分离"></a>数据冷热分离</h3><p>为什么呢？</p>
+<p>两个原因：</p>
+<ol>
+<li>MySQL的预读策略可能将一些原本不会使用的页面误装载进了buffer pool；</li>
+<li>执行一些全表扫描的SQL时，会将大量的数据页加载进buffer pool，不过又由于这些全表扫描出的页面的本身的使用频率的非常低（全表的扫描这样的sql一般只有定期做报表的时候用到），这个时候相当于一下子就把缓冲区全用冷数据充满了，也就是说相当于清空了缓冲区。</li>
+</ol>
+<p>所以，MySQL对这里LRU链表作如下处理，</p>
+<p>将数据冷热分离，默认情况下，将LRU链表前约5&#x2F;8的数据作为热数据（也称为 young ）区域，后3&#x2F;8的数据作为冷数据（也称为 old）区域。</p>
+<p>如何对上面提出的两个问题做出优化，上面的问题的共同点在于使用一个页面之后就再不用了（aka，用完即弃，不是那种在一个时间段里频繁使用到的数据）。</p>
+<p>所以，<code>innnodb_old_blocks_time</code>这个系统配置变量其到作用，默认是1000ms。</p>
+<p>对于从磁盘加载进来的数据页，先将它加入old区域，记录下第一次加入的时间，之后再访问它的时候，如果间隔的时间小于<code>innnodb_old_blocks_time</code>, 还不会加入young区域，仍然作为冷数据处理。</p>
+<p>于是，对于那些原表扫描和预读机制的冷数据页不会影响到真正的需要缓存的热数据。</p>
+<h3 id="进一步优化"><a href="#进一步优化" class="headerlink" title="进一步优化"></a>进一步优化</h3><p>是不是对于young区域数据页每访问一次就要把它加入LRU链表的头部呢？因为这些数据可能都很热，每一次每访问一次就把要移动一次控制块节点，没必要。</p>
+<p>所以，MySQL只对于那些处于young区域后3&#x2F;4区域的节点才会在使用的时候加入young的头部。</p>
+<h2 id="刷新脏页到磁盘"><a href="#刷新脏页到磁盘" class="headerlink" title="刷新脏页到磁盘"></a>刷新脏页到磁盘</h2><p>后台线程会定期将脏页刷新到磁盘中。</p>
+<p>也就是说，这里的缓存使用方式实际上是<strong>Write-hehind（异步缓存写入）</strong>，适合多写的方式。</p>
+<p>脏页的刷新主要有3种做法：</p>
+<ol>
+<li><p>从LRU的尾部（也是从old区域）开始扫描一些页面，扫描页面的数量由<code>innodb_lru_scan_depth</code>（默认是1024）指定，如果扫描中发现是脏页就把它刷新到磁盘。</p>
+</li>
+<li><p>从flush链表刷新一部分页面到磁盘。刷新的速率取决于当时系统繁忙的程度。</p>
+</li>
+<li><p>如果用户线程想将一个磁盘页加载进buffer pool，但是此时全都是脏页了，这时就必须挑出一个脏页刷到磁盘上。</p>
+</li>
+</ol>
+<h2 id="查看当前-buffer-pool的状态-x2F-配置"><a href="#查看当前-buffer-pool的状态-x2F-配置" class="headerlink" title="查看当前 buffer pool的状态&#x2F;配置"></a>查看当前 buffer pool的状态&#x2F;配置</h2><p>查看当前状态</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> engine innodb status;</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">......</span></span><br><span class="line">BUFFER POOL AND MEMORY</span><br><span class="line">----------------------</span><br><span class="line">Total large memory allocated 137428992 # 向操作系统申请的一大块连续空间 + 全部控制块 + 缓冲页 + 碎片</span><br><span class="line">Dictionary memory allocated 410319</span><br><span class="line">Buffer pool size   8191  # 一共容纳多少缓冲页（页数）</span><br><span class="line">Free buffers       7017  # 空闲的缓冲页个数</span><br><span class="line">Database pages     1170  # LRU链表中的页的数量</span><br><span class="line">Old database pages 451   # OLD区域中的页的数量</span><br><span class="line">Modified db pages  0     # FLUSH链表中页的数量（脏页的数量）</span><br><span class="line">Pending reads      0</span><br><span class="line">Pending writes: LRU 0, flush list 0, single page 0</span><br><span class="line">Pages made young 0, not young 0</span><br><span class="line">0.00 youngs/s, 0.00 non-youngs/s</span><br><span class="line">Pages read 1039, created 131, written 137</span><br><span class="line">0.00 reads/s, 0.00 creates/s, 0.00 writes/s</span><br><span class="line">No buffer pool page gets since the last printout</span><br><span class="line">Pages read ahead 0.00/s, evicted without access 0.00/s, Random read ahead 0.00/s</span><br><span class="line">LRU len: 1170, unzip_LRU len: 0</span><br><span class="line">I/O sum[0]:cur[0], unzip sum[0]:cur[0]</span><br></pre></td></tr></table></figure>
+
+<p>具体的参看官方文档。</p>
+<p><strong>查看配置变量</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> status <span class="keyword">like</span> <span class="string">&#x27;Innodb_buffer_pool_%&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>变量解析</strong></p>
+<ul>
+<li>Innodb_buffer_pool_pages_total 参数表示缓存页面的总数量;</li>
+<li>Innodb_buffer_pool_pages_data 代表有数据的缓存页数;</li>
+<li>Innodb_buffer_pool_pages_free 代表没有使用的缓存页数;</li>
+<li>Innodb_buffer_pool_pages_misc: innodb buffer pool 缓存池中当前已经被用作管理用途或hash index而不能用作为普通数据页的数目。</li>
+<li>Innodb_buffer_pool_read_requests表示read请求的次数，</li>
+<li>Innodb_buffer_pool_reads 表示从物理磁盘中读取数据的请求次数，</li>
+</ul>
+<p>innodb buffer的read命中率 &#x3D;（Innodb_buffer_pool_read_requests -Innodb_buffer_pool_reads） &#x2F; Innodb_buffer_pool_read_requests * 100%。<br>如果这个命中率小于95%，建议增大 innodb_buffer_pool_size。</p>
+<p>如果Innodb_buffer_pool_pages_free偏大的话，证明有很多缓存没有被利用到，这时可以考虑减小缓存; 相反Innodb_buffer_pool_pages_data过大就考虑增大缓存。</p>
+<h2 id="配置-Buffer-Pool"><a href="#配置-Buffer-Pool" class="headerlink" title="配置 Buffer Pool"></a>配置 Buffer Pool</h2><h3 id="配置解析"><a href="#配置解析" class="headerlink" title="配置解析"></a>配置解析</h3><p>由于一个Buffer Pool可能很大，一次性申请、移动、管理它不适合，所以MySQL实际做法是用多个做个chunk组成一个buffer pool。</p>
+<ul>
+<li>innodb_buffer_pool_size 参数为innodb_buffer_pool的大小设置（默认是128MB）。</li>
+<li>innodb_buffer_pool_chunk_size 参数为InnoDB缓冲池块大小（默认是128MB）。</li>
+<li>innodb_buffer_pool_instances 参数为缓冲池实例的个数（默认是1）。</li>
+</ul>
+<p>注意，不同的innodb_buffer_pool 实例的链表管理、哈希管理、锁管理都是独立的，也正因此如果可以配置多个buffer pool实例可以增大并发度。</p>
+<p>配置规则：<br>*<em>innodb_buffer_pool_size &#x3D; innodb_buffer_pool_chunk_size * innodb_buffer_pool_instances <em>N</em></em></p>
+<p>其中N指的是一个buffer pool实例中有几个 chunk。</p>
+<p>（注意，如果不是整数倍，那么会调整为整数倍；又如果配置的innodb_buffer_pool_size 小于innodb_buffer_pool_chunk_size * innodb_buffer_pool_instances，那么MySQL会缩小innodb_buffer_pool_chunk_size的大小）</p>
+<p>系统默认的innodb_buffer_pool_chunk_size （8.x版本）为128M。<br>innodb_buffer_pool_instances参数的默认设置为1 最大设置为64 ，但是<br>将innodb_buffer_pool_size大小设置为1GB或更大时，此选项才生效。<br>（主要是防止有太多小的instance从而导致性能问题。）</p>
+<h3 id="配置参考"><a href="#配置参考" class="headerlink" title="配置参考"></a>配置参考</h3><p>建议设置为系统内存的50%-80%，但也不是越大越好，要根据具体项目具体分析<br>（操作系统留1G左右，mysql连接数*4M，宿主程序缓存nM）。</p>
+<table>
+<thead>
+<tr>
+<th align="left">实例内存大小（单位：MB）</th>
+<th align="left">默认Buffer Pool（单位：MB）</th>
+<th align="left">推荐最大Buffer Pool（单位：MB）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1024</td>
+<td align="left">256</td>
+<td align="left">256</td>
+</tr>
+<tr>
+<td align="left">2048</td>
+<td align="left">512</td>
+<td align="left">512</td>
+</tr>
+<tr>
+<td align="left">4096</td>
+<td align="left">1536</td>
+<td align="left">1536</td>
+</tr>
+<tr>
+<td align="left">8192</td>
+<td align="left">4608</td>
+<td align="left">4608</td>
+</tr>
+<tr>
+<td align="left">16384</td>
+<td align="left">12288</td>
+<td align="left">12288</td>
+</tr>
+<tr>
+<td align="left">24576</td>
+<td align="left">18432</td>
+<td align="left">19456</td>
+</tr>
+<tr>
+<td align="left">32768</td>
+<td align="left">24576</td>
+<td align="left">25600</td>
+</tr>
+<tr>
+<td align="left">49152</td>
+<td align="left">36864</td>
+<td align="left">38912</td>
+</tr>
+<tr>
+<td align="left">65536</td>
+<td align="left">49152</td>
+<td align="left">52224</td>
+</tr>
+<tr>
+<td align="left">98304</td>
+<td align="left">73728</td>
+<td align="left">77824</td>
+</tr>
+<tr>
+<td align="left">131072</td>
+<td align="left">98304</td>
+<td align="left">104448</td>
+</tr>
+<tr>
+<td align="left">196608</td>
+<td align="left">147456</td>
+<td align="left">156672</td>
+</tr>
+<tr>
+<td align="left">229376</td>
+<td align="left">172032</td>
+<td align="left">183296</td>
+</tr>
+<tr>
+<td align="left">262144</td>
+<td align="left">196608</td>
+<td align="left">208896</td>
+</tr>
+</tbody></table>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><blockquote>
+<p>《MySQL是怎样运行的》</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/frankcui/p/15227775.html">https://www.cnblogs.com/frankcui/p/15227775.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" class="post-title-link" itemprop="url">MySQL系列——存储引擎</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-10-27 15:21:44 / 修改时间：16:16:59" itemprop="dateCreated datePublished" datetime="2021-10-27T15:21:44+08:00">2021-10-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SongyangJi">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | JsyBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/" class="post-title-link" itemprop="url">MySQL系列——索引</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-10-27 14:08:19 / 修改时间：16:30:02" itemprop="dateCreated datePublished" datetime="2021-10-27T14:08:19+08:00">2021-10-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="索引的数据结构"><a href="#索引的数据结构" class="headerlink" title="索引的数据结构"></a>索引的数据结构</h1><h2 id="B树、B-树"><a href="#B树、B-树" class="headerlink" title="B树、B+树"></a>B树、B+树</h2><blockquote>
+<p>关于 B树、B+树本身的介绍，不是本文的重点，之后也许会专门写一篇文章详细介绍，</p>
+</blockquote>
+<p>这里直接就贴出wiki的链接了。</p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/B%E6%A0%91">B树</a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/B%2B%E6%A0%91">B+树</a></p>
+<ul>
+<li><p>为什么不使用普通的平衡二叉树（如RB树、AVL树）？</p>
+<p>MySQL的数据是存储在磁盘文件中的，查询处理数据时，需要先把磁盘中的数据加载到内存中，<strong>磁盘IO 操作非常耗时</strong>，所以我们优化的重点就是尽量减少磁盘 IO 操作。<strong>访问二叉树的每个节点就会发生一次IO，如果想要减少磁盘IO操作，就需要尽量降低树的高度</strong>。那如何降低树的高度呢？</p>
+<p>B树的特点就是一个多叉的平衡树，特点就是<strong>矮胖</strong>（相比于普通平衡二叉树的高瘦），在相同数据规模下访问节点的次数更少，换句话说，磁盘IO的开销更少。</p>
+</li>
+</ul>
+<p>如下图，红色的是主键，黄色的其余的数据，蓝色的是指向子节点的指针。</p>
+<p><img src="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/btree.png" alt="B树"></p>
+<ul>
+<li><p>为什么Innodb引擎使用B+树而不是B树？</p>
+<ol>
+<li><p>B树不支持范围查询的快速查找，你想想这么一个情况如果我们想要查找10和35之间的数据，查找到15之后，需要回到根节点重新遍历查找，需要从根节点进行多次遍历，查询效率有待提高。</p>
+</li>
+<li><p>如果data存储的是行记录，行的大小随着列数的增多，所占空间会变大。这时，<strong>一个页中可存储的数据量就会变少，树相应就会变高</strong>，磁盘IO次数就会变大。</p>
+</li>
+</ol>
+<p>B+树和B树最主要的区别在于<strong>非叶子节点是否存储数据</strong>的问题</p>
+<ul>
+<li>B树：非叶子节点和叶子节点都会存储数据。</li>
+<li>B+树：<strong>只有叶子节点才会存储数据，非叶子节点至存储键值</strong>。叶子节点之间使用双向指针连接，<strong>最底层的叶子节点形成了一个双向有序链表</strong>。</li>
+</ul>
+<p>当然，非要讲B+树和B树的缺点，就是每一次查询行数据，都一定要查询到叶子节点，不过这个缺点和它的优势相比可以忽略了。</p>
+</li>
+</ul>
+<p><img src="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/b+tree.png" alt="B+树"></p>
+<h2 id="MyISAM引擎中的索引"><a href="#MyISAM引擎中的索引" class="headerlink" title="MyISAM引擎中的索引"></a>MyISAM引擎中的索引</h2><p>MyISAM的数据文件和索引文件是分开存储的。MyISAM使用B+树构建索引树时，<strong>叶子节点中存储的键值为索引列的值，数据为索引所在行的磁盘地址</strong>。</p>
+<p><strong>在 MyISAM 中,辅助索引和主键索引的结构是一样的，没有任何区别</strong>。叶子节点的数据存储的都是行记录的磁盘地址。只是主键索引的键值是唯一的，而辅助索引的键值可以重复。</p>
+<p><img src="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/myisam.png" alt="MyISAM主键索引"></p>
+<p>MyISAM通过key_buffer<strong>把索引先缓存到内存中</strong>，当需要访问数据时（通过索引访问数据），在内存中直接搜索索引，然后<strong>通过索引找到磁盘相应数据</strong>。</p>
+<p>这也就是为什么索引不在key buffer命中时，速度慢的原因。</p>
+<h2 id="InnoDB引擎中的索引"><a href="#InnoDB引擎中的索引" class="headerlink" title="InnoDB引擎中的索引"></a>InnoDB引擎中的索引</h2><blockquote>
+<p>首先需要澄清的一点是，MySQL 跟 B+ 树没有直接的关系，<strong>真正与 B+ 树有关系的是 MySQL 的默认存储引擎 InnoDB</strong>，MySQL 中存储引擎的主要作用是负责数据的存储和提取，除了 InnoDB 之外，MySQL 中也支持 MyISAM 作为表的底层存储引擎。</p>
+<p><del>不过本文不介绍xianMyISAM，只介绍 InnoDB，会在介绍MySQL中的存储引擎文章中介绍 MyISAM引擎以及其索引特点。</del></p>
+</blockquote>
+<h3 id="主键索引（聚簇索引）"><a href="#主键索引（聚簇索引）" class="headerlink" title="主键索引（聚簇索引）"></a>主键索引（聚簇索引）</h3><p>通俗点讲：</p>
+<p>聚簇索引的意思就是：将数据存储与索引放到了一块，找到索引也就找到了数据。</p>
+<p>每个InnoDB表都有一个聚簇索引 ，<strong>聚簇索引使用B+树构建</strong>，<strong>叶子节点存储的数据是整行记录</strong>。一般情况下，<strong>聚簇索引基本上等同于主键索引</strong>，当一个表没有创建主键索引时，InnoDB会自动创建一个ROWID字段来构建聚簇索引。</p>
+<p>InnoDB创建索引的具体规则如下：</p>
+<ol>
+<li>在表上定义主键PRIMARY KEY，InnoDB将<strong>主键</strong>用作聚簇索引。</li>
+<li>如果表没有定义主键，InnoDB会选择<strong>第一个不为NULL的唯一索引列</strong>用作聚簇索引。</li>
+<li>如果以上两个都没有，InnoDB 会使用一个6 字节长整型的隐式字段 <strong>ROWID字段</strong>构建聚簇索引。该ROWID字段会在插入新行时自动递增。</li>
+</ol>
+<p> 在检索时，InnoDB使用此主键值在聚簇索引中搜索行记录。</p>
+<p><img src="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/innodb1.png" alt="InnoDB主键索引"></p>
+<h3 id="二级索引（辅助索引）"><a href="#二级索引（辅助索引）" class="headerlink" title="二级索引（辅助索引）"></a>二级索引（辅助索引）</h3><p>除聚簇索引之外的所有索引都称为辅助索引。在中InnoDB，<strong>辅助索引中的叶子节点存储的数据是该行的主键值</strong>。</p>
+<p><strong>辅助索引也使用B+树构建</strong>。</p>
+<p><img src="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/innodb2.png" alt="InnoDB辅助索引"></p>
+<p>如何使用二级索引来查询行数据呢？</p>
+<p>第一步，在二级索引里根据索引列查询到主键值。</p>
+<p>第二步，根据主键值再到聚簇索引里查询数据行。</p>
+<p>这个操作就叫做<strong>回表</strong>。</p>
+<p><img src="/2021/10/27/MySQL%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/rolltable.png" alt="回表"></p>
+<h2 id="聚簇索引-vs-非聚簇索引"><a href="#聚簇索引-vs-非聚簇索引" class="headerlink" title="聚簇索引 vs 非聚簇索引"></a>聚簇索引 vs 非聚簇索引</h2><h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
+<li>由于行数据和叶子节点存储在一起，同一页中会有多条行数据，访问同一数据页不同行记录时，已经把页加载到了Buffer中，再次访问的时候，会在内存中完成访问，不必访问磁盘。</li>
+<li>辅助索引使用主键作为”指针”而不是使用地址值作为指针的好处是，<strong>减少了当出现行移动或者数据页分裂时辅助索引的维护工作</strong>。也就是聚簇索引这棵树由于页分裂导致的树的结构的调整，不会牵扯到辅助索引这个树的调整。</li>
+<li><strong>可以把相关数据保存在一起</strong>。例如实现电子邮箱时，可以根据用户 ID 来聚集数据，这样只需要从磁盘读取少数的数据页就能获取某个用户的全部邮件。如果没有使用聚簇索引，则每封邮件都可能导致一次磁盘 I&#x2F;O。</li>
+</ul>
+<h3 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h3><ol>
+<li><p><strong>维护索引很昂贵，特别是插入新行或者主键被更新导至要分页(page split)的时候</strong>。建议在大量插入新行后，选在负载较低的时间段，通过OPTIMIZE TABLE优化表，因为必须被移动的行数据可能造成碎片。使用独享表空间可以弱化碎片。</p>
+</li>
+<li><p>如果主键比较大的话，那辅助索引将会变的更大，因为<strong>辅助索引的叶子存储的是主键值；过长的主键值，会导致非叶子节点占用占用更多的物理空间</strong>。</p>
+</li>
+</ol>
+<h1 id="使用索引的一些注意点"><a href="#使用索引的一些注意点" class="headerlink" title="使用索引的一些注意点"></a>使用索引的一些注意点</h1><h2 id="最左匹配原则"><a href="#最左匹配原则" class="headerlink" title="最左匹配原则"></a>最左匹配原则</h2><p><strong>组合索引的最左前缀匹配原则：使用组合索引查询时，mysql会一直向右匹配直至遇到范围查询(&gt;、&lt;、between、like)就停止匹配。</strong></p>
+<p>最左前缀匹配原则和联合索引的<strong>索引存储结构和检索方式</strong>是有关系的。</p>
+<p>说白了，就是B树的节点的键进行比较的时候比较原则。</p>
+<p>比方说，创建索引了<code>index_abc(a,b,c)</code>，</p>
+<p>在组合索引树中，最底层的叶子节点按照第一列按a字段从左到右递增排列，但是b列和c列是相对无序的——只有在a相同的时候，b才是有序的。同理，c列只能在a，b两列相等的情况下小范围内递增有序。</p>
+<h2 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h2><p>覆盖索引并不是说是索引结构，<strong>覆盖索引是一种很常用的优化手段</strong>。</p>
+<p>因为在使用辅助索引的时候，我们只可以拿<strong>到主键值和建立的辅助索引列</strong>，相当于获取数据还需要再根据主键查询主键索引再获取到数据。但是试想下这么一种情况，，那是不是意味着我们查询到组合索引的叶子节点就可以直接返回了，而<strong>不需要回表</strong>。这种情况就是覆盖索引。</p>
+<p>如何知道是否使用了覆盖索引呢？</p>
+<p>explain执行计划，查询Extra列，如果是Using index，表明确实使用了覆盖索引，或者说没有回表操作。</p>
+<h2 id="合理建立联合索引"><a href="#合理建立联合索引" class="headerlink" title="合理建立联合索引"></a>合理建立联合索引</h2><p>联合索引，在建立索引的时候，尽量在多个单列索引上判断下是否可以使用联合索引。联合索引的使用<strong>不仅可以节省空间</strong>，还可以更容易的使用到索引覆盖。</p>
+<p>比如联合索引（a_b_c），是不是等于有了索引：a，a_b，a_b_c三个索引，这样是不是节省了空间，当然节省的空间并不是三倍于（a，a_b，a_b_c）三个索引。</p>
+<p>总之：</p>
+<ol>
+<li>考虑当前是否已经存在多个可以合并的单列索引，如果有，那么<strong>将当前多个单列索引创建为一个联合索引</strong>。</li>
+<li>当前索引<strong>存在频繁使用作为返回字段的列</strong>，这个时候就可以考虑当前列是否可以加入到当前已经存在索引上，使其查询语句可以使用到覆盖索引。</li>
+</ol>
+<h1 id="索引的创建、删除、使用"><a href="#索引的创建、删除、使用" class="headerlink" title="索引的创建、删除、使用"></a>索引的创建、删除、使用</h1><h2 id="索引的创建"><a href="#索引的创建" class="headerlink" title="索引的创建"></a>索引的创建</h2><ul>
+<li><p>建表时创建</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> 表名（</span><br><span class="line">......</span><br><span class="line">[<span class="keyword">UNIQUE</span><span class="operator">|</span>FULLTEXT<span class="operator">|</span>SPATIAL] INDEX<span class="operator">|</span>KEY </span><br><span class="line">[索引名](字段名 [长度] [<span class="keyword">ASC</span> <span class="operator">|</span> <span class="keyword">DESC</span>]...) [<span class="keyword">USING</span> &#123;BTREE<span class="operator">|</span>HASH&#125;]</span><br><span class="line">）</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>UNIQUE: 可选。表示索引为唯一性索引；FULLTEXT:可选。表示索引为全文索引；SPATIAL:可选。表示索引为空间索引。</li>
+<li>INDEX和KEY: 用于指定字段为索引，两者选择其中之一就可以了，作用是一样的。</li>
+<li>索引名: 可选。给创建的索引取一个新名称。</li>
+<li>字段名: 指定索引对应的字段的名称，该字段必须是前面定义好的字段。</li>
+<li>长度: 可选。指索引的长度，必须是字符串类型才可以使用。</li>
+<li>ASC: 可选。表示升序排列、DESC:可选。表示降序排列。<br>注：索引方法默认使用B+TREE。</li>
+</ul>
+</li>
+<li><p>建表后创建</p>
+<p>第一种方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE 表名 ADD [UNIQUE|FULLTEXT|SPATIAL] INDEX|KEY [索引名] (字段名[(长度)] [ASC|DESC]) [USING 索引方法]；</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> mytable <span class="keyword">ADD</span> INDEX idx_c1c2c3 (mycol1, mycol2, mycol3);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>第二种方法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE [UNIQUE|FULLTEXT|SPATIAL] INDEX 索引名 ON 表名(字段名) [USING 索引方法]；</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> INDEX idx_c1c2c3 <span class="keyword">ON</span> mytable(mycol1, mycol2, mycol3);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="查看与删除索引"><a href="#查看与删除索引" class="headerlink" title="查看与删除索引"></a>查看与删除索引</h2><ul>
+<li>查看<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> index <span class="keyword">from</span> 表名;</span><br></pre></td></tr></table></figure></li>
+<li>删除<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> INDEX 索引名 <span class="keyword">ON</span> 表名</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> 表名 <span class="keyword">DROP</span> INDEX 索引名</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="有关索引的补充了解"><a href="#有关索引的补充了解" class="headerlink" title="有关索引的补充了解"></a>有关索引的补充了解</h1><h2 id="自适应哈希索引"><a href="#自适应哈希索引" class="headerlink" title="自适应哈希索引"></a>自适应哈希索引</h2><p><strong>自适应hash索引（Adaptive Hash Index）</strong><br>是InnoDB存储引擎中的内存结构的组成部分。</p>
+<p><strong>InnoDB存储引擎会自动根据访问的频率和模式来自动的为某些热点数据建立hash索引</strong>。</p>
+<p>InnoDB存储引擎会监控对表上各索引页的查询，如果观察到建立hash索引可以提高查询速度，则自动建立hash索引。这就是自适应哈希索引（Adaptive Hash Index，AHI）<br><strong>AHI是通过缓存池的B+树页构造而来</strong>，因此建立的速度很快，而且不需要对整张表构建hash索引。</p>
+<h2 id="索引下推（IPC）"><a href="#索引下推（IPC）" class="headerlink" title="索引下推（IPC）"></a>索引下推（IPC）</h2><p>索引条件下推 (ICP) 是 MySQL 5.6.2 里程碑版本中的新优化器功能之一。</p>
+<p><strong>Index Condition Pushdown 的目标是将尽可能多的条件处理（主要是 WHERE 子句）从服务器层转移到存储引擎层</strong>。</p>
+<p>举个具体的例子吧，</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> person (</span><br><span class="line">  personid <span class="type">INTEGER</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">  firstname <span class="type">CHAR</span>(<span class="number">20</span>),</span><br><span class="line">  lastname <span class="type">CHAR</span>(<span class="number">20</span>),</span><br><span class="line">  postalcode <span class="type">INTEGER</span>,</span><br><span class="line">  age <span class="type">INTEGER</span>,</span><br><span class="line">  address <span class="type">CHAR</span>(<span class="number">50</span>),</span><br><span class="line">  KEY k1（postalcode，age）</span><br><span class="line"> ）ENGINE<span class="operator">=</span>InnoDB;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果有下面这条sql语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> lastname, firstname <span class="keyword">FROM</span> person</span><br><span class="line"><span class="keyword">WHERE</span> postalcode <span class="keyword">BETWEEN</span> <span class="number">5000</span> <span class="keyword">AND</span> <span class="number">5500</span> <span class="keyword">AND</span> age <span class="keyword">BETWEEN</span> <span class="number">21</span> <span class="keyword">AND</span> <span class="number">22</span>;</span><br></pre></td></tr></table></figure>
+
+<p>根据最左匹配原则，只能使用到索引k1的postalcode列，age列无法使用（因为postalcode是一个范围查询）</p>
+<p>如果，没有IPC, 那么怎么处理这条sql呢？</p>
+<p>服务器层将sql推给存储引擎层，引擎层只能使用索引的第一个列查询一部分数据（比如说由10000条），</p>
+<p>然后将这10000条数据返回给存储引擎层，然后服务器层再根据第二个条件进行过滤，最终留下1000条数据。</p>
+<p>有了IPC之后呢，服务器层可以直接把where条件下推给存储引擎层，然后存储引擎可以直接查出这1000条数据，然后再返回给服务器层。</p>
+<blockquote>
+<p>参考链接</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://olavsandstaa.blogspot.com/2011/04/mysql-56-index-condition-pushdown.html">MySQL 5.6：索引条件下推</a></p>
+<blockquote>
+<p>参考链接</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35190492/article/details/109257302">一文搞懂MySQL索引所有知识点（建议收藏）</a></p>
+<p><a target="_blank" rel="noopener" href="https://draveness.me/whys-the-design-mysql-b-plus-tree/">为什么 MySQL 使用 B+ 树</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fa8192853184">聚簇索引与非聚簇索引</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1354,839 +2107,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/" class="post-title-link" itemprop="url">Linux进程调度那些事</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-17 01:00:12" itemprop="dateCreated datePublished" datetime="2021-10-17T01:00:12+08:00">2021-10-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-10-20 10:50:27" itemprop="dateModified" datetime="2021-10-20T10:50:27+08:00">2021-10-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Linux进程调度的顶层设计"><a href="#Linux进程调度的顶层设计" class="headerlink" title="Linux进程调度的顶层设计"></a>Linux进程调度的顶层设计</h1><p>进程的调度有多种算法。常见的有：</p>
-<ul>
-<li>先来先服务（FIFO）</li>
-<li>最短作业优先调度（Shortest-Job-First SJF）</li>
-<li>优先级调度（Priority-Scheduling）</li>
-<li>轮转调度（Round-Robin RR）</li>
-</ul>
-<p>上述的调度算法在一般的操作系统教科书中都有讲解，不再赘述。</p>
-<p>如何合理组织调度算法和调度类呢？</p>
-<p>Linux 的进程调度器是以模块化的方式来提供的，这种模块化的结构称之为<strong>调度器类</strong></p>
-<h2 id="调度类与调度策略-Scheduling-classes-and-policies"><a href="#调度类与调度策略-Scheduling-classes-and-policies" class="headerlink" title="调度类与调度策略 (Scheduling classes and policies)"></a>调度类与调度策略 (Scheduling classes and policies)</h2><p><strong>每一个调度器类都有一个优先级别，调度器会依次从最高的优先级别的调度器类中选择一个进程去执行。</strong></p>
-<p><strong>不同优先级的调度器类中的进程的调度互不干扰，依次属于不同的调度梯队。</strong></p>
-<p>进程调度的入口是函数<code>schedule()</code>,定义在<code>kernel/sched.c</code>中，其中它有一个关键的函数<code>pick_next_task()</code></p>
-<p>也就是挑选下一个可以执行的进程（task）。</p>
-<p>伪代码如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pick_next_task &#123;</span><br><span class="line">   scheduling_class = sched_class_highest; <span class="comment">// 这是用链表组织起来的 调度器类，优先级别从高到低</span></span><br><span class="line">   <span class="keyword">for</span>(;;) &#123;</span><br><span class="line">       p = scheduling_class-&gt;pick_next_task; <span class="comment">// 从当前最高级别的调度器类中选择一个任务执行，</span></span><br><span class="line">       <span class="keyword">if</span>(p) &#123; <span class="comment">// 如果不为空，直接返回</span></span><br><span class="line">           <span class="keyword">return</span> p;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">// 如果为空，说明此级别的调度器类已经没有可执行的任务了，那就去看次优先的调度器类</span></span><br><span class="line">       scheduling_class = scheduling_class-&gt;next;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Linux kernel每当需要挑选一个新的task在某个local CPU上运行的时候，就会调用schedule()函数，进而调到pick_next_task()来找到合适的next task。pick_next_task()会利用for_each_class()宏来遍历调度类别链表，先找到有task想要运行的最高优先级的调度类别。等找到task之后，就会返回给函数调用者，让这个task在local CPU上运行。在Idle class里面总是会有一个task的，所以如果没有任何其他task要运行了，就直接执行Idle class里的这个task即可。</p>
-</blockquote>
-<p><strong>linux实现了很多种”scheduling class”（调度类别），每个class都可以包含一些调度策略。</strong></p>
-<p>调度类以及其拥有的调度策略如下，优先级别从低到高：</p>
-<ol>
-<li><p><strong>Stop</strong> schedulding class</p>
-<ul>
-<li>无实现的调度策略</li>
-</ul>
-</li>
-<li><p><strong>Deadline</strong> scheduling class</p>
-<ul>
-<li>SCHED_DEADLINE</li>
-</ul>
-</li>
-<li><p><strong>Realtime</strong> scheduling class</p>
-<ul>
-<li>SCHED_FIFO</li>
-<li>SCHED_RR</li>
-</ul>
-</li>
-<li><p><strong>Completely fair</strong> scheduling class</p>
-<ul>
-<li>SCHED_NORMAL</li>
-<li>SCHEDULE_BATCH</li>
-<li>SCHED_IDLE</li>
-</ul>
-</li>
-<li><p><strong>Idle</strong> scheduling class</p>
-<ul>
-<li>无实现的调度策略</li>
-</ul>
-</li>
-</ol>
-<p>下面做一点详细讲解。</p>
-<ul>
-<li><p><strong>Stop</strong> schedulding class是一个特殊的类别，只在kernel内部使用。其实并没有实现任何针对它的调度策略，也不会有任何用户进程采用这种调度类别。Stop class其实是用作一种强制CPU把手头其他任何工作都停下来从而执行某种特殊任务的机制。因为这是最高优先级的class，因此可以抢占任何其他类别，却不会被任何其他任务抢占。一般是一个CPU想要把另一个CPU停下来执行某些特定功能的时候使用，因此只有SMP系统里才有。Stop class会创建一个per-CPU的内核线程（kthread），名为migration&#x2F;N，这里N就是CPU编号。这个类别主要用在kernel的task migration, CPU hotplug, RCU, ftrace, clock event等场景。</p>
-</li>
-<li><p><strong>Deadline</strong> scheduling class只制定了唯一一条调度策略，名为SCHED_DEADLINE，它用在系统里最高优先级的用户进程上。主要是针对那些有明确截止时间的任务，例如视频编码、解码任务。在这种调度策略之下，截止时间最近的任务拥有最高优先级。可以使用sched_setattr()系统调用来把某个进程设置为SCHED_DEADLINE调度策略，同时需要传递三个参数进去：运行时间，截止时间，周期。</p>
-</li>
-<li><p><strong>Realtime (简称RT) scheduling class</strong>，<strong>主要用在一些耗时很短、对延迟很敏感的task之上</strong>，例如IRQ thread。这是一个拥有固定优先级的类别，高优先级的task都会在低优先级的task之前调度。这个类别里实现了两种调度策略：SCHED_FIFO和SCHED_RR。SCHED_FIFO策略会让一个task持续运行直到它放弃占用CPU，例如它block在某个资源上，或者完成了执行。而SCHED_RR（round robin）策略则会对task持续执行的一个时间片限制最大值，如果task持续占用CPU超过这个时长，仍然没有block住（也就是仍然期望继续占用CPU），调度器就会把它放到拥有相同优先级的round-robin队列的尾部，并换一个task进来执行。这些采用实时策略的task可以使用1（最低）到99（最高）的优先级。</p>
-</li>
-<li><p><strong>CFS</strong> （completely fair scheduling）class则<strong>包含了绝大多数的用户进程</strong>。CFS实现了三类调度策略：SCHED_NORMAL，SCHEDULE_BATCH，SCHED_IDLE。采用这三者之中任意一种策略的话，进程就只有在没有任何deadline和realtime class的进程在等待执行的情况下才有机会被调度到（当然缺省来说调度器其实保留了5%的CPU时间专用于CFS task）。scheduler会跟踪各个task的vruntime (virtual runtime)，包括那些runnable和blocked状态下的task。一个task的vrtuntime越小，它就越应该优先占用处理器的时间。相应地，CFS会把这些vruntime很低的进程向调度队列的前端移动。<br><strong>这也是本篇文章的重点。</strong></p>
-<p><strong>SCHED_NORMAL调度策略（在user space的名字叫做SCHED_OTHER）是用在Linux环境里运行的绝大多数task上的</strong>，例如shell。SCHED_BATCH调度策略则主要用在那些非交互式的任务所需要的批量处理上面，通常这些任务执行中需要一段时间不被打断，因此通常都会在完成所有SCHED_NORMAL工作之后再进行调度切换。SCHED_IDLE调度策略则专用于系统里的低优先级task，他们仅在系统里没有什么需要运行的时候才会执行。尽管实际上说哪怕有其他一些SCHED_NORMAL task，其实SCHED_IDLE task还是会分到一些时间运行的（对于一个nice值为0的task来说大概会有1.4%的时间）。这个调度策略目前用到的很少，有人在试着改进它的工作方式。</p>
-</li>
-<li><p><strong>Idle</strong> scheduling class（不要跟SCHED_IDLE的调度策略弄混了）。这是最低优先级的调度类别。就跟Stop class类似，Idle class其实不会用在任何用户进程之上，因此并没有实现什么调度策略。它其实仅仅是用在名为swapper&#x2F;N（N是CPU序号）的一系列per-CPU kthread上。这些kthreads也被称为”idle thread”，用户空间是看不到的。这些线程负责让系统更加省电，主要是通过在没什么事情要做的时候把CPU放到一些deep idle状态来做到的。</p>
-</li>
-</ul>
-<p>在kernel代码里面，scheduling class是用struct sched_class来代表的：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sched_class</span> &#123;</span></span><br><span class="line"><span class="type">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">sched_class</span> *<span class="title">next</span>;</span></span><br><span class="line"><span class="type">void</span> (*enqueue_task) (<span class="keyword">struct</span> rq *rq, <span class="keyword">struct</span> task_struct *p, <span class="type">int</span> flags);</span><br><span class="line"><span class="type">void</span> (*dequeue_task) (<span class="keyword">struct</span> rq *rq, <span class="keyword">struct</span> task_struct *p, <span class="type">int</span> flags);</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *(*<span class="title">pick_next_task</span>) (<span class="keyword">struct</span> <span class="title">rq</span> *<span class="title">rq</span>, <span class="keyword">struct</span> <span class="title">task_struct</span> *<span class="title">prev</span>, </span></span><br><span class="line"><span class="class">		    <span class="keyword">struct</span> <span class="title">rq_flags</span> *<span class="title">rf</span>);</span></span><br><span class="line"><span class="comment">/* many fields omitted */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>这个结构里主要放了一些指向class相关实现的函数指针（回调函数），供scheduler core调用，从而能让scheduler核心代码不用包含任何class相关的代码。这些调度类别放在一个按照优先级排序的单项链表里面，第一项是Stop scheduling class（最高优先级），最后一项是Idle class（最低优先级）。</p>
-<p><img src="/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/scheding_class.png" alt="scheding_class"></p>
-<h1 id="CFS（普通进程的调度类）"><a href="#CFS（普通进程的调度类）" class="headerlink" title="CFS（普通进程的调度类）"></a>CFS（普通进程的调度类）</h1><h2 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h2><p>CFS——完全公平调度，关于的详细的解析这里就不展开来讲了，可以参看《Linux Kernel Development》这本书，这里只调出关于它的一些设计的关键之处，优秀的调度理念来讲。</p>
-<p>CFS的出发点基于一个简单的理念：进程调度的效果应该如果系统具备一个理想的完美多任务处理器。在这种系统中，<strong>每个进程都能获得 1&#x2F;n 的处理器时间</strong>，n 指可运行的进程数。<br>同时，在任何可度量时间内，每个进程都可以得到相同多的运行时间。<br>当然上述的是理想的模型，实现中当然有贴合实际的处理。</p>
-<p>CFS的做法是: <strong>允许每个进程运行一段时间，循环轮转，选择运行最少时间（实际上是虚拟的运行时间）的进程</strong>。</p>
-<h2 id="关键问题"><a href="#关键问题" class="headerlink" title="关键问题"></a>关键问题</h2><ol>
-<li><p><strong>时间片的长度如何分配？</strong><br> <strong>CFS并没有像RR一样固定的分配一个时间片，也不是根据进程的优先级分配长度不一的时间片。而是根据系统当时的负载情况，为每一个任务分配一个比例的CPU处理时间。</strong>具体的，CFS没有使用离散的时间片，而是采用<strong>目标延迟</strong>（target latency），这是每个可执行任务应当运行一次的时间间隔。</p>
-<p> <strong>根据目标延迟，按比例分配CPU时间。</strong></p>
-<p> 当然，这个目标延迟有一个默认值、最小值，当然随着系统负载的提高，这个目标延迟还可以延长。</p>
-</li>
-<li><p><strong>优先级如何影响调度？</strong></p>
-<p> CFS没有直接分配优先级（对于普通进程而言）。它通过每个任务的<strong>虚拟运行时间（vruntime）</strong>，进而每个任务运行多久，虚拟运行时间和基于<strong>优先级（nice值）</strong>的衰减因子有关。</p>
-<p> 进程的优先级是通过对它的nice值（取值范围-20到+19）加上120而得到的。</p>
-<p> 进程的优先级主要是用来调整进程的权重（weight，会影响vruntime增加速率）的，进而会影响到进程的vruntime。<strong>nice值越低，优先级就越高</strong>。task的权重因此也会更加高一些，相应的vruntime则会在task执行时增长得更加缓慢。</p>
-</li>
-<li><p><strong>如何调度IO密集型、CPU密集型任务？</strong></p>
-<p>首先，IO密集型任务需要更频繁的调度，但是每次需要的CPU时间片很短；而CPU密集型任务需要相对更长的时间片，但是调度频率可以较低。</p>
-<p>如何解决？显然IO型任务的<strong>vruntime</strong>是比较低的（假定nice值都相同），所以它因为vruntime很小，很快可以得到再次调度，而CPU密集型任务只要得到处理器资源，就可以用完分配给它的时间片。</p>
-<p>所以，IO型任务的vruntime总是偏小，所以”优先级“比CPU型任务更高，总是可以得到及时调度。</p>
-<p><strong>不过，精妙的是，这样的优先级既不是用户显式指定的，也不是os通过某种方式动态调整，完全是根据进程的自身的行为动态调整的。</strong></p>
-</li>
-<li><p><strong>可运行的进程以何种数据结构组织？</strong><br>在CFS调度类中，所有可执行的任务都放置在红黑树中，键值正是 <strong>vruntime</strong>，如下图。<br><img src="/2021/10/17/Linux%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/rb-tree.png" alt="红黑树"></p>
-</li>
-</ol>
-<p>当进程从可执态到阻塞态时，会从红黑树中删除，当再次可调度的时候，又会加入红黑树。</p>
-<h1 id="实时进程的调度类"><a href="#实时进程的调度类" class="headerlink" title="实时进程的调度类"></a>实时进程的调度类</h1><p>实时进程的调度类优先级比CFS调度类要高。</p>
-<p>Linux提供两种实时调度策略，FIFO和RR。关于这两种调度策略比较简单，教科书上也都有就不讲了。</p>
-<h1 id="与调度相关的系统调用"><a href="#与调度相关的系统调用" class="headerlink" title="与调度相关的系统调用"></a>与调度相关的系统调用</h1><h2 id="chrt"><a href="#chrt" class="headerlink" title="chrt"></a>chrt</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chrt --help</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ chrt --help</span><br><span class="line">显示或更改某个进程的实时调度属性。</span><br><span class="line"></span><br><span class="line">设置策略：</span><br><span class="line"> chrt [选项] &lt;优先级&gt; &lt;命令&gt; [&lt;参数&gt;...]</span><br><span class="line"> chrt [选项] --pid &lt;优先级&gt; &lt;pid&gt;</span><br><span class="line"></span><br><span class="line">获取策略</span><br><span class="line"> chrt [选项] -p &lt;pid&gt;</span><br><span class="line"></span><br><span class="line">策略选项：</span><br><span class="line"> -b, --batch          将策略设置为 SCHED_BATCH</span><br><span class="line"> -d, --deadline       将策略设置为 SCHED_DEADLINE</span><br><span class="line"> -f, --fifo           将策略设置为 SCHED_FIFO</span><br><span class="line"> -i, --idle           将策略设置为 SCHED_IDLE</span><br><span class="line"> -o, --other          将策略设置为 SCHED_OTHER</span><br><span class="line"> -r, --rr             将策略设置为 SCHED_RR (默认)</span><br><span class="line"></span><br><span class="line">调度选项：</span><br><span class="line"> -R, --reset-on-fork       为 FIFO 或 RR 设置 SCHED_RESET_ON_FORK</span><br><span class="line"> -T, --sched-runtime &lt;ns&gt;  DEADLINE 的运行时参数</span><br><span class="line"> -P, --sched-period &lt;ns&gt;  DEADLINE 的周期参数</span><br><span class="line"> -D, --sched-deadline &lt;ns&gt; DEADLINE 的截止时间参数</span><br><span class="line"></span><br><span class="line">其他选项：</span><br><span class="line"> -a, --all-tasks      对指定 pid 的所有任务(线程) 操作</span><br><span class="line"> -m, --max            显示最小和最大有效优先级</span><br><span class="line"> -p, --pid            对指定且存在的 pid 操作</span><br><span class="line"> -v, --verbose        显示状态信息</span><br><span class="line"></span><br><span class="line"> -h, --help           display this help</span><br><span class="line"> -V, --version        display version</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>查询各调度策略的优先级：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ chrt -m</span><br><span class="line">SCHED_OTHER 最小/最大优先级	: 0/0</span><br><span class="line">SCHED_FIFO 最小/最大优先级	: 1/99</span><br><span class="line">SCHED_RR 最小/最大优先级	: 1/99</span><br><span class="line">SCHED_BATCH 最小/最大优先级	: 0/0</span><br><span class="line">SCHED_IDLE 最小/最大优先级	: 0/0</span><br><span class="line">SCHED_DEADLINE 最小/最大优先级	: 0/0</span><br><span class="line">songyangji@SongyangJi-Ubuntu-DeskStop:~$ </span><br></pre></td></tr></table></figure>
-
-
-
-
-<h2 id="taskset"><a href="#taskset" class="headerlink" title="taskset"></a>taskset</h2><p><strong>CPU 亲和性</strong>是一个调度程序属性，它将进程“绑定”到系统上的一组给定 CPU。</p>
-<p>通过 <code>taskset</code> 命令可将某个进程与某个CPU核心绑定，使得其仅在与之绑定的CPU核心上运行。</p>
-<p>不过需要注意的是，这只能此进程绑定到某个cpu核心上，但不是说这个cpu核心只能被这个进程使用，其他进程可以正常使用。(<code>cpuset</code>可以，不过我们可以在自己的程序中控制cpu核心池的调度)</p>
-<p>功能:显示或更改某个进程的 CPU 亲和力。</p>
-<p>用法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskset [选项] [掩码 | cpu列表] [pid|命令 [参数...]]</span><br></pre></td></tr></table></figure>
-
-
-
-<p>例如，指定某个进程在cpu核心号为0、1上运行:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskset -c 0,1 &#123;shell_cmd&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>《Operating System Concepts》</p>
-<p>《Linux Kernel Development》</p>
-<p><a target="_blank" rel="noopener" href="https://lwn.net/Articles/805317/">Fixing SCHED_IDLE</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/15/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/15/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Java线程池原理与使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-15 15:09:03" itemprop="dateCreated datePublished" datetime="2021-10-15T15:09:03+08:00">2021-10-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-02 22:44:06" itemprop="dateModified" datetime="2022-09-02T22:44:06+08:00">2022-09-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JUC/" itemprop="url" rel="index"><span itemprop="name">JUC</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="使用线程池的好处"><a href="#使用线程池的好处" class="headerlink" title="使用线程池的好处"></a>使用线程池的好处</h1><p>首先，回答这个问题，要先回答为什么要使用多线程。<br>其次再是为什么要使用线程池。<br>使用多线程的好处及必要性就不说了。</p>
-<p><strong>使用线程池的好处：</strong></p>
-<ol>
-<li>提高响应速度：通过复用线程可以消除线程创建销毁带来的延迟，提示响应速度</li>
-<li>降低资源消耗线程池可以统筹内存和CPU的使用，避免资源使用不当，线程池会根据配置和任务数量灵活控制线程数量，不够就创建，多了就回收，避免线程过多导致内存溢出，过少导致资源浪费</li>
-<li>提高线程可管理行线程池可以统一管理资源，统一进行分配、调优、监控。</li>
-</ol>
-<h1 id="线程池工作原理"><a href="#线程池工作原理" class="headerlink" title="线程池工作原理"></a>线程池工作原理</h1><p>将任务传递给线程池，而不是为每个任务启动一个新线程来并发执行。<br>一旦池中有任何空闲线程，任务就会分配给其中之一并执行。<br>在内部，任务被插入到一个阻塞队列中，然后池中的空闲线程从该队列中取出任务并执行。</p>
-<p><img src="/2021/10/15/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BD%BF%E7%94%A8/thread-pools.png" alt="线程池的原理"></p>
-<p>不过在JDK提供的线程池的原理比这个还要复杂些（真实的往往是复杂的）。</p>
-<p><img src="/2021/10/15/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BD%BF%E7%94%A8/pool2.jpg" alt="工作流程图"></p>
-<h1 id="自己实现一个简单的线程池"><a href="#自己实现一个简单的线程池" class="headerlink" title="自己实现一个简单的线程池"></a>自己实现一个简单的线程池</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: SongyangJi</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span>: 2021/10/15</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ThreadPool</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; taskQueue;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;PooledThread&gt; threads = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="type">boolean</span> <span class="variable">isStopped</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> numOfThreads  工作线程数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> maxNumOfTasks 缓冲队列最多预存任务数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ThreadPool</span><span class="params">(<span class="type">int</span> numOfThreads, <span class="type">int</span> maxNumOfTasks)</span> &#123;</span><br><span class="line">        taskQueue = <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;&gt;(maxNumOfTasks);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; numOfThreads; i++) &#123;</span><br><span class="line">            threads.add(<span class="keyword">new</span> <span class="title class_">PooledThread</span>(taskQueue));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (PooledThread thread : threads) &#123;</span><br><span class="line">            thread.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">(Runnable task)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.isStopped) <span class="keyword">throw</span></span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;ThreadPool is stopped&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.taskQueue.put(task);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">shutDown</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.isStopped = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (PooledThread thread : threads) &#123;</span><br><span class="line">            thread.toStop();</span><br><span class="line">        &#125;</span><br><span class="line">        taskQueue.clear();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">PooledThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; taskQueue;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="type">boolean</span> <span class="variable">isStopped</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">PooledThread</span><span class="params">(BlockingQueue&lt;Runnable&gt; queue)</span> &#123;</span><br><span class="line">            taskQueue = queue;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (!isStopped) &#123;</span><br><span class="line">                Runnable runnable;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    runnable = taskQueue.take();</span><br><span class="line">                    runnable.run();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException ignored) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">toStop</span><span class="params">()</span> &#123;</span><br><span class="line">            isStopped = <span class="literal">true</span>;</span><br><span class="line">            <span class="built_in">this</span>.interrupt(); <span class="comment">// 中断当前线程（但可能不被响应）</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">Random</span> <span class="variable">random</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>();</span><br><span class="line">        <span class="type">ThreadPool</span> <span class="variable">threadPool</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ThreadPool</span>(<span class="number">3</span>, <span class="number">10</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="type">int</span> <span class="variable">id</span> <span class="operator">=</span> i;</span><br><span class="line">            threadPool.execute(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    TimeUnit.MILLISECONDS.sleep(random.nextInt(<span class="number">3000</span>));</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.printf(<span class="string">&quot;task %d finished in %s\n&quot;</span>, id,Thread.currentThread().getName());</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">10</span>);</span><br><span class="line">        threadPool.shutDown();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h1 id="ThreadPoolExecutor工作机制"><a href="#ThreadPoolExecutor工作机制" class="headerlink" title="ThreadPoolExecutor工作机制"></a>ThreadPoolExecutor工作机制</h1><h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ThreadPoolExecutor</span><span class="params">(<span class="type">int</span> corePoolSize, </span></span><br><span class="line"><span class="params">                          <span class="type">int</span> maximumPoolSize,</span></span><br><span class="line"><span class="params">                          <span class="type">long</span> keepAliveTime,</span></span><br><span class="line"><span class="params">                          TimeUnit unit,</span></span><br><span class="line"><span class="params">                          BlockingQueue&lt;Runnable&gt; workQueue,</span></span><br><span class="line"><span class="params">                          ThreadFactory threadFactory,</span></span><br><span class="line"><span class="params">                          RejectedExecutionHandler handler)</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="构造参数的含义"><a href="#构造参数的含义" class="headerlink" title="构造参数的含义"></a>构造参数的含义</h2><table>
-<thead>
-<tr>
-<th>序号</th>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>corePoolSize</td>
-<td>int</td>
-<td>核心线程池大小</td>
-</tr>
-<tr>
-<td>2</td>
-<td>maximumPoolSize</td>
-<td>int</td>
-<td>最大线程池大小</td>
-</tr>
-<tr>
-<td>3</td>
-<td>keepAliveTime</td>
-<td>long</td>
-<td>线程最大空闲时间</td>
-</tr>
-<tr>
-<td>4</td>
-<td>unit</td>
-<td>TimeUnit</td>
-<td>时间单位</td>
-</tr>
-<tr>
-<td>5</td>
-<td>workQueue</td>
-<td>BlockingQueue</td>
-<td>线程等待队列</td>
-</tr>
-<tr>
-<td>6</td>
-<td>threadFactory</td>
-<td>ThreadFactory</td>
-<td>线程创建工厂</td>
-</tr>
-<tr>
-<td>7</td>
-<td>handler</td>
-<td>RejectedExecutionHandler</td>
-<td>拒绝策略</td>
-</tr>
-</tbody></table>
-<h2 id="内部机制"><a href="#内部机制" class="headerlink" title="内部机制"></a>内部机制</h2><ol>
-<li><p>如果当前线程池的线程数还没有达到基本大小(poolSize &lt; corePoolSize)，无论是否有空闲的线程新增一个线程处理新提交的任务；</p>
-</li>
-<li><p>如果当前线程池的线程数大于或等于基本大小(poolSize &gt;&#x3D; corePoolSize) 且任务队列未满时，就将新提交的任务提交到阻塞队列排队，等候处理workQueue.offer(command)；</p>
-</li>
-<li><p>如果当前线程池的线程数大于或等于基本大小(poolSize &gt;&#x3D; corePoolSize) 且任务队列满时；</p>
-<ul>
-<li>当前poolSize&lt;maximumPoolSize，那么就新增线程来处理任务；</li>
-<li>当前poolSize&#x3D;maximumPoolSize，那么意味着线程池的处理能力已经达到了极限，此时需要拒绝新增加的任务。至于如何拒绝处理新增的任务，取决于线程池的饱和策略RejectedExecutionHandler。</li>
-</ul>
-</li>
-</ol>
-<p>描述为如下的工作流程图：</p>
-<p><img src="/2021/10/15/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BD%BF%E7%94%A8/pool1.jpg" alt="线程池对任务的处理流程"></p>
-<p>这里有一篇讲的很好的、可视化线程池工作机制的文章<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/112527671">&gt;&gt;传送门</a>。</p>
-<h2 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h2><p>拒绝策略是RejectedExecutionHandler的实现类；</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// r - 请求执行的可运行任务</span></span><br><span class="line"><span class="comment">// executor – 尝试执行此任务的执行器</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">RejectedExecutionHandler</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor executor)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>当要创建的线程数量大于线程池的最大线程数的时候，新的任务就会被拒绝，就会调用这个接口里的这个方法。</p>
-<p>下面介绍 ThreadPoolExecutor 中已经实现的四种策略。</p>
-<h3 id="AbortPolicy"><a href="#AbortPolicy" class="headerlink" title="AbortPolicy"></a>AbortPolicy</h3><p>这也是默认的拒绝策略（保守的策略）</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor e)</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RejectedExecutionException</span>(<span class="string">&quot;Task &quot;</span> + r.toString() +</span><br><span class="line">                                         <span class="string">&quot; rejected from &quot;</span> +</span><br><span class="line">                                         e.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="DiscardPolicy"><a href="#DiscardPolicy" class="headerlink" title="DiscardPolicy"></a>DiscardPolicy</h3><p>很潇洒，啥也不做。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor e)</span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="DiscardOldestPolicy"><a href="#DiscardOldestPolicy" class="headerlink" title="DiscardOldestPolicy"></a>DiscardOldestPolicy</h3><p>丢弃最早的未处理请求，然后去执行这个现在的任务。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor e)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!e.isShutdown()) &#123;</span><br><span class="line">        e.getQueue().poll();</span><br><span class="line">        e.execute(r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="CallerRunsPolicy"><a href="#CallerRunsPolicy" class="headerlink" title="CallerRunsPolicy"></a>CallerRunsPolicy</h3><p>在任务被拒绝添加后，会调用当前线程池的所在的线程去执行被拒绝的任务。</p>
-<p>也就是说，自己的活自己做，不要让线程池去做了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor e)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!e.isShutdown()) &#123;</span><br><span class="line">        r.run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><p>阻塞队列的选取可以参考在JUC中BlockingQueue的几种实现类，这里不再赘述。</p>
-<h1 id="Executor框架-——-JDK提供的线程池家族"><a href="#Executor框架-——-JDK提供的线程池家族" class="headerlink" title="Executor框架 —— JDK提供的线程池家族"></a>Executor框架 —— JDK提供的线程池家族</h1><h2 id="类图"><a href="#类图" class="headerlink" title="类图"></a>类图</h2><p><img src="/2021/10/15/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BD%BF%E7%94%A8/ThreadPoolExecutor.png" alt="ThreadPoolExecutor"></p>
-<h2 id="几种开箱即用的线程池"><a href="#几种开箱即用的线程池" class="headerlink" title="几种开箱即用的线程池"></a>几种开箱即用的线程池</h2><h3 id="FixedThreadPool"><a href="#FixedThreadPool" class="headerlink" title="FixedThreadPool"></a>FixedThreadPool</h3><p>构造函数：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newFixedThreadPool</span><span class="params">(<span class="type">int</span> nThreads)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(nThreads, nThreads,</span><br><span class="line">                                  <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>特点：</p>
-<ul>
-<li><p>workQueue 为LinkedBlockingQueue（<strong>无界阻塞队列</strong>），队列最大值为Integer.MAX_VALUE。如果任务提交速度持续大余任务处理速度，会造成队列大量阻塞。因为队列基本上是无穷大，很有可能在拒绝策略前，内存溢出。由于队列容量无穷大，所以实际上maximumPoolSize是无效参数。</p>
-</li>
-<li><p>corePoolSize与maximumPoolSize相等，即其线程全为核心线程，是一个固定大小的线程池；</p>
-</li>
-<li><p>keepAliveTime &#x3D; 0 表明多余的线程会被立即终止，但是由于默认情况下这不对核心线程起作用，又由于队列容量无穷大，所以这个参数实际上也是无效的。（因为在核心线程池满之后，就不再被销毁，除非你<code>allowCoreThreadTimeOut(true)</code>）</p>
-</li>
-<li><p>由于第一点，没有设置拒绝策略，设置了也是无效的。</p>
-</li>
-</ul>
-<p>适用场景：</p>
-<p>计算重量级的任务。</p>
-<h3 id="CachedThreadPool"><a href="#CachedThreadPool" class="headerlink" title="CachedThreadPool"></a>CachedThreadPool</h3><p>构造函数：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newCachedThreadPool</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                  <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> <span class="title class_">SynchronousQueue</span>&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li><p>corePoolSize &#x3D; 0，maximumPoolSize &#x3D; Integer.MAX_VALUE，即线程数量几乎无限制；</p>
-</li>
-<li><p>keepAliveTime &#x3D; 60s，线程空闲60s后自动结束，因此长时间保持空闲的CachedThreadPool不占用资源。</p>
-</li>
-<li><p>workQueue 为 SynchronousQueue 为无容量的同步队列，这个队列类似于一个接力棒，入队出队必须同时传递，所以当核心线程池已满的时候，会直接创建一个新的线程；</p>
-</li>
-</ul>
-<p>适用场景：快速处理大量耗时较短的任务，如Netty的NIO接受请求时，可使用CachedThreadPool。</p>
-<h3 id="SingleThreadExecutor"><a href="#SingleThreadExecutor" class="headerlink" title="SingleThreadExecutor"></a>SingleThreadExecutor</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newSingleThreadExecutor</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FinalizableDelegatedExecutorService</span></span><br><span class="line">        (<span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(<span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">                                <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;Runnable&gt;()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>实际上就是 Executors.newFixedThreadPool(1)的包装。</p>
-<p>线程池一旦接受了一个任务，就保持一个线程去接受任务。</p>
-<h1 id="合理配置线程池大小"><a href="#合理配置线程池大小" class="headerlink" title="合理配置线程池大小"></a>合理配置线程池大小</h1><h2 id="任务的不同角度的分类"><a href="#任务的不同角度的分类" class="headerlink" title="任务的不同角度的分类"></a>任务的不同角度的分类</h2><p>合理的配置线程池的大小，从以下几个角度分析任务的特性：</p>
-<ul>
-<li><p>任务的性质：CPU密集型任务、IO密集型任务、混合型任务。</p>
-</li>
-<li><p>任务的优先级：高、中、低。</p>
-</li>
-<li><p>任务的执行时间：长、中、短。</p>
-</li>
-<li><p>任务的依赖性：是否依赖其他系统资源，如数据库连接等。</p>
-</li>
-</ul>
-<p>性质不同的任务可以交给不同规模的线程池执行</p>
-<ul>
-<li><p>CPU密集型任务应配置尽可能小的线程，如配置CPU个数+1的线程数;</p>
-</li>
-<li><p>IO密集型任务应配置尽可能多的线程，因为IO操作不占用CPU，不要让CPU闲下来，应加大线程数量，如配置两倍CPU个数+1;</p>
-</li>
-<li><p>混合型的任务，如果可以拆分，拆分成IO密集型和CPU密集型分别处理，前提是两者运行的时间是差不多的，如果处理时间相差很大，则没必要拆分了。</p>
-</li>
-</ul>
-<h2 id="一个经验公式"><a href="#一个经验公式" class="headerlink" title="一个经验公式"></a>一个经验公式</h2><p><em><em>最佳线程数目 &#x3D; （（线程等待时间+线程CPU时间）&#x2F;线程CPU时间 ）</em> CPU数目</em>*</p>
-<p>比如平均每个线程CPU运行时间为0.5s，而线程等待时间（非CPU运行时间，比如IO）为1.5s，CPU核心数为8，那么根据上面这个公式估算得到：((0.5+1.5)&#x2F;0.5)*8&#x3D;32。这个公式进一步转化为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最佳线程数目 = （线程等待时间/线程CPU时间+ 1）* CPU</span><br></pre></td></tr></table></figure>
-
-
-<p>可以得出一个结论： 线程等待时间所占比例越高，需要越多线程。线程CPU时间所占比例越高，需要越少线程。 以上公式与CPU和IO密集型任务设置线程数基本吻合。</p>
-<h2 id="实践配置"><a href="#实践配置" class="headerlink" title="实践配置"></a>实践配置</h2><p>高并发、任务执行时间短的业务怎样使用线程池？并发不高、任务执行时间长的业务怎样使用线程池？并发高、业务执行时间长的业务怎样使用线程池？  </p>
-<ol>
-<li><p>高并发、任务执行时间短的业务，线程池线程数可以设置为CPU核数+1，减少线程上下文的切换</p>
-</li>
-<li><p>并发不高、任务执行时间长的业务要区分开看：</p>
-</li>
-</ol>
-<ul>
-<li>假如是业务时间长集中在IO操作上，也就是IO密集型的任务，因为IO操作并不占用CPU，所以不要让所有的CPU闲下来，可以适当加大线程池中的线程数目，让CPU处理更多的业务 　　</li>
-<li>假如是业务时间长集中在计算操作上，也就是计算密集型任务，这个就没办法了，和（1）一样吧，线程池中的线程数设置得少一些，减少线程上下文的切换</li>
-</ul>
-<ol start="3">
-<li><p>并发高、业务执行时间长，解决这种类型任务的关键不在于线程池而在于整体架构的设计，看看这些业务里面某些数据是否能做缓存是第一步，增加服务器是第二步，至于线程池的设置，设置参考（2）。</p>
-<p>最后，业务执行时间长的问题，也可能需要分析一下，看看能不能使用中间件对任务进行拆分和解耦</p>
-</li>
-</ol>
-<h2 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h2><p>队列大小 &#x3D; 线程数 * (最大响应时间&#x2F;任务实际处理时间)</p>
-<p>假设目标最大响应时间为0.4s，计算阻塞队列的长度为20 * (0.4 &#x2F; 0.2) &#x3D; 40。</p>
-<p>很好理解，就是拿最大响应时间（pct999的响应时间）和平均处理时间的比率*线程数，这些任务可能就是来不及处理堆积在队列里的。</p>
-<blockquote>
-<p>参考链接</p>
-<p><a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-concurrency/thread-pools.html">Thread Pools</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/112527671">线程池工作原理可视化</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0d5604152b97">本以为“线程池”很简单，没想到第一问就被干趴下了！</a></p>
-<p>《Java 并发编程的艺术》</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/15/Spring%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%901/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/15/Spring%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%901/" class="post-title-link" itemprop="url">Spring源码解析1</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-15 00:39:49 / 修改时间：01:57:30" itemprop="dateCreated datePublished" datetime="2021-10-15T00:39:49+08:00">2021-10-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>为了减少篇幅，以及尽可能介绍核心，在贴出代码的时候只节选部分。完整代码请参阅官方文档。</p>
-</blockquote>
-<h1 id="顶层设计"><a href="#顶层设计" class="headerlink" title="顶层设计"></a>顶层设计</h1><ol>
-<li>如何表示对象与对象之间的关系</li>
-<li>描述对象的文件存放在哪里</li>
-<li>如何统一一个关于对象的定义</li>
-<li>如何对不同的配置文件进行解析</li>
-</ol>
-<p>IOC的实现方式：</p>
-<p>依赖注入（DI）、依赖查找（不再使用）</p>
-<h1 id="源码类图"><a href="#源码类图" class="headerlink" title="源码类图"></a>源码类图</h1><h2 id="BeanFactory（存放Bean的容器）"><a href="#BeanFactory（存放Bean的容器）" class="headerlink" title="BeanFactory（存放Bean的容器）"></a>BeanFactory（存放Bean的容器）</h2><blockquote>
-<p><strong>访问 Spring bean 容器的根接口</strong>。<br>该接口的实现类包含一个bean的注册表，每个bean定义由一个字符串名称唯一标识。 根<br>据 bean 定义，工厂将返回包含对象的独立实例（原型设计模式），或单个共享实例（单例设计模式的高级替代方案，其中实例是范围内的单例）工厂）。 返回哪种类型的实例取决于 bean factory 配置：API 是相同的。<br>这种方法的重点是 BeanFactory 是应用程序组件的中央注册表，并且集中了应用程序组件的配置（例如，单个对象不再需要读取属性文件）。<br><strong>Spring 的依赖注入功能是使用这个 BeanFactory 接口及其子接口实现的</strong>。<br>通常 BeanFactory 将加载存储在配置源（例如 XML ）中的 bean 定义，并使用org.springframework.beans包来配置 bean。 但是，实现可以简单地直接在 Java 代码中返回它根据需要创建的 Java 对象。 定义的存储方式没有限制：LDAP、RDBMS、XML、属性文件等。</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.springframework.beans.factory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BeanFactory</span> &#123;</span><br><span class="line">   <span class="comment">// 根据 bean 名称获取 bean</span></span><br><span class="line">   Object <span class="title function_">getBean</span><span class="params">(String name)</span> <span class="keyword">throws</span> BeansException;</span><br><span class="line">   &lt;T&gt; T <span class="title function_">getBean</span><span class="params">(String name, Class&lt;T&gt; requiredType)</span> <span class="keyword">throws</span> BeansException;</span><br><span class="line">   &lt;T&gt; T <span class="title function_">getBean</span><span class="params">(Class&lt;T&gt; requiredType)</span> <span class="keyword">throws</span> BeansException;</span><br><span class="line">   &lt;T&gt; T <span class="title function_">getBean</span><span class="params">(Class&lt;T&gt; requiredType, Object... args)</span> <span class="keyword">throws</span> BeansException;</span><br><span class="line">   <span class="comment">// 判断bean是否存在</span></span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">containsBean</span><span class="params">(String name)</span>;</span><br><span class="line">   <span class="comment">// bean的作用域</span></span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">isSingleton</span><span class="params">(String name)</span> <span class="keyword">throws</span> NoSuchBeanDefinitionException;</span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">isPrototype</span><span class="params">(String name)</span> <span class="keyword">throws</span> NoSuchBeanDefinitionException;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>源码类图</p>
-<p><img src="/BeanFactory.png"></p>
-<ul>
-<li>ListableBeanFactory</li>
-</ul>
-<p>将所有bean列表化提供。（换言之，可以一下子获取所有bean）。</p>
-<ul>
-<li>HierarchicalBeanFactory</li>
-</ul>
-<p>描述有继承关系的bean。</p>
-<ul>
-<li>AutowireCapableBeanFactory</li>
-</ul>
-<p>定义bean的自动装配规则。这个类比较重要，看看它的源码。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">AutowireCapableBeanFactory</span> <span class="keyword">extends</span> <span class="title class_">BeanFactory</span> &#123;</span><br><span class="line">   <span class="comment">// 自动配置的方式</span></span><br><span class="line">   <span class="type">int</span> <span class="variable">AUTOWIRE_NO</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">   <span class="type">int</span> <span class="variable">AUTOWIRE_BY_NAME</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">   <span class="type">int</span> <span class="variable">AUTOWIRE_BY_TYPE</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line">   <span class="type">int</span> <span class="variable">AUTOWIRE_CONSTRUCTOR</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line">   <span class="meta">@Deprecated</span></span><br><span class="line">   <span class="type">int</span> <span class="variable">AUTOWIRE_AUTODETECT</span> <span class="operator">=</span> <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 创建一个新的bean  </span></span><br><span class="line">   &lt;T&gt; T <span class="title function_">createBean</span><span class="params">(Class&lt;T&gt; beanClass)</span> <span class="keyword">throws</span> BeansException;</span><br><span class="line"> </span><br><span class="line">   <span class="comment">// 自动装配benan</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">autowireBean</span><span class="params">(Object existingBean)</span> <span class="keyword">throws</span> BeansException;</span><br><span class="line">   Object <span class="title function_">configureBean</span><span class="params">(Object existingBean, String beanName)</span> <span class="keyword">throws</span> BeansException;</span><br><span class="line">   Object <span class="title function_">initializeBean</span><span class="params">(Object existingBean, String beanName)</span> <span class="keyword">throws</span> BeansException;</span><br><span class="line">  </span><br><span class="line">   <span class="comment">// ....</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="BeanDefinition（Bean的统一定义）"><a href="#BeanDefinition（Bean的统一定义）" class="headerlink" title="BeanDefinition（Bean的统一定义）"></a>BeanDefinition（Bean的统一定义）</h2><ul>
-<li>AttributeAccessor</li>
-</ul>
-<p>基于反射的方式，对一个bean根据属性名，对属性值的CRUD操作</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">AttributeAccessor</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">setAttribute</span><span class="params">(String name, <span class="meta">@Nullable</span> Object value)</span>;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Nullable</span></span><br><span class="line">   Object <span class="title function_">getAttribute</span><span class="params">(String name)</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="meta">@Nullable</span></span><br><span class="line">   Object <span class="title function_">removeAttribute</span><span class="params">(String name)</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">hasAttribute</span><span class="params">(String name)</span>;</span><br><span class="line"></span><br><span class="line">   String[] attributeNames();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>BeanDefinition 描述了一个 bean 实例，而那个bean具有属性值、构造函数参数值以及由具体实现提供的更多信息。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.springframework.beans.factory.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">BeanDefinition</span> <span class="keyword">extends</span> <span class="title class_">AttributeAccessor</span>, BeanMetadataElement &#123;</span><br><span class="line">  </span><br><span class="line">   <span class="comment">// 作用域</span></span><br><span class="line">   <span class="type">String</span> <span class="variable">SCOPE_SINGLETON</span> <span class="operator">=</span> ConfigurableBeanFactory.SCOPE_SINGLETON;</span><br><span class="line">   <span class="type">String</span> <span class="variable">SCOPE_PROTOTYPE</span> <span class="operator">=</span> ConfigurableBeanFactory.SCOPE_PROTOTYPE;</span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">   <span class="comment">// get/set bean的类名</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">setBeanClassName</span><span class="params">(<span class="meta">@Nullable</span> String beanClassName)</span>;</span><br><span class="line">   <span class="meta">@Nullable</span></span><br><span class="line">   String <span class="title function_">getBeanClassName</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// @Scope(&quot;singleton&quot;) / @Scope(&quot;prototype&quot;) 可以指定</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">setScope</span><span class="params">(<span class="meta">@Nullable</span> String scope)</span>;</span><br><span class="line">   <span class="meta">@Nullable</span></span><br><span class="line">   String <span class="title function_">getScope</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">   <span class="comment">// @Lazy 指定是否延迟初始化</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">setLazyInit</span><span class="params">(<span class="type">boolean</span> lazyInit)</span>;</span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">isLazyInit</span><span class="params">()</span>;</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">   <span class="comment">//  bean 所依赖的 bean 名称</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">setDependsOn</span><span class="params">(<span class="meta">@Nullable</span> String... dependsOn)</span>;</span><br><span class="line">   <span class="meta">@Nullable</span></span><br><span class="line">   String[] getDependsOn();</span><br><span class="line">  </span><br><span class="line">   <span class="comment">// @Primary 指定</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">setPrimary</span><span class="params">(<span class="type">boolean</span> primary)</span>;</span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">isPrimary</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">// @PostConstruct指定初始化方法</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">setInitMethodName</span><span class="params">(<span class="meta">@Nullable</span> String initMethodName)</span>;</span><br><span class="line">   <span class="meta">@Nullable</span></span><br><span class="line">   String <span class="title function_">getInitMethodName</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// @PreDestroy指定销毁方法</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">setDestroyMethodName</span><span class="params">(<span class="meta">@Nullable</span> String destroyMethodName)</span>;</span><br><span class="line">   <span class="meta">@Nullable</span></span><br><span class="line">   String <span class="title function_">getDestroyMethodName</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">// 单例 or 原型</span></span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">isSingleton</span><span class="params">()</span>;</span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">isPrototype</span><span class="params">()</span>;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/12/%E9%AB%98%E5%8F%AF%E9%9D%A0%E6%80%A7%E7%9A%84%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%20%E2%80%94%E2%80%94%20RabbitMQ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="SongyangJi">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | JsyBlog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/12/%E9%AB%98%E5%8F%AF%E9%9D%A0%E6%80%A7%E7%9A%84%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%20%E2%80%94%E2%80%94%20RabbitMQ/" class="post-title-link" itemprop="url">高可靠性的消息队列 —— RabbitMQ</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-12 00:00:00 / 修改时间：23:03:57" itemprop="dateCreated datePublished" datetime="2021-10-12T00:00:00+08:00">2021-10-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">消息中间件</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>使用消息代理的系统根据定义是分布式的。</p>
-<p>由于发送的协议方法（消息）不能保证到达对等方或被其成功处理，</p>
-<p>因此<strong>发布者和消费者都需要一种机制来进行传递和处理确认</strong>。RabbitMQ 支持的几种消息传递协议提供了这样的特性。</p>
-<ul>
-<li><p>从代理（broker）对发布者（publisher）的确认是一个称为<strong>publisher-confirms（发布者确认）</strong>的扩展 协议。</p>
-</li>
-<li><p>从消费者（consumer）到 RabbitMQ 的传递处理确认在消息传递协议中称为<strong>acknowledgement（简称 ack，计算机网络中经常用到）</strong>；</p>
-</li>
-</ul>
-<p>这两个功能都基于相同的想法，并受到 TCP 的启发。</p>
-<p>它们对于从发布者到 RabbitMQ 节点以及从 RabbitMQ 节点到消费者的可靠交付至关重要。换句话说，<strong>它们对于数据安全至关重要</strong>。</p>
-<h1 id="生产者发布消息不丢失"><a href="#生产者发布消息不丢失" class="headerlink" title="生产者发布消息不丢失"></a>生产者发布消息不丢失</h1><blockquote>
-<p>注意下面两种方案不可以同时选择，最多选其一。</p>
-<p>即事务通道不能进入确认模式，并且确认模式的通道也不能成为事务通道。</p>
-</blockquote>
-<h2 id="事务机制"><a href="#事务机制" class="headerlink" title="事务机制"></a>事务机制</h2><ul>
-<li>原生Java客户端</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">        <span class="type">Channel</span> <span class="variable">ch</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">        ch.txSelect();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; MSG_COUNT; ++i) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                ch.basicPublish(<span class="string">&quot;&quot;</span>, QUEUE_NAME,</span><br><span class="line">                        MessageProperties.PERSISTENT_BASIC,</span><br><span class="line">                        <span class="string">&quot;nop&quot;</span>.getBytes());</span><br><span class="line">                ch.txCommit();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception exception) &#123;</span><br><span class="line">                ch.txRollback();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>SpringBoot AMQP</li>
-</ul>
-<p>首先提供一个事务管理器供SpringBoot使用。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line">RabbitTransactionManager <span class="title function_">transactionManager</span><span class="params">(ConnectionFactory connectionFactory)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RabbitTransactionManager</span>(connectionFactory);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>接下来，在消息生产者上面做两件事：添加<code>@Transactional</code>并设置通信信道为事务模式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MsgService</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    RabbitTemplate rabbitTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">send</span><span class="params">()</span> &#123;</span><br><span class="line">        rabbitTemplate.setChannelTransacted(<span class="literal">true</span>);</span><br><span class="line">     <span class="comment">// rabbitTemplate.convertAndSend(...);</span></span><br><span class="line">     <span class="comment">// int i = 1 / 0; 没有爆发异常，由spring提交事务，否则回滚（也就是不发生消息）</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>但是使用事务有两个问题。</p>
-<p>首先channel长时间处于阻塞：发布者必须依次等待broker处理每条消息。</p>
-<p>不过有时候发布者只要知道broker宕机时哪些消息尚未处理就足够了。</p>
-<p>其次是事务实现的繁重性：每次提交都需要一个 fsync()，这需要很多时间才能完成。</p>
-<blockquote>
-<p>发布 10000 条消息需要 4 多分钟（具体参数机器性能决定，总之确实非常慢）</p>
-</blockquote>
-<h2 id="发送方确认机制"><a href="#发送方确认机制" class="headerlink" title="发送方确认机制"></a>发送方确认机制</h2><p>一旦通道进入确认模式，代理将在处理消息时确认消息。</p>
-<p>由于这是<strong>异步完成</strong>的，生产者可以流式发布而不用等待代理，代理也可以有效地<strong>批量写入磁盘</strong>。</p>
-<ul>
-<li>原生Java客户端</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 消息追踪记录（如果需要线程安全并且有序，可以使用 ConcurrentSkipListMap ）</span></span><br><span class="line">   HashMap&lt;Long, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">   <span class="comment">// 必须显式开启</span></span><br><span class="line">   channel.confirmSelect();</span><br><span class="line">   <span class="comment">// 监听被退回的消息(如消息路由到队列失败)</span></span><br><span class="line">   channel.addReturnListener(returnMessage -&gt; &#123;</span><br><span class="line">       System.out.println(<span class="string">&quot;return : &quot;</span> + System.currentTimeMillis());</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           Thread.sleep(<span class="number">100</span>);</span><br><span class="line">       &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           TimeUnit.SECONDS.sleep(<span class="number">10</span>);</span><br><span class="line">       &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">       System.err.println(<span class="keyword">new</span> <span class="title class_">String</span>(returnMessage.getBody()) + <span class="string">&quot; publish fail!&quot;</span>);</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 监听被到达或未到达交换机（exchange）的消息</span></span><br><span class="line">   channel.addConfirmListener(<span class="keyword">new</span> <span class="title class_">ConfirmListener</span>() &#123;</span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleAck</span><span class="params">(<span class="type">long</span> deliveryTag, <span class="type">boolean</span> multiple)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">           map.remove(deliveryTag); <span class="comment">// 发送成功，缓存清除掉</span></span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleNack</span><span class="params">(<span class="type">long</span> deliveryTag, <span class="type">boolean</span> multiple)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">           System.err.println(map.get(deliveryTag) + <span class="string">&quot;not ack!&quot;</span>);</span><br><span class="line">           <span class="comment">// 下面可以进行重新发送等逻辑</span></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">       <span class="type">Random</span> <span class="variable">random</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>();</span><br><span class="line">       <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">while</span> (idx &lt; <span class="number">1000</span>) &#123;</span><br><span class="line">           <span class="type">String</span> <span class="variable">message</span> <span class="operator">=</span> <span class="string">&quot;from server...&quot;</span> + (++idx);</span><br><span class="line">           <span class="comment">// 追踪记录</span></span><br><span class="line">           map.put(channel.getNextPublishSeqNo(), message);</span><br><span class="line">           <span class="comment">// 发送消息</span></span><br><span class="line">           channel.basicPublish(<span class="string">&quot;&quot;</span>, queue, MessageProperties.PERSISTENT_BASIC, message.getBytes(StandardCharsets.UTF_8));</span><br><span class="line"></span><br><span class="line">           TimeUnit.MILLISECONDS.sleep(random.nextInt(<span class="number">300</span>) + <span class="number">200</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">       System.out.println(<span class="string">&quot;以下为未成功发送的消息&quot;</span>);</span><br><span class="line">       <span class="comment">// 可以进行重试逻辑</span></span><br><span class="line">       map.values().forEach(s -&gt; System.out.println(<span class="string">&quot;not ack, may need publish again : &quot;</span> + s));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>SpringBoot AMQP</li>
-</ul>
-<p>首先<strong>在配置文件中配置中开启消息发送方确认机制</strong>。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">rabbitmq:</span></span><br><span class="line">    <span class="attr">publisher-returns:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">publisher-confirm-type:</span> <span class="string">correlated</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p><code>publisher-confirm-type</code>有三种属性：</p>
-<ol>
-<li>none：表示禁用发布确认模式，默认即此。</li>
-<li>correlated：使用相关消息确认，回调中触发。</li>
-<li>simple：使用 <code>waitForConfirms()</code> 和 <code>waitForConfirmsOrDie()</code> 方法的进行确认。</li>
-</ol>
-<p>然后<strong>配置回调的监听器</strong>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PublisherConfirmConfig</span> <span class="keyword">implements</span> <span class="title class_">RabbitTemplate</span>.ConfirmCallback, RabbitTemplate.ReturnsCallback &#123;</span><br><span class="line"></span><br><span class="line">    RabbitTemplate rabbitTemplate;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PublisherConfirmConfig</span><span class="params">(RabbitTemplate rabbitTemplate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.rabbitTemplate = rabbitTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//@Bean 此处无需注入</span></span><br><span class="line">    RabbitTransactionManager <span class="title function_">transactionManager</span><span class="params">(ConnectionFactory connectionFactory)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RabbitTransactionManager</span>(connectionFactory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">confirm</span><span class="params">(CorrelationData correlationData, <span class="type">boolean</span> ack, String cause)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;correlationData : &quot;</span>+correlationData);</span><br><span class="line">        <span class="keyword">if</span> (ack) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;success&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.err.println(<span class="string">&quot;cause : &quot;</span>+cause);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">returnedMessage</span><span class="params">(ReturnedMessage returned)</span> &#123;</span><br><span class="line">        System.err.println(returned);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">initRabbitTemplate</span><span class="params">()</span> &#123;</span><br><span class="line">        rabbitTemplate.setConfirmCallback(<span class="built_in">this</span>);</span><br><span class="line">        rabbitTemplate.setReturnsCallback(<span class="built_in">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>发送消息：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注意必须传入 CorrelationData，否则没有根据去跟踪（原生client使用deliveryTag跟踪）</span></span><br><span class="line">rabbitTemplate.convertAndSend(<span class="string">&quot;q1&quot;</span>, (Object) s, <span class="keyword">new</span> <span class="title class_">CorrelationData</span>(<span class="string">&quot;correlation id = &quot;</span> + count));</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="MQ服务器存储消息不丢失"><a href="#MQ服务器存储消息不丢失" class="headerlink" title="MQ服务器存储消息不丢失"></a>MQ服务器存储消息不丢失</h1><h1 id="消费者消费消息不丢失"><a href="#消费者消费消息不丢失" class="headerlink" title="消费者消费消息不丢失"></a>消费者消费消息不丢失</h1><h2 id="关于ACK"><a href="#关于ACK" class="headerlink" title="关于ACK"></a>关于ACK</h2><h3 id="RabbitMQ的Client"><a href="#RabbitMQ的Client" class="headerlink" title="RabbitMQ的Client"></a>RabbitMQ的Client</h3><p>RabbitMQ中<code>channel</code>在消费消息（<code>basicConsume(String queue, boolean autoAck, Consumer callback)</code>）的时候，指定的ack的含义如下：</p>
-<ul>
-<li>autoAck &#x3D; true</li>
-</ul>
-<p>当broker在消息发送后（写入TCP套接字后）此条消息就立即ack了，此条消息RabbitMQ服务器也不再保存了，</p>
-<p>而丝毫不管收到消息的客户端是否处理。如果消费者在收到大量消息但没有处理的时候突然宕机了，那么那些未处理消息也就随着本地缓冲区的消失而消失了（服务器上也没有了）。</p>
-<p>这种ack方式谨慎使用。</p>
-<ul>
-<li>autoAck &#x3D; false</li>
-</ul>
-<p>这种ack方式必须要求用户自己主动ack消息（<code>channel.basicAck</code>）,常常和prefetchCount配合使用（后面会介绍到）。</p>
-<h3 id="Spring-AMQP"><a href="#Spring-AMQP" class="headerlink" title="Spring AMQP"></a>Spring AMQP</h3><p>需要注意的是Spring AMQP中配置的ack的含义和上面的ack含义是不一样的。</p>
-<ul>
-<li>auto（default）</li>
-</ul>
-<p>容器将根据侦听器是正常返回还是抛出异常来发出 ack&#x2F;nack。</p>
-<ul>
-<li>none</li>
-</ul>
-<p>这里的none和rabbitmq的auto是一个含义。</p>
-<ul>
-<li>manual</li>
-</ul>
-<p>用户必须通过channel去ack&#x2F;nack</p>
-<p><strong>配置方式</strong></p>
-<ul>
-<li><p>yaml配置</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">rabbitmq:</span></span><br><span class="line">    <span class="attr">listener:</span></span><br><span class="line">      <span class="attr">simple:</span></span><br><span class="line">        <span class="attr">acknowledge-mode:</span> <span class="string">auto</span></span><br></pre></td></tr></table></figure>
-
-</li>
-<li><p>方法级别（覆盖外部配置）</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RabbitListener(queues = &quot;ququeName&quot;, ackMode = &quot;manual&quot;)</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="Ack的相关api"><a href="#Ack的相关api" class="headerlink" title="Ack的相关api"></a>Ack的相关api</h2><h3 id="deliveryTag（交付标签）"><a href="#deliveryTag（交付标签）" class="headerlink" title="deliveryTag（交付标签）"></a>deliveryTag（交付标签）</h3><p>当消费者（订阅）被注册时，消息将被 RabbitMQ 使用basic.deliver 方法传递。</p>
-<p>该方法带有一个<em>交付标签</em>，它<strong>唯一地标识了一个通道上的交付</strong>。因此，<strong>交付标签的范围是每个channel</strong>。</p>
-<p>交付标签是单调增长的正整数。确认交付的客户端库方法将交付标签作为参数。</p>
-<p>由于交付标签的范围是每个通道，<strong>交付必须在接收它们的同一通道上得到确认</strong>。</p>
-<p>在不同的通道上确认将导致“未知传递标签”协议异常并关闭通道。</p>
-<h3 id="确认（ack）方法"><a href="#确认（ack）方法" class="headerlink" title="确认（ack）方法"></a>确认（ack）方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">oid <span class="title function_">basicAck</span><span class="params">(<span class="type">long</span> deliveryTag, <span class="type">boolean</span> multiple)</span></span><br></pre></td></tr></table></figure>
-<p>multiple为true的时候，会将之前的消息都ack（即交付标签小于deliveryTag的消息都会被ack）</p>
-<h3 id="拒绝（rejecj-nack）方法"><a href="#拒绝（rejecj-nack）方法" class="headerlink" title="拒绝（rejecj\nack）方法"></a>拒绝（rejecj\nack）方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">basicReject</span><span class="params">(<span class="type">long</span> deliveryTag, <span class="type">boolean</span> requeue)</span> </span><br></pre></td></tr></table></figure>
-<p>requeue为true的时候会将消息重新入队，但必须要注意的是<strong>如果这个queue没有其他消费者，而本机由于某些原因会反复拉取这条消息并拒绝再拉取导致死循环。</strong>所以，在需要将消息重新入队的时候，需要注意消息重新入队的次数。</p>
-<p>还有一个相似的方法，</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">basicNack(<span class="type">long</span> deliveryTag, <span class="type">boolean</span> multiple, <span class="type">boolean</span> requeue)</span><br></pre></td></tr></table></figure>
-
-<p>多了个 multiple 参数，含义和上面ack的multiple的一致。</p>
-<h1 id="业务上实现"><a href="#业务上实现" class="headerlink" title="业务上实现"></a>业务上实现</h1><h2 id="投递失败的消息如何处理"><a href="#投递失败的消息如何处理" class="headerlink" title="投递失败的消息如何处理"></a>投递失败的消息如何处理</h2><h2 id="消费的幂等性如何做到"><a href="#消费的幂等性如何做到" class="headerlink" title="消费的幂等性如何做到"></a>消费的幂等性如何做到</h2><h2 id="消息中间件实现分布式事务"><a href="#消息中间件实现分布式事务" class="headerlink" title="消息中间件实现分布式事务"></a>消息中间件实现分布式事务</h2><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://blog.rabbitmq.com/posts/2011/02/introducing-publisher-confirms">介绍发布者确认</a></p>
-<p><a target="_blank" rel="noopener" href="https://rabbitmq.com/tutorials/tutorial-seven-java.html">发布者确认</a> </p>
-<p><a target="_blank" rel="noopener" href="https://rabbitmq.com/confirms.html#consumer-acks-api-elements">消费者确认和发布者确认</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/20/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/22/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/20/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/22/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

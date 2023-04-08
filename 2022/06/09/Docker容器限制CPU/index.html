@@ -26,18 +26,18 @@
 <meta property="og:site_name" content="JsyBlog">
 <meta property="og:description" content="压测工具使用ubuntu的stress 作为压测工具，并制作镜像 1234FROM ubuntu:latestRUN apt-get update &amp;&amp; \        apt-get install stress shell命令 1docker build -t u-stress:latest .    限制CPU资源限制CPU核心个数（百分比）在 docker 1.13 及更">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163457514-1473983991.png">
-<meta property="og:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163742921-1627559356.png">
-<meta property="og:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163808468-652259868.png">
-<meta property="og:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164142218-723091322.png">
-<meta property="og:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164255702-1003240099.png">
+<meta property="og:image" content="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-0.png">
+<meta property="og:image" content="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-1.png">
+<meta property="og:image" content="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-2.png">
+<meta property="og:image" content="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-3.png">
+<meta property="og:image" content="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-4.png">
 <meta property="article:published_time" content="2022-06-09T03:11:04.000Z">
-<meta property="article:modified_time" content="2022-06-09T14:22:34.225Z">
+<meta property="article:modified_time" content="2023-04-08T07:33:20.845Z">
 <meta property="article:author" content="SongyangJi">
 <meta property="article:tag" content="Docker">
 <meta property="article:tag" content="资源限制">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163457514-1473983991.png">
+<meta name="twitter:image" content="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-0.png">
 
 
 <link rel="canonical" href="http://example.com/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/">
@@ -159,13 +159,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">247</span>
+          <span class="site-state-item-count">251</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -225,9 +225,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-06-09 11:11:04 / 修改时间：22:22:34" itemprop="dateCreated datePublished" datetime="2022-06-09T11:11:04+08:00">2022-06-09</time>
+      <time title="创建时间：2022-06-09 11:11:04" itemprop="dateCreated datePublished" datetime="2022-06-09T11:11:04+08:00">2022-06-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-08 15:33:20" itemprop="dateModified" datetime="2023-04-08T15:33:20+08:00">2023-04-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -263,7 +269,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stress -c 4</span><br></pre></td></tr></table></figure>
 <p>使用<code>docker stats</code>查看容状态，发现容器 CPU 的负载为 200%左右，它的含义为单个 CPU 负载的两倍。我们也可以把它理解为有两颗 CPU核心在 100% 的为它工作。</p>
 <p>再让我们通过 top 命令看看主机 CPU 的真实负载情况：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163457514-1473983991.png" alt="img"></p>
+<p><img src="/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-0.png" alt="img"></p>
 <p>实际的情况并不是两个 CPU 负载 100%，而另外两个负载 0%。四个 CPU 的负载都是 50%，加起来容器消耗的 CPU 总量就是两个 CPU 100% 的负载。</p>
 <p><strong>所以对于进程来说是没有 CPU 个数这一概念的</strong>，内核只能通过进程消耗的 CPU 时间片来统计出进程占用 CPU 的百分比。这也是我们看到的各种工具中都使用百分比来说明 CPU 使用率的原因。<br>并且 –cpus 选项支持设为小数也从侧面说明了对 CPU 的计量只能是百分比。</p>
 <h2 id="指定固定的-CPU集"><a href="#指定固定的-CPU集" class="headerlink" title="指定固定的 CPU集"></a>指定固定的 CPU集</h2><p>通过 –cpus 选项我们无法让容器始终在一个或某几个 CPU 上运行，但是通过<code>--cpuset-cpus</code> 选项却可以做到！这是非常有意义的，因为现在的多核系统中每个核心都有自己的缓存，如果频繁的调度进程在不同的核心上执行势必会带来缓存失效等开销。下面我们就演示如何设置容器使用固定的 CPU，下面的命令为容器设置了 –cpuset-cpus 选项，指定运行容器的 CPU 编号为 1：(编号从0开始)</p>
@@ -275,9 +281,9 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stress -c 4</span><br></pre></td></tr></table></figure>
 
 <p>然后查看主机 CPU 的负载情况：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163742921-1627559356.png" alt="img"></p>
+<p><img src="/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-1.png" alt="img"></p>
 <p>这次只有 Cpu1 达到了 100%，其它的 CPU 并未被容器使用。我们还可以反复的执行 stress -c 4 命令，但是始终都是 Cpu1 在干活。<br>再看看容器的 CPU 负载，也是只有 100%：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217163808468-652259868.png"></p>
+<p><img src="/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-2.png"></p>
 <p>-cpuset-cpus 选项还可以一次指定多个 CPU：<br>比如：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --cpuset-cpus=&quot;1,3&quot; u-stress:latest /bin/bash</span><br></pre></td></tr></table></figure>
 <p>–cpuset-cpus 选项的一个缺点是必须指定 CPU 在操作系统中的编号，这对于动态调度的环境(无法预测容器会在哪些主机上运行，只能通过程序动态的检测系统中的 CPU 编号，并生成 docker run 命令)会带来一些不便。</p>
@@ -286,10 +292,12 @@
 
 <p>在两个容器中都运行 stress -c 4 命令。</p>
 <p>此时主机 Cpu0 的负载为 100%：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164142218-723091322.png"></p>
+<p><img src="/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-3.png"></p>
 <p>容器中 CPU 的负载为：</p>
-<p><img src="https://images2017.cnblogs.com/blog/952033/201712/952033-20171217164255702-1003240099.png"></p>
+<p><img src="/2022/06/09/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU/Docker%E5%AE%B9%E5%99%A8%E9%99%90%E5%88%B6CPU-4.png"></p>
 <p>两个容器分享一个 CPU，所以总量应该是 100%。具体每个容器分得的负载则取决于 –cpu-shares 选项的设置！我们的设置分别是 512 和 1024，则它们分得的比例为 1:2。在本例中如果想让两个容器各占 50%，只要把 –cpu-shares 选项设为相同的值就可以了。</p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://sanhe-dev-exp-share.readthedocs.io/03-Docker/03-Restrict-CPU-Memory-and-GPU/README.html">https://sanhe-dev-exp-share.readthedocs.io/03-Docker/03-Restrict-CPU-Memory-and-GPU/README.html</a></p>
 
     </div>
 
