@@ -285,7 +285,7 @@
 <li>为主机配置 swap</li>
 </ul>
 <p>其实就是说：通过限制容器使用的内存上限，可以降低主机内存耗尽时带来的各种风险。</p>
-<h1 id="限制Memory"><a href="#限制Memory" class="headerlink" title="限制Memory"></a>限制Memory</h1><p>&#x2F;Users&#x2F;jisongyang&#x2F;go&#x2F;pkg&#x2F;mod&#x2F;github.com&#x2F;docker&#x2F;<a href="mailto:&#100;&#x6f;&#x63;&#107;&#101;&#x72;&#x40;&#118;&#x32;&#48;&#46;&#49;&#48;&#46;&#x31;&#53;">&#100;&#x6f;&#x63;&#107;&#101;&#x72;&#x40;&#118;&#x32;&#48;&#46;&#49;&#48;&#46;&#x31;&#53;</a>+incompatible&#x2F;api&#x2F;types&#x2F;container&#x2F;host_config.go</p>
+<h1 id="限制Memory"><a href="#限制Memory" class="headerlink" title="限制Memory"></a>限制Memory</h1><p>&#x2F;Users&#x2F;jisongyang&#x2F;go&#x2F;pkg&#x2F;mod&#x2F;github.com&#x2F;docker&#x2F;<a href="mailto:&#x64;&#111;&#x63;&#107;&#x65;&#x72;&#x40;&#x76;&#50;&#48;&#x2e;&#49;&#48;&#46;&#49;&#x35;">&#x64;&#111;&#x63;&#107;&#x65;&#x72;&#x40;&#x76;&#50;&#48;&#x2e;&#49;&#48;&#46;&#49;&#x35;</a>+incompatible&#x2F;api&#x2F;types&#x2F;container&#x2F;host_config.go</p>
 <h2 id="限制内存使用上限"><a href="#限制内存使用上限" class="headerlink" title="限制内存使用上限"></a>限制内存使用上限</h2><p>使用<code>-m(--memory=)</code>可以限制容器使用的最大内存。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -m 300M --memory-swap -1 --name con1 u-stress /bin/bash</span><br></pre></td></tr></table></figure>
 
